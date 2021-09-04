@@ -1,0 +1,14 @@
+sources:
+  - name: Conductor
+    handler:
+      openapi:
+        source: ${API_URL}
+        baseUrl: ${BASE_API_URL}
+additionalTypeDefs:
+  - ./src/mesh/additional-type-defs.graphql
+additionalResolvers:
+  - ./src/mesh/additional-resolvers.js
+serve:
+  port: 5000
+  cors:
+    allowedHeaders: ["authorization", "content-type", "OPTIONS"]

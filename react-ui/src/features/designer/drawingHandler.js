@@ -1,0 +1,280 @@
+import { DiagramModel } from '@projectstorm/react-diagrams-core'
+import Workflow2Graph from './workflowToGraph'
+import defaultTo from 'lodash/fp/defaultTo'
+import { isEmpty, toArray } from 'lodash'
+import { StartNodeModel } from './nodeModels/startNode/StartNodeModel'
+import { EndNodeModel } from './nodeModels/endNode/EndNodeModel'
+import { last, values } from 'ramda'
+import { isDefault, nodeConfig } from './constants/NodeConfig'
+
+export const clearDiagram = engine => {
+  engine.model = new DiagramModel()
+}
+
+export const drawDiagram = (workflow, engine) => {
+  clearDiagram(engine)
+  workflow.tasks.map(x => createNode(engine, x))
+  linkAllNodes(engine, workflow)
+  appendStartAnd(engine)
+}
+const getMatchingTaskRefNode = (engine, taskRefName) => {
+  return toArray(engine.model.getNodes()).find(x => x.inputs.taskReferenceName === taskRefName)
+}
+
+const getGraphState = definition => {
+  const wfe2graph = new Workflow2Graph()
+  const wfe = defaultTo({ tasks: [] })(null)
+  const { edges, vertices } = wfe2graph.convert(wfe, definition)
+
+  return { edges, vertices }
+}
+
+// Links two nodes together ( out -> in )
+const linkNodes = (node1, node2, whichPort) => {
+  if (
+    node1.type === 'FORK_JOIN' ||
+    node1.type === 'JOIN' ||
+    node1.type === 'START' ||
+    node1.type === 'FORK_JOIN_DYNAMIC' ||
+    node1.type === 'while' ||
+    node1.type === 'while_end'
+  ) {
+    const fork_join_start_outPort = node1.getPort('out')
+
+    if (isDefault(node2.type)) {
+      return fork_join_start_outPort.link(node2.getInPorts()[0])
+    }
+    if (node2.type === nodeConfig.DECISION.type) {
+      return fork_join_start_outPort.link(node2.getPort('in'))
+    }
+    if (['FORK_JOIN', 'JOIN', 'END', 'FORK_JOIN_DYNAMIC', 'while', 'while_end'].includes(node2.type)) {
+      return fork_join_start_outPort.link(node2.getPort('in'))
+    }
+  } else if (isDefault(node1.type)) {
+    const defaultOutPort = node1.getOutPorts()[0]
+
+    if (isDefault(node2.type)) {
+      return defaultOutPort.link(node2.getInPorts()[0])
+    }
+    if (node2.type === nodeConfig.DECISION.type) {
+      return defaultOutPort.link(node2.getPort('in'))
+    }
+    if (['FORK_JOIN', 'JOIN', 'END', 'FORK_JOIN_DYNAMIC', 'while', 'while_end'].includes(node2.type)) {
+      return defaultOutPort.link(node2.getPort('in'))
+    }
+  } else if (node1.type === nodeConfig.DECISION.type) {
+    const currentPort = node1.getPort(whichPort?.options?.name ?? whichPort)
+
+    if (isDefault(node2.type)) {
+      return currentPort.link(node2.getInPorts()[0])
+    }
+    if (node2.type === nodeConfig.DECISION.type) {
+      return currentPort.link(node2.getPort('in'))
+    }
+    if (['FORK_JOIN', 'JOIN', 'END', 'FORK_JOIN_DYNAMIC', 'while', 'while_end'].includes(node2.type)) {
+      return currentPort.link(node2.getPort('in'))
+    }
+  }
+}
+
+export const linkAllNodes = (engine, definition) => {
+  const { edges } = getGraphState(definition)
+
+  let fromPortIndex = 0
+  edges.forEach(edge => {
+    if (edge.from !== 'START' && edge.to !== 'END') {
+      switch (edge.type) {
+        case 'simple': {
+          const fromNode = getMatchingTaskRefNode(engine, edge.from)
+          const toNode = getMatchingTaskRefNode(engine, edge.to)
+          engine.model.addLink(linkNodes(fromNode, toNode))
+          break
+        }
+        case nodeConfig.FORK_JOIN.type: {
+          const fromNode = getMatchingTaskRefNode(engine, edge.from)
+          const toNode = getMatchingTaskRefNode(engine, edge.to)
+
+          engine.model.addLink(linkNodes(fromNode, toNode))
+          break
+        }
+        case nodeConfig.DECISION.type: {
+          const fromNode = getMatchingTaskRefNode(engine, edge.from)
+          const toNode = getMatchingTaskRefNode(engine, edge.to)
+          let whichPort = fromNode.portsOut[fromPortIndex]
+          if (whichPort == last(fromNode.portsOut)) fromPortIndex = 0
+          else fromPortIndex++
+
+          engine.model.addLink(linkNodes(fromNode, toNode, whichPort))
+
+          break
+        }
+        default:
+          break
+      }
+    }
+  })
+}
+
+const getMostRightNodeX = engine => {
+  let max = 0
+  engine.model.getNodes().forEach(node => {
+    if (node.position.x > max) {
+      max = node.position.x
+    }
+  })
+  return max
+}
+
+const getNodeWidth = node => {
+  if (node.options.name.length > 6) {
+    return node.options.name.length * 8
+  }
+  return node.options.name.length * 12
+}
+
+const calculatePosition = (engine, branchX, branchY) => {
+  const nodes = engine.model.getNodes()
+  const startPos = { x: 300, y: 300 }
+  let x = 0
+  let y = 0
+
+  if (isEmpty(nodes)) {
+    x = startPos.x
+    y = startPos.y
+  } else {
+    x = getMostRightNodeX(engine) + getNodeWidth(nodes[nodes.length - 1]) + 100
+    y = startPos.y
+  }
+
+  if (branchX) {
+    x = branchX
+  }
+  if (branchY) {
+    y = branchY
+  }
+
+  return { x, y }
+}
+const calculateNestedPosition = (engine, branchTask, parentNode, k, branchSpread, branchMargin, branchNum, forkDepth) => {
+  let yOffset = branchTask.type === 'FORK_JOIN' ? 25 - k * 11 : 100
+  yOffset = branchTask.type === 'JOIN' ? 25 - (k - 1) * 11 : yOffset
+  yOffset = branchTask.type === nodeConfig.DECISION.type ? 25 - k * 11 : yOffset
+
+  const branchPosY = parentNode.position.y + yOffset - branchSpread / 2 + ((branchMargin + 50) * branchNum) / forkDepth
+  let lastNode = engine.model.getNodes()[engine.model.getNodes().length - 1]
+
+  if (branchNum && k === 0) {
+    lastNode = parentNode
+  }
+
+  const branchPosX = lastNode.position.x + 50 + (getNodeWidth(lastNode) + 50)
+
+  return { branchPosX, branchPosY }
+}
+//Creates new node based on the task definition
+export const createNode = (engine, task, branchX = null, branchY = null, forkDepth = 1) => {
+  switch (task.type) {
+    case nodeConfig.DECISION.type: {
+      const { x, y } = calculatePosition(engine, branchX, branchY)
+      const caseCount = [...values(task.decisionCases)].length + 1
+      const branchMargin = 100
+      const nodeHeight = 47
+      const node = nodeConfig[task.type]?.getInstance(task)
+      node.setPosition(x, y)
+      engine.model.addNode(node)
+
+      // branches size in parallel - the deeper the fork node, the smaller the spread and margin is
+      const branchSpread = (caseCount * nodeHeight + (caseCount - 1) * branchMargin) / forkDepth
+
+      let branches = [...values(task.decisionCases), task.defaultCase].map(el => {
+        return el === undefined ? [] : el
+      })
+
+      branches.forEach((caseBranch, caseNum) => {
+        caseBranch.forEach((branchTask, k) => {
+          const { branchPosX, branchPosY } = calculateNestedPosition(
+            engine,
+            branchTask,
+            node,
+            k,
+            branchSpread,
+            branchMargin,
+            caseNum,
+            forkDepth
+          )
+          createNode(engine, branchTask, branchPosX, branchPosY, forkDepth + 1)
+        })
+      })
+      break
+    }
+    case nodeConfig.FORK_JOIN.type: {
+      const { x, y } = calculatePosition(engine, branchX, branchY)
+      const branchCount = task.forkTasks.length
+      const branchMargin = 100
+      const nodeHeight = 100
+
+      const node = nodeConfig[task.type]?.getInstance(task)
+      node.setPosition(x, y)
+      engine.model.addNode(node)
+
+      // branches size in parallel - the deeper the fork node, the smaller the spread and margin is
+      const branchSpread = (branchCount * nodeHeight + (branchCount - 1) * branchMargin) / forkDepth
+
+      task.forkTasks.forEach((branch, branchNum) => {
+        branch.forEach((branchTask, k) => {
+          const { branchPosX, branchPosY } = calculateNestedPosition(
+            engine,
+            branchTask,
+            node,
+            k,
+            branchSpread,
+            branchMargin,
+            branchNum,
+            forkDepth
+          )
+          createNode(engine, branchTask, branchPosX, branchPosY, forkDepth + 1)
+        })
+      })
+      break
+    }
+    default: {
+      const { x, y } = calculatePosition(engine, branchX, branchY)
+      const node = nodeConfig[task.type]?.getInstance(task)
+      node.setPosition(x, y)
+      engine.model.addNode(node)
+      break
+    }
+  }
+}
+
+export const placeStartNode = (engine, x, y) => {
+  if (engine.model.getNode(nodeConfig.START.type)) {
+    return null
+  }
+  const node = new StartNodeModel()
+  node.setPosition(x, y)
+  return node
+}
+
+export const placeEndNode = (engine, x, y) => {
+  if (engine.model.getNode(nodeConfig.END.type)) {
+    return null
+  }
+  const node = new EndNodeModel()
+  node.setPosition(x, y)
+  return node
+}
+
+// Appends diagram with Start and End node
+export const appendStartAnd = engine => {
+  const firstNode = engine.model.getNodes()[0]
+  const lastNode = last(engine.model.getNodes())
+
+  const startNode = placeStartNode(engine, firstNode.position.x - 200, firstNode.position.y)
+  const endNode = placeEndNode(engine, lastNode.position.x + getNodeWidth(lastNode) + 170, lastNode.position.y)
+
+  const firstLink = linkNodes(startNode, firstNode)
+  const lastLink = linkNodes(lastNode, endNode)
+
+  engine.model.addAll(startNode, endNode, firstLink, lastLink)
+}

@@ -1,0 +1,63 @@
+{{- $current := .Values.gql -}}
+{{- $global := .Values.global -}}
+{{- if $current.enabled -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "Gql.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "Gql.fullname" . }}
+    helm.sh/chart: {{ include "Gql.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    "sidecar.jaegertracing.io/inject": "false"
+spec:
+  replicas: {{ $current.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "Gql.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "Gql.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with $current.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: {{ $current.name }}
+          image: "{{ $current.image.repository }}{{ $current.image.name}}:{{ $current.image.tag }}"
+          imagePullPolicy: {{ $current.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ $current.service.targetPort }}
+              protocol: TCP
+          resources:
+            {{- toYaml $current.resources | trim | nindent 12 }}
+          env:
+          - name: DB_HOST
+            value: {{ $global.db.host | quote }}
+          - name: DB_PORT
+            value: {{ $global.db.port | quote }}
+          - name: DB_DATABASE
+            value: {{ $global.db.database | quote }}
+          - name: DB_USER
+            value: {{ $global.db.user | quote }}
+          - name: DB_PASSWORD
+            value: {{ $global.db.password | quote }}
+          {{- range $key, $value := $current.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+      {{- if $global.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml $global.imagePullSecrets | trim | nindent 8 }}
+      {{- end }}
+      {{- with $current.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

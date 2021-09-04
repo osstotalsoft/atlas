@@ -1,0 +1,438 @@
+{
+  "BuildVersion": "v",
+  "RowsOf": "din",
+  "RowsPerPage": "Randuri pe pagina",
+  "MyProfile": "Profilul meu",
+  "Forbidden": "Nu aveti dreptul sa vedeti aceasta pagina!",
+  "LeavingWithoutSaving": "Renuntati la modificari?",
+  "NavBar": {
+    "Workflows": "Fluxuri",
+    "Tasks": "Task-uri",
+    "Settings": "Setari",
+    "User": "Profil",
+    "Executions": "Executii",
+    "SystemTasks": "System_Tasks",
+    "EventHandlers": "Event handlers"
+  },
+  "Tooltips": {
+    "Logout": "Iesire",
+    "HidePassword": "Ascunde parola",
+    "ShowPassword": "Arata parola",
+    "BackToList": "Inapoi la lista"
+  },
+  "Dialog": {
+    "Yes": "Da",
+    "No": "Nu",
+    "DeleteTaskQuestion": "Sunteti sigur ca doriti sa stergeti task-ul?"
+  },
+  "DateTime": {
+    "InvalidDateMessage": "Formatul datei este invalid",
+    "MinDateMessage": "Data introdusa nu poate fi mai mica decat valoarea minima",
+    "MaxDateMessage": "Data introdusa nu poate fi mai mare decat valoarea maxima"
+  },
+  "Workflow": {
+    "AddName": "Adauga nume",
+    "Name": "Nume",
+    "Version": "Versiune",
+    "Description": "Descriere",
+    "NoDescription": "Fara descriere",
+    "CreatedBy": "Creat de",
+    "UpdatedBy": "Modificat de",
+    "TimeoutSeconds": "Secunde pana la expirare",
+    "FailureWorkflow": "Flux in caz de esec",
+    "WorkflowStatusListenerEnabled": "Listener pentru statusul fluxului activat",
+    "Buttons": {
+      "AddWorkflow": "Adauga flux",
+      "Execute": "Executa",
+      "Executing": "Se executa...",
+      "GoToExecution": "Vedeti executia"
+    },
+    "Dialog": {
+      "DeleteWorkflow": "Sunteti sigur ca doriti sa stergeti fluxul?",
+      "CancelEdit": "Sunteti sigur ca doriti sa anulati modificarile?"
+    }
+  },
+  "WorkflowTask": {
+    "Name": "Nume",
+    "TaskReferenceName": "Nume de referinta",
+    "Description": "Descriere",
+    "Optional": "Optional",
+    "StartDelay": "Start delay",
+    "InputParameter": {
+      "Name": "Parametru de intrare",
+      "ScriptExpression": "Expresie script",
+      "DefaultText": "Adauga parametru nou",
+      "Payload": "Continut"
+    },
+    "Buttons": {
+      "AddParameter": "Adauga parametru",
+      "DeleteParameter": "Sterge parametru"
+    },
+    "Decision": {
+      "Case": "Caz",
+      "CaseValueParam": "Parametru",
+      "CaseExpression": "Expresie",
+      "AddCaseValue": "Adauga valoare caz noua",
+      "Buttons": {
+        "AddCaseValue": "Adauga valoare caz noua"
+      }
+    },
+    "Terminate": {
+      "Completed": "FINALIZAT",
+      "Failed": "ESUAT",
+      "WorkflowOutput": "Valoare de iesire"
+    },
+    "Http": {
+      "Uri": "Uri",
+      "Method": "Method",
+      "Accept": "Accept",
+      "ContentType": "Content Type",
+      "Headers": "Headers",
+      "Body": "Body",
+      "VipAddress": "Vip Address",
+      "AsyncComplete": "Async Complete",
+      "OauthConsumerKey": "Oauth Consumer Key",
+      "OauthConsumerSecret": "Oauth Consumer Secret",
+      "ConnectionTimeOut": "Connection TimeOut",
+      "ReadTimeOut": "ReadTimeOut"
+    },
+    "Event": {
+      "Action": "Actiune",
+      "Payload": "Payload",
+      "Sink": "Sink",
+      "CompleteSink": "Complete Sink",
+      "AsyncComplete": "Async Complete"
+    }
+  },
+  "Task": {
+    "Name": "Nume",
+    "Description": "Descriere",
+    "NoDescription": "Fara descriere",
+    "CreateTime": "Creat la",
+    "OwnerEmail": "Email proprietar",
+    "CreatedBy": "Creat de",
+    "RetryCount": "Retry Count",
+    "RetryLogic": "Retry Logic",
+    "RetryDelaySeconds": "Retry Delay Seconds",
+    "TimeoutPolicy": "Timeout Policy",
+    "TimeoutSeconds": "Timeout Seconds",
+    "ResponseTimeoutSeconds": "Response Timeout Seconds",
+    "InputKeys": "Input Keys",
+    "OutputKeys": "Output Keys",
+    "Data": "Date",
+    "Buttons": {
+      "AddTask": "Adauga task"
+    }
+  },
+  "Execution": {
+    "Executions": "Executii",
+    "Name": "Nume",
+    "WorkflowId": "Workflow Id",
+    "Status": "Status",
+    "StartTime": "Inceput la",
+    "EndTime": "Finalizat la",
+    "Details": "Detalii",
+    "TotalTime": "Total timp (sec)",
+    "TaskDetails": "Detalii task",
+    "IO": "Intrare/iesire",
+    "JSON": "JSON",
+    "EditRerun": "Editare si rerulare",
+    "ExecutionFlow": "Flux executie",
+    "Input": "Intrare",
+    "Output": "Iesire",
+    "WorkflowJSON": "JSON flux",
+    "EditRerunWorkflow": "Editare si rerulare flux",
+    "Actions": "Actiuni",
+    "NoActions": "Nicio actiune disponibila",
+    "Task": {
+      "Type": "Tip task",
+      "SubWorkflow": "Sub-flux",
+      "RefName": "Nume referinta",
+      "PollCount": "Nr interogari",
+      "CallAfter": "Raspuns (sec)"
+    },
+    "Diagram": {
+      "Tabs": {
+        "Summary": "Sumar",
+        "Json": "Json"
+      }
+    },
+    "Buttons": {
+      "SeeDetails": "Vezi detalii",
+      "Terminate": "Finalizeaza",
+      "Pause": "Opreste",
+      "Resume": "Reia",
+      "Retry": "Incearca din nou",
+      "Restart": "Reincepe"
+    }
+  },
+  "EventHandler": {
+    "EventHandlers": "Event handlers",
+    "EventHandlerInfo": "Informatii event handler",
+    "Active": "Activ",
+    "Inactive": "Inactiv",
+    "Name": "Nume",
+    "Sink": "Sink",
+    "Actions": "Actiuni",
+    "Action": "Actiune",
+    "ExpandInlineJSON": "Extinde JSON inline",
+    "Output": "Output",
+    "WorkflowId": "ID workflow",
+    "TaskId": "ID task",
+    "TaskRefName": "Task ref name",
+    "WorkflowName": "Nume workflow",
+    "Version": "Versiune",
+    "InputParameter": "Parametru input",
+    "InputValue": "Valoare input",
+    "OutputParameter": "Parametru output",
+    "OutputValue": "Valoare output",
+    "Condition": "Conditie",
+    "Buttons": {
+      "AddEventHandler": "Adauga event handler",
+      "AddAction": "Adauga actiune"
+    },
+    "Dialog": {
+      "Delete": "Sunteti sigur ca doriti sa stergeti handler-ul?"
+    }
+  },
+  "Log": {
+    "Log": "Log {{id}}",
+    "LogId": "Id log",
+    "RequestId": "Id cerere",
+    "Code": "Cod",
+    "Message": "Mesaj",
+    "Details": "Detalii",
+    "Timestamp": "Data si ora",
+    "Type": "Tip"
+  },
+  "Validations": {
+    "Cnp": "CNP-ul nu este valid",
+    "UniqueCnp": "CNP-ul nu este unic",
+    "Phone": "Numarul de telefon nu este valid",
+    "NoSpace": "Nu poate incepe cu spatiu",
+    "Integer": "Valoarea trebuie sa fie un numar intreg",
+    "UniqueName": "Numele trebuie sa fie unic",
+    "InvalidSink": "Sink-ul trebuie sa fie de tipul conductor/nats_stream:topic",
+    "NameCannotBeNew": "Numele nu poate fi 'new'",
+    "Generic": {
+      "Mandatory": "Valoarea este obligatorie",
+      "AtLeastOne": "Trebuie sa existe cel putin un element",
+      "Regex": "Valoarea are un format invalid",
+      "Email": "Valoarea nu este o adresa de email valida",
+      "OutOfRange": "Valoarea trebuie sa fie intre {{min}} si {{max}}",
+      "Greater": "Valoarea trebuie sa fie mai mare decat {{min}}",
+      "GreaterOrEqual": "Valoarea trebuie sa fie mai mare sau egala cu {{min}}",
+      "Less": "Valoarea trebuie sa fie mai mica decat {{max}}",
+      "LessOrEqual": "Valoarea trebuie sa fie mai mica sau egala cu {{max}}",
+      "MaxCharacters": "Lungimea trebuie sa fie mai mica decat {{max}}",
+      "MinCharacters": "Lungimea trebuie sa fie mai mare decat {{min}}",
+      "Unique": "Valoarea pentru {{selector}} trebuie sa fie unica"
+    }
+  },
+  "EditTaskModal": {
+    "Tabs": {
+      "General": "General",
+      "InputParameters": "Parametri de intrare",
+      "Advanced": "Avansat"
+    }
+  },
+  "Designer": {
+    "DeleteConfirmation": "Sunteti sigur ca doriti stergerea elemetelor selectate?",
+    "ImportConfirmation": "Toate modificarile vor fi suprascrise. Sunteti sigur ca doriti sa continuati?",
+    "StartTour": "Doriti sa incepeti un tur virtual?",
+    "UtilitiesBar": {
+      "Undo": "Anuleaza",
+      "Redo": "Refa",
+      "Clone": "Cloneaza",
+      "Lock": "Blocheaza diagrama",
+      "Import": "Importa din JSON",
+      "Export": "Exporta ca JSON",
+      "Delete": "Sterge selectia",
+      "Execute": "Executa fluxul",
+      "ExecuteWorkflowDialogTitle": "Parametrii de intrare pentru executie",
+      "GeneralSettings": "Setari generale"
+    },
+    "Tour": {
+      "BadgeContent": "{{curr}} din {{tot}}",
+      "Welcome": "Bun venit la turul virtual! Folositi butoanele de mai jos sau tastele de tip sageata pentru a parcurge pasii.",
+      "SystemTasks": "Puteti desena un flux folosind task-urile de sistem definite de catre Conductor.",
+      "DefineTask": "Alternativ, va puteti defini propriile task-uri aici.",
+      "Tasks": "Dupa salvare, ele vor aparea in aceasta lista.",
+      "Workflows": "Aici puteti gasi toate fluxurile care au fost create si pe care le puteti folosi ca sub-fluxuri.",
+      "Help1": "Cand nu sunteti sigur despre ce inseamna ceva,",
+      "Help2": "puteti da click pe butonul de ajutor pentru mai multe informatii.",
+      "Event": "Trageti si plasati un task pentru a-l adauga in flux.",
+      "StartNode": "Fiecare flux trebuie sa inceapa cu un nod de START si sa se termine cu un END.",
+      "ConnectPort": "Folositi port-ul din dreapta pentru a-l conecta la task.",
+      "LinkUnfocused": "Asigurati-va ca legatura este nefocalizata (dand click in afara ei) inainte de salvare.",
+      "DeleteLink": "Pentru a sterge o legatura:",
+      "TaskSettings": "Faceti dublu-click pe un task pentru a-i configura setarile.",
+      "Utilities": "Aici puteti gasi cateva actiuni care sa va ajute la a desena si gestiona fluxul:",
+      "WorkflowSettings": "Dati click aici pentru a adauga descrierea fluxului si alte setari avansate",
+      "Save": "La sfarsit, puteti salva fluxul dand click pe acest buton."
+    }
+  },
+  "Helpers": {
+    "Common": {
+      "SeeDocumentation": "Pentru mai multe informatii, acceseaza documentatia aici.",
+      "Here": "aici",
+      "Output": "Rezultat"
+    },
+    "Tray": {
+      "SystemTasks": "Taskuri executate de serverul Conductorului.",
+      "Tasks": "Taskuri executate de workeri proprii.",
+      "Workflows": "Taskuri care permit includerea unui flux intr-un alt flux.",
+      "Start": {
+        "Def": "Task care porneste fluxul.",
+        "Mandatory": "Este obligatoriu pentru crearea unui flux."
+      },
+      "Lambda": {
+        "Def": "Task care ajuta la executia unei logici ad-hoc la momentul rularii fluxului, folosind expresii Javascript.",
+        "Details": "Este in mod special util in rularea unor evaluari simple pe serverul Conductorului, in loc de a crea workeri.",
+        "ResultTerm": "result",
+        "ResultDef": "contine rezultatul intors de expresia Javascript (scriptExpression)",
+        "ReferenceOutput": "Rezultatul taskului poate fi referentiat in taskuri derivate dupa modelul: ${[TASK_REFERENCE_NAME].output.result.[VARIABLE_NAME]}",
+        "ReferenceOutputHighlight": "${[TASK_REFERENCE_NAME].output.result.[VARIABLE_NAME]}"
+      },
+      "Decision": {
+        "Def": "Task care determina executia unor ramuri de decizii diferite in functie de conditii diferite.",
+        "Details": "Este similar unei instructiuni case...switch din limbajele de programare.",
+        "CaseOutputTerm": "caseOutput",
+        "CaseOutputDef": "lista cu cazurile care au corespuns"
+      },
+      "Event": {
+        "Def": "Task care ofera abilitatea de a publica un eveniment (mesaj) pe Conductor sau un alt sistem de evenimente extern.",
+        "Details": "Este util pentru crearea unor dependinte bazate pe evenimente pentru fluxuri si taskuri.",
+        "WorkflowInstanceIdTerm": "workflowInstanceId",
+        "WorkflowTypeTerm": "workflowType",
+        "WorkflowVersionTerm": "workflowVersion",
+        "CorrelationIdTerm": "correlationId",
+        "SinkTerm": "Sink",
+        "SinkDef": "copie a parametrului de intrare 'sink'",
+        "AsyncCompleteTerm": "asyncComplete",
+        "AsyncCompleteDef": "copie a parametrului de intrare 'asyncComplete'",
+        "EventProducedTerm": "event_produced",
+        "EventProducedDef": "numele evenimentului produs"
+      },
+      "Http": {
+        "Def": "Task care este folosit pentru a apela un alt micro-serviu prin HTTP.",
+        "Output": "Rezultat (Accesibil prin output.response)",
+        "BodyTerm": "body",
+        "BodyDef": "Obiect JSON care contine raspunsul, daca exista",
+        "HeadersTerm": "headers",
+        "HeadersDef": "headeruri ale raspunsului",
+        "StatusCodeTerm": "statusCode",
+        "StatusCodeDef": "Cod status Http (1xx - raspuns informational, 2xx - succes, 3xx - redirectionare, 4xx - eroare client, 5xx - eroare server)",
+        "ReasonPhraseTerm": "reasonPhrase",
+        "ReasonPhraseDef": "Motivatie pentru cod status Http"
+      },
+      "Fork": {
+        "Def": "Task care este folosit pentru a programa un set paralel de taskuri.",
+        "Important": "IMPORTANT: un task FORK trebuie sa fie urmat de catre un JOIN",
+        "OutputTerm": "un obiect JSON al carei chei este numele de referinta al taskului si al carei valori este rezultatul taskului fork"
+      },
+      "Join": {
+        "Def": "Task care este folosit pentru a asteptarea finalizarea unuia sau mai multor taskuri ce au originea intr-un fork."
+      },
+      "DynamicFork": {
+        "Def": "Task cu acelasi comportament ca FORK, exceptand faptul ca lista taskurilor bifurcate este furnizata la momentul rularii fluxului folosind parametrii de intrare ai taskului.",
+        "Details": "Util atunci cand numarul bifurcatiilor nu este fix si variaza in functie de parametrii de intrare.",
+        "ComparisonFork": "Spre deosebire de FORK, care poate executia fluxuri in paralel cu fiecare bifurcatie ruland o serie de taskuri in serie, DYNAMIC_FORK este limitat la un singur task per bifurcatie.",
+        "ForkedTask": "Cu toate acestea, taskul bifurcat poate fi un sub-flux, permitand astfel executia unor fluxuri mai complexe.",
+        "Important": "IMPORTANT: un task FORK trebuie sa fie urmat de catre un JOIN"
+      },
+      "Terminate": {
+        "Def": "Task care poate termina un flux cu un status dat si sa modifice rezultatul workflowului cu un parametru dat.",
+        "OutputTerm": "output",
+        "OutputDef": "continutul lui workflowOutput de la inputParameters (parametri de intrare); un obiect gol daca workflowOutput nu e setat"
+      },
+      "End": {
+        "Def": "Task care incheie fluxul.",
+        "Mandatory": "Este obligatoriu pentru crearea unui flux."
+      }
+    },
+    "SystemTaskDef": {
+      "Common": {
+        "Name": "Numele taskului.",
+        "TaskRefName": "Alias folosit pentru a face referire la task in cadrul fluxului.",
+        "UniqueTaskRef": "Trebuie sa fie unic in cadrul fluxului.",
+        "Description": "Descrierea taskului.",
+        "AddNewParam": "Aici, trebuie definite numele parametrilor de intrare pe care fluxul ii primeste.",
+        "NewParamValues": "Apoi, se pot seta valori pentru ei mai jos. Pentru valori care ar trebui setate de catre utilizator la executie, se completeaza: ${workflow.input.[PARAMETER_NAME]}",
+        "NewParamValuesHighlight": "${workflow.input.[PARAMETER_NAME]}",
+        "Optional": "Daca un task este optional, esuarea sa este considerata inofensiva pentru executia fluxului, iar acesta poate continua intr-un astfel de scenariu.",
+        "StartDelay": "Intarzie startul taskului cu un numar de secunde.",
+        "TrueTerm": "adevarat",
+        "TrueDef": "pastreaza statusul taskului IN_PROGRESS si asteapta un eveniment extern (prin Conductor sau EventHandler) pentru a-l finaliza.",
+        "FalseTerm": "fals",
+        "FalseDef": "marcheaza statusul COMPLETED dupa executie"
+      },
+      "Lambda": {
+        "ScriptExpression": "Expresie Javascript care este evaluata la momentul executiei fluxului.",
+        "Important": "Trebuie sa intoarca o valoare."
+      },
+      "Decision": {
+        "ParameterOrExpression": "Taskul de decizie primeste fie: mai multe cazuri de decizie in functie de valoarea unui parametru, sau o expresie.",
+        "ParameterTerm": "mai multe cazuri de decizie",
+        "ParameterDef": "in functie de valoarea unui parametru (similar unei instructiuni case...switch in limbajele de programare",
+        "ExpressionTerm": "expresie",
+        "ExpressionDef": "o expresie Javascript; folosita cand decizia depinde de valori complexe",
+        "Important": "In expresii Javascript, nu se pot folosi taskuri cu nume care contin operatori aritmetici.",
+        "AddNewCase": "Adauga o noua valoare posibila pentru un caz de decizie. Daca valoarea corespunde parametrului de intrare al taskului, doar acea ramura de decizie va fi executata.",
+        "CaseValueParam": "Numele parametrului de intrare al taskului a carui valoare va fi folosita drept switch."
+      },
+      "Event": {
+        "SinkDef": "Numele calificat al evenimentului care se produce.",
+        "SinkExample": "ex.: conductor:topic sau nats_stream:topic",
+        "Payload": "Informatii transmise prin eveniment."
+      },
+      "Http": {
+        "UriDef": "URI pentru serviciu.",
+        "UriDetails": "Poate fi partial cand se foloseste vipAddress sau include adresa serverului.",
+        "MethodDef": "Metoda HTTP.",
+        "MethodDetails": "Una dintre: GET, PUT, POST, DELETE, OPTIONS, HEAD.",
+        "AcceptDef": "Header Accept asa cum este cerut de server.",
+        "AcceptDefault": "Implicit: application/json",
+        "ContentTypeDef": "Tipul continului.",
+        "ContentTypeDetails": "Tipurile suportate sunt text/plain, text/html si application/json",
+        "ContentTypeDefault": "Implicit: application/json",
+        "VipAddressDef": "Cand se folosesc URL-uri de serviciu bazate pe discovery.",
+        "ConsumerKeyDef": "Cheie consumator client OAuth.",
+        "OAuthDocumentation": "Vezi documentatia OAuth aici.",
+        "OAuthDocumentationKeyword": "aici",
+        "ConsumerSecretDef": "Secret consumator client OAuth.",
+        "ConnectionTimeoutDef": "Timp pana la expirarea conexiunii in milisecunde.",
+        "ConnectionTimeoutDetails": "Daca e setat la 0, echivalent cu infinit.",
+        "ConnectionTimeoutDefault": "Implicit: 100",
+        "ReadTimeoutDef": "Timp pana la expirarea citirii in milisecunde.",
+        "ReadTimeoutDetails": "Daca e setat la 0, echivalent cu infinit.",
+        "ReadTimeoutDefault": "Implicit: 150",
+        "HeadersDef": "Perechi cheie-valoare de headere http aditionale care vor fi trimise odata cu cererea.",
+        "BodyDef": "Body-ul cererii"
+      },
+      "Terminate": {
+        "FailedOrCompletedDef": "Statusul de terminare.",
+        "WorkflowOutputDef": "Rezultatul asteptat al fluxului."
+      }
+    }
+  },
+  "General": {
+    "Search": "Cauta",
+    "Saving": "Se salveaza...",
+    "SavingSucceeded": "Salvare cu succes!",
+    "DeletingSucceeded": "Stergere cu succes!",
+    "Buttons": {
+      "Add": "Adauga",
+      "Edit": "Editeaza",
+      "Delete": "Sterge",
+      "Save": "Salveaza",
+      "Saving": "Se salveaza...",
+      "Cancel": "Anuleaza",
+      "Close": "Inchide",
+      "ApplyFilters": "Aplica filtre",
+      "ResetFilters": "Reseteaza filtre",
+      "True": "Adevarat",
+      "False": "Fals"
+    }
+  }
+}

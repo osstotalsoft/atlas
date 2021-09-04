@@ -1,0 +1,2202 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  """
+  Get the details about each queue
+  
+  Equivalent to GET /api/tasks/queue/all
+  """
+  all: JSON
+  """
+  Get the details about each queue
+  
+  Equivalent to GET /api/tasks/queue/all/verbose
+  """
+  allVerbose: JSON
+  """
+  Batch poll for a task of a certain type
+  
+  Equivalent to GET /api/tasks/poll/batch/{tasktype}
+  """
+  batchPoll(
+    count: Int
+    domain: String
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+    tasktype: String!
+    timeout: Int
+    workerid: String
+  ): [Task]
+  """
+  
+  
+  Equivalent to GET /health
+  """
+  doCheck: HealthCheckStatus
+  """
+  Retrieves workflow definition along with blueprint
+  
+  Equivalent to GET /api/metadata/workflow/{name}
+  """
+  get(name: String!, version: Int): WorkflowDef
+  """
+  Retrieves all workflow definition along with blueprint
+  
+  Equivalent to GET /api/metadata/workflow
+  """
+  getAll(
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+  ): [WorkflowDef]
+  """
+  Get all the configuration parameters
+  
+  Equivalent to GET /api/admin/config
+  """
+  getAllConfig: JSON
+  """
+  Get the last poll data for all task types
+  
+  Equivalent to GET /api/tasks/queue/polldata/all
+  """
+  getAllPollData(
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+  ): [PollData]
+  """
+  Get all the event handlers
+  
+  Equivalent to GET /api/event
+  """
+  getEventHandlers(
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+  ): [EventHandler]
+  """
+  Get event handlers for a given event
+  
+  Equivalent to GET /api/event/{event}
+  """
+  getEventHandlersForEvent(
+    activeOnly: Boolean
+    event: String!
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+  ): [EventHandler]
+  """
+  Get registered queues
+  
+  Equivalent to GET /api/admin/queues
+  """
+  getEventQueues(verbose: Boolean): JSON
+  """
+  Gets the workflow by workflow id
+  
+  Equivalent to GET /api/workflow/{workflowId}
+  """
+  getExecutionStatus(includeTasks: Boolean, workflowId: String!): Workflow
+  """
+  Get the external uri where the task payload is to be stored
+  
+  Equivalent to GET /api/tasks/externalstoragelocation
+  """
+  getExternalStorageLocation(operation: String!, path: String!, payloadType: String!): ExternalStorageLocation
+  """
+  Get the uri and path of the external storage where the workflow payload is to be stored
+  
+  Equivalent to GET /api/workflow/externalstoragelocation
+  """
+  getExternalStorageLocation1(operation: String!, path: String!, payloadType: String!): ExternalStorageLocation
+  """
+  Get the last poll data for a given task type
+  
+  Equivalent to GET /api/tasks/queue/polldata
+  """
+  getPollData(
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+    taskType: String!
+  ): [PollData]
+  """
+  Retrieve all the running workflows
+  
+  Equivalent to GET /api/workflow/running/{name}
+  """
+  getRunningWorkflow(endTime: Float, name: String!, startTime: Float, version: Int): [String]
+  """
+  Get task by Id
+  
+  Equivalent to GET /api/tasks/{taskId}
+  """
+  getTask(taskId: String!): Task
+  """
+  Gets the task definition
+  
+  Equivalent to GET /api/metadata/taskdefs/{tasktype}
+  """
+  getTaskDef(tasktype: String!): TaskDef
+  """
+  Gets all task definition
+  
+  Equivalent to GET /api/metadata/taskdefs
+  """
+  getTaskDefs(
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+  ): [TaskDef]
+  """
+  Get Task Execution Logs
+  
+  Equivalent to GET /api/tasks/{taskId}/log
+  """
+  getTaskLogs(
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+    taskId: String!
+  ): [TaskExecLog]
+  """
+  Lists workflows for the given correlation id
+  
+  Equivalent to GET /api/workflow/{name}/correlated/{correlationId}
+  """
+  getWorkflows(
+    correlationId: String!
+    includeClosed: Boolean
+    includeTasks: Boolean
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+    name: String!
+  ): [Workflow]
+  """
+  Get Queue Names
+  
+  Equivalent to GET /api/queue/
+  """
+  names: JSON
+  """
+  Poll for a task of a certain type
+  
+  Equivalent to GET /api/tasks/poll/{tasktype}
+  """
+  poll(domain: String, tasktype: String!, workerid: String): Task
+  """
+  use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
+  
+  Equivalent to GET /api/tasks/search
+  """
+  search(freeText: String, query: String, size: Int, sort: String, start: Int): SearchResultTaskSummary
+  """
+  use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC.
+  
+  Equivalent to GET /api/workflow/search
+  """
+  search1(freeText: String, query: String, size: Int, sort: String, start: Int): SearchResultWorkflowSummary
+  """
+  use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC.
+  
+  Equivalent to GET /api/workflow/search-v2
+  """
+  searchV2(freeText: String, query: String, size: Int, sort: String, start: Int): SearchResultWorkflow
+  """
+  use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
+  
+  Equivalent to GET /api/tasks/search-v2
+  """
+  searchWorkflowTasks(freeText: String, query: String, size: Int, sort: String, start: Int): SearchResultTask
+  """
+  use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
+  
+  Equivalent to GET /api/workflow/search-by-tasks
+  """
+  searchWorkflowsByTasks(freeText: String, query: String, size: Int, sort: String, start: Int): SearchResultWorkflowSummary
+  """
+  use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
+  
+  Equivalent to GET /api/workflow/search-by-tasks-v2
+  """
+  searchWorkflowsByTasksV2(freeText: String, query: String, size: Int, sort: String, start: Int): SearchResultWorkflow
+  """
+  Get Task type queue sizes
+  
+  Equivalent to GET /api/tasks/queue/sizes
+  """
+  size(taskType: [String]): JSON
+  """
+  Get the queue length
+  
+  Equivalent to GET /api/queue/size
+  """
+  size1: JSON
+  """
+  Get the list of pending tasks for a given task type
+  
+  Equivalent to GET /api/admin/task/{tasktype}
+  """
+  view(
+    count: Int
+    """Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list"""
+    limit: Int
+    start: Int
+    tasktype: String!
+  ): [Task]
+  log(logId: String!): Log!
+}
+
+"""The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type Task {
+  callbackAfterSeconds: Float
+  callbackFromWorker: Boolean
+  correlationId: String
+  domain: String
+  endTime: Float
+  executed: Boolean
+  executionNameSpace: String
+  externalInputPayloadStoragePath: String
+  externalOutputPayloadStoragePath: String
+  inputData: JSON
+  isolationGroupId: String
+  iteration: Int
+  loopOverTask: Boolean
+  outputData: JSON
+  pollCount: Int
+  queueWaitTime: Float
+  rateLimitFrequencyInSeconds: Int
+  rateLimitPerFrequency: Int
+  reasonForIncompletion: String
+  referenceTaskName: String
+  responseTimeoutSeconds: Float
+  retried: Boolean
+  retriedTaskId: String
+  retryCount: Int
+  scheduledTime: Float
+  seq: Int
+  startDelayInSeconds: Int
+  startTime: Float
+  status: Status
+  subWorkflowId: String
+  subworkflowChanged: Boolean
+  taskDefName: String
+  taskDefinition: TaskDef
+  taskId: String
+  taskType: String
+  updateTime: Float
+  workerId: String
+  workflowInstanceId: String
+  workflowPriority: Int
+  workflowTask: WorkflowTask
+  workflowType: String
+}
+
+enum Status {
+  IN_PROGRESS
+  CANCELED
+  FAILED
+  FAILED_WITH_TERMINAL_ERROR
+  COMPLETED
+  COMPLETED_WITH_ERRORS
+  SCHEDULED
+  TIMED_OUT
+  SKIPPED
+}
+
+type TaskDef {
+  concurrentExecLimit: Int
+  createTime: Float
+  createdBy: String
+  description: String
+  executionNameSpace: String
+  inputKeys: [String]
+  inputTemplate: JSON
+  isolationGroupId: String
+  name: String!
+  outputKeys: [String]
+  ownerApp: String
+  ownerEmail: String
+  pollTimeoutSeconds: Int
+  rateLimitFrequencyInSeconds: Int
+  rateLimitPerFrequency: Int
+  responseTimeoutSeconds: Float
+  retryCount: Int
+  retryDelaySeconds: Int
+  retryLogic: RetryLogic
+  timeoutPolicy: TimeoutPolicy
+  timeoutSeconds: Float!
+  updateTime: Float
+  updatedBy: String
+}
+
+enum RetryLogic {
+  FIXED
+  EXPONENTIAL_BACKOFF
+}
+
+enum TimeoutPolicy {
+  RETRY
+  TIME_OUT_WF
+  ALERT_ONLY
+}
+
+type WorkflowTask {
+  asyncComplete: Boolean
+  caseExpression: String
+  caseValueParam: String
+  decisionCases: JSON
+  defaultCase: [WorkflowTask]
+  defaultExclusiveJoinTask: [String]
+  description: String
+  dynamicForkJoinTasksParam: String
+  dynamicForkTasksInputParamName: String
+  dynamicForkTasksParam: String
+  dynamicTaskNameParam: String
+  forkTasks: [[WorkflowTask]]
+  inputParameters: JSON
+  joinOn: [String]
+  loopCondition: String
+  loopOver: [WorkflowTask]
+  name: String!
+  optional: Boolean
+  rateLimited: Boolean
+  retryCount: Int
+  scriptExpression: String
+  sink: String
+  startDelay: Int
+  subWorkflowParam: SubWorkflowParams
+  taskDefinition: TaskDef
+  taskReferenceName: String!
+  type: String
+  workflowTaskType: WorkflowTaskType
+}
+
+type SubWorkflowParams {
+  name: String!
+  taskToDomain: JSON
+  version: Int
+  workflowDefinition: WorkflowDef
+}
+
+type WorkflowDef {
+  createTime: Float
+  createdBy: String
+  description: String
+  failureWorkflow: String
+  inputParameters: [String]
+  name: String!
+  outputParameters: JSON
+  ownerApp: String
+  ownerEmail: String
+  restartable: Boolean
+  schemaVersion: Int
+  tasks: [WorkflowTask]!
+  timeoutPolicy: TimeoutPolicy2
+  timeoutSeconds: Float!
+  updateTime: Float
+  updatedBy: String
+  variables: JSON
+  version: Int
+  workflowStatusListenerEnabled: Boolean
+}
+
+enum TimeoutPolicy2 {
+  TIME_OUT_WF
+  ALERT_ONLY
+}
+
+enum WorkflowTaskType {
+  SIMPLE
+  DYNAMIC
+  FORK_JOIN
+  FORK_JOIN_DYNAMIC
+  DECISION
+  JOIN
+  DO_WHILE
+  SUB_WORKFLOW
+  EVENT
+  WAIT
+  USER_DEFINED
+  HTTP
+  LAMBDA
+  EXCLUSIVE_JOIN
+  TERMINATE
+  KAFKA_PUBLISH
+  JSON_JQ_TRANSFORM
+  SET_VARIABLE
+}
+
+type HealthCheckStatus {
+  healthResults: [Health]
+  healthy: Boolean
+  suppressedHealthResults: [Health]
+}
+
+type Health {
+  details: JSON
+  errorMessage: String
+  healthy: Boolean
+}
+
+type PollData {
+  domain: String
+  lastPollTime: Float
+  queueName: String
+  workerId: String
+}
+
+type EventHandler {
+  actions: [Action]!
+  active: Boolean
+  condition: String
+  event: String!
+  name: String!
+}
+
+type Action {
+  action: Action2
+  completeTask: TaskDetails
+  expandInlineJSON: Boolean
+  failTask: TaskDetails
+  startWorkflow2: StartWorkflow
+}
+
+enum Action2 {
+  START_WORKFLOW
+  COMPLETE_TASK
+  FAIL_TASK
+}
+
+type TaskDetails {
+  output: JSON
+  taskId: String
+  taskRefName: String
+  workflowId: String
+}
+
+type StartWorkflow {
+  correlationId: String
+  input: JSON
+  name: String
+  taskToDomain: JSON
+  version: Int
+}
+
+type Workflow {
+  correlationId: String
+  createTime: Float
+  createdBy: String
+  endTime: Float
+  event: String
+  externalInputPayloadStoragePath: String
+  externalOutputPayloadStoragePath: String
+  failedReferenceTaskNames: [String]
+  input: JSON
+  lastRetriedTime: Float
+  output: JSON
+  ownerApp: String
+  parentWorkflowId: String
+  parentWorkflowTaskId: String
+  priority: Int
+  reRunFromWorkflowId: String
+  reasonForIncompletion: String
+  startTime: Float
+  status: Status3
+  taskToDomain: JSON
+  tasks: [Task]
+  updateTime: Float
+  updatedBy: String
+  variables: JSON
+  workflowDefinition: WorkflowDef
+  workflowId: String
+  workflowName: String
+  workflowVersion: Int
+}
+
+enum Status3 {
+  RUNNING
+  COMPLETED
+  FAILED
+  TIMED_OUT
+  TERMINATED
+  PAUSED
+}
+
+type ExternalStorageLocation {
+  path: String
+  uri: String
+}
+
+type TaskExecLog {
+  createdTime: Float
+  log: String
+  taskId: String
+}
+
+type SearchResultTaskSummary {
+  results: [TaskSummary]
+  totalHits: Float
+}
+
+type TaskSummary {
+  correlationId: String
+  endTime: String
+  executionTime: Float
+  externalInputPayloadStoragePath: String
+  externalOutputPayloadStoragePath: String
+  input: String
+  output: String
+  queueWaitTime: Float
+  reasonForIncompletion: String
+  scheduledTime: String
+  startTime: String
+  status: Status
+  taskDefName: String
+  taskId: String
+  taskType: String
+  updateTime: String
+  workflowId: String
+  workflowPriority: Int
+  workflowType: String
+}
+
+type SearchResultWorkflowSummary {
+  results: [WorkflowSummary]
+  totalHits: Float
+}
+
+type WorkflowSummary {
+  correlationId: String
+  endTime: String
+  event: String
+  executionTime: Float
+  externalInputPayloadStoragePath: String
+  externalOutputPayloadStoragePath: String
+  failedReferenceTaskNames: String
+  input: String
+  inputSize: Float
+  output: String
+  outputSize: Float
+  priority: Int
+  reasonForIncompletion: String
+  startTime: String
+  status: Status3
+  updateTime: String
+  version: Int
+  workflowId: String
+  workflowType: String
+}
+
+type SearchResultWorkflow {
+  results: [Workflow]
+  totalHits: Float
+}
+
+type SearchResultTask {
+  results: [Task]
+  totalHits: Float
+}
+
+type Mutation {
+  """
+  Add a new event handler.
+  
+  Equivalent to POST /api/event
+  """
+  addEventHandler(eventHandlerInput: EventHandlerInput!): JSON
+  """
+  Create a new workflow definition
+  
+  Equivalent to POST /api/metadata/workflow
+  """
+  create(workflowDefInput: WorkflowDefInput!): JSON
+  """
+  Starts the decision task for a workflow
+  
+  Equivalent to PUT /api/workflow/decide/{workflowId}
+  """
+  decide(workflowId: String!): JSON
+  """
+  Removes the workflow from the system
+  
+  Equivalent to DELETE /api/workflow/{workflowId}/remove
+  """
+  delete(archiveWorkflow: Boolean, workflowId: String!): JSON
+  """
+  Lists workflows for the given correlation id list
+  
+  Equivalent to POST /api/workflow/{name}/correlated
+  """
+  getWorkflows1(apiWorkflowCorrelated2Input: [String]!, includeClosed: Boolean, includeTasks: Boolean, name: String!): JSON
+  """
+  Log Task Execution Details
+  
+  Equivalent to POST /api/tasks/{taskId}/log
+  """
+  log(apiTaskLog2Input: String!, taskId: String!): JSON
+  """
+  Pause the list of workflows
+  
+  Equivalent to PUT /api/workflow/bulk/pause
+  """
+  pauseWorkflow(apiWorkflowBulkPauseInput: [String]!): BulkResponse
+  """
+  Pauses the workflow
+  
+  Equivalent to PUT /api/workflow/{workflowId}/pause
+  """
+  pauseWorkflow1(workflowId: String!): JSON
+  """
+  Create new task definition(s)
+  
+  Equivalent to POST /api/metadata/taskdefs
+  """
+  registerTaskDef(apiMetadataTaskdefsInput: [TaskDefInput]!): JSON
+  """
+  Update an existing task
+  
+  Equivalent to PUT /api/metadata/taskdefs
+  """
+  registerTaskDef1(taskDefInput: TaskDefInput!): JSON
+  """
+  Remove an event handler
+  
+  Equivalent to DELETE /api/event/{name}
+  """
+  removeEventHandlerStatus(name: String!): JSON
+  """
+  Requeue pending tasks
+  
+  Equivalent to POST /api/tasks/queue/requeue/{taskType}
+  """
+  requeuePendingTask(taskType: String!): String
+  """
+  Queue up all the running workflows for sweep
+  
+  Equivalent to POST /api/admin/sweep/requeue/{workflowId}
+  """
+  requeueSweep(workflowId: String!): String
+  """
+  Reruns the workflow from a specific task
+  
+  Equivalent to POST /api/workflow/{workflowId}/rerun
+  """
+  rerun(rerunWorkflowRequestInput: RerunWorkflowRequestInput!, workflowId: String!): String
+  """
+  Resets callback times of all non-terminal SIMPLE tasks to 0
+  
+  Equivalent to POST /api/workflow/{workflowId}/resetcallbacks
+  """
+  resetWorkflow(workflowId: String!): JSON
+  """
+  Restart the list of completed workflow
+  
+  Equivalent to POST /api/workflow/bulk/restart
+  """
+  restart(apiWorkflowBulkRestartInput: [String]!, useLatestDefinitions: Boolean): BulkResponse
+  """
+  Restarts a completed workflow
+  
+  Equivalent to POST /api/workflow/{workflowId}/restart
+  """
+  restart1(useLatestDefinitions: Boolean, workflowId: String!): JSON
+  """
+  Resume the list of workflows
+  
+  Equivalent to PUT /api/workflow/bulk/resume
+  """
+  resumeWorkflow(apiWorkflowBulkResumeInput: [String]!): BulkResponse
+  """
+  Resumes the workflow
+  
+  Equivalent to PUT /api/workflow/{workflowId}/resume
+  """
+  resumeWorkflow1(workflowId: String!): JSON
+  """
+  Retry the last failed task for each workflow from the list
+  
+  Equivalent to POST /api/workflow/bulk/retry
+  """
+  retry(apiWorkflowBulkRetryInput: [String]!): BulkResponse
+  """
+  Retries the last failed task
+  
+  Equivalent to POST /api/workflow/{workflowId}/retry
+  """
+  retry1(resumeSubworkflowTasks: Boolean, workflowId: String!): JSON
+  """
+  Skips a given task from a current running workflow
+  
+  Equivalent to PUT /api/workflow/{workflowId}/skiptask/{taskReferenceName}
+  """
+  skipTaskFromWorkflow(skipTaskRequestInput: SkipTaskRequestInput, taskReferenceName: String!, workflowId: String!): JSON
+  """
+  Start a new workflow. Returns the ID of the workflow instance that can be later used for tracking
+  
+  Equivalent to POST /api/workflow/{name}
+  """
+  startWorkflow(apiWorkflow2Input: JSON!, correlationId: String, name: String!, priority: Int, version: Int): String
+  """
+  Start a new workflow with StartWorkflowRequest, which allows task to be executed in a domain
+  
+  Equivalent to POST /api/workflow
+  """
+  startWorkflow1(startWorkflowRequestInput: StartWorkflowRequestInput!): String
+  """
+  Terminate workflows execution
+  
+  Equivalent to POST /api/workflow/bulk/terminate
+  """
+  terminate(apiWorkflowBulkTerminateInput: [String]!, reason: String): BulkResponse
+  """
+  Terminate workflow execution
+  
+  Equivalent to DELETE /api/workflow/{workflowId}
+  """
+  terminate1(reason: String, workflowId: String!): JSON
+  """
+  Remove a task definition
+  
+  Equivalent to DELETE /api/metadata/taskdefs/{tasktype}
+  """
+  unregisterTaskDef(tasktype: String!): JSON
+  """
+  Removes workflow definition. It does not remove workflows associated with the definition.
+  
+  Equivalent to DELETE /api/metadata/workflow/{name}/{version}
+  """
+  unregisterWorkflowDef(name: String!, version: Int!): JSON
+  """
+  Create or update workflow definition
+  
+  Equivalent to PUT /api/metadata/workflow
+  """
+  update(apiMetadataWorkflowInput: [WorkflowDefInput]!): JSON
+  """
+  Publish a message in queue to mark a wait task as completed.
+  
+  Equivalent to POST /api/queue/update/{workflowId}/{taskRefName}/{status}
+  """
+  update1(apiQueueUpdateInput: JSON!, status: Status!, taskRefName: String!, workflowId: String!): JSON
+  """
+  Publish a message in queue to mark a wait task (by taskId) as completed.
+  
+  Equivalent to POST /api/queue/update/{workflowId}/task/{taskId}/{status}
+  """
+  updateByTaskId(apiQueueUpdateTaskInput: JSON!, status: Status!, taskId: String!, workflowId: String!): JSON
+  """
+  Update an existing event handler.
+  
+  Equivalent to PUT /api/event
+  """
+  updateEventHandler(eventHandlerInput: EventHandlerInput!): JSON
+  """
+  Update a task
+  
+  Equivalent to POST /api/tasks
+  """
+  updateTask(taskResultInput: TaskResultInput!): String
+  """
+  Verify and repair workflow consistency
+  
+  Equivalent to POST /api/admin/consistency/verifyAndRepair/{workflowId}
+  """
+  verifyAndRepairWorkflowConsistency(workflowId: String!): String
+}
+
+input EventHandlerInput {
+  actions: [ActionInput]!
+  active: Boolean
+  condition: String
+  event: String!
+  name: String!
+}
+
+input ActionInput {
+  action: Action2
+  completeTask: TaskDetailsInput
+  expandInlineJSON: Boolean
+  failTask: TaskDetailsInput
+  startWorkflow3: StartWorkflowInput
+}
+
+input TaskDetailsInput {
+  output: JSON
+  taskId: String
+  taskRefName: String
+  workflowId: String
+}
+
+input StartWorkflowInput {
+  correlationId: String
+  input: JSON
+  name: String
+  taskToDomain: JSON
+  version: Int
+}
+
+input WorkflowDefInput {
+  createTime: Float
+  createdBy: String
+  description: String
+  failureWorkflow: String
+  inputParameters: [String]
+  name: String!
+  outputParameters: JSON
+  ownerApp: String
+  ownerEmail: String
+  restartable: Boolean
+  schemaVersion: Int
+  tasks: [WorkflowTaskInput]!
+  timeoutPolicy: TimeoutPolicy2
+  timeoutSeconds: Float!
+  updateTime: Float
+  updatedBy: String
+  variables: JSON
+  version: Int
+  workflowStatusListenerEnabled: Boolean
+}
+
+input WorkflowTaskInput {
+  asyncComplete: Boolean
+  caseExpression: String
+  caseValueParam: String
+  decisionCases: JSON
+  defaultCase: [WorkflowTaskInput]
+  defaultExclusiveJoinTask: [String]
+  description: String
+  dynamicForkJoinTasksParam: String
+  dynamicForkTasksInputParamName: String
+  dynamicForkTasksParam: String
+  dynamicTaskNameParam: String
+  forkTasks: [[WorkflowTaskInput]]
+  inputParameters: JSON
+  joinOn: [String]
+  loopCondition: String
+  loopOver: [WorkflowTaskInput]
+  name: String!
+  optional: Boolean
+  rateLimited: Boolean
+  retryCount: Int
+  scriptExpression: String
+  sink: String
+  startDelay: Int
+  subWorkflowParam: SubWorkflowParamsInput
+  taskDefinition: TaskDefInput
+  taskReferenceName: String!
+  type: String
+  workflowTaskType: WorkflowTaskType
+}
+
+input SubWorkflowParamsInput {
+  name: String!
+  taskToDomain: JSON
+  version: Int
+  workflowDefinition: WorkflowDefInput
+}
+
+input TaskDefInput {
+  concurrentExecLimit: Int
+  createTime: Float
+  createdBy: String
+  description: String
+  executionNameSpace: String
+  inputKeys: [String]
+  inputTemplate: JSON
+  isolationGroupId: String
+  name: String!
+  outputKeys: [String]
+  ownerApp: String
+  ownerEmail: String
+  pollTimeoutSeconds: Int
+  rateLimitFrequencyInSeconds: Int
+  rateLimitPerFrequency: Int
+  responseTimeoutSeconds: Float
+  retryCount: Int
+  retryDelaySeconds: Int
+  retryLogic: RetryLogic
+  timeoutPolicy: TimeoutPolicy
+  timeoutSeconds: Float!
+  updateTime: Float
+  updatedBy: String
+}
+
+type BulkResponse {
+  bulkErrorResults: JSON
+  bulkSuccessfulResults: [String]
+}
+
+input RerunWorkflowRequestInput {
+  correlationId: String
+  reRunFromTaskId: String
+  reRunFromWorkflowId: String
+  taskInput: JSON
+  workflowInput: JSON
+}
+
+input SkipTaskRequestInput {
+  taskInput: JSON
+  taskInputMessage: AnyInput
+  taskOutput: JSON
+  taskOutputMessage: AnyInput
+}
+
+input AnyInput {
+  allFields: JSON
+  defaultInstanceForType: AnyInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  typeUrl: String
+  typeUrlBytes: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+  value: ByteStringInput
+}
+
+input DescriptorInput {
+  containingType: DescriptorInput
+  enumTypes: [EnumDescriptorInput]
+  extendable: Boolean
+  extensions: [FieldDescriptorInput]
+  fields: [FieldDescriptorInput]
+  file: FileDescriptorInput
+  fullName: String
+  index: Int
+  name: String
+  nestedTypes: [DescriptorInput]
+  oneofs: [OneofDescriptorInput]
+  options: MessageOptionsInput
+  proto: DescriptorProtoInput
+  realOneofs: [OneofDescriptorInput]
+}
+
+input EnumDescriptorInput {
+  containingType: DescriptorInput
+  file: FileDescriptorInput
+  fullName: String
+  index: Int
+  name: String
+  options: EnumOptionsInput
+  proto: EnumDescriptorProtoInput
+  values: [EnumValueDescriptorInput]
+}
+
+input FileDescriptorInput {
+  dependencies: [FileDescriptorInput]
+  enumTypes: [EnumDescriptorInput]
+  extensions: [FieldDescriptorInput]
+  file: FileDescriptorInput
+  fullName: String
+  messageTypes: [DescriptorInput]
+  name: String
+  options: FileOptionsInput
+  package: String
+  proto: FileDescriptorProtoInput
+  publicDependencies: [FileDescriptorInput]
+  services: [ServiceDescriptorInput]
+  syntax: Syntax2
+}
+
+input FieldDescriptorInput {
+  containingOneof: OneofDescriptorInput
+  containingType: DescriptorInput
+  defaultValue: JSON
+  enumType: EnumDescriptorInput
+  extension: Boolean
+  extensionScope: DescriptorInput
+  file: FileDescriptorInput
+  fullName: String
+  index: Int
+  javaType: JavaType
+  jsonName: String
+  liteJavaType: LiteJavaType
+  liteType: LiteType
+  mapField: Boolean
+  messageType: DescriptorInput
+  name: String
+  number: Int
+  optional: Boolean
+  options: FieldOptionsInput
+  packable: Boolean
+  packed: Boolean
+  proto: FieldDescriptorProtoInput
+  realContainingOneof: OneofDescriptorInput
+  repeated: Boolean
+  required: Boolean
+  type: Type3
+}
+
+input OneofDescriptorInput {
+  containingType: DescriptorInput
+  fieldCount: Int
+  fields: [FieldDescriptorInput]
+  file: FileDescriptorInput
+  fullName: String
+  index: Int
+  name: String
+  options: OneofOptionsInput
+  proto: OneofDescriptorProtoInput
+  synthetic: Boolean
+}
+
+input OneofOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  defaultInstanceForType: OneofOptionsInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input UninterpretedOptionInput {
+  aggregateValue: String
+  aggregateValueBytes: ByteStringInput
+  allFields: JSON
+  defaultInstanceForType: UninterpretedOptionInput
+  descriptorForType: DescriptorInput
+  doubleValue: Float
+  identifierValue: String
+  identifierValueBytes: ByteStringInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  nameCount: Int
+  nameList: [NamePartInput]
+  nameOrBuilderList: [NamePartOrBuilderInput]
+  negativeIntValue: Float
+  parserForType: JSON
+  positiveIntValue: Float
+  serializedSize: Int
+  stringValue: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input ByteStringInput {
+  empty: Boolean
+  validUtf8: Boolean
+}
+
+input NamePartInput {
+  allFields: JSON
+  defaultInstanceForType: NamePartInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  isExtension: Boolean
+  memoizedSerializedSize: Int
+  namePart: String
+  namePartBytes: ByteStringInput
+  parserForType: JSON
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input UnknownFieldSetInput {
+  defaultInstanceForType: UnknownFieldSetInput
+  initialized: Boolean
+  parserForType: JSON
+  serializedSize: Int
+  serializedSizeAsMessageSet: Int
+}
+
+input NamePartOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  isExtension: Boolean
+  namePart: String
+  namePartBytes: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input MessageInput {
+  allFields: JSON
+  defaultInstanceForType: MessageLiteInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  parserForType: JSON
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input MessageLiteInput {
+  defaultInstanceForType: MessageLiteInput
+  initialized: Boolean
+  parserForType: JSON
+  serializedSize: Int
+}
+
+input UninterpretedOptionOrBuilderInput {
+  aggregateValue: String
+  aggregateValueBytes: ByteStringInput
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  doubleValue: Float
+  identifierValue: String
+  identifierValueBytes: ByteStringInput
+  initializationErrorString: String
+  initialized: Boolean
+  nameCount: Int
+  nameList: [NamePartInput]
+  nameOrBuilderList: [NamePartOrBuilderInput]
+  negativeIntValue: Float
+  positiveIntValue: Float
+  stringValue: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input OneofDescriptorProtoInput {
+  allFields: JSON
+  defaultInstanceForType: OneofDescriptorProtoInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  name: String
+  nameBytes: ByteStringInput
+  options: OneofOptionsInput
+  optionsOrBuilder: OneofOptionsOrBuilderInput
+  parserForType: JSON
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input OneofOptionsOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+enum JavaType {
+  INT
+  LONG
+  FLOAT
+  DOUBLE
+  BOOLEAN
+  STRING
+  BYTE_STRING
+  ENUM
+  MESSAGE
+}
+
+enum LiteJavaType {
+  INT
+  LONG
+  FLOAT
+  DOUBLE
+  BOOLEAN
+  STRING
+  BYTE_STRING
+  ENUM
+  MESSAGE
+}
+
+enum LiteType {
+  DOUBLE
+  FLOAT
+  INT64
+  UINT64
+  INT32
+  FIXED64
+  FIXED32
+  BOOL
+  STRING
+  GROUP
+  MESSAGE
+  BYTES
+  UINT32
+  ENUM
+  SFIXED32
+  SFIXED64
+  SINT32
+  SINT64
+}
+
+input FieldOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  ctype: Ctype
+  defaultInstanceForType: FieldOptionsInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  jstype: Jstype
+  lazy: Boolean
+  memoizedSerializedSize: Int
+  packed: Boolean
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+  weak: Boolean
+}
+
+enum Ctype {
+  STRING
+  CORD
+  STRING_PIECE
+}
+
+enum Jstype {
+  JS_NORMAL
+  JS_STRING
+  JS_NUMBER
+}
+
+input FieldDescriptorProtoInput {
+  allFields: JSON
+  defaultInstanceForType: FieldDescriptorProtoInput
+  defaultValue: String
+  defaultValueBytes: ByteStringInput
+  descriptorForType: DescriptorInput
+  extendee: String
+  extendeeBytes: ByteStringInput
+  initializationErrorString: String
+  initialized: Boolean
+  jsonName: String
+  jsonNameBytes: ByteStringInput
+  label: Label
+  memoizedSerializedSize: Int
+  name: String
+  nameBytes: ByteStringInput
+  number: Int
+  oneofIndex: Int
+  options: FieldOptionsInput
+  optionsOrBuilder: FieldOptionsOrBuilderInput
+  parserForType: JSON
+  proto3Optional: Boolean
+  serializedSize: Int
+  type: Type2
+  typeName: String
+  typeNameBytes: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+}
+
+enum Label {
+  LABEL_OPTIONAL
+  LABEL_REQUIRED
+  LABEL_REPEATED
+}
+
+input FieldOptionsOrBuilderInput {
+  allFields: JSON
+  ctype: Ctype
+  defaultInstanceForType: MessageInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  jstype: Jstype
+  lazy: Boolean
+  packed: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+  weak: Boolean
+}
+
+enum Type2 {
+  TYPE_DOUBLE
+  TYPE_FLOAT
+  TYPE_INT64
+  TYPE_UINT64
+  TYPE_INT32
+  TYPE_FIXED64
+  TYPE_FIXED32
+  TYPE_BOOL
+  TYPE_STRING
+  TYPE_GROUP
+  TYPE_MESSAGE
+  TYPE_BYTES
+  TYPE_UINT32
+  TYPE_ENUM
+  TYPE_SFIXED32
+  TYPE_SFIXED64
+  TYPE_SINT32
+  TYPE_SINT64
+}
+
+enum Type3 {
+  DOUBLE
+  FLOAT
+  INT64
+  UINT64
+  INT32
+  FIXED64
+  FIXED32
+  BOOL
+  STRING
+  GROUP
+  MESSAGE
+  BYTES
+  UINT32
+  ENUM
+  SFIXED32
+  SFIXED64
+  SINT32
+  SINT64
+}
+
+input FileOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  ccEnableArenas: Boolean
+  ccGenericServices: Boolean
+  csharpNamespace: String
+  csharpNamespaceBytes: ByteStringInput
+  defaultInstanceForType: FileOptionsInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  goPackage: String
+  goPackageBytes: ByteStringInput
+  initializationErrorString: String
+  initialized: Boolean
+  javaGenerateEqualsAndHash: Boolean
+  javaGenericServices: Boolean
+  javaMultipleFiles: Boolean
+  javaOuterClassname: String
+  javaOuterClassnameBytes: ByteStringInput
+  javaPackage: String
+  javaPackageBytes: ByteStringInput
+  javaStringCheckUtf8: Boolean
+  memoizedSerializedSize: Int
+  objcClassPrefix: String
+  objcClassPrefixBytes: ByteStringInput
+  optimizeFor: OptimizeFor
+  parserForType: JSON
+  phpClassPrefix: String
+  phpClassPrefixBytes: ByteStringInput
+  phpGenericServices: Boolean
+  phpMetadataNamespace: String
+  phpMetadataNamespaceBytes: ByteStringInput
+  phpNamespace: String
+  phpNamespaceBytes: ByteStringInput
+  pyGenericServices: Boolean
+  rubyPackage: String
+  rubyPackageBytes: ByteStringInput
+  serializedSize: Int
+  swiftPrefix: String
+  swiftPrefixBytes: ByteStringInput
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+enum OptimizeFor {
+  SPEED
+  CODE_SIZE
+  LITE_RUNTIME
+}
+
+input FileDescriptorProtoInput {
+  allFields: JSON
+  defaultInstanceForType: FileDescriptorProtoInput
+  dependencyCount: Int
+  dependencyList: DependencyListInput
+  descriptorForType: DescriptorInput
+  enumTypeCount: Int
+  enumTypeList: [EnumDescriptorProtoInput]
+  enumTypeOrBuilderList: [EnumDescriptorProtoOrBuilderInput]
+  extensionCount: Int
+  extensionList: [FieldDescriptorProtoInput]
+  extensionOrBuilderList: [FieldDescriptorProtoOrBuilderInput]
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  messageTypeCount: Int
+  messageTypeList: [DescriptorProtoInput]
+  messageTypeOrBuilderList: [DescriptorProtoOrBuilderInput]
+  name: String
+  nameBytes: ByteStringInput
+  options: FileOptionsInput
+  optionsOrBuilder: FileOptionsOrBuilderInput
+  package: String
+  packageBytes: ByteStringInput
+  parserForType: JSON
+  publicDependencyCount: Int
+  publicDependencyList: [Int]
+  serializedSize: Int
+  serviceCount: Int
+  serviceList: [ServiceDescriptorProtoInput]
+  serviceOrBuilderList: [ServiceDescriptorProtoOrBuilderInput]
+  sourceCodeInfo: SourceCodeInfoInput
+  sourceCodeInfoOrBuilder: SourceCodeInfoOrBuilderInput
+  syntax: String
+  syntaxBytes: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+  weakDependencyCount: Int
+  weakDependencyList: [Int]
+}
+
+input DependencyListInput {
+  empty: Boolean
+}
+
+input EnumDescriptorProtoInput {
+  allFields: JSON
+  defaultInstanceForType: EnumDescriptorProtoInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  name: String
+  nameBytes: ByteStringInput
+  options: EnumOptionsInput
+  optionsOrBuilder: EnumOptionsOrBuilderInput
+  parserForType: JSON
+  reservedNameCount: Int
+  reservedNameList: ReservedNameListInput
+  reservedRangeCount: Int
+  reservedRangeList: [EnumReservedRangeInput]
+  reservedRangeOrBuilderList: [EnumReservedRangeOrBuilderInput]
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+  valueCount: Int
+  valueList: [EnumValueDescriptorProtoInput]
+  valueOrBuilderList: [EnumValueDescriptorProtoOrBuilderInput]
+}
+
+input EnumOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  allowAlias: Boolean
+  defaultInstanceForType: EnumOptionsInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input EnumOptionsOrBuilderInput {
+  allFields: JSON
+  allowAlias: Boolean
+  defaultInstanceForType: MessageInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ReservedNameListInput {
+  empty: Boolean
+}
+
+input EnumReservedRangeInput {
+  allFields: JSON
+  defaultInstanceForType: EnumReservedRangeInput
+  descriptorForType: DescriptorInput
+  end: Int
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  start: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input EnumReservedRangeOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  end: Int
+  initializationErrorString: String
+  initialized: Boolean
+  start: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input EnumValueDescriptorProtoInput {
+  allFields: JSON
+  defaultInstanceForType: EnumValueDescriptorProtoInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  name: String
+  nameBytes: ByteStringInput
+  number: Int
+  options: EnumValueOptionsInput
+  optionsOrBuilder: EnumValueOptionsOrBuilderInput
+  parserForType: JSON
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input EnumValueOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  defaultInstanceForType: EnumValueOptionsInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input EnumValueOptionsOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input EnumValueDescriptorProtoOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  name: String
+  nameBytes: ByteStringInput
+  number: Int
+  options: EnumValueOptionsInput
+  optionsOrBuilder: EnumValueOptionsOrBuilderInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input EnumDescriptorProtoOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  name: String
+  nameBytes: ByteStringInput
+  options: EnumOptionsInput
+  optionsOrBuilder: EnumOptionsOrBuilderInput
+  reservedNameCount: Int
+  reservedNameList: [String]
+  reservedRangeCount: Int
+  reservedRangeList: [EnumReservedRangeInput]
+  reservedRangeOrBuilderList: [EnumReservedRangeOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+  valueCount: Int
+  valueList: [EnumValueDescriptorProtoInput]
+  valueOrBuilderList: [EnumValueDescriptorProtoOrBuilderInput]
+}
+
+input FieldDescriptorProtoOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  defaultValue: String
+  defaultValueBytes: ByteStringInput
+  descriptorForType: DescriptorInput
+  extendee: String
+  extendeeBytes: ByteStringInput
+  initializationErrorString: String
+  initialized: Boolean
+  jsonName: String
+  jsonNameBytes: ByteStringInput
+  label: Label
+  name: String
+  nameBytes: ByteStringInput
+  number: Int
+  oneofIndex: Int
+  options: FieldOptionsInput
+  optionsOrBuilder: FieldOptionsOrBuilderInput
+  proto3Optional: Boolean
+  type: Type2
+  typeName: String
+  typeNameBytes: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input DescriptorProtoInput {
+  allFields: JSON
+  defaultInstanceForType: DescriptorProtoInput
+  descriptorForType: DescriptorInput
+  enumTypeCount: Int
+  enumTypeList: [EnumDescriptorProtoInput]
+  enumTypeOrBuilderList: [EnumDescriptorProtoOrBuilderInput]
+  extensionCount: Int
+  extensionList: [FieldDescriptorProtoInput]
+  extensionOrBuilderList: [FieldDescriptorProtoOrBuilderInput]
+  extensionRangeCount: Int
+  extensionRangeList: [ExtensionRangeInput]
+  extensionRangeOrBuilderList: [ExtensionRangeOrBuilderInput]
+  fieldCount: Int
+  fieldList: [FieldDescriptorProtoInput]
+  fieldOrBuilderList: [FieldDescriptorProtoOrBuilderInput]
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  name: String
+  nameBytes: ByteStringInput
+  nestedTypeCount: Int
+  nestedTypeList: [DescriptorProtoInput]
+  nestedTypeOrBuilderList: [DescriptorProtoOrBuilderInput]
+  oneofDeclCount: Int
+  oneofDeclList: [OneofDescriptorProtoInput]
+  oneofDeclOrBuilderList: [OneofDescriptorProtoOrBuilderInput]
+  options: MessageOptionsInput
+  optionsOrBuilder: MessageOptionsOrBuilderInput
+  parserForType: JSON
+  reservedNameCount: Int
+  reservedNameList: ReservedNameListInput
+  reservedRangeCount: Int
+  reservedRangeList: [ReservedRangeInput]
+  reservedRangeOrBuilderList: [ReservedRangeOrBuilderInput]
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input ExtensionRangeInput {
+  allFields: JSON
+  defaultInstanceForType: ExtensionRangeInput
+  descriptorForType: DescriptorInput
+  end: Int
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  options: ExtensionRangeOptionsInput
+  optionsOrBuilder: ExtensionRangeOptionsOrBuilderInput
+  parserForType: JSON
+  serializedSize: Int
+  start: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input ExtensionRangeOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  defaultInstanceForType: ExtensionRangeOptionsInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ExtensionRangeOptionsOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ExtensionRangeOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  end: Int
+  initializationErrorString: String
+  initialized: Boolean
+  options: ExtensionRangeOptionsInput
+  optionsOrBuilder: ExtensionRangeOptionsOrBuilderInput
+  start: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input DescriptorProtoOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  enumTypeCount: Int
+  enumTypeList: [EnumDescriptorProtoInput]
+  enumTypeOrBuilderList: [EnumDescriptorProtoOrBuilderInput]
+  extensionCount: Int
+  extensionList: [FieldDescriptorProtoInput]
+  extensionOrBuilderList: [FieldDescriptorProtoOrBuilderInput]
+  extensionRangeCount: Int
+  extensionRangeList: [ExtensionRangeInput]
+  extensionRangeOrBuilderList: [ExtensionRangeOrBuilderInput]
+  fieldCount: Int
+  fieldList: [FieldDescriptorProtoInput]
+  fieldOrBuilderList: [FieldDescriptorProtoOrBuilderInput]
+  initializationErrorString: String
+  initialized: Boolean
+  name: String
+  nameBytes: ByteStringInput
+  nestedTypeCount: Int
+  oneofDeclCount: Int
+  oneofDeclList: [OneofDescriptorProtoInput]
+  oneofDeclOrBuilderList: [OneofDescriptorProtoOrBuilderInput]
+  options: MessageOptionsInput
+  optionsOrBuilder: MessageOptionsOrBuilderInput
+  reservedNameCount: Int
+  reservedNameList: [String]
+  reservedRangeCount: Int
+  reservedRangeList: [ReservedRangeInput]
+  reservedRangeOrBuilderList: [ReservedRangeOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input OneofDescriptorProtoOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  name: String
+  nameBytes: ByteStringInput
+  options: OneofOptionsInput
+  optionsOrBuilder: OneofOptionsOrBuilderInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input MessageOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  defaultInstanceForType: MessageOptionsInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  mapEntry: Boolean
+  memoizedSerializedSize: Int
+  messageSetWireFormat: Boolean
+  noStandardDescriptorAccessor: Boolean
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input MessageOptionsOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  mapEntry: Boolean
+  messageSetWireFormat: Boolean
+  noStandardDescriptorAccessor: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ReservedRangeInput {
+  allFields: JSON
+  defaultInstanceForType: ReservedRangeInput
+  descriptorForType: DescriptorInput
+  end: Int
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  start: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input ReservedRangeOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  end: Int
+  initializationErrorString: String
+  initialized: Boolean
+  start: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input FileOptionsOrBuilderInput {
+  allFields: JSON
+  ccEnableArenas: Boolean
+  ccGenericServices: Boolean
+  csharpNamespace: String
+  csharpNamespaceBytes: ByteStringInput
+  defaultInstanceForType: MessageInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  goPackage: String
+  goPackageBytes: ByteStringInput
+  initializationErrorString: String
+  initialized: Boolean
+  javaGenerateEqualsAndHash: Boolean
+  javaGenericServices: Boolean
+  javaMultipleFiles: Boolean
+  javaOuterClassname: String
+  javaOuterClassnameBytes: ByteStringInput
+  javaPackage: String
+  javaPackageBytes: ByteStringInput
+  javaStringCheckUtf8: Boolean
+  objcClassPrefix: String
+  objcClassPrefixBytes: ByteStringInput
+  optimizeFor: OptimizeFor
+  phpClassPrefix: String
+  phpClassPrefixBytes: ByteStringInput
+  phpGenericServices: Boolean
+  phpMetadataNamespace: String
+  phpMetadataNamespaceBytes: ByteStringInput
+  phpNamespace: String
+  phpNamespaceBytes: ByteStringInput
+  pyGenericServices: Boolean
+  rubyPackage: String
+  rubyPackageBytes: ByteStringInput
+  swiftPrefix: String
+  swiftPrefixBytes: ByteStringInput
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ServiceDescriptorProtoInput {
+  allFields: JSON
+  defaultInstanceForType: ServiceDescriptorProtoInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  methodCount: Int
+  methodList: [MethodDescriptorProtoInput]
+  methodOrBuilderList: [MethodDescriptorProtoOrBuilderInput]
+  name: String
+  nameBytes: ByteStringInput
+  options: ServiceOptionsInput
+  optionsOrBuilder: ServiceOptionsOrBuilderInput
+  parserForType: JSON
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input MethodDescriptorProtoInput {
+  allFields: JSON
+  clientStreaming: Boolean
+  defaultInstanceForType: MethodDescriptorProtoInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  inputType: String
+  inputTypeBytes: ByteStringInput
+  memoizedSerializedSize: Int
+  name: String
+  nameBytes: ByteStringInput
+  options: MethodOptionsInput
+  optionsOrBuilder: MethodOptionsOrBuilderInput
+  outputType: String
+  outputTypeBytes: ByteStringInput
+  parserForType: JSON
+  serializedSize: Int
+  serverStreaming: Boolean
+  unknownFields: UnknownFieldSetInput
+}
+
+input MethodOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  defaultInstanceForType: MethodOptionsInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  idempotencyLevel: IdempotencyLevel
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+enum IdempotencyLevel {
+  IDEMPOTENCY_UNKNOWN
+  NO_SIDE_EFFECTS
+  IDEMPOTENT
+}
+
+input MethodOptionsOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  idempotencyLevel: IdempotencyLevel
+  initializationErrorString: String
+  initialized: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input MethodDescriptorProtoOrBuilderInput {
+  allFields: JSON
+  clientStreaming: Boolean
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  inputType: String
+  inputTypeBytes: ByteStringInput
+  name: String
+  nameBytes: ByteStringInput
+  options: MethodOptionsInput
+  optionsOrBuilder: MethodOptionsOrBuilderInput
+  outputType: String
+  outputTypeBytes: ByteStringInput
+  serverStreaming: Boolean
+  unknownFields: UnknownFieldSetInput
+}
+
+input ServiceOptionsInput {
+  allFields: JSON
+  allFieldsRaw: JSON
+  defaultInstanceForType: ServiceOptionsInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ServiceOptionsOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  deprecated: Boolean
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  uninterpretedOptionCount: Int
+  uninterpretedOptionList: [UninterpretedOptionInput]
+  uninterpretedOptionOrBuilderList: [UninterpretedOptionOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ServiceDescriptorProtoOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  methodCount: Int
+  methodList: [MethodDescriptorProtoInput]
+  methodOrBuilderList: [MethodDescriptorProtoOrBuilderInput]
+  name: String
+  nameBytes: ByteStringInput
+  options: ServiceOptionsInput
+  optionsOrBuilder: ServiceOptionsOrBuilderInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input SourceCodeInfoInput {
+  allFields: JSON
+  defaultInstanceForType: SourceCodeInfoInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  locationCount: Int
+  locationList: [LocationInput]
+  locationOrBuilderList: [LocationOrBuilderInput]
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  serializedSize: Int
+  unknownFields: UnknownFieldSetInput
+}
+
+input LocationInput {
+  allFields: JSON
+  defaultInstanceForType: LocationInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  leadingComments: String
+  leadingCommentsBytes: ByteStringInput
+  leadingDetachedCommentsCount: Int
+  leadingDetachedCommentsList: LeadingDetachedCommentsListInput
+  memoizedSerializedSize: Int
+  parserForType: JSON
+  pathCount: Int
+  pathList: [Int]
+  serializedSize: Int
+  spanCount: Int
+  spanList: [Int]
+  trailingComments: String
+  trailingCommentsBytes: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input LeadingDetachedCommentsListInput {
+  empty: Boolean
+}
+
+input LocationOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  leadingComments: String
+  leadingCommentsBytes: ByteStringInput
+  leadingDetachedCommentsCount: Int
+  leadingDetachedCommentsList: [String]
+  pathCount: Int
+  pathList: [Int]
+  spanCount: Int
+  spanList: [Int]
+  trailingComments: String
+  trailingCommentsBytes: ByteStringInput
+  unknownFields: UnknownFieldSetInput
+}
+
+input SourceCodeInfoOrBuilderInput {
+  allFields: JSON
+  defaultInstanceForType: MessageInput
+  descriptorForType: DescriptorInput
+  initializationErrorString: String
+  initialized: Boolean
+  locationCount: Int
+  locationList: [LocationInput]
+  locationOrBuilderList: [LocationOrBuilderInput]
+  unknownFields: UnknownFieldSetInput
+}
+
+input ServiceDescriptorInput {
+  file: FileDescriptorInput
+  fullName: String
+  index: Int
+  methods: [MethodDescriptorInput]
+  name: String
+  options: ServiceOptionsInput
+  proto: ServiceDescriptorProtoInput
+}
+
+input MethodDescriptorInput {
+  clientStreaming: Boolean
+  file: FileDescriptorInput
+  fullName: String
+  index: Int
+  inputType: DescriptorInput
+  name: String
+  options: MethodOptionsInput
+  outputType: DescriptorInput
+  proto: MethodDescriptorProtoInput
+  serverStreaming: Boolean
+  service: ServiceDescriptorInput
+}
+
+enum Syntax2 {
+  UNKNOWN
+  PROTO2
+  PROTO3
+}
+
+input EnumValueDescriptorInput {
+  file: FileDescriptorInput
+  fullName: String
+  index: Int
+  name: String
+  number: Int
+  options: EnumValueOptionsInput
+  proto: EnumValueDescriptorProtoInput
+  type: EnumDescriptorInput
+}
+
+input StartWorkflowRequestInput {
+  correlationId: String
+  externalInputPayloadStoragePath: String
+  input: JSON
+  name: String!
+  priority: Int
+  taskToDomain: JSON
+  version: Int
+  workflowDef: WorkflowDefInput
+}
+
+input TaskResultInput {
+  callbackAfterSeconds: Float
+  externalOutputPayloadStoragePath: String
+  logs: [TaskExecLogInput]
+  outputData: JSON
+  outputMessage: AnyInput
+  reasonForIncompletion: String
+  status: Status2
+  subWorkflowId: String
+  taskId: String!
+  workerId: String
+  workflowInstanceId: String!
+}
+
+input TaskExecLogInput {
+  createdTime: Float
+  log: String
+  taskId: String
+}
+
+enum Status2 {
+  IN_PROGRESS
+  FAILED
+  FAILED_WITH_TERMINAL_ERROR
+  COMPLETED
+}
+
+type Log {
+  id: ID!
+  requestId: ID!
+  code: String!
+  message: String!
+  details: String
+  timeStamp: String!
+}
