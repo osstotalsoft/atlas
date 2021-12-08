@@ -46,11 +46,10 @@ information, set the workflow name and then save it.
 > **Note**: Workflow name is required and must be unique. Keep in mind that the name cannot be changed later compared to the general parameters which are optional and can be changed at any time.
 
 ![Image alt text](react-ui/src/assets/img/readme/CreateWorkflow.gif)
-
+ 
 ##Adding tasks
-To add a new task on the canvas, find the task that meets your requirements between System Tasks, Custom Tasks, and Workflows in the left menu and add it to the workflow using drag and drop. To connect the tasks, drag a line from the out port of one task and drop it to the input port of the other task.
-
-![Image alt text](react-ui/src/assets/img/readme/AddingTasks.gif)
+To add a new task on the canvas, find the task that meets your requirements between System Tasks, Custom Tasks, and Workflows in the left menu and add it to the workflow using drag and drop. To connect the tasks, drag a line from the out port of one task and drop it to the input port of the other task.  
+![Image alt text](react-ui/src/assets/img/readme/AddingTasks.gif) 
 
 ## Configuring task parameters
 
