@@ -39,7 +39,7 @@ This will start up the apps on: <br>
 
 • [https://leasing-atlas.appservice.online](https://leasing-atlas.appservice.online) (QA)
 
-## Creating new workflow
+## Creating a new workflow
 To create a new workflow, click on the Add button, configure your desired tasks sequentiality, fill in the general
 information, set the workflow name and then save it.
 
