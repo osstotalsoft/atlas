@@ -243,6 +243,9 @@ type Query {
     tasktype: String!
   ): [Task]
   log(logId: String!): Log!
+  getWorkflow(name: String, isNew: Boolean): WorkflowDef
+  getExecution(includeTasks: Boolean, workflowId: String!): Workflow
+  getEventHandlersForSink(activeOnly: Boolean, event: String!, limit: Int): [EventHandler]
 }
 
 """The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."""
@@ -654,12 +657,6 @@ type Mutation {
   """
   registerTaskDef(apiMetadataTaskdefsInput: [TaskDefInput]!): JSON
   """
-  Update an existing task
-  
-  Equivalent to PUT /api/metadata/taskdefs
-  """
-  registerTaskDef1(taskDefInput: TaskDefInput!): JSON
-  """
   Remove an event handler
   
   Equivalent to DELETE /api/event/{name}
@@ -732,17 +729,17 @@ type Mutation {
   """
   skipTaskFromWorkflow(skipTaskRequestInput: SkipTaskRequestInput, taskReferenceName: String!, workflowId: String!): JSON
   """
-  Start a new workflow. Returns the ID of the workflow instance that can be later used for tracking
-  
-  Equivalent to POST /api/workflow/{name}
-  """
-  startWorkflow(apiWorkflow2Input: JSON!, correlationId: String, name: String!, priority: Int, version: Int): String
-  """
   Start a new workflow with StartWorkflowRequest, which allows task to be executed in a domain
   
   Equivalent to POST /api/workflow
   """
-  startWorkflow1(startWorkflowRequestInput: StartWorkflowRequestInput!): String
+  startWorkflow(startWorkflowRequestInput: StartWorkflowRequestInput!): String
+  """
+  Start a new workflow. Returns the ID of the workflow instance that can be later used for tracking
+  
+  Equivalent to POST /api/workflow/{name}
+  """
+  startWorkflowByName(apiWorkflow2Input: JSON!, correlationId: String, name: String!, priority: Int, version: Int): String
   """
   Terminate workflows execution
   
@@ -797,6 +794,12 @@ type Mutation {
   Equivalent to POST /api/tasks
   """
   updateTask(taskResultInput: TaskResultInput!): String
+  """
+  Update an existing task
+  
+  Equivalent to PUT /api/metadata/taskdefs
+  """
+  updateTaskDef(taskDefInput: TaskDefInput!): JSON
   """
   Verify and repair workflow consistency
   

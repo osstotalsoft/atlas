@@ -1,0 +1,17 @@
+extend type Action {
+  startWorkflow: StartWorkflow
+}
+
+extend type Query {
+  eventHandler(
+    name: String!
+    activeOnly: Boolean
+    event: String!
+  ): EventHandler
+  eventHandlerList(limit: Int): [EventHandler]
+}
+
+extend type Mutation {
+  createEventHandler(eventHandlerInput: EventHandlerInput!): JSON
+  editEventHandler(eventHandlerInput: EventHandlerInput!): JSON
+}

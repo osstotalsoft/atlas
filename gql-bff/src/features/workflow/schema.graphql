@@ -1,0 +1,12 @@
+extend type WorkflowDef {
+  readOnly: Boolean
+}
+
+extend type Query {
+  getWorkflow(name: String!, version: Int!): WorkflowDef
+  getWorkflowList: [WorkflowDef]
+}
+
+extend type Mutation {
+  createOrUpdateWorkflow(input: WorkflowDefInput!): JSON
+}

@@ -1,0 +1,22 @@
+scalar DateTime
+
+extend type WorkflowDef {
+  historyId: Int
+}
+
+type WorkflowHistory {
+  id: ID!
+  snapshotNumber: Int!
+  timeStamp: DateTime!
+  createdBy: String
+  changedBy: String!
+  definition: WorkflowDef!
+}
+
+type WorkflowHistoryList {
+  values: [WorkflowHistory]
+}
+
+extend type Query {
+  workflowHistory(workflowName: String!, version: Int!): WorkflowHistoryList
+}

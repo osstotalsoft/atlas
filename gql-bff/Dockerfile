@@ -12,13 +12,12 @@ RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
     adduser --system --uid $imageUserId --ingroup $imageUserGroup $imageUser
 
 # Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY --chown=$imageUser:$imageUserGroup package*.json ./
+COPY --chown=$imageUser:$imageUserGroup package.json ./
+COPY yarn.lock ./
 
-RUN npm install
+RUN yarn install
 # If you are building your code for production
-# RUN npm install --only=production
+# RUN yarn install --only=production
 
 # Bundle app source
 COPY --chown=$imageUser:$imageUserGroup . .
@@ -29,4 +28,4 @@ EXPOSE 4000
 
 
 CMD ["/bin/bash", "-c", "test -f /vault/secrets/credentials.vault && echo 'INFO: Vault credentials loaded.' && \
-    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && npm start --config-env production"]
+    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && yarn start --config-env production"]

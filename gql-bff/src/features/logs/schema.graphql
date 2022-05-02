@@ -1,0 +1,12 @@
+type Log {
+  id: ID!
+  requestId: ID!
+  code: String!
+  message: String!
+  details: String
+  timeStamp: String!
+}
+
+extend type Query {
+  log(logId: String!): Log!
+}

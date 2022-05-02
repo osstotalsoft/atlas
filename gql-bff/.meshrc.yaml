@@ -5,9 +5,15 @@ sources:
         source: ${API_URL}
         baseUrl: ${BASE_API_URL}
 additionalTypeDefs:
-  - ./src/mesh/additional-type-defs.graphql
+  - ./src/features/workflow/schema.graphql
+  - ./src/features/task/schema.graphql
+  - ./src/features/workflowHistory/schema.graphql
+  - ./src/features/execution/schema.graphql
+  - ./src/features/logs/schema.graphql
+  - ./src/features/eventHandler/schema.graphql
+
 additionalResolvers:
-  - ./src/mesh/additional-resolvers.js
+  - ./src/startup/additionalResolvers.js
 serve:
   port: 5000
   cors:

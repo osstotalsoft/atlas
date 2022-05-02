@@ -29,7 +29,7 @@ spec:
     {{- end }}
       containers:
         - name: {{ $current.name }}
-          image: "{{ $current.image.repository }}{{ $current.image.name}}:{{ $current.image.tag }}"
+          image: "{{ $current.image.repository }}{{ $current.image.name}}:{{ $current.image.tag | default .Chart.AppVersion  }}"
           imagePullPolicy: {{ $current.image.pullPolicy }}
           ports:
             - name: http
@@ -38,19 +38,15 @@ spec:
           resources:
             {{- toYaml $current.resources | trim | nindent 12 }}
           env:
-          - name: DB_HOST
-            value: {{ $global.db.host | quote }}
-          - name: DB_PORT
-            value: {{ $global.db.port | quote }}
-          - name: DB_DATABASE
-            value: {{ $global.db.database | quote }}
-          - name: DB_USER
-            value: {{ $global.db.user | quote }}
-          - name: DB_PASSWORD
-            value: {{ $global.db.password | quote }}
           {{- range $key, $value := $current.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}
+          {{- end }}
+          {{- if $global.configMapMount.enabled }}
+          volumeMounts:
+          - mountPath: /usr/src/app/{{ $global.configMapMount.mountPath }}
+            name: {{ $global.configMapMount.configMap }}
+            subPath: {{ $global.configMapMount.subPath }}
           {{- end }}
       {{- if $global.imagePullSecrets }}
       imagePullSecrets:
@@ -59,5 +55,11 @@ spec:
       {{- with $current.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $global.configMapMount.enabled }}
+      volumes:
+      - name: {{ $global.configMapMount.configMap }}
+        configMap: 
+          name: {{ $global.configMapMount.configMap }}
       {{- end }}
 {{- end -}}

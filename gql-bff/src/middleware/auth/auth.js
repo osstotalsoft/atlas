@@ -11,21 +11,32 @@ const client = {
 };
 
 const jwtTokenValidation = (ctx, next) => {
-  //skip token validation for playground and introspection query
-  if (
-    ctx.method === "GET" ||
-    ctx.request.body.operationName === "IntrospectionQuery" ||
-    ctx.request.body.query.includes("IntrospectionQuery")
-  ) {
-    return next();
-  } else {
-    const validateJwtToken = jwt({
-      secret: jwksRsa.koaJwtSecret(client),
-      issuer: IDENTITY_AUTHORITY,
-      algorithms: ["RS256"],
-    });
-    return validateJwtToken(ctx, next);
+  const validateJwtToken = jwt({
+    secret: jwksRsa.koaJwtSecret(client),
+    issuer: IDENTITY_AUTHORITY,
+    algorithms: ["RS256"],
+  });
+  return validateJwtToken(ctx, next);
+};
+
+const jwtTokenUserIdentification = async (ctx, next) => {
+  const token = ctx.req.headers.authorization || "";
+  let externalUser = {};
+  if (token) {
+    const decoded = jsonwebtoken.decode(token.replace("Bearer ", ""));
+    if (decoded) {
+      externalUser = {
+        id: decoded.sub,
+        role: decoded.role,
+        tenantId: decoded.tid,
+      };
+    }
   }
+
+  ctx.token = token;
+  ctx.externalUser = externalUser;
+
+  await next();
 };
 
 const validateToken = async (token) => {
@@ -38,4 +49,8 @@ const validateToken = async (token) => {
   return jsonwebtoken.verify(token, key.getPublicKey());
 };
 
-module.exports = { jwtTokenValidation, validateToken };
+module.exports = {
+  jwtTokenValidation,
+  jwtTokenUserIdentification,
+  validateToken,
+};

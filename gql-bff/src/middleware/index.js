@@ -1,7 +1,9 @@
-const validateToken = require('./auth/auth')
-const errorHandlingMiddleware = require('./errorHandling/errorHandlingMiddleware')
+const validateToken = require("./auth/auth");
+const tenantIdentification = require("./tenantIdentification");
+const errorHandlingMiddleware = require("./errorHandling/errorHandlingMiddleware");
 
 module.exports = {
   ...validateToken,
-  errorHandlingMiddleware
-}
+  tenantIdentification,
+  errorHandlingMiddleware,
+};

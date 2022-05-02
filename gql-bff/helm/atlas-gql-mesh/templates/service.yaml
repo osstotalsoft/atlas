@@ -10,6 +10,11 @@ metadata:
     helm.sh/chart: {{ include "Gql.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }} 
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- if $global.gateway.enabled }}
+    api-gateway/oidc.audience: {{ include "Gql.fullname" . }}
+    api-gateway/resource: {{ include "Gql.fullname" . }}
+    api-gateway/secured: "false"
+    {{- end }}
 spec:
   type: {{ $current.service.type }}
   ports:
@@ -21,6 +26,5 @@ spec:
       nodePort: {{ $current.service.nodePort }}
       {{- end }}
   selector:
-    app.kubernetes.io/name: {{ $current.name }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "Gql.selectorLabels" . | nindent 6 }}
 {{- end -}}

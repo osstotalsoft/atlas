@@ -1,0 +1,12 @@
+extend type TaskDef {
+  readOnly: Boolean
+}
+
+extend type Query {
+  getTaskDefinition(tasktype: String!): TaskDef
+  getTaskDefinitionList: [TaskDef]
+}
+
+extend type Mutation {
+  createTask(taskDefsInput: [TaskDefInput]!): JSON
+}

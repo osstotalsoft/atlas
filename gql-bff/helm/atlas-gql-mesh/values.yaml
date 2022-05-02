@@ -5,22 +5,24 @@ global:
   imagePullSecrets:
     - name: "registrykey"
 
-  db:
-    host: "[DB_HOST]"
-    database: "[DB_NAME]"
-    port: 0 # [DB_PORT] here
-    user: "[DB_USER]"
-    password: "[DB_PASSWORD]"
+  configMapMount:
+    enabled: false
+    configMap: ""
+    mountPath: ""
+    subPath: ""
+
+  gateway:
+    enabled: false
 
 gql:
   enabled: true
   replicaCount: 1
   name: "atlas-gql-mesh"
   image:
-    repository: "[ORGANIZATION].azurecr.io/"
+    repository: "tsacr.azurecr.io/"
     pullPolicy: IfNotPresent
     name: atlas-gql-mesh
-    tag: latest # overwrite from pipeline
+    tag: "" # overwrite from pipeline
 
   service:
     type: ClusterIP
@@ -33,12 +35,13 @@ gql:
 
   # Additional environment variables
   env:
-    ELASTIC_SEARCH_LOGGING_LEVEL: '[ELASTIC_SEARCH_LOGGING_LEVEL]'
-    ELASTIC_SEARCH_HOST: '[ELASTIC_SEARCH_HOST]'
-    ELASTIC_SEARCH_API_VERSION: '[ELASTIC_SEARCH_API_VERSION]'
-    IDENTITY_AUTHORITY: '[IDENTITY_AUTHORITY_URL]'
-    APOLLO_LOGGING_LEVEL: '[APOLLO_LOGGING_LEVEL]'
-    API_URL: '[API_URL]'
-    BASE_API_URL: '[BASE_API_URL]'
+    ELASTIC_SEARCH_LOGGING_LEVEL: "[ELASTIC_SEARCH_LOGGING_LEVEL]"
+    ELASTIC_SEARCH_HOST: "[ELASTIC_SEARCH_HOST]"
+    ELASTIC_SEARCH_API_VERSION: "[ELASTIC_SEARCH_API_VERSION]"
+    IDENTITY_AUTHORITY: "[IDENTITY_AUTHORITY_URL]"
+    APOLLO_LOGGING_LEVEL: "[APOLLO_LOGGING_LEVEL]"
+    API_URL: "[API_URL]"
+    BASE_API_URL: "[BASE_API_URL]"
     PORT: "4000"
+    IS_MULTITENANT: "false"
     #
