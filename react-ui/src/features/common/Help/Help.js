@@ -26,7 +26,7 @@ const Help = ({ helpConfig, hasTranslations, icon, iconSize }) => {
     <>
       <IconButton
         size={iconSize}
-        customClass='help'
+        className='help'
         onClick={handleClick}
         color='themeNoBackground'
         aria-owns={open ? 'mouse-over-popover' : undefined}

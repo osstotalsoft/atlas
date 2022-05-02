@@ -8,7 +8,7 @@ import { get } from '@totalsoft/rules-algebra-react'
 import PropTypes from 'prop-types'
 import { Divider, Paper, Grid } from '@material-ui/core'
 import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { emptyString } from 'utils/constants'
+import { emptyObject } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
@@ -16,7 +16,8 @@ import { eventHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpCo
 
 const EventNodeInputParameters = ({ inputParametersLens, onPayloadChange }) => {
   const { t } = useTranslation()
-  const payload = (inputParametersLens?.Payload |> get) || emptyString
+  const payloadLens = process.env.REACT_APP_USE_NBB_MESSAGE === 'true' ? inputParametersLens?.Payload : inputParametersLens
+  const payload = (payloadLens |> get) || emptyObject
   const [localState, setLocalState] = useState(JSON.stringify(payload, null, 4))
   const [annotations, setAnnotations] = useState()
 

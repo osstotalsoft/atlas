@@ -5,10 +5,11 @@ import { useLocation } from 'react-router-dom'
 import menuConfig from 'constants/menuConfig'
 import menuStyle from 'assets/jss/components/menuStyle'
 import MenuItem from './MenuItem'
+import CollapsibleMenuItem from './CollapsibleMenuItem'
 
 const useStyles = makeStyles(menuStyle)
 
-function Menu({ drawerOpen }) {
+function Menu({ drawerOpen, withGradient }) {
   const classes = useStyles()
   const location = useLocation()
 
@@ -20,7 +21,8 @@ function Menu({ drawerOpen }) {
       <nav>
         <List className={classes.menuList}>
           {menuItems.map((menu, key) => {
-            return <MenuItem key={key} menu={menu} drawerOpen={drawerOpen} activeRoute={activeRoute} />
+            const menuItemProps = { key, menu, drawerOpen, activeRoute, withGradient }
+            return menu.children ? <CollapsibleMenuItem {...menuItemProps} /> : <MenuItem {...menuItemProps} />
           })}
         </List>
       </nav>
@@ -29,7 +31,8 @@ function Menu({ drawerOpen }) {
 }
 
 Menu.propTypes = {
-  drawerOpen: PropTypes.bool.isRequired
+  drawerOpen: PropTypes.bool.isRequired,
+  withGradient: PropTypes.bool.isRequired
 }
 
 export default Menu

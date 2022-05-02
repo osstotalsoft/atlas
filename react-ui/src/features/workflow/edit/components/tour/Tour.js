@@ -4,6 +4,7 @@ import ReactTour from 'reactour'
 import dragAndDropTask from 'assets/img/tour/dragAndDropTask.gif'
 import connectNodes from 'assets/img/tour/connectNodes.gif'
 import deleteLink from 'assets/img/tour/deleteLink.gif'
+import boxSelection from 'assets/img/tour/boxSelection.gif'
 import clickOnHelp from 'assets/img/tour/clickOnHelp.gif'
 import generalSettings from 'assets/img/tour/generalSettings.PNG'
 import workflowSettings from 'assets/img/tour/workflowSettingsDialog.PNG'
@@ -94,6 +95,15 @@ const Tour = ({ isOpen, onRequestClose }) => {
       )
     },
     {
+      selector: '',
+      content: (
+        <div>
+          <div>{t('Designer.Tour.BoxSelection')}</div>
+          <img src={boxSelection} />
+        </div>
+      )
+    },
+    {
       selector: '#utilities-bar',
       content: (
         <div>
@@ -103,7 +113,6 @@ const Tour = ({ isOpen, onRequestClose }) => {
             <li>{t('Designer.UtilitiesBar.Redo')}</li>
             <li>{t('Designer.UtilitiesBar.Import')}</li>
             <li>{t('Designer.UtilitiesBar.Export')}</li>
-            <li>{t('Designer.UtilitiesBar.Clone')}</li>
             <li>{t('Designer.UtilitiesBar.Delete')}</li>
             <li>{t('Designer.UtilitiesBar.Execute')}</li>
           </ul>

@@ -5,7 +5,7 @@ export const updateCacheList = (cache, variables, newList) => {
   cache.writeQuery({
     query: EVENT_HANDLER_LIST_QUERY,
     data: {
-      getEventHandlers: newList
+      eventHandlerList: newList
     },
     variables
   })
@@ -19,7 +19,7 @@ export const generateModelForSaving = ({ name, active, event, condition, actions
   actions:
     actions &&
     map(
-      ({ action, expandInlineJSON, completeTask, failTask, startWorkflow2 }) => ({
+      ({ action, expandInlineJSON, completeTask, failTask, startWorkflow }) => ({
         action,
         expandInlineJSON,
         completeTask: completeTask && {
@@ -28,7 +28,7 @@ export const generateModelForSaving = ({ name, active, event, condition, actions
           output: completeTask.output
         },
         failTask: failTask && { workflowId: failTask.workflowId, taskRefName: failTask.taskRefName, output: failTask.output },
-        startWorkflow3: startWorkflow2 && { name: startWorkflow2.name, version: startWorkflow2.version, input: startWorkflow2.input }
+        startWorkflow3: startWorkflow && { name: startWorkflow.name, version: startWorkflow.version, input: startWorkflow.input }
       }),
       actions
     )

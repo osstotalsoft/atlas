@@ -9,16 +9,24 @@ import { DeleteButton, EditButton, Autocomplete, SaveButton, CancelButton } from
 import { actionTypeList, actionType } from '../../../common/constants'
 import { emptyString } from 'utils/constants'
 import { isValid, getErrors } from '@totalsoft/pure-validations-react'
+import ActionHeaderStart from './ActionHeaderStart'
+import ActionHeaderCompleteFail from './ActionHeaderCompleteFail'
 
 const useStyles = makeStyles(styles)
 
 const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCancelEdit, saveDisabled, editInProgress, validation }) => {
   const classes = useStyles()
   const { t } = useTranslation()
-
   const action = actionLens |> get
-
+  const actionName = action?.action
   const editMode = action.editMode
+
+  const actionDetailsLens =
+    actionName === actionType.COMPLETE_TASK
+      ? actionLens.completeTask
+      : actionName === actionType.FAIL_TASK
+      ? actionLens.failTask
+      : actionLens.startWorkflow
 
   const handlePropertyChanged = useCallback(() => {
     set(actionLens.expandInlineJSON, !action?.expandInlineJSON)
@@ -36,7 +44,7 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
       <Tr>
         <Td className={classes.tableContent}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} lg={6}>
+            <Grid item xs={12} sm={6}>
               <Autocomplete
                 fullWidth
                 options={actionTypeList}
@@ -49,7 +57,7 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
                 helperText={getErrors(validation?.action)}
               />
             </Grid>
-            <Grid item xs={12} sm={6} lg={5}>
+            <Grid item xs={12} sm={4}>
               {action.action !== actionType.START_WORKFLOW ? (
                 <FormControlLabel
                   control={<Switch checked={action?.expandInlineJSON || false} onChange={handlePropertyChanged} disabled={!editMode} />}
@@ -57,12 +65,12 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
                 />
               ) : null}
             </Grid>
-            <Grid item container xs={12} sm={6} lg={1} justifyContent='flex-end'>
+            <Grid item container xs={12} sm={2} lg={2} justifyContent='flex-end'>
               {editInProgress ? (
                 <>
                   <SaveButton
                     size={'small'}
-                    fontSize='default'
+                    fontSize='medium'
                     color={'themeNoBackground'}
                     title={t('General.Buttons.Save')}
                     onClick={onSaveAction}
@@ -70,7 +78,7 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
                   />
                   <CancelButton
                     size={'small'}
-                    fontSize='default'
+                    fontSize='medium'
                     title={t('General.Buttons.Cancel')}
                     color={'themeNoBackground'}
                     onClick={onCancelEdit}
@@ -83,6 +91,11 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
                 </>
               )}
             </Grid>
+            {actionName === actionType.START_WORKFLOW ? (
+              <ActionHeaderStart actionDetailsLens={actionDetailsLens} editMode={editMode} />
+            ) : (
+              <ActionHeaderCompleteFail actionDetailsLens={actionDetailsLens} editMode={editMode} />
+            )}
           </Grid>
         </Td>
       </Tr>

@@ -13,6 +13,7 @@ const EventHandlerListFilter = ({ loading, filters, onChangeFilters }) => {
 
   const handleFilterPropertyChange = curry((prop, value) => onChangeFilters(prop, value))
   const handleNameChange = useCallback(onTextBoxChange(handleFilterPropertyChange('name')), [handleFilterPropertyChange]) // eslint-disable-line react-hooks/exhaustive-deps
+  const handleSinkChange = useCallback(onTextBoxChange(handleFilterPropertyChange('event')), [handleFilterPropertyChange]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) {
     return <LoadingFakeText lines={3} />
@@ -29,6 +30,15 @@ const EventHandlerListFilter = ({ loading, filters, onChangeFilters }) => {
               label={t('EventHandler.Name')}
               value={filters.name || emptyString}
               onChange={handleNameChange}
+              debounceBy={200}
+            />
+          </Grid>
+          <Grid item lg={3} xs={12}>
+            <CustomTextField
+              fullWidth
+              label={t('EventHandler.Sink')}
+              value={filters.event || emptyString}
+              onChange={handleSinkChange}
               debounceBy={200}
             />
           </Grid>

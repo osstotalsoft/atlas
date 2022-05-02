@@ -1,6 +1,8 @@
 const styles = () => ({
   container: {
-    maxWidth: 'none !important'
+    maxWidth: 'none !important',
+    borderStyle: 'double',
+    borderRadius: '10px !important'
   }
 })
 

@@ -1,36 +1,43 @@
 import { DefaultPortModel } from '@projectstorm/react-diagrams-defaults'
-import { keys, values } from 'ramda'
+import { includes, keys, values } from 'ramda'
 import { nodeConfig } from './constants/NodeConfig'
 import workflowConfig from './constants/WorkflowConfig'
 
-const getStartNode = links => {
+export const getStartNode = links => {
   const start = nodeConfig.START.type
   const startLink = links.find(x => x.sourcePort.options.type === start)
   return startLink?.sourcePort?.parent
 }
 
-const getEndNode = links => {
+export const getEndNode = links => {
   const end = nodeConfig.END.type
   const lastLink = links.find(x => x.targetPort.options.type === end)
   return lastLink?.targetPort?.parent
 }
-const getLinksArray = (type, node) => {
+
+export const getLinksArray = (type, node) => {
   let linksArray = []
 
   if (node.type === nodeConfig.START.type) {
-    return node.getPorts().out.links
-  } else if (node.type === nodeConfig.END.type) return node.getPorts().in.links
+    if (type === 'in') return []
+    return [Object.values(node.getPorts().out.links)[0]]
+  } else if (node.type === nodeConfig.END.type) {
+    if (type === 'out') return []
+    return [Object.values(node.getPorts().in.links)[0]]
+  }
 
   const inPorts = node.getInPorts()
   const outPorts = node.getOutPorts()
 
-  if (type === 'in') {
+  if (includes(type, ['in', 'all'])) {
     inPorts.forEach(port => {
       keys(port.links).forEach(key => {
         linksArray.push(port.links[key])
       })
     })
-  } else if (type.includes('out')) {
+  }
+
+  if (includes(type, ['out', 'all'])) {
     outPorts.forEach(port => {
       keys(port.links).forEach(key => {
         linksArray.push(port.links[key])
@@ -49,30 +56,57 @@ const handleDecideNode = decideNode => {
     if (branch) {
       let currentNode = branch.targetPort.getNode()
       let inputLinks = getLinksArray('in', currentNode)
-      let outputLink = getLinksArray('out', currentNode)[0]
+      let outputLinks = getLinksArray('out', currentNode)
 
-      while ((inputLinks.length === 1 || currentNode.type === 'join' || currentNode.type === 'fork') && outputLink) {
-        branchArray.push(currentNode.inputs)
-        currentNode = outputLink.targetPort.getNode()
+      while ((inputLinks.length === 1 || currentNode.type === nodeConfig.JOIN.type) && outputLinks.length > 0) {
+        if (currentNode.type === nodeConfig.END.type) {
+          return
+        } else if (currentNode.type === nodeConfig.FORK_JOIN.type) {
+          const { forkNode, joinNode } = handleForkNode(currentNode)
+          branchArray.push(forkNode.inputs)
+          branchArray.push(joinNode.inputs)
+          let outputLink = getLinksArray('out', joinNode)[0]
+          currentNode = outputLink.targetPort.getNode()
 
-        inputLinks = getLinksArray('in', currentNode)
-        outputLink = getLinksArray('out', currentNode)[0]
+          inputLinks = getLinksArray('in', currentNode)
+          outputLinks = getLinksArray('out', currentNode)
+        } else if (currentNode.type === nodeConfig.DECISION.type) {
+          const { decideNode, firstNeutralNode } = handleDecideNode(currentNode)
+          branchArray.push(decideNode.inputs)
+          currentNode = firstNeutralNode
+
+          inputLinks = getLinksArray('in', currentNode)
+          outputLinks = getLinksArray('out', currentNode)
+        } else {
+          branchArray.push(currentNode.inputs)
+          currentNode = outputLinks[0].targetPort.getNode()
+
+          inputLinks = getLinksArray('in', currentNode)
+          outputLinks = getLinksArray('out', currentNode)
+        }
       }
 
       firstNeutralNode = currentNode
     }
 
     const casesValues = keys(decideNode.inputs.decisionCases)
-    const newDecisionCases = { ...decideNode.inputs.decisionCases, [casesValues[index]]: branchArray }
-    const newInputs = { ...decideNode.inputs, decisionCases: newDecisionCases }
-
-    decideNode.inputs = newInputs
+    if (index >= casesValues.length) {
+      const newInputs = { ...decideNode.inputs, hasDefaultCase: undefined, defaultCase: branchArray }
+      decideNode.inputs = newInputs
+    } else {
+      const newDecisionCases = { ...decideNode.inputs.decisionCases, [casesValues[index]]: branchArray }
+      const newInputs = { ...decideNode.inputs, decisionCases: newDecisionCases }
+      decideNode.inputs = newInputs
+    }
   })
 
+  if (decideNode.inputs.hasDefaultCase === false) {
+    decideNode.inputs = { ...decideNode.inputs, hasDefaultCase: undefined, defaultCase: [] }
+  }
   return { decideNode, firstNeutralNode }
 }
 
-export const handleForkNode = forkNode => {
+const handleForkNode = forkNode => {
   let joinNode = null
   let forkTasks = []
   let joinOn = []
@@ -88,6 +122,8 @@ export const handleForkNode = forkNode => {
     while (current) {
       const outputLinks = getLinksArray('out', current)
       switch (current.type) {
+        case nodeConfig.END.type:
+          throw new Error('Please add the corresponding JOIN task!')
         case nodeConfig.JOIN.type:
           joinOn.push(parent.inputs.taskReferenceName)
           joinNode = current
@@ -163,17 +199,9 @@ const parseTaskToJSON = (link, parentNode, tasks) => {
 export const parseDiagramToJSON = engine => {
   const links = engine.model.getLinks()
   let parentNode = getStartNode(links)
-  const endNode = getEndNode(links)
   const { END } = nodeConfig
   let tasks = []
   let finalWorkflow = workflowConfig
-
-  if (!parentNode) {
-    throw new Error('Start node is not connected.')
-  }
-  if (!endNode) {
-    throw new Error('End node is not connected.')
-  }
 
   while (parentNode.type !== END.type) {
     for (let i = 0; i < links.length; i++) {
@@ -181,11 +209,12 @@ export const parseDiagramToJSON = engine => {
       parentNode = parseTaskToJSON(link, parentNode, tasks)
     }
   }
+
   finalWorkflow.tasks = tasks
   return finalWorkflow
 }
 
-export const updateNodeWithDecisionCases = (node, decisionCases) => {
+export const decisionCasesToPorts = (node, decisionCases) => {
   const outPorts = node.getOutPorts()
 
   var i = outPorts.length
@@ -200,6 +229,9 @@ export const updateNodeWithDecisionCases = (node, decisionCases) => {
   decisionCases.forEach(decision => {
     node.addPort(new DefaultPortModel({ in: false, name: decision }))
   })
+  if (node?.inputs?.hasDefaultCase) {
+    node.addPort(new DefaultPortModel({ in: false, name: 'default' }))
+  }
 }
 
 export const getWfInputsRegex = wf => {
@@ -226,7 +258,7 @@ export const getWfInputsRegex = wf => {
 
 export const getTaskInputsRegex = t => {
   let inputParameters = {}
-  if (t.inputKeys) {
+  if (t?.inputKeys) {
     t.inputKeys.forEach(el => {
       inputParameters[el] = '${workflow.input.' + el + '}'
     })

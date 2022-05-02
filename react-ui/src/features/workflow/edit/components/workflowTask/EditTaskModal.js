@@ -9,10 +9,10 @@ import InputParameters from './InputParameters'
 import GeneralSettings from './GeneralSettings'
 import AdvancedSettings from './AdvancedSettings'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
-import { buildWfTaskValidator } from '../../validator'
+import { buildWfTaskValidator } from '../../../common/validator'
 import { useDirtyFieldValidation } from '@totalsoft/pure-validations-react'
 
-const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChange, workflowTasks }) => {
+const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChange, workflowTasks, readOnly }) => {
   const { t } = useTranslation()
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -63,7 +63,7 @@ const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChang
         </Grid>
       </Grid>
       <Box marginTop='20px'>
-        <Button color='primary' size='sm' onClick={handleSave}>
+        <Button color='primary' size='sm' onClick={handleSave} disabled={readOnly}>
           {t('General.Buttons.Save')}
         </Button>
         <Button color='primary' size='sm' onClick={onCancel}>
@@ -80,7 +80,8 @@ EditTaskModal.propTypes = {
   onSave: PropTypes.func.isRequired,
   onPayloadChange: PropTypes.func.isRequired,
   workflowTasks: PropTypes.array.isRequired,
-  dirtyInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
+  dirtyInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  readOnly: PropTypes.bool.isRequired
 }
 
 export default EditTaskModal

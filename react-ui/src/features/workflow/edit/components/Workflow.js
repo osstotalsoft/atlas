@@ -6,17 +6,15 @@ import UtilitiesBar from 'features/designer/components/UtilitiesBar'
 import TrayWidgetList from 'features/designer/components/TrayWidgetList'
 import { WORKFLOW_LIST_QUERY } from 'features/workflow/list/queries/WorkflowListQuery'
 import { TASK_LIST_QUERY } from 'features/task/list/queries/TaskListQuery'
-import { queryLimit } from 'features/common/constants'
 import { tasksConfig } from '../../../designer/constants/TasksConfig'
 import systemTasks from '../../../designer/constants/TrayConfig'
 import { useLazyQuery } from '@apollo/client'
 import { nodeConfig } from '../../../designer/constants/NodeConfig'
-import ExecuteWorkflowModal from 'features/workflow/modals/ExecuteWorkflowModal'
+import ExecuteWorkflowModal from 'features/workflow/common/components/ExecuteWorkflowModal'
 import GeneralSettingsDialog from './modals/GeneralSettingsDialog'
 import { emptyObject } from 'utils/constants'
 import { useStateLens } from '@totalsoft/react-state-lens'
 import { useTranslation } from 'react-i18next'
-import { cloneSelection } from 'features/workflow/common/functions'
 import { get, set } from '@totalsoft/change-tracking-react'
 import { emptyString } from 'utils/constants'
 import { getFileContents } from 'utils/functions'
@@ -26,8 +24,12 @@ import { saveAs } from 'file-saver'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
 import { drawDiagram } from 'features/designer/drawingHandler'
 import { omit } from 'ramda'
+import SideMenu from './sideMenu/SideMenu'
+import PreviewJsonDialog from './modals/PreviewJsonDialog'
+import { defaultFileName } from 'features/workflow/common/constants'
+import workflowConfig from 'features/designer/constants/WorkflowConfig'
 
-const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine, setIsDirty }) => {
+const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty }) => {
   const { t } = useTranslation()
   const showError = useError()
 
@@ -39,16 +41,15 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
 
   const [execDialog, setExecDialog] = useState(false)
   const [settingsDialog, setSettingsDialog] = useState(false)
+  const [previewDialog, setPreviewDialog] = useState(false)
+  const [currentWorkflow, setCurrentWorkflow] = useState(null)
 
   const inputLens = useStateLens(emptyObject)
   const workflow = workflowLens |> get
+  const { engine } = diagram
 
-  const [runWfQuery, { called: wfCalled, loading: loadingWf, data: wfData }] = useLazyQuery(WORKFLOW_LIST_QUERY, {
-    variables: { limit: queryLimit }
-  })
-  const [runTskQuery, { called: tskCalled, loading: loadingTsk, data: tskData }] = useLazyQuery(TASK_LIST_QUERY, {
-    variables: { limit: queryLimit }
-  })
+  const [runWfQuery, { called: wfCalled, loading: loadingWf, data: wfData }] = useLazyQuery(WORKFLOW_LIST_QUERY)
+  const [runTskQuery, { called: tskCalled, loading: loadingTsk, data: tskData }] = useLazyQuery(TASK_LIST_QUERY)
 
   useEffect(() => {
     switch (activeTask) {
@@ -59,10 +60,11 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
         {
           if (!wfCalled) runWfQuery()
           if (wfCalled && loadingWf) return <LoadingFakeText lines={3} />
-          const wflList = wfData?.getAll
+          const wflList = wfData?.getWorkflowList
           const trayList = wflList?.map(wfl => ({
             type: nodeConfig.SUB_WORKFLOW.type,
             name: wfl.name,
+            version: wfl.version,
             color: nodeConfig.SUB_WORKFLOW.color,
             isSystemTask: false,
             workflow: wfl
@@ -73,10 +75,11 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
       case tasksConfig.TASKS: {
         if (!tskCalled) runTskQuery()
         if (tskCalled && loadingTsk) return <LoadingFakeText lines={3} />
-        const tskList = tskData?.getTaskDefs
+        const tskList = tskData?.getTaskDefinitionList
         const trayList = tskList?.map(wfl => ({
           type: nodeConfig.TASK.type,
           name: wfl.name,
+          version: wfl.version,
           color: nodeConfig.TASK.color,
           isSystemTask: false,
           workflow: wfl
@@ -87,7 +90,17 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
       default:
         break
     }
-  }, [activeTask, loadingTsk, loadingWf, runTskQuery, runWfQuery, tskCalled, tskData?.getTaskDefs, wfCalled, wfData?.getAll])
+  }, [
+    activeTask,
+    loadingTsk,
+    loadingWf,
+    runTskQuery,
+    runWfQuery,
+    tskCalled,
+    tskData?.getTaskDefinitionList,
+    wfCalled,
+    wfData?.getWorkflowList
+  ])
 
   const toggleExecDialog = useCallback(() => {
     setExecDialog(current => !current)
@@ -97,21 +110,21 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
     setSettingsDialog(current => !current)
   }, [])
 
+  const togglePreviewDialog = useCallback(() => {
+    const { name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy } = workflow
+    setCurrentWorkflow({ ...parseDiagramToJSON(engine), name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy })
+    setPreviewDialog(current => !current)
+  }, [engine, workflow])
+
   const handleDelete = useCallback(() => {
     const selectedEntities = engine.getModel().getSelectedEntities()
     if (selectedEntities.length > 0) {
       const confirm = window.confirm(t('Designer.DeleteConfirmation'))
-
       if (confirm) {
-        selectedEntities.map(model => model.remove())
-        engine.repaintCanvas()
+        diagram.deleteSelected()
       }
     }
-  }, [engine, t])
-
-  const handleClone = useCallback(() => {
-    cloneSelection(engine, engine.model.getSelectedEntities())
-  }, [engine])
+  }, [diagram, engine, t])
 
   const handleShowSettings = useCallback(() => {
     setInitialSettings(workflow)
@@ -126,13 +139,20 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
   const handleImport = useCallback(
     async file => {
       try {
-        const content = await getFileContents(file)
-        const wf = JSON.parse(content) |> omit(['name', 'createdBy', 'updatedBy'])
-        drawDiagram(wf, engine)
+        if (file) {
+          const content = await getFileContents(file)
+          const wf = JSON.parse(content) |> omit(['name', 'createdBy', 'updatedBy', 'createTime', 'updateTime'])
+          drawDiagram(wf, engine)
 
-        resetWorkflow({ ...wf, createdBy: oidcUser.profile.name, ownerEmail: oidcUser.profile.preferred_username })
+          resetWorkflow({
+            ...wf,
+            description: { description: wf?.description },
+            createdBy: oidcUser.profile.name,
+            ownerEmail: oidcUser.profile.preferred_username
+          })
+        }
       } catch (err) {
-        showError(err)
+        showError(new Error('Invalid Json format. ' + err))
       }
     },
     [engine, oidcUser.profile.name, oidcUser.profile.preferred_username, resetWorkflow, showError]
@@ -145,12 +165,15 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
       const finalObject = { ...jsonObject, name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy }
       const fileContent = JSON.stringify(finalObject, null, 2)
       const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' })
-      const fileName = workflow?.name ? `${workflow?.name}` : 'data'
+      const fileName = workflow?.name ? `${workflow?.name}` : defaultFileName
       saveAs(blob, `${fileName}.json`)
     } catch (err) {
       showError(err)
     }
   }, [engine, showError, workflow])
+
+  const handleUndo = useCallback(() => diagram.undo(), [diagram])
+  const handleRedo = useCallback(() => diagram.redo(), [diagram])
 
   if (loading) {
     return <LoadingFakeText lines={3} />
@@ -165,15 +188,19 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
         onExport={handleExport}
         onExecute={toggleExecDialog}
         onShowSettings={handleShowSettings}
-        onClone={handleClone}
+        onPreviewJson={togglePreviewDialog}
         onDelete={handleDelete}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
       />
       <TrayWidgetList trayItems={trayItems} activeTask={activeTask} setActiveTask={setActiveTask} />
-      <BodyWidget workflow={workflow} engine={engine} setIsDirty={setIsDirty} />
+      <BodyWidget canvasClass={'dataflow-canvas-fullscreen'} workflow={workflow} engine={engine} setIsDirty={setIsDirty} locked={false} />
+      <SideMenu workflow={workflow}></SideMenu>
       <ExecuteWorkflowModal
         open={execDialog}
         toggleExecDialog={toggleExecDialog}
         name={workflow?.name || emptyString}
+        version={workflow?.version || workflowConfig.version}
         inputLens={inputLens}
       />
       <GeneralSettingsDialog
@@ -182,6 +209,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, engine
         onYes={toggleSettingsDialog}
         workflowLens={workflowLens}
       />
+      <PreviewJsonDialog open={previewDialog} onClose={togglePreviewDialog} workflow={currentWorkflow || emptyObject} />
     </>
   )
 }
@@ -191,7 +219,7 @@ Workflow.propTypes = {
   isDirty: PropTypes.bool.isRequired,
   resetWorkflow: PropTypes.func.isRequired,
   isNew: PropTypes.bool.isRequired,
-  engine: PropTypes.object.isRequired,
+  diagram: PropTypes.object.isRequired,
   workflowLens: PropTypes.object.isRequired,
   setIsDirty: PropTypes.func.isRequired
 }

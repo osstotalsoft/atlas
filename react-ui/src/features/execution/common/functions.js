@@ -1,34 +1,21 @@
-import { EXECUTION_LIST_QUERY } from '../list/queries/ExecutionListQuery'
+export const generateFreeText = ({ workflowType, version, workflowId, status }, exact = false) => {
+  let queryArray = new Array()
 
-export const updateCacheList = (cache, newList, totalHits, variables) => {
-  cache.writeQuery({
-    query: EXECUTION_LIST_QUERY,
-    data: {
-      search1: {
-        results: newList,
-        totalHits: totalHits + 1
-      }
-    },
-    variables
-  })
-}
-
-export const generateFreeText = ({ workflowType, workflowId, status }) => {
-  let query = ''
   if (workflowType) {
     let search = ''
     for (let i = 0; i < workflowType.length; i++) {
       search += `[${workflowType[i].toUpperCase()}${workflowType[i].toLowerCase()}]`
     }
-    query = `(workflowType:/.*${search}.*/)`
+    queryArray.push(exact ? `(workflowType:/${search}/)` : `(workflowType:/.*${search}.*/)`)
   }
   if (workflowId) {
-    if (query) query += 'AND'
-    query += `(workflowId:${workflowId.trim()})`
+    queryArray.push(`(workflowId:${workflowId.trim()})`)
+  }
+  if (version) {
+    queryArray.push(`(version:${version})`)
   }
   if (status) {
-    if (query) query += 'AND'
-    query += `(status:${status})`
+    queryArray.push(`(status:${status})`)
   }
-  return query
+  return queryArray.join('AND')
 }

@@ -6,18 +6,19 @@ import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { TASK_QUERY } from '../queries/TaskQuery.js'
 import { TIMEOUT_POLICY_OPTIONS } from '../queries/TimeoutPolicyListQuery'
 import { RETRY_LOGIC_OPTIONS } from '../queries/RetryLogicListQuery'
-import { isDirty } from '@totalsoft/change-tracking'
+import { isDirty, isPropertyDirty } from '@totalsoft/change-tracking'
 import { useRouteMatch, useHistory } from 'react-router'
 import { useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import Task from './Task'
-import { TASK_LIST_QUERY } from '../../list/queries/TaskListQuery'
 import { queryLimit as limit } from '../../../common/constants'
 import { emptyArray } from 'utils/constants'
-import defaultConfiguration from '../../common/defaultTaskConfiguration'
+import defaultConfiguration from '../../common/defaultConfiguration'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
 import { buildValidator } from '../validator'
 import { useDirtyFieldValidation } from '@totalsoft/pure-validations-react'
+import { omit } from 'ramda'
+import { TASK_LIST_QUERY } from '../../list/queries/TaskListQuery'
 
 const TaskContainer = () => {
   const showError = useError()
@@ -34,8 +35,8 @@ const TaskContainer = () => {
 
   const { data, loading } = useQueryWithErrorHandling(TASK_QUERY, {
     variables: { name, isNew, limit },
-    onCompleted: data => {
-      resetTask(data?.getTaskDef)
+    onCompleted: taskData => {
+      resetTask(taskData?.getTaskDefinition)
     }
   })
   const { data: timeoutPoliciesData } = useQueryWithErrorHandling(TIMEOUT_POLICY_OPTIONS)
@@ -52,18 +53,22 @@ const TaskContainer = () => {
       addToast(t('General.SavingSucceeded'), 'success')
       resetValidation()
       resetTask(task)
-      if (isNew) history.push(`/tasks/${task?.name}`)
+      if (isNew || isPropertyDirty('name', dirtyInfo)) history.push(`/tasks/${task?.name}`)
     },
     onError: error => showError(error),
-    refetchQueries: [{ query: TASK_LIST_QUERY, variables: { limit } }]
+    refetchQueries: [{ query: TASK_QUERY, variables: { name, isNew, limit } }, { query: TASK_LIST_QUERY }]
   })
 
   const handleSave = useCallback(() => {
     if (!validate(task)) return
 
     if (isNew)
-      saveTask({ variables: { input: [{ ...task, createTime: new Date().getTime(), ownerEmail: oidcUser.profile.preferred_username }] } })
-    else saveTask({ variables: { input: task } })
+      saveTask({
+        variables: {
+          input: [{ ...omit(['readOnly'], task), createTime: new Date().getTime(), ownerEmail: oidcUser.profile.preferred_username }]
+        }
+      })
+    else saveTask({ variables: { input: omit(['readOnly'], task) } })
   }, [isNew, oidcUser.profile.preferred_username, saveTask, task, validate])
 
   useEffect(() => {

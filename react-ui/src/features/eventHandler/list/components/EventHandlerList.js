@@ -20,10 +20,10 @@ const EventHandlerList = ({ pager, setPager, onRefresh, onDeleteHandler, onEditH
   const { page, pageSize, totalCount } = pager
   const currentPageHandlers = handlerList.slice(page * pageSize, (page + 1) * pageSize)
 
-  const handleRowsPerPageChange = useCallback(pageSize => setPager({ ...defaultPager, pageSize: parseInt(pageSize, 10) }), [setPager])
+  const handleRowsPerPageChange = useCallback(newPageSize => setPager({ ...defaultPager, pageSize: parseInt(newPageSize, 10) }), [setPager])
   const handlePageChange = useCallback(
-    page => {
-      setPager(currentPager => ({ ...currentPager, page }))
+    newPage => {
+      setPager(currentPager => ({ ...currentPager, page: newPage }))
     },
     [setPager]
   )

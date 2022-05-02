@@ -6,9 +6,9 @@ import DeleteButton from '@bit/totalsoft_oss.react-mui.delete-button'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { useTranslation } from 'react-i18next'
-
 function InputParameterItem({ valueLens, param, onRemove }) {
   const { t } = useTranslation()
+  const value = valueLens |> get
 
   return (
     <Grid item container xs={12} md={6} spacing={2}>
@@ -16,10 +16,12 @@ function InputParameterItem({ valueLens, param, onRemove }) {
         <CustomTextField
           fullWidth
           label={param}
-          value={valueLens |> get}
+          value={typeof value === 'object' ? JSON.stringify(value) : value}
           onChange={valueLens |> set |> onTextBoxChange}
           debounceBy={100}
           variant='outlined'
+          multiline
+          maxRows={5}
         />
       </Grid>
       <Grid item xs={2}>

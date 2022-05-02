@@ -1,8 +1,11 @@
 const workflowConfig = {
   name: '',
   description: '',
+  failureWorkflow: null,
   createdBy: '',
+  createTime: 0,
   updatedBy: '',
+  updateTime: 0,
   version: 1,
   tasks: [],
   outputParameters: {},

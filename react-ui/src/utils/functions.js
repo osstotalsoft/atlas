@@ -1,4 +1,4 @@
-import { curry, without, intersection, isEmpty, not, keys } from 'ramda'
+import { curry, without, intersection, isEmpty, not, keys, descend, prop, ascend, sortWith } from 'ramda'
 
 export const extractExactAge = (birthday, referenceDate) => {
   var differenceInMilisecond = Date.parse(referenceDate) || Date.now() - Date.parse(birthday)
@@ -58,7 +58,6 @@ export const isJsonString = str => {
   return true
 }
 
-const matches = require('matches-selector')
 import { allPass, defaultTo, filter, includes, pipe, propOr, toPairs, toUpper, pickBy } from 'ramda'
 import { emptyArray, emptyString } from 'utils/constants'
 
@@ -67,14 +66,8 @@ const includeFunction = ([name, value]) => pipe(getValue(name), toUpper, include
 const makeFilter = keyValues => filter(allPass(keyValues.map(includeFunction)))
 const defaultToEmptyList = defaultTo(emptyArray)
 export const filterList = filters => pipe(defaultToEmptyList, makeFilter(toPairs(pickBy(value => value != null, filters))))
-export const closest = (element, selector, checkYourSelf) => {
-  var parent = checkYourSelf ? element : element.parentNode
 
-  while (parent && parent !== document) {
-    if (matches(parent, selector)) return parent
-    parent = parent.parentNode
-  }
-}
+export const hash = () => Math.random().toString(36).toUpperCase().substr(2, 4)
 
 export const objectReplaceKey = (object, oldKey, newKey) => {
   let newObject = {}
@@ -107,3 +100,14 @@ export const removeEmpty = obj => {
     .filter(([_, v]) => v != null)
     .reduce((acc, [k, v]) => ({ ...acc, [k]: v === Object(v) ? removeEmpty(v) : v }), {})
 }
+
+export const sortBy = curry((field, direction, array) => {
+  switch (direction) {
+    case 'DESC':
+      return sortWith([descend(prop(field))], array)
+    case 'ASC':
+      return sortWith([ascend(prop(field))], array)
+    default:
+      return sortWith([descend(prop(field))], array)
+  }
+})

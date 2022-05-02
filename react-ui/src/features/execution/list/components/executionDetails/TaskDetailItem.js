@@ -26,16 +26,21 @@ const TaskDetailItem = ({ task }) => {
         <Typography>{task?.taskType}</Typography>
       </Td>
       <Td className={classes.tableContent}>
+        <Typography>{`${task?.taskDefName} (${task?.referenceTaskName})`}</Typography>
+      </Td>
+      <Td className={classes.tableContent}>
         {task?.taskType === 'SUB_WORKFLOW' ? (
-          <IconButton size='small' color='themeNoBackground' onClick={handleSubWorkflowClick}>
+          <IconButton
+            size='small'
+            color='themeNoBackground'
+            onClick={handleSubWorkflowClick}
+            tooltip={t('Execution.Buttons.GoToExecution')}
+          >
             <ExitToAppIcon fontSize='small' />
           </IconButton>
         ) : (
           <Typography>{'-'}</Typography>
         )}
-      </Td>
-      <Td className={classes.tableContent}>
-        <Typography>{task?.referenceTaskName}</Typography>
       </Td>
       <Td className={classes.tableContent}>
         <Typography>{t('DATE_FORMAT', { date: { value: task?.startTime, format: 'DD-MM-YYYY HH:mm:ss' } }) || '-'}</Typography>

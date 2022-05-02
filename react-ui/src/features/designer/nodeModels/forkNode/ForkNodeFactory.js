@@ -1,10 +1,10 @@
 import * as React from 'react'
 import ForkNodeWidget from './ForkNodeWidget'
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core'
-import { ForkNodeModel } from './ForkNodeModel'
+import ForkNodeModel from './ForkNodeModel'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 
-export class ForkNodeFactory extends AbstractReactFactory {
+export default class ForkNodeFactory extends AbstractReactFactory {
   constructor() {
     super(nodeConfig.FORK_JOIN.type)
   }

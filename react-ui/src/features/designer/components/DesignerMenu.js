@@ -49,7 +49,7 @@ const DesignerMenu = ({ setActiveTask }) => {
               id={menu.name}
               label={t(menu.text)}
               icon={menu.icon}
-              style={{ minWidth: '60px' }}
+              style={{ minWidth: '30px' }}
               classes={{
                 root: classes.pills,
                 selected: classes.selectedPills

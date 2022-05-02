@@ -58,12 +58,12 @@ const cache = new InMemoryCache({
     },
     Query: {
       fields: {
-        getAll: {
+        getWorkflowList: {
           merge(_existing = [], incoming) {
             return incoming
           }
         },
-        search1: {
+        getExecutionList: {
           merge(_existing = [], incoming) {
             return incoming
           }
@@ -77,7 +77,8 @@ const cache = new InMemoryCache({
       keyFields: ['workflowId']
     },
     ExternalTenant: { keyFields: ['externalId'] },
-    WorkflowDef: { keyFields: ['name'] },
+    EventHandler: { keyFields: ['name'] },
+    WorkflowDef: { keyFields: ['name', 'version', 'historyId'] },
     TaskDef: { keyFields: ['name'] }
   }
 })

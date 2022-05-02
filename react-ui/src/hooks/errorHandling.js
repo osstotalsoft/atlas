@@ -4,8 +4,8 @@ import { useApolloClient, useQuery } from '@apollo/client'
 import { useCallback } from 'react'
 import { emptyFunction } from 'utils/constants'
 import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { match } from 'ramda'
 import { Link } from 'react-router-dom'
+import { match } from 'ramda'
 
 export function useQueryWithErrorHandling(query, { onError = emptyFunction, ...props } = {}) {
   const showError = useError()
@@ -41,7 +41,7 @@ export function useClientQueryWithErrorHandling() {
 
 export const useError = () => {
   const addToast = useToast()
-  const generateErrorMessage = error => `${error.extensions.code} - ${error.message}. Click here to see the complete log`
+  const generateErrorMessage = error => `${error.extensions.code} - ${error.message}`
   const generateSimpleErrorMessage = message => `There is a problem communicating with the server. ${message}`
   const addErrorToast = useCallback(
     message => {

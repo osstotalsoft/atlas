@@ -19,15 +19,15 @@ const TaskList = ({ pager, setPager, taskList, loading, onEditTask, onAddTask, o
   const { t } = useTranslation()
   const { page, pageSize, totalCount } = pager
   const currentPageTasks = taskList.slice(page * pageSize, (page + 1) * pageSize)
-  const handleRowsPerPageChange = useCallback(pageSize => setPager({ ...defaultPager, pageSize: parseInt(pageSize, 10) }), [setPager])
+  const handleRowsPerPageChange = useCallback(newPageSize => setPager({ ...defaultPager, pageSize: parseInt(newPageSize, 10) }), [setPager])
 
   useEffect(() => {
     if (taskList && totalCount !== taskList.length) setPager(currentPager => ({ ...currentPager, totalCount: taskList?.length }))
   }, [setPager, taskList, totalCount])
 
   const handlePageChange = useCallback(
-    page => {
-      setPager(currentPager => ({ ...currentPager, page }))
+    newPage => {
+      setPager(currentPager => ({ ...currentPager, page: newPage }))
     },
     [setPager]
   )

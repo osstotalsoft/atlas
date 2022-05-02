@@ -1,12 +1,6 @@
-const originalElement = global.Element
-global.Element = function () {}
-import { removeEmpty, objectReplaceKey, getFileContents, isJsonString } from 'utils/functions'
+import { removeEmpty, objectReplaceKey, getFileContents, isJsonString, sortBy } from 'utils/functions'
 
 describe('Functions must work as expected', () => {
-  afterAll(() => {
-    global.Element = originalElement
-  })
-
   it('Should clean the object from null values', () => {
     const myObject = { prop1: 'a', prop2: { nested1: null, nested2: { inNested1: 1, inNested2: undefined } } }
     const expected = { prop1: 'a', prop2: { nested2: { inNested1: 1 } } }
@@ -36,5 +30,33 @@ describe('Functions must work as expected', () => {
     expect(isJsonString(isJSON)).toEqual(true)
     expect(isJsonString(notJSON)).toEqual(false)
     expect(isJsonString(alsoNot)).toEqual(false)
+  })
+
+  it('Should sort the array by the given property in the correct direction', () => {
+    //Sort Descending
+    const array = [
+      { name: 'Ana', birthDate: new Date('2020-12-1') },
+      { name: 'Maria', birthDate: new Date('2020-12-3') },
+      { name: 'Paula', birthDate: new Date('2020-12-2') }
+    ]
+
+    const descending = [
+      { name: 'Maria', birthDate: new Date('2020-12-3') },
+      { name: 'Paula', birthDate: new Date('2020-12-2') },
+      { name: 'Ana', birthDate: new Date('2020-12-1') }
+    ]
+    const sortedDescending = sortBy('birthDate', 'DESC', array)
+
+    expect(sortedDescending).toEqual(descending)
+
+    //Sort Ascending
+    const ascending = [
+      { name: 'Ana', birthDate: new Date('2020-12-1') },
+      { name: 'Paula', birthDate: new Date('2020-12-2') },
+      { name: 'Maria', birthDate: new Date('2020-12-3') }
+    ]
+    const sortedAscending = sortBy('birthDate', 'ASC', array)
+
+    expect(sortedAscending).toEqual(ascending)
   })
 })

@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const EVENT_HANDLER_LIST_QUERY = gql`
   query getEventHandlers($limit: Int) {
-    getEventHandlers(limit: $limit) {
+    eventHandlerList(limit: $limit) {
       name
       active
       event
@@ -19,7 +19,7 @@ export const EVENT_HANDLER_LIST_QUERY = gql`
           workflowId
           taskRefName
         }
-        startWorkflow2 {
+        startWorkflow {
           name
           version
           input

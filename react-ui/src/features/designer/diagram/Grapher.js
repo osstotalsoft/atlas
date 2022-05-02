@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import dagreD3 from 'dagre-d3' // TODO: update ths library
+import dagreD3 from 'dagre-d3'
 import PropTypes from 'prop-types'
-import * as d3 from 'd3' // TODO: update ths library
+import * as d3 from 'd3'
 import workflowToGraph from '../workflowToGraph'
-import { Card } from '@material-ui/core'
+import { Card, Grid } from '@material-ui/core'
 import SubGrapher from './SubGrapher'
 import { useTranslation } from 'react-i18next'
 import { CustomDialog } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { emptyObject, emptyString } from 'utils/constants'
 import DiagramTaskModal from './DiagramTaskModal'
 import { executionStatus } from 'features/execution/list/constants/executionStatusList'
+import Legend from './Legend'
 
 const Grapher = ({ workflow, layout }) => {
   const { t } = useTranslation()
@@ -211,7 +212,7 @@ const Grapher = ({ workflow, layout }) => {
     }
   }
 
-  const failedTaskError = workflow => (workflow?.status === executionStatus.FAILED ? workflow?.reasonForIncompletion : emptyString)
+  const failedTaskError = wf => (wf?.status === executionStatus.FAILED ? wf?.reasonForIncompletion : emptyString)
 
   const resetSubFlow = () => {
     setSubflow(<React.Fragment></React.Fragment>)
@@ -226,19 +227,28 @@ const Grapher = ({ workflow, layout }) => {
   return (
     <>
       <Card ref={flowCardRef} style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
-        <div style={{ marginTop: '10px', textAlign: 'center', display: 'inline-block', verticalAlign: 'top' }}>
-          <div style={{ overflowX: 'auto', width: '100%', textAlign: 'center' }}>
+        <Grid container>
+          <Grid item sm={12}>
             {error && <pre style={errorStyle}>{error}</pre>}
-            <div style={{ overflowX: 'auto' /*, float: "left"*/ }}>
-              <div>{workflow.workflowDefinition.description}</div>
-              <div ref={svgContainer}>
-                <svg ref={setSvgRef}>
-                  <g transform='translate(20,20)' />
-                </svg>
+          </Grid>
+          <Grid item sm={10}>
+            <div style={{ marginTop: '10px', textAlign: 'center', verticalAlign: 'top' }}>
+              <div style={{ overflowX: 'auto', width: '100%', textAlign: 'center' }}>
+                <div style={{ overflowX: 'auto' /*, float: "left"*/ }}>
+                  <div>{workflow?.workflowDefinition?.description}</div>
+                  <div ref={svgContainer}>
+                    <svg ref={setSvgRef}>
+                      <g transform='translate(20,20)' />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </Grid>
+          <Grid item sm={2}>
+            <Legend />
+          </Grid>
+        </Grid>
 
         <div style={{ overflowX: 'auto', display: 'inline-block' }}>{subflow}</div>
       </Card>

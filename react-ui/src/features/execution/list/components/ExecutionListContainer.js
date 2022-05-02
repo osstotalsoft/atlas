@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import ExecutionList from './ExecutionList'
 import ExecutionListFilter from './ExecutionListFilter'
 import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
@@ -7,7 +7,7 @@ import { EXECUTION_LIST_QUERY } from '../queries/ExecutionListQuery'
 import { executionsFilter, executionsPager } from 'apollo/cacheKeyFunctions'
 import { defaults } from 'apollo/defaultCacheData'
 import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
-import { emptyArray, emptyObject, emptyString } from 'utils/constants'
+import { emptyArray, emptyObject } from 'utils/constants'
 import { generateFreeText } from '../../common/functions'
 import { useHistory } from 'react-router-dom'
 import { sortStartTimeDesc } from 'features/common/constants'
@@ -19,12 +19,11 @@ const ExecutionListContainer = () => {
   const [pager, setPager] = useApolloLocalStorage(executionsPager)
   const history = useHistory()
   const [filters, setFilters] = useApolloLocalStorage(executionsFilter)
-  const [freeText, setFreeText] = useState(emptyString)
 
   const { loading, data, refetch, startPolling, stopPolling } = useQueryWithErrorHandling(EXECUTION_LIST_QUERY, {
-    variables: { size: pager.pageSize, start: freeText ? 0 : pager.start, freeText, sort: sortStartTimeDesc }
+    variables: { size: pager.pageSize, start: pager.start, freeText: generateFreeText(filters), sort: sortStartTimeDesc }
   })
-  const executionList = data?.search1?.results
+  const executionList = data?.getExecutionList?.results
 
   const handleRowsPerPageChange = useCallback(
     pageSize => setPager({ ...defaultPager, pageSize: parseInt(pageSize, 10), start: pageSize * defaultPager.page }),
@@ -47,20 +46,25 @@ const ExecutionListContainer = () => {
   const handleApplyFilters = useCallback(
     newFilters => {
       setFilters(newFilters)
-      setPager(currentPager => ({ ...currentPager, page: 0 }))
-      setFreeText(generateFreeText(newFilters))
+      setPager(currentPager => ({ ...currentPager, start: 0 }))
     },
     [setFilters, setPager]
   )
 
   const handleResetFilters = useCallback(() => {
     setFilters(emptyObject)
-    setFreeText(emptyString)
   }, [setFilters])
 
+  const handleGoToDefinition = useCallback(
+    (name, version) => {
+      history.push({ pathname: `/workflows/${name}/${version}` })
+    },
+    [history]
+  )
+
   useEffect(() => {
-    if (data?.search1 && pager?.totalCount !== data?.search1?.totalHits)
-      setPager(currentPager => ({ ...currentPager, totalCount: data?.search1?.totalHits }))
+    if (data?.getExecutionList && pager?.totalCount !== data?.getExecutionList?.totalHits)
+      setPager(currentPager => ({ ...currentPager, totalCount: data?.getExecutionList?.totalHits }))
   }, [data, pager?.totalCount, setPager])
 
   useEffect(() => {
@@ -78,8 +82,8 @@ const ExecutionListContainer = () => {
         loading={loading}
         executionList={executionList ?? emptyArray}
         onSeeDetails={handleSeeDetails}
+        onGotoDefinition={handleGoToDefinition}
         pager={pager}
-        setPager={setPager}
         onRowsPerPageChange={handleRowsPerPageChange}
         onPageChange={handlePageChange}
         onRefresh={refetch}

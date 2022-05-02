@@ -45,8 +45,8 @@ const EventNodeAdvancedSettings = ({ inputsLens }) => {
           <CustomTextField
             fullWidth
             label={t('WorkflowTask.Event.Sink')}
-            value={(inputsLens?.inputParameters?.sink |> get) || emptyString}
-            onChange={inputsLens.inputParameters.sink |> set |> onTextBoxChange}
+            value={(inputsLens?.sink |> get) || emptyString}
+            onChange={inputsLens.sink |> set |> onTextBoxChange}
             variant='outlined'
           />
         </Grid>

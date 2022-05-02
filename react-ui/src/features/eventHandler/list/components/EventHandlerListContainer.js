@@ -37,7 +37,7 @@ const EventHandlerListContainer = () => {
 
   const handleChangeFilters = useCallback(
     (prop, value) => {
-      setFilters(current => ({ ...current, [prop]: value })), []
+      setFilters(current => ({ ...current, [prop]: value }))
       setPager(currentPager => ({ ...currentPager, page: 0 }))
     },
     [setFilters]
@@ -69,7 +69,7 @@ const EventHandlerListContainer = () => {
         onDeleteHandler={handleDeleteHandler}
         onEditHandler={handleEditHandler}
         onAddHandler={handleAddHandler}
-        handlerList={filterList(filters)(data?.getEventHandlers)}
+        handlerList={filterList(filters)(data?.eventHandlerList)}
         loading={loading}
       />
     </>

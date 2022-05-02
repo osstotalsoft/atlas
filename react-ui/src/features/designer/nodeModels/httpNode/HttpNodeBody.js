@@ -1,25 +1,42 @@
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-tomorrow'
-import React from 'react'
+import React, { useCallback } from 'react'
 import styles from '../../styles/styles'
 import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import { get, set } from '@totalsoft/react-state-lens'
-import { makeStyles } from '@material-ui/core'
+import { Grid, makeStyles } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
+import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import LocalFloristIcon from '@material-ui/icons/LocalFlorist'
+import beautify from 'js-beautify'
 
 const useStyles = makeStyles(styles)
 
 const HttpNodeBody = ({ httpRequestLens }) => {
   const { t } = useTranslation()
   const classes = useStyles()
+  const body = httpRequestLens?.body |> get
+
+  const handleBeautify = useCallback(() => {
+    set(httpRequestLens?.body, beautify(body))
+  }, [body, httpRequestLens?.body])
 
   return (
     <Table className={classes.table} style={{ height: '100%', minHeight: '200px' }}>
       <Thead>
         <Tr>
-          <Th className={classes.tableHeader}>{t('WorkflowTask.Http.Body')}</Th>
+          <Th className={classes.tableHeader}>
+            <Grid container justifyContent='space-between'>
+              <Grid item>{t('WorkflowTask.Http.Body')}</Grid>
+              <Grid item>
+                <IconButton size='small' color={'themeNoBackground'} tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
+                  <LocalFloristIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -31,7 +48,7 @@ const HttpNodeBody = ({ httpRequestLens }) => {
               theme='tomorrow'
               height='100%'
               fontSize={16}
-              value={httpRequestLens?.body |> get}
+              value={body}
               onChange={httpRequestLens.body |> set}
               wrapEnabled={true}
             />

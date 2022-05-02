@@ -1,10 +1,10 @@
 import * as React from 'react'
 import DynamicForkNodeWidget from './DynamicForkNodeWidget'
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core'
-import { DynamicForkNodeModel } from './DynamicForkNodeModel'
+import DynamicForkNodeModel from './DynamicForkNodeModel'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 
-export class DynamicForkNodeFactory extends AbstractReactFactory {
+export default class DynamicForkNodeFactory extends AbstractReactFactory {
   constructor() {
     super(nodeConfig.FORK_JOIN_DYNAMIC.type)
   }

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const WORKFLOW_LIST_QUERY = gql`
-  query getWorkflowList($limit: Int!) {
-    getAll(limit: $limit) {
+  query getWorkflowList {
+    getWorkflowList {
       name
       version
       description
@@ -10,6 +10,10 @@ export const WORKFLOW_LIST_QUERY = gql`
       timeoutSeconds
       createdBy
       updatedBy
+      createTime
+      updateTime
+      historyId
+      readOnly
     }
   }
 `

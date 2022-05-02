@@ -12,7 +12,7 @@ const ActionDetails = ({ actionLens, disableSave }) => {
       ? actionLens.completeTask
       : action === actionType.FAIL_TASK
       ? actionLens.failTask
-      : actionLens.startWorkflow2
+      : actionLens.startWorkflow
 
   return action === actionType.START_WORKFLOW ? (
     <ActionDetailsStart actionDetailsLens={actionDetailsLens} disableSave={disableSave} />

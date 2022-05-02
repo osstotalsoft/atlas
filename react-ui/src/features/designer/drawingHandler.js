@@ -2,8 +2,8 @@ import { DiagramModel } from '@projectstorm/react-diagrams-core'
 import Workflow2Graph from './workflowToGraph'
 import defaultTo from 'lodash/fp/defaultTo'
 import { isEmpty, toArray } from 'lodash'
-import { StartNodeModel } from './nodeModels/startNode/StartNodeModel'
-import { EndNodeModel } from './nodeModels/endNode/EndNodeModel'
+import StartNodeModel from './nodeModels/startNode/StartNodeModel'
+import EndNodeModel from './nodeModels/endNode/EndNodeModel'
 import { last, values } from 'ramda'
 import { isDefault, nodeConfig } from './constants/NodeConfig'
 
@@ -11,12 +11,14 @@ export const clearDiagram = engine => {
   engine.model = new DiagramModel()
 }
 
-export const drawDiagram = (workflow, engine) => {
+export const drawDiagram = (workflow, engine, locked) => {
   clearDiagram(engine)
   workflow.tasks.map(x => createNode(engine, x))
   linkAllNodes(engine, workflow)
-  appendStartAnd(engine)
+  appendStartAnd(engine, workflow)
+  engine.getModel().setLocked(locked)
 }
+
 const getMatchingTaskRefNode = (engine, taskRefName) => {
   return toArray(engine.model.getNodes()).find(x => x.inputs.taskReferenceName === taskRefName)
 }
@@ -80,7 +82,7 @@ const linkNodes = (node1, node2, whichPort) => {
 export const linkAllNodes = (engine, definition) => {
   const { edges } = getGraphState(definition)
 
-  let fromPortIndex = 0
+  let fromPortIndex = []
   edges.forEach(edge => {
     if (edge.from !== 'START' && edge.to !== 'END') {
       switch (edge.type) {
@@ -98,11 +100,17 @@ export const linkAllNodes = (engine, definition) => {
           break
         }
         case nodeConfig.DECISION.type: {
+          if (!fromPortIndex[edge.from]) {
+            fromPortIndex[edge.from] = 0
+          }
           const fromNode = getMatchingTaskRefNode(engine, edge.from)
           const toNode = getMatchingTaskRefNode(engine, edge.to)
-          let whichPort = fromNode.portsOut[fromPortIndex]
-          if (whichPort == last(fromNode.portsOut)) fromPortIndex = 0
-          else fromPortIndex++
+          let whichPort = fromNode.portsOut[fromPortIndex[edge.from]]
+          if (whichPort == last(fromNode.portsOut)) {
+            fromPortIndex[edge.from] = 0
+          } else {
+            fromPortIndex[edge.from]++
+          }
 
           engine.model.addLink(linkNodes(fromNode, toNode, whichPort))
 
@@ -133,10 +141,15 @@ const getNodeWidth = node => {
 }
 
 const calculatePosition = (engine, branchX, branchY) => {
-  const nodes = engine.model.getNodes()
-  const startPos = { x: 300, y: 300 }
+  const isPopover = engine?.canvas?.className?.includes('dataflow-canvas-popover')
+  const initialX = isPopover ? engine?.canvas?.clientWidth * 0.2 : engine?.canvas?.clientWidth * 0.25
+  const initialY = engine?.canvas?.clientHeight * 0.3
+
+  const startPos = { x: initialX, y: initialY }
   let x = 0
   let y = 0
+
+  const nodes = engine.model.getNodes()
 
   if (isEmpty(nodes)) {
     x = startPos.x
@@ -155,10 +168,11 @@ const calculatePosition = (engine, branchX, branchY) => {
 
   return { x, y }
 }
+
 const calculateNestedPosition = (engine, branchTask, parentNode, k, branchSpread, branchMargin, branchNum, forkDepth) => {
-  let yOffset = branchTask.type === 'FORK_JOIN' ? 25 - k * 11 : 100
-  yOffset = branchTask.type === 'JOIN' ? 25 - (k - 1) * 11 : yOffset
-  yOffset = branchTask.type === nodeConfig.DECISION.type ? 25 - k * 11 : yOffset
+  let yOffset = branchTask?.type === 'FORK_JOIN' ? 25 - k * 11 : 100
+  yOffset = branchTask?.type === 'JOIN' ? 25 - (k - 1) * 11 : yOffset
+  yOffset = branchTask?.type === nodeConfig.DECISION.type ? 25 - k * 11 : yOffset
 
   const branchPosY = parentNode.position.y + yOffset - branchSpread / 2 + ((branchMargin + 50) * branchNum) / forkDepth
   let lastNode = engine.model.getNodes()[engine.model.getNodes().length - 1]
@@ -167,7 +181,7 @@ const calculateNestedPosition = (engine, branchTask, parentNode, k, branchSpread
     lastNode = parentNode
   }
 
-  const branchPosX = lastNode.position.x + 50 + (getNodeWidth(lastNode) + 50)
+  const branchPosX = lastNode.position.x + 70 + (getNodeWidth(lastNode) + 50)
 
   return { branchPosX, branchPosY }
 }
@@ -176,10 +190,13 @@ export const createNode = (engine, task, branchX = null, branchY = null, forkDep
   switch (task.type) {
     case nodeConfig.DECISION.type: {
       const { x, y } = calculatePosition(engine, branchX, branchY)
-      const caseCount = [...values(task.decisionCases)].length + 1
-      const branchMargin = 100
+      const caseCount = [...values(task.decisionCases)].length + 1 + (task?.defaultCase?.length > 0 ? 1 : 0)
+      const branchMargin = 120
       const nodeHeight = 47
       const node = nodeConfig[task.type]?.getInstance(task)
+      if (task?.defaultCase?.length > 0) {
+        node.inputs.defaultCase = task.defaultCase
+      }
       node.setPosition(x, y)
       engine.model.addNode(node)
 
@@ -210,8 +227,8 @@ export const createNode = (engine, task, branchX = null, branchY = null, forkDep
     case nodeConfig.FORK_JOIN.type: {
       const { x, y } = calculatePosition(engine, branchX, branchY)
       const branchCount = task.forkTasks.length
-      const branchMargin = 100
-      const nodeHeight = 100
+      const branchMargin = 120
+      const nodeHeight = 130
 
       const node = nodeConfig[task.type]?.getInstance(task)
       node.setPosition(x, y)
@@ -266,15 +283,32 @@ export const placeEndNode = (engine, x, y) => {
 }
 
 // Appends diagram with Start and End node
-export const appendStartAnd = engine => {
+export const appendStartAnd = (engine, definition) => {
   const firstNode = engine.model.getNodes()[0]
   const lastNode = last(engine.model.getNodes())
 
+  const { edges } = getGraphState(definition)
+  const lastNodes = edges.filter(a => a.to === 'END')
+  let max = 0
+  let lastLinks = []
+  if (lastNodes.length > 0) {
+    lastNodes.forEach(node => {
+      const eNode = getMatchingTaskRefNode(engine, node.from)
+      if (eNode.position.x > max) {
+        max = eNode.position.x
+      }
+      lastLinks.push(eNode)
+    })
+  } else {
+    max = lastNode.position.x
+    lastLinks.push(lastNode)
+  }
+
   const startNode = placeStartNode(engine, firstNode.position.x - 200, firstNode.position.y)
-  const endNode = placeEndNode(engine, lastNode.position.x + getNodeWidth(lastNode) + 170, lastNode.position.y)
+  const endNode = placeEndNode(engine, max + getNodeWidth(lastNode) + 170, lastNode.position.y)
 
   const firstLink = linkNodes(startNode, firstNode)
-  const lastLink = linkNodes(lastNode, endNode)
 
-  engine.model.addAll(startNode, endNode, firstLink, lastLink)
+  engine.model.addAll(startNode, endNode, firstLink, ...lastLinks)
+  lastLinks.forEach(node => engine.model.addAll(linkNodes(node, endNode)))
 }

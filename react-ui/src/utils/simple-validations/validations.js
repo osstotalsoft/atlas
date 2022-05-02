@@ -101,10 +101,12 @@ export const isCnpUnique = (list, personId) =>
       : Success
   })
 
-export const isNameUnique = list =>
-  Validator(function isNameUnique(name) {
+export const areNameAndVersionUnique = list =>
+  Validator(function areNameAndVersionUnique({ name, version }) {
     if (!list) return Success
-    return list |> any(item => item.name === name) ? Failure(ValidationError(i18next.t('Validations.UniqueName'))) : Success
+    return list |> any(item => item.name === name && item.version == version)
+      ? Failure(ValidationError(i18next.t('Validations.UniqueNameAndVersion')))
+      : Success
   })
 
 export const isNameUniqueNoId = (list, ownName) =>

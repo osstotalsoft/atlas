@@ -46,7 +46,8 @@ const InputParameters = ({ inputParametersLens, nodeType, onPayloadChange }) => 
 
 InputParameters.propTypes = {
   inputParametersLens: PropTypes.object.isRequired,
-  nodeType: PropTypes.string.isRequired
+  nodeType: PropTypes.string.isRequired,
+  onPayloadChange: PropTypes.func.isRequired
 }
 
 export default InputParameters

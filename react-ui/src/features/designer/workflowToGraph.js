@@ -3,9 +3,6 @@ import { keys } from 'ramda'
 import { nodeConfig } from './constants/NodeConfig'
 
 class Workflow2Graph {
-  edges: []
-  vertices: []
-
   convert(wfe, meta) {
     this._convert(wfe, meta)
     return { edges: this.edges, vertices: this.vertices, id: wfe.workflowId }
@@ -325,41 +322,43 @@ class Workflow2Graph {
     } else if (t1.type === nodeConfig.DECISION.type) {
       //let caseExecuted = false
       for (let k in t1.decisionCases) {
-        const tasks = t1.decisionCases[k]
+        const decisionTasks = t1.decisionCases[k]
 
-        vertices[t1.taskReferenceName] = {
-          name: t1.name,
-          ref: t1.taskReferenceName,
-          type: t1.type,
-          style: 'fill: #ff0',
-          shape: 'diamond',
-          system: true
-        }
-        tasks.forEach(t => {
-          vertices[t.taskReferenceName] = {
-            name: t.name,
-            ref: t.taskReferenceName,
-            type: t.type,
-            style: '',
-            shape: 'rect'
+        if (decisionTasks.length > 0) {
+          vertices[t1.taskReferenceName] = {
+            name: t1.name,
+            ref: t1.taskReferenceName,
+            type: t1.type,
+            style: 'fill: #ff0',
+            shape: 'diamond',
+            system: true
           }
-        })
+          decisionTasks.forEach(t => {
+            vertices[t.taskReferenceName] = {
+              name: t.name,
+              ref: t.taskReferenceName,
+              type: t.type,
+              style: '',
+              shape: 'rect'
+            }
+          })
 
-        let style = defstyle
-        if (this.executedTasks[tasks[0].taskReferenceName] != null && this.executedTasks[t1.taskReferenceName] != null) {
-          style = executed
-          //caseExecuted = true
+          let style = defstyle
+          if (this.executedTasks[decisionTasks[0].taskReferenceName] != null && this.executedTasks[t1.taskReferenceName] != null) {
+            style = executed
+            //caseExecuted = true
+          }
+
+          nodes.push({
+            type: nodeConfig.DECISION.type,
+            from: t1.taskReferenceName,
+            to: decisionTasks[0].taskReferenceName,
+            label: k,
+            style: style
+          })
+          this.getTaskNodes(vertices, nodes, decisionTasks, forks, subworkflows, isExecuting)
+          this.getNodes(vertices, nodes, decisionTasks[decisionTasks.length - 1], t2, forks, subworkflows, isExecuting)
         }
-
-        nodes.push({
-          type: nodeConfig.DECISION.type,
-          from: t1.taskReferenceName,
-          to: tasks[0].taskReferenceName,
-          label: k,
-          style: style
-        })
-        this.getTaskNodes(vertices, nodes, tasks, forks, subworkflows, isExecuting)
-        this.getNodes(vertices, nodes, tasks[tasks.length - 1], t2, forks, subworkflows, isExecuting)
       }
 
       let tasks = t1.defaultCase

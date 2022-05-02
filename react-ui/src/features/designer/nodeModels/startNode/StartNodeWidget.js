@@ -2,7 +2,7 @@ import * as React from 'react'
 import { PortWidget } from '@projectstorm/react-diagrams'
 import PropTypes from 'prop-types'
 
-export class StartNodeWidget extends React.Component {
+export default class StartNodeWidget extends React.Component {
   render() {
     return (
       <div className='srd-circle-node'>

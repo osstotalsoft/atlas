@@ -1,17 +1,16 @@
-import { DecisionNodeModel } from '../nodeModels/decisionNode/DecisionNodeModel'
-import { EndNodeModel } from '../nodeModels/endNode/EndNodeModel'
-import { LambdaNodeModel } from '../nodeModels/lambdaNode/LambdaNodeModel'
-import { StartNodeModel } from '../nodeModels/startNode/StartNodeModel'
-import { JoinNodeModel } from '../nodeModels/joinNode/JoinNodeModel'
-import { TerminateNodeModel } from '../nodeModels/terminateNode/TerminateNodeModel'
-import { ForkNodeModel } from '../nodeModels/forkNode/ForkNodeModel'
-import { DynamicForkNodeModel } from '../nodeModels/dynamicForkNode/DynamicForkNodeModel'
-import { EventNodeModel } from '../nodeModels/eventNode/EventNodeModel'
-import { HttpNodeModel } from '../nodeModels/httpNode/HttpNodeModel'
+import DecisionNodeModel from '../nodeModels/decisionNode/DecisionNodeModel'
+import EndNodeModel from '../nodeModels/endNode/EndNodeModel'
+import LambdaNodeModel from '../nodeModels/lambdaNode/LambdaNodeModel'
+import StartNodeModel from '../nodeModels/startNode/StartNodeModel'
+import JoinNodeModel from '../nodeModels/joinNode/JoinNodeModel'
+import TerminateNodeModel from '../nodeModels/terminateNode/TerminateNodeModel'
+import ForkNodeModel from '../nodeModels/forkNode/ForkNodeModel'
+import DynamicForkNodeModel from '../nodeModels/dynamicForkNode/DynamicForkNodeModel'
+import EventNodeModel from '../nodeModels/eventNode/EventNodeModel'
+import HttpNodeModel from '../nodeModels/httpNode/HttpNodeModel'
 import { includes } from 'ramda'
-import { SubworkflowNodeModel } from '../nodeModels/subworkflowNode/SubworkflowNodeModel'
-import { theme } from 'utils/theme'
-import { TaskNodeModel } from '../nodeModels/taskNode/TaskNodeModel'
+import SubworkflowNodeModel from '../nodeModels/subworkflowNode/SubworkflowNodeModel'
+import TaskNodeModel from '../nodeModels/taskNode/TaskNodeModel'
 
 export const nodeConfig = {
   START: {
@@ -82,7 +81,7 @@ export const nodeConfig = {
   SUB_WORKFLOW: {
     name: 'SUB_WORKFLOW',
     type: 'SUB_WORKFLOW',
-    color: theme.palette.secondary.main,
+    color: 'rgb(23,165,219)',
     hasParametersTab: true,
     getInstance: task => new SubworkflowNodeModel(task)
   },

@@ -12,6 +12,7 @@ import { emptyObject } from 'utils/constants'
 import { useStateLens, get, set } from '@totalsoft/react-state-lens'
 import { executionStatus } from 'features/workflow/common/constants'
 import GoToExecutionButton from 'features/workflow/common/components/GoToExecutionButton'
+import { isJsonString } from 'utils/functions'
 
 const ExecutionEditRerun = ({ workflow }) => {
   const { t } = useTranslation()
@@ -41,7 +42,7 @@ const ExecutionEditRerun = ({ workflow }) => {
   const [executeWorkflow, { loading }] = useMutation(EXECUTE_WORKFLOW_MUTATION, {
     onCompleted: data => {
       setStatus(executionStatus.EXECUTED)
-      setExecutionId(data?.startWorkflow)
+      setExecutionId(data?.executeWorkflow)
     }
   })
 
@@ -51,24 +52,27 @@ const ExecutionEditRerun = ({ workflow }) => {
   }, [executeWorkflow, localInput, workflow?.workflowName])
 
   const handleChange = curry((key, value) => {
-    set(inputLens, { ...localInput, [key]: value })
+    set(inputLens[key], isJsonString(value) ? JSON.parse(value) : value)
   })
 
   return (
     <Grid container direction='column' spacing={2} style={{ minHeight: '250px', padding: '10px' }}>
       <Paper style={{ padding: '6px' }}>
-        <Grid container alignItems='flex-start' spacing={2}>
+        <Grid container alignItems='flex-start' spacing={3}>
           <Grid item xs={12}>
             <Typography variant='h6'>{t('Execution.EditRerunWorkflow')}</Typography>
           </Grid>
           {keys.map((key, index) => (
-            <Grid item xs={12} md={6} lg={2} key={key}>
+            <Grid item xs={12} md={6} key={key}>
               <CustomTextField
                 label={key}
-                value={values[index]}
+                fullWidth
+                value={typeof values[index] === 'object' ? JSON.stringify(values[index]) : values[index]}
                 debounceBy={200}
                 variant='outlined'
                 onChange={onTextBoxChange(handleChange(key))}
+                multiline
+                maxRows={10}
               />
             </Grid>
           ))}

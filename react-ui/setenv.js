@@ -41,7 +41,7 @@ function updateIndex(scriptName) {
     fs.writeFile(indexPath, result, 'utf8', function (err) {
       if (err) throw err
 
-      var indexHash = crypto.createHash('md5').update(result).digest('hex')
+      var indexHash = crypto.createHash('sha256').update(result).digest('hex')
       updateIndexInServiceWorker(indexHash)
     })
   })
@@ -76,7 +76,7 @@ function deleteOldScript(currentScriptName) {
 // MAIN
 console.log('Setting runtime envoronment..')
 let scriptContents = generateConfigScript()
-let scriptHash = crypto.createHash('md5').update(scriptContents).digest('hex')
+let scriptHash = crypto.createHash('sha256').update(scriptContents).digest('hex')
 let scriptName = `env.${scriptHash}.js`
 
 saveConfigScript(scriptContents, scriptName)

@@ -47,7 +47,8 @@ describe('Switch with internal state should work as expected', () => {
     )
     const toggle = screen.getByRole('checkbox')
     fireEvent.click(toggle)
-    const toggleOn = screen.getByRole('checkbox')
-    //expect(toggleOn).toHaveClass('.MuiSwitch-colorSecondary.Mui-checked') TODO
+    const toggleOn = screen.getByRole('checkbox').parentNode.parentNode
+    expect(toggleOn.classList.contains('MuiSwitch-colorSecondary')).toBe(true)
+    expect(toggleOn.classList.contains('Mui-checked')).toBe(true)
   })
 })

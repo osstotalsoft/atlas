@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { CanvasWidget } from '@projectstorm/react-canvas-core'
-import '../styles/classes.css'
 import { nodeConfig } from '../constants/NodeConfig'
 import { anyPass, both, compose, equals, isNil, prop } from 'ramda'
 import { drawDiagram } from '../drawingHandler'
@@ -13,13 +12,13 @@ const S = {
   `
 }
 
-const BodyWidget = ({ workflow, engine, setIsDirty }) => {
+const BodyWidget = ({ canvasClass, workflow, engine, setIsDirty, locked }) => {
   //create diagram from workflow definition
   useEffect(() => {
     if (workflow && workflow.tasks) {
-      drawDiagram(workflow, engine)
+      drawDiagram(workflow, engine, workflow?.readOnly || locked)
     }
-  }, [engine, workflow])
+  }, [engine, locked, workflow])
 
   const handleOnDrop = useCallback(
     event => {
@@ -43,6 +42,7 @@ const BodyWidget = ({ workflow, engine, setIsDirty }) => {
         const point = engine.getRelativeMousePoint(event)
         node.setPosition(point)
         engine.getModel().addNode(node)
+        engine.fireEvent({ nodes: [node] }, 'nodesAdded')
         engine.repaintCanvas()
       }
     },
@@ -55,14 +55,16 @@ const BodyWidget = ({ workflow, engine, setIsDirty }) => {
 
   return (
     <S.Layer onDrop={handleOnDrop} onDragOver={handleOnDragOver}>
-      <CanvasWidget className='dataflow-canvas' engine={engine} />
+      <CanvasWidget className={canvasClass} engine={engine} />
     </S.Layer>
   )
 }
 BodyWidget.propTypes = {
+  canvasClass: PropTypes.string.isRequired,
   engine: PropTypes.object.isRequired,
   workflow: PropTypes.object.isRequired,
-  setIsDirty: PropTypes.func.isRequired
+  setIsDirty: PropTypes.func,
+  locked: PropTypes.bool.isRequired
 }
 
 export default BodyWidget

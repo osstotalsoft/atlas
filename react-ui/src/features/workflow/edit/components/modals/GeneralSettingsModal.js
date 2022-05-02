@@ -34,12 +34,12 @@ const GeneralSettingsModal = ({ workflowLens }) => {
         <CustomTextField
           fullWidth
           isNumeric
-          label={t('Workflow.TimeoutSeconds')}
+          label={t('Workflow.Version')}
           value={workflow?.timeoutSeconds || 0}
           onChange={workflowLens.timeoutSeconds |> set}
-          customInputProps={{
+          inputProps={{
             decimalScale: 0,
-            thousandSeparator: false,
+            thousandSeparator: true,
             allowNegative: false
           }}
           debounceBy={100}

@@ -19,7 +19,8 @@
     "Settings": "Settings",
     "Executions": "Executions",
     "SystemTasks": "System_Tasks",
-    "EventHandlers": "Event handlers"
+    "EventHandlers": "Event handlers",
+    "Configurations": "Configurations"
   },
   "Tooltips": {
     "Logout": "Logout",
@@ -47,16 +48,32 @@
     "UpdatedBy": "Updated By",
     "TimeoutSeconds": "Timeout seconds",
     "FailureWorkflow": "Failure workflow",
+    "WorkflowNotFound": "The workflow definition can not be found. Most likely it has been deleted. ",
     "WorkflowStatusListenerEnabled": "Workflow status listener enabled",
     "Buttons": {
       "AddWorkflow": "Add workflow",
+      "Clone": "Clone",
+      "Cancel": "Cancel",
       "Execute": "Execute",
       "Executing": "Executing...",
       "GoToExecution": "Go to execution"
     },
     "Dialog": {
+      "CloneWorkflow": "Please type a name for your new workflow",
       "DeleteWorkflow": "Are you sure you want to delete the workflow?",
-      "CancelEdit": "Are you sure you want to cancel the changes?"
+      "CancelEdit": "Are you sure you want to cancel the changes?",
+      "PreviewJson": "Workflow JSON configuration",
+      "ExecuteWorkflowDialogTitle": "Execution input parameters",
+      "ExecuteWorkflowDialogSubtitle": "(Input parameters can take strings or JSON objects as values)"
+    },
+    "SideMenu": {
+      "Tabs": {
+        "Executions": "Executions",
+        "History": "History"
+      }
+    },
+    "Notification": {
+      "ClonedSuccessfully": "The workflow was successfully cloned"
     }
   },
   "WorkflowTask": {
@@ -80,6 +97,7 @@
       "CaseValueParam": "Parameter",
       "CaseExpression": "Expression",
       "AddCaseValue": "Add new case value",
+      "DefaultCase": "Default Case",
       "Buttons": {
         "AddCaseValue": "Add new case value"
       }
@@ -134,6 +152,7 @@
   "Execution": {
     "Executions": "Executions",
     "Name": "Name",
+    "Version": "Version",
     "WorkflowId": "Workflow Id",
     "Status": "Status",
     "StartTime": "Start time",
@@ -153,6 +172,7 @@
     "NoActions": "No action available",
     "Task": {
       "Type": "Task type",
+      "Task": "Task",
       "SubWorkflow": "Sub-workflow",
       "RefName": "Ref name",
       "PollCount": "Poll count",
@@ -162,15 +182,49 @@
       "Tabs": {
         "Summary": "Summary",
         "Json": "Json"
+      },
+      "Legend": {
+        "Scheduled": "Scheduled",
+        "Executed": "The task was executed",
+        "NotExecuted": "The task was not executed ",
+        "InProgress": "The task is executing",
+        "Error": "The task executed with errors"
       }
     },
     "Buttons": {
+      "GoToExecution": "Go to execution",
+      "GoToDefinition": "Go to definition",
       "SeeDetails": "See details",
       "Terminate": "Terminate",
       "Pause": "Pause",
       "Resume": "Resume",
       "Retry": "Retry",
       "Restart": "Restart"
+    },
+    "Notifications": {
+      "Restart": "The execution was Restarted",
+      "Retry": "The execution was set to Retry",
+      "Pause": "The execution was Paused",
+      "Resume": "The execution was Resumed",
+      "Terminate": "The execution was Terminated"
+    }
+  },
+  "WorkflowHistory": {
+    "Version": "Version",
+    "TimeStamp": "TimeStamp",
+    "ChangedBy": "ChangedBy",
+    "Dialog": {
+      "Revert": "Are you sure you want to revert to the definition from {{timeStamp}}?",
+      "Compare": {
+        "OldDefinition": "Old definition",
+        "CurrentDefinition": "Current definition"
+      }
+    },
+    "Buttons": {
+      "Preview": "Preview JSON",
+      "Compare": "Compare to this definition",
+      "Revert": "Revert",
+      "CurrentDefinition": "Current definition"
     }
   },
   "EventHandler": {
@@ -217,7 +271,7 @@
     "Phone": "The value is not a valid phone number",
     "NoSpace": "Can not begin with space",
     "Integer": "The value must be an integer",
-    "UniqueName": "Name must be unique",
+    "UniqueNameAndVersion": "Name and version must be unique",
     "InvalidSink": "Sink must be of type conductor/nats_stream:topic",
     "NameCannotBeNew": "Name cannot be 'new'",
     "Generic": {
@@ -249,13 +303,12 @@
     "UtilitiesBar": {
       "Undo": "Undo",
       "Redo": "Redo",
-      "Clone": "Clone",
+      "PreviewJson": "Preview JSON",
       "Lock": "Lock diagram",
       "Import": "Import from JSON",
       "Export": "Export as JSON",
       "Delete": "Delete selection",
       "Execute": "Execute workflow",
-      "ExecuteWorkflowDialogTitle": "Execution input parameters",
       "GeneralSettings": "General settings"
     },
     "Tour": {
@@ -272,6 +325,7 @@
       "ConnectPort": "Use the port on the right to connect it to a task.",
       "LinkUnfocused": "Make sure the link is unfocused (by clicking outside it) before saving.",
       "DeleteLink": "To delete a link:",
+      "BoxSelection": "To select an entire section use SHIFT and drag",
       "TaskSettings": "Double-click on a task to configure its settings.",
       "Utilities": "Here you can find some actions to help you design and manage your workflow:",
       "WorkflowSettings": "Click here to add the workflow description and some advanced settings.",
@@ -365,6 +419,7 @@
         "Description": "Description of the task.",
         "AddNewParam": "Here, you should define the names of the input parameters that the workflow receives.",
         "NewParamValues": "After that, you can set their values below. For values that should be set by the user at execution, fill in: ${workflow.input.[PARAMETER_NAME]}",
+        "NewParamNote": "NOTE: Input parameters can receive string values or JSON objects.",
         "NewParamValuesHighlight": "${workflow.input.[PARAMETER_NAME]}",
         "Optional": "If a task is optional, its failure is considered harmless for workflow execution and the workflow is allowed to progress in such a scenario.",
         "StartDelay": "Delay the start of the task with a number of seconds.",
@@ -426,6 +481,7 @@
     "Search": "Search",
     "SavingSucceeded": "Saving succeeded!",
     "DeletingSucceeded": "Deleting succeeded!",
+    "RevertSucceeded": "Revert succeeded!",
     "Saving": "Saving...",
     "Buttons": {
       "Add": "Add",
@@ -438,7 +494,8 @@
       "ApplyFilters": "Apply filters",
       "ResetFilters": "Reset filters",
       "True": "True",
-      "False": "False"
+      "False": "False",
+      "Beautify": "Beautify"
     }
   }
 }

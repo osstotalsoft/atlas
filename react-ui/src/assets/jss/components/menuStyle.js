@@ -4,8 +4,8 @@
 
 import styles from 'assets/jss/styles'
 
-const sidebarStyle = theme => {
-  const { defaultFont, menuActiveColor, menuActiveBkColor } = styles(theme)
+const menuStyle = theme => {
+  const { defaultFont, menuActiveColor, menuActiveBkColor, menuActiveBk } = styles(theme)
 
   return {
     menuList: {
@@ -40,6 +40,7 @@ const sidebarStyle = theme => {
       borderRadius: '3px',
       position: 'relative',
       display: 'flex',
+      alignItems: 'center',
       padding: '10px 15px',
       backgroundColor: 'transparent',
       ...defaultFont,
@@ -53,7 +54,7 @@ const sidebarStyle = theme => {
       },
       '&:focus': {
         outline: 'none',
-        backgroundColor: theme.palette.sideMenu.focusBgColor,
+        backgroundColor: props => (props.isSubMenu ? 'transparent' : theme.palette.sideMenu.focusBgColor),
         boxShadow: 'none'
       },
       '&,&:focus': {
@@ -66,7 +67,6 @@ const sidebarStyle = theme => {
       height: '24px',
       float: 'left',
       position: 'inherit',
-      top: '3px',
       textAlign: 'center',
       verticalAlign: 'middle',
       opacity: '0.8'
@@ -83,7 +83,10 @@ const sidebarStyle = theme => {
       display: 'block',
       height: 'auto',
       whiteSpace: 'nowrap',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      width: '100%'
     },
     menuItemTextMini: {
       transform: 'translate3d(-25px, 0, 0)',
@@ -93,10 +96,19 @@ const sidebarStyle = theme => {
     menuActiveColor: {
       '&,&:hover,&:focus': {
         color: menuActiveColor,
-        backgroundColor: menuActiveBkColor
+        background: ({ withGradient }) => (withGradient ? menuActiveBk : menuActiveBkColor)
       }
+    },
+    paddingLeft: {
+      paddingLeft: '18px'
+    },
+    caret: {
+      position: 'relative',
+      float: 'right',
+      transition: 'all 150ms ease-in',
+      verticalAlign: 'middle'
     }
   }
 }
 
-export default sidebarStyle
+export default menuStyle

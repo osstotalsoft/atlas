@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { makeStyles, Paper } from '@material-ui/core'
 import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
 import {
-  DescriptionOutlined,
   CloudDownloadOutlined,
+  CloudUploadOutlined,
   DeleteOutlined,
   Undo,
   Redo,
-  FileCopyOutlined,
+  DescriptionOutlined,
   SettingsOutlined
 } from '@material-ui/icons'
 import PlayCircleIcon from '@material-ui/icons/PlayCircleOutline'
@@ -18,7 +18,7 @@ import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)
 
-const UtilitiesBar = ({ isNew, isDirty, onExecute, onClone, onDelete, onShowSettings, onImport, onExport }) => {
+const UtilitiesBar = ({ isNew, isDirty, onExecute, onPreviewJson, onDelete, onShowSettings, onImport, onExport, onUndo, onRedo }) => {
   const { t } = useTranslation()
   const classes = useStyles()
   const [confirmation, setConfirmation] = useState(true)
@@ -40,28 +40,39 @@ const UtilitiesBar = ({ isNew, isDirty, onExecute, onClone, onDelete, onShowSett
   return (
     <Paper id='utilities-bar' className={classes.utilitiesBar}>
       <Grid container direction='row'>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Undo')}>
+        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Undo')} onClick={onUndo}>
           <Undo />
         </IconButton>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Redo')}>
+        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Redo')} onClick={onRedo}>
           <Redo />
         </IconButton>
-        <IconButton
-          color={'themeNoBackground'}
-          variant='contained'
-          component='label'
-          onClick={handleAskConfirmation}
-          tooltip={t('Designer.UtilitiesBar.Import')}
-          disabled={!isNew}
-        >
-          <DescriptionOutlined />
-          {confirmation && <input type='file' accept='application/txt,application/json' hidden onChange={handleSelectFile} />}
-        </IconButton>
+        <label htmlFor='contained-button-file'>
+          <IconButton
+            color={'themeNoBackground'}
+            variant='contained'
+            component='span'
+            tooltip={t('Designer.UtilitiesBar.Import')}
+            onClick={handleAskConfirmation}
+            disabled={!isNew}
+          >
+            <CloudUploadOutlined />
+          </IconButton>
+          {confirmation && (
+            <input
+              accept='application/txt,application/json'
+              id='contained-button-file'
+              type='file'
+              hidden
+              onChange={handleSelectFile}
+              disabled={!isNew}
+            />
+          )}
+        </label>
         <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Export')} onClick={onExport}>
           <CloudDownloadOutlined />
         </IconButton>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Clone')} onClick={onClone}>
-          <FileCopyOutlined />
+        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.PreviewJson')} onClick={onPreviewJson}>
+          <DescriptionOutlined />
         </IconButton>
         <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Delete')} onClick={onDelete}>
           <DeleteOutlined />
@@ -86,11 +97,13 @@ UtilitiesBar.propTypes = {
   isNew: PropTypes.bool.isRequired,
   isDirty: PropTypes.bool.isRequired,
   onExecute: PropTypes.func.isRequired,
-  onClone: PropTypes.func.isRequired,
+  onPreviewJson: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onShowSettings: PropTypes.func.isRequired,
   onImport: PropTypes.func.isRequired,
-  onExport: PropTypes.func.isRequired
+  onExport: PropTypes.func.isRequired,
+  onUndo: PropTypes.func.isRequired,
+  onRedo: PropTypes.func.isRequired
 }
 
 export default UtilitiesBar

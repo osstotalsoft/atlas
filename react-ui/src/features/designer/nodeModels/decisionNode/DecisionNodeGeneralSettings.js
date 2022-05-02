@@ -1,14 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
+import SwitchParameterOrExpression from './SwitchParameterOrExpression'
 import { Grid, Typography, makeStyles } from '@material-ui/core'
 import decisionNodeStyle from './decisionNodeStyle'
 import { useTranslation } from 'react-i18next'
 import { Divider } from '@material-ui/core'
 import DecisionCasesForm from './DecisionCasesForm'
 import DecisionLogicForm from './DecisionLogicForm'
-import { get, over } from '@totalsoft/rules-algebra-react'
-import { dissoc } from 'ramda'
+import { get } from '@totalsoft/rules-algebra-react'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { decisionHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
@@ -19,36 +18,24 @@ const DecisionNodeGeneralSettings = ({ inputsLens }) => {
   const classes = useStyles()
 
   const inputs = inputsLens |> get
+
   const [toggle, setToggle] = useState(inputs?.caseExpression ? true : false)
   const { t } = useTranslation()
-
-  const handleToggleChange = useCallback(
-    value => {
-      setToggle(value)
-      if (value) {
-        over(inputsLens, dissoc('caseValueParam'))
-        delete inputsLens.caseValueParam
-      } else {
-        over(inputsLens, dissoc('caseExpression'))
-      }
-    },
-    [inputsLens]
-  )
 
   return (
     <Grid container alignItems='flex-start' spacing={2}>
       <Grid item container spacing={2} xs={12} md={6}>
         <Grid item container xs={12} spacing={2} justifyContent='center' alignItems='center' className={classes.generalSettingsContainer}>
-          <Grid item xs={4} md={3}>
+          <Grid item xs={3}>
             <Typography variant='subtitle2'>{t('WorkflowTask.Decision.CaseValueParam')}</Typography>
           </Grid>
-          <Grid item xs={4} md={2} className={classes.centeredSwitch}>
-            <SwitchWithInternalState checked={toggle} onChange={handleToggleChange} />
+          <Grid item xs={3} className={classes.centeredSwitch}>
+            <SwitchParameterOrExpression toggle={toggle} setToggle={setToggle} inputsLens={inputsLens} />
           </Grid>
-          <Grid item xs={4} md={3}>
+          <Grid item xs={3}>
             <Typography variant='subtitle2'>{t('WorkflowTask.Decision.CaseExpression')}</Typography>
           </Grid>
-          <Grid item>
+          <Grid item xs={3}>
             <Help icon={<CustomHelpIcon />} helpConfig={decisionHelpConfig.PARAMETER_OR_EXPRESSION} hasTranslations={true} />
           </Grid>
         </Grid>

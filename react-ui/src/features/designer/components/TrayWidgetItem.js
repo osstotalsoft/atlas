@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import '../styles/classes.css'
 import { Grid, makeStyles } from '@material-ui/core'
 import trayItemStyles from '../styles/trayItemStyles'
-import { emptyString } from 'utils/constants'
 import Help from 'features/common/Help/Help'
+import PresentationDiagramButton from 'features/common/components/PresentationDiagramButton'
 
 const S = {
   Tray: styled.div`
@@ -44,13 +44,24 @@ const TrayWidgetItem = ({ item }) => {
   )
 
   return (
-    <S.Tray id={item.name} color={item?.color} draggable={true} onDragStart={handleOnDragStart}>
-      <Grid container spacing={1} justifyContent={item.isSystemTask ? 'space-between' : 'flex-start'} alignItems='center'>
-        <Grid item>
-          <div className={classes[`${item.type}`]}>{item.isSystemTask ? item.name.substring(0, 1).toUpperCase() : emptyString}</div>
+    <S.Tray id={item?.name} color={item?.color} draggable={true} onDragStart={handleOnDragStart}>
+      <Grid container spacing={2} justifyContent={'space-between'} alignItems='center'>
+        <Grid item xs={2}>
+          <div className={classes[`${item?.type}`]}>{item?.name.substring(0, 1).toUpperCase()}</div>
         </Grid>
-        <Grid item>{item.name}</Grid>
-        <Grid item>{item.helpConfig && <Help iconSize='small' helpConfig={item.helpConfig} hasTranslations={true} />}</Grid>
+        <Grid item xs={8}>
+          {item?.name}
+        </Grid>
+        {item?.helpConfig && (
+          <Grid item xs={2}>
+            <Help iconSize='small' helpConfig={item?.helpConfig} hasTranslations={true} />
+          </Grid>
+        )}
+        {item?.type === 'SUB_WORKFLOW' && (
+          <Grid item xs={2}>
+            <PresentationDiagramButton subworkflowName={item?.name} subworkflowVersion={item?.version} iconSize={'small'} />
+          </Grid>
+        )}
       </Grid>
     </S.Tray>
   )

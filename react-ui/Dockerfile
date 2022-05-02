@@ -2,18 +2,19 @@
 FROM node:14 as builder
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
+COPY yarn.lock ./
 COPY .npmrc ./
-RUN npm install
+RUN yarn install
 
 ARG REACT_APP_VERSION=0.0.0.0
 ENV REACT_APP_VERSION=${REACT_APP_VERSION}
 
 COPY . ./
-RUN npm run build
+RUN yarn run build
 
 # production environment
-FROM node:14
+FROM node:14-slim
 
 ARG imageUser=appuser
 ARG imageUserGroup=appgroup
@@ -26,7 +27,7 @@ RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
 COPY --chown=$imageUser:$imageUserGroup --from=builder /app/build ./build
 COPY --chown=$imageUser:$imageUserGroup --from=builder /app/setenv.js ./setenv.js
 
-RUN npm install -g serve@6
+RUN yarn global add serve@6
 
 USER $imageUser
 

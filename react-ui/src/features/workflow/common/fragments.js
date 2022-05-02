@@ -1,11 +1,32 @@
 import { gql } from '@apollo/client'
 
 const Fragments = {
+  partialWorkflowDef: gql`
+    fragment partialWorkflowDef on WorkflowDef {
+      name
+      version
+      historyId
+      description
+      createdBy
+      updatedBy
+      ownerEmail
+      createTime
+      updateTime
+      timeoutSeconds
+      failureWorkflow
+      workflowStatusListenerEnabled
+      outputParameters
+      inputParameters
+      schemaVersion
+      restartable
+      readOnly
+    }
+  `,
   workflowTask: gql`
     fragment workflowTask on WorkflowTask {
+      type
       name
       description
-      type
       caseValueParam
       caseExpression
       decisionCases
@@ -15,7 +36,10 @@ const Fragments = {
         name
         version
       }
+      dynamicForkTasksInputParamName
+      dynamicForkTasksParam
       optional
+      sink
       startDelay
       asyncComplete
     }

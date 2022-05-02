@@ -10,7 +10,7 @@ import tableStyle from 'assets/jss/components/tableStyle'
 
 const useStyles = makeStyles(tableStyle)
 
-const ExecutionList = ({ executionList, loading, pager, onRowsPerPageChange, onPageChange, onRefresh, onSeeDetails }) => {
+const ExecutionList = ({ executionList, loading, pager, onRowsPerPageChange, onPageChange, onRefresh, onSeeDetails, onGotoDefinition }) => {
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -30,6 +30,7 @@ const ExecutionList = ({ executionList, loading, pager, onRowsPerPageChange, onP
                 <Thead>
                   <Tr>
                     <Th className={classes.tableHeader}>{t('Execution.Name')}</Th>
+                    <Th className={classes.tableHeader}>{t('Execution.Version')}</Th>
                     <Th className={classes.tableHeader}>{t('Execution.WorkflowId')}</Th>
                     <Th className={classes.tableHeader}>{t('Execution.Status')}</Th>
                     <Th className={classes.tableHeader}>{t('Execution.StartTime')}</Th>
@@ -38,8 +39,13 @@ const ExecutionList = ({ executionList, loading, pager, onRowsPerPageChange, onP
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {executionList?.map((execution, index) => (
-                    <ExecutionItem key={index} onSeeDetails={onSeeDetails} execution={execution} />
+                  {executionList?.map(execution => (
+                    <ExecutionItem
+                      key={execution?.workflowId}
+                      onSeeDetails={onSeeDetails}
+                      execution={execution}
+                      onGotoDefinition={onGotoDefinition}
+                    />
                   ))}
                 </Tbody>
               </Table>
@@ -51,7 +57,6 @@ const ExecutionList = ({ executionList, loading, pager, onRowsPerPageChange, onP
               onRowsPerPageChange={onRowsPerPageChange}
               onPageChange={onPageChange}
               onRefresh={onRefresh}
-              rowsPerPageOptions={[3, 5, 10]}
             />
           </>
         )
@@ -67,8 +72,8 @@ ExecutionList.propTypes = {
   onRowsPerPageChange: PropTypes.func.isRequired,
   onPageChange: PropTypes.func.isRequired,
   pager: PropTypes.object.isRequired,
-  setPager: PropTypes.func.isRequired,
-  onSeeDetails: PropTypes.func.isRequired
+  onSeeDetails: PropTypes.func.isRequired,
+  onGotoDefinition: PropTypes.func.isRequired
 }
 
 export default ExecutionList

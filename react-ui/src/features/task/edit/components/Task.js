@@ -18,6 +18,7 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
   const task = taskLens |> get
   const {
     name,
+    readOnly,
     description,
     ownerEmail,
     retryCount,
@@ -33,8 +34,8 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
   const createTime = t('DATE_FORMAT', { date: { value: taskLens?.createTime |> get, format: 'DD-MM-YYYY HH:mm:ss' } })
 
   useEffect(() => {
-    setHeader(<StandardHeader headerText={name} path='/tasks' saving={saving} onSave={onSave} disableSaving={!isDirty} />)
-  }, [isDirty, name, onSave, saving, setHeader])
+    setHeader(<StandardHeader headerText={name} path='/tasks' saving={saving} onSave={onSave} disableSaving={!isDirty || readOnly} />)
+  }, [isDirty, name, onSave, readOnly, saving, setHeader])
 
   if (loading) {
     return <LoadingFakeText lines={3} />
@@ -45,104 +46,110 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
       icon={TextFields}
       title={t('Task.Data')}
       content={
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              label={t('Task.Name')}
-              value={name || emptyString}
-              onChange={taskLens.name |> set |> onTextBoxChange}
-              error={!isValid(validation?.name)}
-              helperText={getErrors(validation?.name)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              label={t('Task.Description')}
-              value={description || emptyString}
-              onChange={taskLens.description |> set |> onTextBoxChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField disabled fullWidth label={t('Task.CreateTime')} value={createTime || emptyString} />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField disabled fullWidth label={t('Task.OwnerEmail')} value={ownerEmail || emptyString} />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              isNumeric
-              label={t('Task.RetryCount')}
-              value={retryCount || emptyString}
-              onChange={taskLens.retryCount |> set}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <Autocomplete
-              label={t('Task.RetryLogic')}
-              simpleValue
-              valueKey={'name'}
-              options={retryLogicList}
-              value={retryLogic || emptyString}
-              onChange={taskLens.retryLogic |> set}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              isNumeric
-              label={t('Task.RetryDelaySeconds')}
-              value={retryDelaySeconds || emptyString}
-              onChange={taskLens.retryDelaySeconds |> set}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <Autocomplete
-              label={t('Task.TimeoutPolicy')}
-              simpleValue
-              valueKey={'name'}
-              options={timeoutPolicyList}
-              value={timeoutPolicy || emptyString}
-              onChange={taskLens.timeoutPolicy |> set}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              isNumeric
-              label={t('Task.TimeoutSeconds')}
-              value={timeoutSeconds || emptyString}
-              onChange={taskLens.timeoutSeconds |> set}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              isNumeric
-              label={t('Task.ResponseTimeoutSeconds')}
-              value={responseTimeoutSeconds || emptyString}
-              onChange={taskLens.responseTimeoutSeconds |> set}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              label={t('Task.InputKeys')}
-              value={inputKeys || emptyString}
-              onChange={taskLens.inputKeys |> set |> onTextBoxChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <CustomTextField
-              fullWidth
-              label={t('Task.OutputKeys')}
-              value={outputKeys || emptyString}
-              onChange={taskLens.outputKeys |> set |> onTextBoxChange}
-            />
-          </Grid>
-        </Grid>
+        <form>
+          <fieldset disabled={readOnly} style={{ border: 'none' }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  label={t('Task.Name')}
+                  value={name || emptyString}
+                  onChange={taskLens.name |> set |> onTextBoxChange}
+                  error={!isValid(validation?.name)}
+                  helperText={getErrors(validation?.name)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  label={t('Task.Description')}
+                  value={description || emptyString}
+                  onChange={taskLens.description |> set |> onTextBoxChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField disabled fullWidth label={t('Task.CreateTime')} value={createTime || emptyString} />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField disabled fullWidth label={t('Task.OwnerEmail')} value={ownerEmail || emptyString} />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  isNumeric
+                  label={t('Task.RetryCount')}
+                  value={retryCount || emptyString}
+                  onChange={taskLens.retryCount |> set}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <Autocomplete
+                  label={t('Task.RetryLogic')}
+                  simpleValue
+                  valueKey={'name'}
+                  options={retryLogicList}
+                  value={retryLogic || emptyString}
+                  onChange={taskLens.retryLogic |> set}
+                  disabled={readOnly} //To be removed after we fix Autocomplete to inherit disable prop
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  isNumeric
+                  label={t('Task.RetryDelaySeconds')}
+                  value={retryDelaySeconds || emptyString}
+                  onChange={taskLens.retryDelaySeconds |> set}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <Autocomplete
+                  label={t('Task.TimeoutPolicy')}
+                  simpleValue
+                  valueKey={'name'}
+                  options={timeoutPolicyList}
+                  value={timeoutPolicy || emptyString}
+                  onChange={taskLens.timeoutPolicy |> set}
+                  disabled={readOnly} //To be removed after we fix Autocomplete to inherit disable prop
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  isNumeric
+                  label={t('Task.TimeoutSeconds')}
+                  value={timeoutSeconds || emptyString}
+                  onChange={taskLens.timeoutSeconds |> set}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  isNumeric
+                  label={t('Task.ResponseTimeoutSeconds')}
+                  value={responseTimeoutSeconds || emptyString}
+                  onChange={taskLens.responseTimeoutSeconds |> set}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  label={t('Task.InputKeys')}
+                  value={inputKeys || emptyString}
+                  onChange={taskLens.inputKeys |> set |> onTextBoxChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomTextField
+                  fullWidth
+                  label={t('Task.OutputKeys')}
+                  value={outputKeys || emptyString}
+                  onChange={taskLens.outputKeys |> set |> onTextBoxChange}
+                />
+              </Grid>
+            </Grid>
+          </fieldset>
+        </form>
       }
     />
   )

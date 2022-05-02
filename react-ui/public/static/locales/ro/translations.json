@@ -12,7 +12,8 @@
     "User": "Profil",
     "Executions": "Executii",
     "SystemTasks": "System_Tasks",
-    "EventHandlers": "Event handlers"
+    "EventHandlers": "Event handlers",
+    "Configurations": "Configurari"
   },
   "Tooltips": {
     "Logout": "Iesire",
@@ -40,16 +41,32 @@
     "UpdatedBy": "Modificat de",
     "TimeoutSeconds": "Secunde pana la expirare",
     "FailureWorkflow": "Flux in caz de esec",
+    "WorkflowNotFound": "Definitia workflow-ului nu a fost gasita. Cel mai probabil a fost stearsa. ",
     "WorkflowStatusListenerEnabled": "Listener pentru statusul fluxului activat",
     "Buttons": {
       "AddWorkflow": "Adauga flux",
+      "Clone": "Cloneaza",
+      "Cancel": "Anuleaza",
       "Execute": "Executa",
       "Executing": "Se executa...",
       "GoToExecution": "Vedeti executia"
     },
     "Dialog": {
+      "CloneWorkflow": "Introduceti numele noului flux",
       "DeleteWorkflow": "Sunteti sigur ca doriti sa stergeti fluxul?",
-      "CancelEdit": "Sunteti sigur ca doriti sa anulati modificarile?"
+      "CancelEdit": "Sunteti sigur ca doriti sa anulati modificarile?",
+      "PreviewJson": "Configuratia JSON a fluxului",
+      "ExecuteWorkflowDialogTitle": "Parametrii de intrare pentru executie",
+      "ExecuteWorkflowDialogSubtitle": "(Parametrii de intrare pot lua valori de tip text sau obiecte de tip JSON)"
+    },
+    "SideMenu": {
+      "Tabs": {
+        "Executions": "Executii",
+        "History": "Istoric"
+      }
+    },
+    "Notification": {
+      "ClonedSuccessfully": "Clonarea s-a efectuat cu succes"
     }
   },
   "WorkflowTask": {
@@ -73,6 +90,7 @@
       "CaseValueParam": "Parametru",
       "CaseExpression": "Expresie",
       "AddCaseValue": "Adauga valoare caz noua",
+      "DefaultCase": "Caz implicit",
       "Buttons": {
         "AddCaseValue": "Adauga valoare caz noua"
       }
@@ -124,9 +142,28 @@
       "AddTask": "Adauga task"
     }
   },
+  "WorkflowHistory": {
+    "Version": "Versiune",
+    "TimeStamp": "Data si ora",
+    "ChangedBy": "Modificat de",
+    "Dialog": {
+      "Revert": "Sunteti sigur ca doriti sa va intoarceti la definitia din data de {{timeStamp}}?",
+      "Compare": {
+        "OldDefinition": "Definitia veche",
+        "CurrentDefinition": "Definitia curenta"
+      }
+    },
+    "Buttons": {
+      "Preview": "Vizualizeaza JSON",
+      "Compare": "Compara cu aceasta definitie",
+      "Revert": "Reveniti la aceasta definitie",
+      "CurrentDefinition": "Definitia curenta"
+    }
+  },
   "Execution": {
     "Executions": "Executii",
     "Name": "Nume",
+    "Version": "Versiune",
     "WorkflowId": "Workflow Id",
     "Status": "Status",
     "StartTime": "Inceput la",
@@ -146,6 +183,7 @@
     "NoActions": "Nicio actiune disponibila",
     "Task": {
       "Type": "Tip task",
+      "Task": "Task",
       "SubWorkflow": "Sub-flux",
       "RefName": "Nume referinta",
       "PollCount": "Nr interogari",
@@ -155,15 +193,31 @@
       "Tabs": {
         "Summary": "Sumar",
         "Json": "Json"
+      },
+      "Legend": {
+        "Scheduled": "Programat pentru executie",
+        "Executed": "Task-ul s-a executat cu succes",
+        "NotExecuted": "Task-ul nu s-a executat",
+        "InProgress": "Task-ul este in proces de executie",
+        "Error": "Task-ul s-a executat cu erori"
       }
     },
     "Buttons": {
+      "GoToExecution": "Vedeti executia",
+      "GoToDefinition": "Vedeti definitia",
       "SeeDetails": "Vezi detalii",
       "Terminate": "Finalizeaza",
       "Pause": "Opreste",
       "Resume": "Reia",
       "Retry": "Incearca din nou",
       "Restart": "Reincepe"
+    },
+    "Notifications": {
+      "Restart": "Executia a fost repornita cu succes",
+      "Retry": "Executia se reincearca",
+      "Pause": "Executia a fost oprita",
+      "Resume": "Executioa a fost reluata",
+      "Terminate": "Executia a fost terminata"
     }
   },
   "EventHandler": {
@@ -211,7 +265,7 @@
     "Phone": "Numarul de telefon nu este valid",
     "NoSpace": "Nu poate incepe cu spatiu",
     "Integer": "Valoarea trebuie sa fie un numar intreg",
-    "UniqueName": "Numele trebuie sa fie unic",
+    "UniqueNameAndVersion": "Numele si versiunea trebuie sa fie unice",
     "InvalidSink": "Sink-ul trebuie sa fie de tipul conductor/nats_stream:topic",
     "NameCannotBeNew": "Numele nu poate fi 'new'",
     "Generic": {
@@ -243,13 +297,12 @@
     "UtilitiesBar": {
       "Undo": "Anuleaza",
       "Redo": "Refa",
-      "Clone": "Cloneaza",
+      "PreviewJson": "Vizualizare JSON",
       "Lock": "Blocheaza diagrama",
       "Import": "Importa din JSON",
       "Export": "Exporta ca JSON",
       "Delete": "Sterge selectia",
       "Execute": "Executa fluxul",
-      "ExecuteWorkflowDialogTitle": "Parametrii de intrare pentru executie",
       "GeneralSettings": "Setari generale"
     },
     "Tour": {
@@ -266,6 +319,7 @@
       "ConnectPort": "Folositi port-ul din dreapta pentru a-l conecta la task.",
       "LinkUnfocused": "Asigurati-va ca legatura este nefocalizata (dand click in afara ei) inainte de salvare.",
       "DeleteLink": "Pentru a sterge o legatura:",
+      "BoxSelection": "Pentru a selecta o anumita sectiune, folositi tasta SHIFT si trageti",
       "TaskSettings": "Faceti dublu-click pe un task pentru a-i configura setarile.",
       "Utilities": "Aici puteti gasi cateva actiuni care sa va ajute la a desena si gestiona fluxul:",
       "WorkflowSettings": "Dati click aici pentru a adauga descrierea fluxului si alte setari avansate",
@@ -359,6 +413,7 @@
         "Description": "Descrierea taskului.",
         "AddNewParam": "Aici, trebuie definite numele parametrilor de intrare pe care fluxul ii primeste.",
         "NewParamValues": "Apoi, se pot seta valori pentru ei mai jos. Pentru valori care ar trebui setate de catre utilizator la executie, se completeaza: ${workflow.input.[PARAMETER_NAME]}",
+        "NewParamNote": "NOTA: Valorile parametrilor de intrare pot fi de tip text sau obiecte de tip JSON.",
         "NewParamValuesHighlight": "${workflow.input.[PARAMETER_NAME]}",
         "Optional": "Daca un task este optional, esuarea sa este considerata inofensiva pentru executia fluxului, iar acesta poate continua intr-un astfel de scenariu.",
         "StartDelay": "Intarzie startul taskului cu un numar de secunde.",
@@ -421,6 +476,7 @@
     "Saving": "Se salveaza...",
     "SavingSucceeded": "Salvare cu succes!",
     "DeletingSucceeded": "Stergere cu succes!",
+    "RevertSucceeded": "Revenire executata cu succes!",
     "Buttons": {
       "Add": "Adauga",
       "Edit": "Editeaza",
@@ -432,7 +488,8 @@
       "ApplyFilters": "Aplica filtre",
       "ResetFilters": "Reseteaza filtre",
       "True": "Adevarat",
-      "False": "Fals"
+      "False": "Fals",
+      "Beautify": "Formateaza codul"
     }
   }
 }

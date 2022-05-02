@@ -20,8 +20,10 @@ function InputParametersHeader({ inputParametersLens }) {
   }, [])
 
   const handleAddParameter = useCallback(() => {
-    set(inputParametersLens[localParam], `\${workflow.input.${localParam}}`)
-    setLocalParam(emptyString)
+    if (localParam) {
+      set(inputParametersLens[localParam], `\${workflow.input.${localParam}}`)
+      setLocalParam(emptyString)
+    }
   }, [inputParametersLens, localParam])
 
   const handleKeyPressed = useCallback(({ keyCode }) => keyCode === 13 && handleAddParameter(), [handleAddParameter])

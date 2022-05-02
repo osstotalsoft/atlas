@@ -18,8 +18,8 @@ const TaskDetailList = ({ tasks }) => {
         <Thead>
           <Tr>
             <Th className={classes.tableHeader}>{t('Execution.Task.Type')}</Th>
+            <Th className={classes.tableHeader}>{t('Execution.Task.Task')}</Th>
             <Th className={classes.tableHeader}>{t('Execution.Task.SubWorkflow')}</Th>
-            <Th className={classes.tableHeader}>{t('Execution.Task.RefName')}</Th>
             <Th className={classes.tableHeader}>{t('Execution.StartTime')}</Th>
             <Th className={classes.tableHeader}>{t('Execution.EndTime')}</Th>
             <Th className={classes.tableHeader}>{t('Execution.Status')}</Th>

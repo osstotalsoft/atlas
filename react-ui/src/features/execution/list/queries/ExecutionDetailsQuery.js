@@ -60,50 +60,16 @@ export const EXECUTION_DETAILS_QUERY = gql`
       updateTime
       updatedBy
       workflowDefinition {
-        createTime
-        createdBy
-        description
-        failureWorkflow
-        inputParameters
-        name
-        outputParameters
-        ownerApp
-        restartable
-        schemaVersion
+        ...partialWorkflowDef
         tasks {
-          asyncComplete
-          caseExpression
-          caseValueParam
-          decisionCases
-          defaultExclusiveJoinTask
-          description
-          dynamicForkJoinTasksParam
-          dynamicForkTasksInputParamName
-          dynamicForkTasksParam
-          dynamicTaskNameParam
-          inputParameters
+          ...workflowTask
           forkTasks {
             ...workflowTask
           }
-          joinOn
-          name
-          optional
-          rateLimited
-          scriptExpression
-          sink
-          startDelay
-          subWorkflowParam {
-            name
-            taskToDomain
-            version
+          defaultCase {
+            ...workflowTask
           }
-          taskReferenceName
-          type
         }
-        updateTime
-        updatedBy
-        version
-        workflowStatusListenerEnabled
       }
       workflowId
       workflowName
@@ -111,4 +77,5 @@ export const EXECUTION_DETAILS_QUERY = gql`
     }
   }
   ${Fragments.workflowTask}
+  ${Fragments.partialWorkflowDef}
 `

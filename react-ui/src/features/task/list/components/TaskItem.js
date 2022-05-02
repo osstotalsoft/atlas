@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { Box, makeStyles } from '@material-ui/core'
 import tableStyle from 'assets/jss/components/tableStyle'
 import { CustomDialog, DeleteButton, EditButton } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { isJsonString } from 'utils/functions'
 
 const useStyles = makeStyles(tableStyle)
 
@@ -14,8 +13,6 @@ const TaskItem = ({ task, onEditTask, onDeleteRow }) => {
   const { t } = useTranslation()
   const classes = useStyles()
   const [deleteDialog, setDeleteDialog] = useState(false)
-
-  const desc = isJsonString(description) ? JSON.parse(description)?.description : description
 
   const handleEditTask = useCallback(() => onEditTask(task.name), [onEditTask, task.name])
   const closeDialog = useCallback(() => {
@@ -34,7 +31,7 @@ const TaskItem = ({ task, onEditTask, onDeleteRow }) => {
     <>
       <Tr>
         <Td className={classes.tableContent}>{name}</Td>
-        <Td className={classes.tableContent}>{desc ? desc : t('Task.NoDescription')}</Td>
+        <Td className={classes.tableContent}>{description ? description : t('Task.NoDescription')}</Td>
         <Td className={classes.tableContent}>{t('DATE_FORMAT', { date: { value: task?.createTime, format: 'DD-MM-YYYY HH:mm:ss' } })}</Td>
         <Td className={classes.tableContent}>
           <Box textAlign='right'>

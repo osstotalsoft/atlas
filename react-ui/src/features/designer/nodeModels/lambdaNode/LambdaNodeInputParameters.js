@@ -1,41 +1,70 @@
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-tomorrow'
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Divider, Grid, Typography } from '@material-ui/core'
+import { Divider, Grid, makeStyles } from '@material-ui/core'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { useTranslation } from 'react-i18next'
 import Help from 'features/common/Help/Help'
+import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
+import LocalFloristIcon from '@material-ui/icons/LocalFlorist'
 import { lambdaHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import beautify from 'js-beautify'
+import styles from '../../styles/styles'
+
+const useStyles = makeStyles(styles)
 
 const LambdaNodeInputParameters = ({ inputParametersLens }) => {
   const { t } = useTranslation()
+  const classes = useStyles()
+
+  const scriptExpression = inputParametersLens?.scriptExpression |> get
+
+  const handleBeautify = useCallback(() => {
+    set(inputParametersLens?.scriptExpression, beautify(scriptExpression))
+  }, [inputParametersLens?.scriptExpression, scriptExpression])
 
   return (
     <>
       <Divider style={{ marginTop: '10px', marginBottom: '10px' }} />
-      <Grid container spacing={1}>
-        <Grid item>
-          <Typography>{t('WorkflowTask.InputParameter.ScriptExpression')}</Typography>
-        </Grid>
-        <Grid item>
-          <Help icon={<CustomHelpIcon />} helpConfig={lambdaHelpConfig.SCRIPT_EXPRESSION} hasTranslations={true} />
-        </Grid>
-        <Grid item xs={12}>
-          <AceEditor
-            mode={'javascript'}
-            width='100%'
-            height='300px'
-            theme='tomorrow'
-            fontSize={16}
-            value={inputParametersLens?.scriptExpression |> get}
-            onChange={inputParametersLens.scriptExpression |> set}
-            wrapEnabled={true}
-          />
-        </Grid>
-      </Grid>
+      <Table className={classes.table} style={{ height: '100%', minHeight: '400px' }}>
+        <Thead>
+          <Tr>
+            <Th className={classes.tableHeader}>
+              <Grid container justifyContent='space-between'>
+                <Grid item>
+                  {t('WorkflowTask.InputParameter.ScriptExpression')}
+                  <Help icon={<CustomHelpIcon />} helpConfig={lambdaHelpConfig.SCRIPT_EXPRESSION} hasTranslations={true} />
+                </Grid>
+                <Grid item>
+                  <IconButton size='small' color={'themeNoBackground'} tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
+                    <LocalFloristIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>
+              <AceEditor
+                mode={'javascript'}
+                width='100%'
+                theme='tomorrow'
+                height='100%'
+                fontSize={16}
+                value={scriptExpression}
+                onChange={inputParametersLens.scriptExpression |> set}
+                wrapEnabled={true}
+              />
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
     </>
   )
 }

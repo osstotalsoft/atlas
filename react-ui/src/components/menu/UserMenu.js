@@ -22,9 +22,8 @@ import TenantSelector, { MY_TENANTS_QUERY } from './TenantSelector'
 
 const useStyles = makeStyles(userMenuStyle)
 
-function UserMenu({ drawerOpen, avatar, language, changeLanguage }) {
+function UserMenu({ drawerOpen, avatar, language, changeLanguage, withGradient }) {
   const [openAvatar, setOpenAvatar] = useState(false)
-  const [currentMiniActive] = useState(true)
   const classes = useStyles()
   const { t } = useTranslation()
   const location = useLocation()
@@ -93,7 +92,7 @@ function UserMenu({ drawerOpen, avatar, language, changeLanguage }) {
     classes.itemText +
     ' ' +
     cx({
-      [classes.itemTextMini]: !drawerOpen && currentMiniActive
+      [classes.itemTextMini]: !drawerOpen
     })
   const displayName = `${userName}${tenantName}`
 
@@ -114,7 +113,9 @@ function UserMenu({ drawerOpen, avatar, language, changeLanguage }) {
         <Collapse in={openAvatar} unmountOnExit classes={{ wrapper: classes.collapseWrapper }}>
           <List className={classes.list + classes.collapseList}>
             {userMenuItems.map((userMenu, key) => {
-              return <UserMenuItem key={key} userMenu={userMenu} drawerOpen={drawerOpen} activeRoute={activeRoute} />
+              return (
+                <UserMenuItem key={key} userMenu={userMenu} drawerOpen={drawerOpen} activeRoute={activeRoute} withGradient={withGradient} />
+              )
             })}
             {oidcUser && (
               <Tooltip disableHoverListener={drawerOpen} title={t('Tooltips.Logout')}>
@@ -149,7 +150,8 @@ UserMenu.propTypes = {
   avatar: PropTypes.string,
   drawerOpen: PropTypes.bool.isRequired,
   changeLanguage: PropTypes.func.isRequired,
-  language: PropTypes.string.isRequired
+  language: PropTypes.string.isRequired,
+  withGradient: PropTypes.bool.isRequired
 }
 
 export default UserMenu

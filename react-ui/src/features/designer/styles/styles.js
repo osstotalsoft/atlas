@@ -24,8 +24,8 @@ const styles = theme => {
       border: '1px solid ',
       borderColor: 'lightblue',
       position: 'fixed',
-      right: '5%',
-      top: '100px',
+      left: '430px',
+      top: '80px',
       zIndex: '1'
     }
   }

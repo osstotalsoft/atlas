@@ -15,6 +15,10 @@ export const commonTaskDefHelpConfig = {
       text: 'Helpers.SystemTaskDef.Common.NewParamValues',
       highlight: 'Helpers.SystemTaskDef.Common.NewParamValuesHighlight',
       highlightStyle: 'yellow'
+    },
+    {
+      type: 'paragraph',
+      text: 'Helpers.SystemTaskDef.Common.NewParamNote'
     }
   ],
   OPTIONAL: [

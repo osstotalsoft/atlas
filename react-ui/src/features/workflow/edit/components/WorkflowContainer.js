@@ -7,30 +7,31 @@ import { CustomDialog, useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
 import Workflow from './Workflow'
 import Tour from './tour/Tour'
 import EditTaskModal from './workflowTask/EditTaskModal'
-import AddNameModal from './modals/AddNameModal'
 import CustomHeader from 'components/layout/CustomHeader'
-import { emptyObject } from 'utils/constants'
-import { parseDiagramToJSON, updateNodeWithDecisionCases } from 'features/designer/builderHandler'
+import { emptyObject, emptyString } from 'utils/constants'
+import { parseDiagramToJSON, decisionCasesToPorts } from 'features/designer/builderHandler'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 import { keys, includes, map, prop, reject, isNil } from 'ramda'
-import { closest } from 'utils/functions'
 import { isPropertyDirty } from '@totalsoft/change-tracking'
 import { get, set } from '@totalsoft/react-state-lens'
-import { getApplicationEngine } from 'features/designer/components/Application'
-import { queryLimit } from 'features/common/constants'
-import { cloneSelection, updateCacheDetail, updateCacheList } from 'features/workflow/common/functions'
+import { getApplicationDiagram } from 'features/designer/diagram/getApplicationDiagram'
+import { cloneSelection, parseObjectParameters, updateCacheList, validateEngineWorkflow } from 'features/workflow/common/functions'
 import { useMutation } from '@apollo/client'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { WORKFLOW_QUERY } from '../queries/WorkflowQuery'
-import { SAVE_WORKFLOW_MUTATION } from '../mutations/SaveWorkflowMutation'
-import { WORKFLOW_LIST_QUERY } from 'features/workflow/list/queries/WorkflowListQuery'
-import { UPDATE_WORKFLOW_MUTATION } from '../mutations/UpdateWorkflowMutation'
 import { SidebarContext } from 'providers/SidebarProvider'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
 import { defaultConfig } from '../constants/workflowConfig'
 import { ClipboardContext } from 'providers/ClipboardProvider'
 import { drawDiagram } from 'features/designer/drawingHandler'
 import { demoWf } from './tour/demoWorkflow'
+import { Toolkit } from '@projectstorm/react-canvas-core'
+import AddNameModal from 'features/workflow/common/components/AddNameModal'
+import { WORKFLOW_HISTORY_QUERY } from './workflowHistory/queries/WorkflowHistoryQuery'
+import { NotFound } from '@bit/totalsoft_oss.react-mui.kit.core'
+import workflowConfig from 'features/designer/constants/WorkflowConfig'
+import { skipParametersByParsing } from 'features/workflow/common/constants'
+import { CREATE_UPDATE_WORKFLOW_MUTATION } from '../mutations/CreateOrUpdateWorkflowMutation'
 
 const WorkflowContainer = () => {
   const { t } = useTranslation()
@@ -46,18 +47,24 @@ const WorkflowContainer = () => {
   const [localPayload, setLocalPayload] = useState()
 
   const [isDirty, setIsDirty] = useState(false)
-
-  const name = match.params.name
   const isNew = match.params.new === 'new'
 
-  const [engine] = useState(getApplicationEngine())
+  const [diagram] = useState(getApplicationDiagram())
+  const { engine } = diagram
+
+  const workflowVersion = match.params.version ? parseInt(match.params.version) : workflowConfig.version
+  const [versionLens, versionDirtyInfo] = useChangeTrackingLens(workflowVersion)
+  const version = versionLens |> get
+
+  const [nameLens, nameDirtyInfo] = useChangeTrackingLens(match.params.name)
+  const name = nameLens |> get
 
   const [inputsLens, inputsDirtyInfo, resetInputs] = useChangeTrackingLens()
   const inputs = inputsLens |> get
 
   const workflowTasks = engine.model.getNodes() |> map(prop('inputs')) |> reject(isNil)
 
-  const [workflowLens, dirtyInfo, resetWorkflow] = useChangeTrackingLens(defaultConfig)
+  const [workflowLens, , resetWorkflow] = useChangeTrackingLens(defaultConfig)
   const workflow = workflowLens |> get
   const [model, stashModel] = useState()
 
@@ -69,108 +76,111 @@ const WorkflowContainer = () => {
   const toggleNameDialog = useCallback(() => showNameDialog(current => !current), [])
   const toggleTourDialog = useCallback(() => showTourDialog(current => !current), [])
   const toggleStartTourDialog = useCallback(() => showStartTourDialog(current => !current), [])
-
-  const { loading } = useQueryWithErrorHandling(WORKFLOW_QUERY, {
-    variables: { name, skip: isNew },
-    onCompleted: data => {
-      resetWorkflow(data?.getWorkflow)
-    }
-  })
-
   const clientQuery = useClientQueryWithErrorHandling()
 
-  const updateCacheAfterEdit = async cache => {
-    try {
-      updateCacheDetail(cache, { name, skip: isNew }, { ...workflow, updatedBy: oidcUser.profile.name, ownerEmail: workflow?.ownerEmail })
-      const existingWorkflows = cache.readQuery({
-        query: WORKFLOW_LIST_QUERY,
-        variables: { limit: queryLimit }
-      })
-      const { data } = await clientQuery(WORKFLOW_QUERY, {
-        variables: { name: workflow?.name, skip: false }
-      })
-      const newCollection = [data?.getWorkflow, ...existingWorkflows?.getAll.filter(w => w.name !== name)]
-      updateCacheList(cache, { limit: queryLimit }, newCollection)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const { loading, data, error } = useQueryWithErrorHandling(WORKFLOW_QUERY, {
+    variables: { name, version, skip: isNew }
+  })
+
+  const errorStatus = error?.graphQLErrors[0]?.extensions?.response?.status
+
+  useEffect(() => {
+    if (data) resetWorkflow(data?.getWorkflow)
+  }, [data, resetWorkflow])
 
   const updateCacheAfterAdd = async cache => {
     try {
-      const existingWorkflows = cache.readQuery({
-        query: WORKFLOW_LIST_QUERY,
-        variables: { limit: queryLimit }
+      const { data: updatedData } = await clientQuery(WORKFLOW_QUERY, {
+        variables: { name, version, skip: false }
       })
-      const { data } = await clientQuery(WORKFLOW_QUERY, {
-        variables: { name: workflow?.name, skip: false }
-      })
-      const newCollection = [...existingWorkflows?.getAll, data?.getWorkflow]
-      updateCacheList(cache, { limit: queryLimit }, newCollection)
-    } catch (error) {
-      console.log(error)
+
+      updateCacheList(cache, updatedData?.getWorkflow)
+    } catch (err) {
+      console.log(err)
     }
   }
 
-  const [saveWorkflow, { loading: saving }] = useMutation(SAVE_WORKFLOW_MUTATION, {
+  const updateCacheAfterEdit = async () => {
+    try {
+      await clientQuery(WORKFLOW_QUERY, {
+        variables: { name, version, skip: false },
+        fetchPolicy: 'network-only'
+      })
+
+      await clientQuery(WORKFLOW_HISTORY_QUERY, {
+        variables: { workflowName: name, version, skip: false },
+        fetchPolicy: 'network-only'
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const [createOrUpdateWorkflow, { loading: saving }] = useMutation(CREATE_UPDATE_WORKFLOW_MUTATION, {
     onCompleted: () => {
       addToast(t('General.SavingSucceeded'), 'success')
-      toggleNameDialog()
+      if (isNew) toggleNameDialog()
       setIsDirty(false)
-      if (isNew) history.push(`/workflows/${workflow?.name}`)
+      if (isNew) history.push(`/workflows/${name}/${version}`)
     },
-    onError: error => showError(error),
-    update: updateCacheAfterAdd
+    onError: err => showError(err),
+    update: isNew ? updateCacheAfterAdd : updateCacheAfterEdit
   })
 
-  const [updateWorkflow] = useMutation(UPDATE_WORKFLOW_MUTATION, {
-    onCompleted: () => {
-      addToast(t('General.SavingSucceeded'), 'success')
-      setIsDirty(false)
-    },
-    onError: error => showError(error),
-    update: updateCacheAfterEdit
-  })
+  const isValid = useCallback(() => {
+    const validationResults = validateEngineWorkflow(engine)
+    const errors = validationResults.filter(([isValid]) => !isValid)
+
+    if (errors?.length > 0) {
+      errors?.map(([_, message]) => showError(new Error(message)))
+      return false
+    }
+    return true
+  }, [engine, showError])
+
+  const handleOpenNameDialog = useCallback(() => {
+    if (isValid()) showNameDialog(true)
+  }, [isValid])
 
   const handleSave = useCallback(() => {
-    try {
-      const jsonObject = parseDiagramToJSON(engine)
-      const input = {
-        ...jsonObject,
-        name: workflow?.name,
-        description: workflow?.description,
-        timeoutSeconds: workflow?.timeoutSeconds,
-        workflowStatusListenerEnabled: workflow?.workflowStatusListenerEnabled,
-        createdBy: workflow?.createdBy,
-        ownerEmail: workflow?.ownerEmail || oidcUser.profile.preferred_username
-      }
+    if (isValid()) {
+      try {
+        const jsonObject = parseDiagramToJSON(engine)
+        const input = {
+          ...jsonObject,
+          name,
+          version,
+          description: workflow?.description,
+          timeoutSeconds: workflow?.timeoutSeconds,
+          failureWorkflow: workflow?.failureWorkflow,
+          workflowStatusListenerEnabled: workflow?.workflowStatusListenerEnabled,
+          createdBy: isNew ? oidcUser.profile.name : workflow?.createdBy,
+          createTime: isNew ? new Date().getTime() : workflow?.createTime,
+          ownerEmail: workflow?.ownerEmail || oidcUser.profile.preferred_username,
+          updatedBy: isNew ? emptyString : oidcUser.profile.name,
+          updateTime: isNew ? undefined : new Date().getTime()
+        }
 
-      set(workflowLens, input)
-      isNew
-        ? saveWorkflow({
-            variables: {
-              input: { ...input, createdBy: oidcUser.profile.name }
-            }
-          })
-        : updateWorkflow({
-            variables: {
-              input: { ...input, updatedBy: oidcUser.profile.name }
-            }
-          })
-    } catch (e) {
-      showError(e)
+        set(workflowLens, input)
+        createOrUpdateWorkflow({ variables: { input } })
+      } catch (err) {
+        showError(err)
+      }
     }
   }, [
+    createOrUpdateWorkflow,
     engine,
     isNew,
+    isValid,
+    name,
     oidcUser.profile.name,
     oidcUser.profile.preferred_username,
-    saveWorkflow,
     showError,
-    updateWorkflow,
+    version,
+    workflow?.createTime,
     workflow?.createdBy,
     workflow?.description,
-    workflow?.name,
+    workflow?.failureWorkflow,
     workflow?.ownerEmail,
     workflow?.timeoutSeconds,
     workflow?.workflowStatusListenerEnabled,
@@ -183,8 +193,8 @@ const WorkflowContainer = () => {
 
   const handleDoubleClick = useCallback(
     event => {
-      const element = closest(event.target, '.node[data-nodeid]')
-      const node = engine.model.getNode(element?.getAttribute('data-nodeid'))
+      var nodeElement = Toolkit.closest(event?.target, '.node[data-nodeid]')
+      const node = engine.model.getNode(nodeElement?.getAttribute('data-nodeid'))
       const noEditList = [nodeConfig.START.type, nodeConfig.END.type, nodeConfig.FORK_JOIN.type, nodeConfig.JOIN.type]
       if (node && !includes(node?.type, noEditList)) {
         node.setSelected(false)
@@ -198,19 +208,25 @@ const WorkflowContainer = () => {
   const handleSaveTask = useCallback(() => {
     let node = engine.model.getNode(inputs?.id)
     node.inputs = inputs?.inputs
+    parseObjectParameters(node.inputs, skipParametersByParsing)
+
     node.options.name = inputs?.inputs?.name
-    if (inputs?.inputs.type === nodeConfig.DECISION.type && isPropertyDirty('inputs.decisionCases', inputsDirtyInfo)) {
-      const decisionCases = keys(inputs?.inputs?.decisionCases)
-      updateNodeWithDecisionCases(node, decisionCases)
+    if (
+      inputs?.inputs.type === nodeConfig.DECISION.type &&
+      (isPropertyDirty('inputs.decisionCases', inputsDirtyInfo) || isPropertyDirty('inputs.hasDefaultCase', inputsDirtyInfo))
+    ) {
+      const cases = keys(inputs?.inputs?.decisionCases)
+      decisionCasesToPorts(node, cases)
     }
     if (inputs?.inputs?.type === nodeConfig.EVENT.type) {
       try {
         if (localPayload) {
           const payload = JSON.parse(localPayload)
-          node.inputs.inputParameters = { ...node.inputs.inputParameters, payload }
+          node.inputs.inputParameters =
+            process.env.REACT_APP_USE_NBB_MESSAGE === 'true' ? { ...node.inputs.inputParameters, Payload: payload } : payload
         }
-      } catch (e) {
-        showError(e)
+      } catch (err) {
+        showError(err)
         return
       }
     }
@@ -283,13 +299,15 @@ const WorkflowContainer = () => {
       <CustomHeader
         headerText={name}
         path='/workflows'
-        onSave={isNew ? toggleNameDialog : handleSave}
+        onSave={isNew ? handleOpenNameDialog : handleSave}
         saving={saving}
+        disableSaving={workflow?.readOnly}
         onGetHelp={handleStartTour}
       />
     )
-  }, [handleSave, handleStartTour, isNew, name, saving, setHeader, toggleNameDialog])
+  }, [handleOpenNameDialog, handleSave, handleStartTour, isNew, name, saving, setHeader, toggleNameDialog, workflow?.readOnly])
 
+  if (errorStatus === 404) return <NotFound title={t('Workflow.WorkflowNotFound')}></NotFound>
   return (
     <>
       <Prompt when={isDirty} message={t('LeavingWithoutSaving')} />
@@ -297,7 +315,7 @@ const WorkflowContainer = () => {
         workflowLens={workflowLens}
         resetWorkflow={resetWorkflow}
         isNew={isNew}
-        engine={engine}
+        diagram={diagram}
         loading={loading}
         isDirty={isDirty}
         setIsDirty={setIsDirty}
@@ -316,6 +334,7 @@ const WorkflowContainer = () => {
             onSave={handleSaveTask}
             onCancel={handleTaskDialogCancel}
             onPayloadChange={handlePayloadChange}
+            readOnly={workflow?.readOnly || false}
           />
         }
       />
@@ -325,9 +344,12 @@ const WorkflowContainer = () => {
         title={t('Workflow.AddName')}
         disableBackdropClick
         maxWidth='sm'
-        content={
-          <AddNameModal workflowLens={workflowLens} dirtyInfo={dirtyInfo} onCancel={toggleNameDialog} onSave={handleSave} saving={saving} />
-        }
+        showActions
+        textDialogYes={t('General.Buttons.Save')}
+        textDialogNo={t('General.Buttons.Cancel')}
+        onClose={toggleNameDialog}
+        onYes={handleSave}
+        content={<AddNameModal nameLens={nameLens} versionLens={versionLens} dirtyInfo={nameDirtyInfo || versionDirtyInfo} />}
       />
       <CustomDialog
         id='startTour'

@@ -3,6 +3,7 @@ const trayItemStyles = () => {
   return {
     EVENT: {
       position: 'relative',
+      borderRadius: '4px',
       height: '30px',
       width: '30px',
       color: 'white',
@@ -12,6 +13,7 @@ const trayItemStyles = () => {
     },
     LAMBDA: {
       position: 'relative',
+      borderRadius: '4px',
       height: '30px',
       width: '30px',
       color: 'white',
@@ -21,6 +23,7 @@ const trayItemStyles = () => {
     },
     HTTP: {
       position: 'relative',
+      borderRadius: '4px',
       height: '30px',
       width: '30px',
       color: 'white',
@@ -62,6 +65,7 @@ const trayItemStyles = () => {
     },
     TERMINATE: {
       position: 'relative',
+      borderRadius: '4px',
       height: '30px',
       width: '30px',
       color: 'white',
@@ -99,6 +103,26 @@ const trayItemStyles = () => {
       clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);',
       textAlign: 'center',
       animation: 'overlay'
+    },
+    TASK: {
+      position: 'relative',
+      borderRadius: '4px',
+      height: '30px',
+      width: '30px',
+      color: 'white',
+      backgroundColor: nodeConfig.TASK.color,
+      lineHeight: '30px',
+      textAlign: 'center'
+    },
+    SUB_WORKFLOW: {
+      position: 'relative',
+      borderRadius: '4px',
+      height: '30px',
+      width: '30px',
+      color: 'white',
+      backgroundColor: nodeConfig.SUB_WORKFLOW.color,
+      lineHeight: '30px',
+      textAlign: 'center'
     }
   }
 }
