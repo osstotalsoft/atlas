@@ -31,7 +31,7 @@ const AddNameModal = ({ nameLens, versionLens, dirtyInfo }) => {
         <CustomTextField
           fullWidth
           label={t('Workflow.Name')}
-          value={nameLens |> get || emptyString}
+          value={(nameLens |> get) || emptyString}
           onChange={nameLens |> set |> onTextBoxChange}
           debounceBy={100}
           error={!isValid(validation)}
