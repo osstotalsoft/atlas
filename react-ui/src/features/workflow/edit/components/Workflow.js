@@ -146,7 +146,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
 
           resetWorkflow({
             ...wf,
-            description: { description: wf?.description },
+            description: wf?.description,
             createdBy: oidcUser.profile.name,
             ownerEmail: oidcUser.profile.preferred_username
           })

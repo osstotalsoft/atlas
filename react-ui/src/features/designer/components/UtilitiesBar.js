@@ -53,7 +53,6 @@ const UtilitiesBar = ({ isNew, isDirty, onExecute, onPreviewJson, onDelete, onSh
             component='span'
             tooltip={t('Designer.UtilitiesBar.Import')}
             onClick={handleAskConfirmation}
-            disabled={!isNew}
           >
             <CloudUploadOutlined />
           </IconButton>
@@ -64,7 +63,6 @@ const UtilitiesBar = ({ isNew, isDirty, onExecute, onPreviewJson, onDelete, onSh
               type='file'
               hidden
               onChange={handleSelectFile}
-              disabled={!isNew}
             />
           )}
         </label>
