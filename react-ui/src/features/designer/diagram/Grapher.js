@@ -218,6 +218,7 @@ const Grapher = ({ workflow, layout }) => {
     setSubflow(<React.Fragment></React.Fragment>)
   }
 
+  const moreInfo = ' For additional information, please open the task information dialog by clicking on the failed task from the diagram below!'
   const error = failedTaskError(workflow)
 
   const handleDialogClose = useCallback(() => {
@@ -230,6 +231,7 @@ const Grapher = ({ workflow, layout }) => {
         <Grid container>
           <Grid item sm={12}>
             {error && <pre style={errorStyle}>{error}</pre>}
+            {error && <pre style={errorStyle}>{moreInfo}</pre>}
           </Grid>
           <Grid item sm={10}>
             <div style={{ marginTop: '10px', textAlign: 'center', verticalAlign: 'top' }}>
