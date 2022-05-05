@@ -1,0 +1,1 @@
+Atlas is a graphical interface, built on top of the Netflix's Conductor, used to create, modify and manage workflows in a very intuitive way enabling customers to create automated processes without having advanced technical knowledge.
