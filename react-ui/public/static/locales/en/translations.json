@@ -49,6 +49,7 @@
     "TimeoutSeconds": "Timeout seconds",
     "FailureWorkflow": "Failure workflow",
     "WorkflowNotFound": "The workflow definition can not be found. Most likely it has been deleted. ",
+    "MissingWorkflows": "The fallowing workflow(s) could not be found : {{missingSubWorkflows}}. Most likely they were deleted.",
     "WorkflowStatusListenerEnabled": "Workflow status listener enabled",
     "Buttons": {
       "AddWorkflow": "Add workflow",
@@ -145,6 +146,7 @@
     "InputKeys": "Input Keys",
     "OutputKeys": "Output Keys",
     "Data": "Data",
+    "MissingTasks": "The fallowing task(s) could not be found : {{missingTasks}}. Most likely they were deleted.",
     "Buttons": {
       "AddTask": "Add task"
     }

@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { get, set } from '@totalsoft/change-tracking-react'
 import { emptyString } from 'utils/constants'
 import { getFileContents } from 'utils/functions'
-import { useError } from 'hooks/errorHandling'
+import { useClientQueryWithErrorHandling, useError } from 'hooks/errorHandling'
 import { parseDiagramToJSON } from 'features/designer/builderHandler'
 import { saveAs } from 'file-saver'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
@@ -28,12 +28,15 @@ import SideMenu from './sideMenu/SideMenu'
 import PreviewJsonDialog from './modals/PreviewJsonDialog'
 import { defaultFileName } from 'features/workflow/common/constants'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
+import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
 
 const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty }) => {
   const { t } = useTranslation()
   const showError = useError()
+  const addToast = useToast()
 
   const { oidcUser } = useReactOidc()
+  const clientQuery = useClientQueryWithErrorHandling()
 
   const [activeTask, setActiveTask] = useState(tasksConfig.SYSTEM_TASKS)
   const [trayItems, setTrayItems] = useState()
@@ -136,6 +139,35 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
     set(workflowLens, initialSettings)
   }, [initialSettings, toggleSettingsDialog, workflowLens])
 
+  const warningIfTaskComponentMissing = useCallback(
+    async importedWorkflow => {
+      const { data: wkfDataList } = await clientQuery(WORKFLOW_LIST_QUERY)
+      const { data: taskDataList } = await clientQuery(TASK_LIST_QUERY)
+
+      const subWorkflows = importedWorkflow?.tasks?.filter(tsk => tsk?.type === nodeConfig.SUB_WORKFLOW.type)
+      const tasks = importedWorkflow?.tasks?.filter(tsk => tsk?.type === nodeConfig.TASK.type)
+
+      const missingSubWorkflows = subWorkflows
+        ?.filter(
+          swf =>
+            !wkfDataList?.getWorkflowList?.find(
+              wf => wf?.name === swf?.subWorkflowParam?.name && wf?.version === swf?.subWorkflowParam?.version
+            )
+        )
+        .map(s => s.name)
+        .join(', ')
+
+      const missingTasks = tasks
+        ?.filter(mTsk => !taskDataList?.getTaskDefinitionList?.find(tsk => tsk?.name === mTsk?.name))
+        .map(t => t.name)
+        .join(', ')
+
+      missingSubWorkflows && addToast(t('Workflow.MissingWorkflows', { missingSubWorkflows }), 'warning', 5000)
+      missingTasks && addToast(t('Task.MissingTasks', { missingTasks }), 'warning', 5000)
+    },
+    [addToast, clientQuery, t]
+  )
+
   const handleImport = useCallback(
     async file => {
       try {
@@ -150,12 +182,14 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
             createdBy: oidcUser.profile.name,
             ownerEmail: oidcUser.profile.preferred_username
           })
+
+          warningIfTaskComponentMissing(wf)
         }
       } catch (err) {
         showError(new Error('Invalid Json format. ' + err))
       }
     },
-    [engine, oidcUser.profile.name, oidcUser.profile.preferred_username, resetWorkflow, showError]
+    [engine, oidcUser.profile.name, oidcUser.profile.preferred_username, resetWorkflow, showError, warningIfTaskComponentMissing]
   )
 
   const handleExport = useCallback(() => {

@@ -218,7 +218,8 @@ const Grapher = ({ workflow, layout }) => {
     setSubflow(<React.Fragment></React.Fragment>)
   }
 
-  const moreInfo = ' For additional information, please open the task information dialog by clicking on the failed task from the diagram below!'
+  const moreInfo =
+    'For additional information, please open the task information dialog by clicking on the failed task from the diagram below!'
   const error = failedTaskError(workflow)
 
   const handleDialogClose = useCallback(() => {
