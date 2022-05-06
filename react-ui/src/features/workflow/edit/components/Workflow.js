@@ -140,12 +140,12 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   }, [initialSettings, toggleSettingsDialog, workflowLens])
 
   const warningIfTaskComponentMissing = useCallback(
-    async wf => {
+    async importedWorkflow => {
       const { data: wkfDataList } = await clientQuery(WORKFLOW_LIST_QUERY)
       const { data: taskDataList } = await clientQuery(TASK_LIST_QUERY)
 
-      const subWorkflows = wf?.tasks?.filter(tsk => tsk?.type === nodeConfig.SUB_WORKFLOW.type)
-      const tasks = wf?.tasks?.filter(tsk => tsk?.type === nodeConfig.TASK.type)
+      const subWorkflows = importedWorkflow?.tasks?.filter(tsk => tsk?.type === nodeConfig.SUB_WORKFLOW.type)
+      const tasks = importedWorkflow?.tasks?.filter(tsk => tsk?.type === nodeConfig.TASK.type)
 
       const missingSubWorkflows = subWorkflows
         ?.filter(
