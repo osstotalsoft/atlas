@@ -42,7 +42,7 @@
     "TimeoutSeconds": "Secunde pana la expirare",
     "FailureWorkflow": "Flux in caz de esec",
     "WorkflowNotFound": "Definitia workflow-ului nu a fost gasita. Cel mai probabil a fost stearsa. ",
-    "MissingWorkflows": "Urmatoarele workflow-uri nu au fost gasite: {{missingSubWfls}}. Cel mai probabil au fost stearse.",
+    "MissingWorkflows": "Urmatoarele workflow-uri nu au fost gasite: {{missingSubWorkflows}}. Cel mai probabil au fost sterse.",
     "WorkflowStatusListenerEnabled": "Listener pentru statusul fluxului activat",
     "Buttons": {
       "AddWorkflow": "Adauga flux",
@@ -136,7 +136,7 @@
     "TimeoutPolicy": "Timeout Policy",
     "TimeoutSeconds": "Timeout Seconds",
     "ResponseTimeoutSeconds": "Response Timeout Seconds",
-    "MissingTasks": "Urmatoarele task-uri nu au fost gasite: {{missingTasks}}. Cel mai probabil au fost stearse.",
+    "MissingTasks": "Urmatoarele task-uri nu au fost gasite: {{missingTasks}}. Cel mai probabil au fost sterse.",
     "InputKeys": "Input Keys",
     "OutputKeys": "Output Keys",
     "Data": "Date",

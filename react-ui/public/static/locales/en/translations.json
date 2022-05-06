@@ -146,7 +146,7 @@
     "InputKeys": "Input Keys",
     "OutputKeys": "Output Keys",
     "Data": "Data",
-    "MissingTasks": "The fallowing task(s) could not be found : {{missingTasks}}. Most likely they were deleted.",
+    "MissingTasks": "The fallowing task(s) could not be found : {{missingSubWorkflows}}. Most likely they were deleted.",
     "Buttons": {
       "AddTask": "Add task"
     }

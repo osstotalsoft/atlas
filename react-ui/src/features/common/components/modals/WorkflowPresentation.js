@@ -8,7 +8,7 @@ import { emptyObject } from 'utils/constants'
 import { useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import magnifyingGlass from 'assets/img/magnifyingGlass.png'
-import { Grid } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import Typography from '@bit/totalsoft_oss.react-mui.typography'
 
 const WorkflowPresentation = ({ name, version }) => {
@@ -27,14 +27,10 @@ const WorkflowPresentation = ({ name, version }) => {
   return workflow ? (
     <BodyWidget canvasClass={'dataflow-canvas-popover'} workflow={workflow || emptyObject} engine={engine} locked={true} />
   ) : (
-    <Grid container spacing={2} alignItems='center' justifyContent='center'>
-      <Grid item>
-        <img height={250} src={magnifyingGlass}></img>
-      </Grid>
-      <Grid item>
-        <Typography variant='h6'>{t('Workflow.WorkflowNotFound')}</Typography>
-      </Grid>
-    </Grid>
+    <Box textAlign={'center'}>
+      <img height={250} src={magnifyingGlass}></img>
+      <Typography variant='h6'>{t('Workflow.WorkflowNotFound')}</Typography>
+    </Box>
   )
 }
 

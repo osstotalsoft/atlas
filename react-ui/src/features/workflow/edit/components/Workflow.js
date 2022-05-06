@@ -141,25 +141,28 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
 
   const warningIfTaskComponentMissing = useCallback(
     async wf => {
+      const { data: wkfDataList } = await clientQuery(WORKFLOW_LIST_QUERY)
+      const { data: taskDataList } = await clientQuery(TASK_LIST_QUERY)
+
       const subWorkflows = wf?.tasks?.filter(tsk => tsk?.type === nodeConfig.SUB_WORKFLOW.type)
       const tasks = wf?.tasks?.filter(tsk => tsk?.type === nodeConfig.TASK.type)
 
-      const { data: wkfDataList } = await clientQuery(WORKFLOW_LIST_QUERY)
-      const { data: taskDataList } = await clientQuery(TASK_LIST_QUERY)
-      const wflList = wkfDataList?.getWorkflowList
-      const taskList = taskDataList?.getTaskDefinitionList
-
-      const missingSubWfls = subWorkflows
-        ?.filter(swf => !wflList?.find(wf => wf?.name === swf?.subWorkflowParam?.name && wf?.version === swf?.subWorkflowParam?.version))
+      const missingSubWorkflows = subWorkflows
+        ?.filter(
+          swf =>
+            !wkfDataList?.getWorkflowList?.find(
+              wf => wf?.name === swf?.subWorkflowParam?.name && wf?.version === swf?.subWorkflowParam?.version
+            )
+        )
         .map(s => s.name)
         .join(', ')
 
       const missingTasks = tasks
-        ?.filter(mTsk => !taskList?.find(tsk => tsk?.name === mTsk?.name))
+        ?.filter(mTsk => !taskDataList?.getTaskDefinitionList?.find(tsk => tsk?.name === mTsk?.name))
         .map(t => t.name)
         .join(', ')
 
-      missingSubWfls && addToast(t('Workflow.MissingWorkflows', { missingSubWfls }), 'warning', 5000)
+      missingSubWorkflows && addToast(t('Workflow.MissingWorkflows', { missingSubWorkflows }), 'warning', 5000)
       missingTasks && addToast(t('Task.MissingTasks', { missingTasks }), 'warning', 5000)
     },
     [addToast, clientQuery, t]
