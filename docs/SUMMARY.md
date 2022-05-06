@@ -1,13 +1,12 @@
-‌# Summary​
+# Table of contents
 
 ## Getting started
 
-* [About project](aboutProject.md)    
-* [High lever architecture](page2/README.md)    
-* [Development setup](page2/README.md)    
-    * [Front-end application](page2/page2-1.md)    
-    * [Graph-ql server application](part2/page2-2.md)    
+* [About project](README.md)
+* [High level architecture](getting-started/high-level-architecture.md)
+*
 
 ## User guides
 
-* [Welcome](another-page.md)
+* [Welcome](user-guides/welcome.md)
+* [Building workflows](user-guides/building-workflows.md)
