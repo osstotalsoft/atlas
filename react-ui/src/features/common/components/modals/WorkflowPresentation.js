@@ -6,8 +6,10 @@ import LoadingFakeText from 'components/LoadingFakeText'
 import { WORKFLOW_QUERY } from 'features/workflow/edit/queries/WorkflowQuery'
 import { emptyObject } from 'utils/constants'
 import { useQuery } from '@apollo/client'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { useTranslation } from 'react-i18next'
+import magnifyingGlass from 'assets/img/magnifyingGlass.png'
+import { Grid } from '@material-ui/core'
+import Typography from '@bit/totalsoft_oss.react-mui.typography'
 
 const WorkflowPresentation = ({ name, version }) => {
   const { t } = useTranslation()
@@ -25,7 +27,14 @@ const WorkflowPresentation = ({ name, version }) => {
   return workflow ? (
     <BodyWidget canvasClass={'dataflow-canvas-popover'} workflow={workflow || emptyObject} engine={engine} locked={true} />
   ) : (
-    <Typography variant='h6'>{t('Workflow.WorkflowNotFound')}</Typography>
+    <Grid container spacing={2} alignItems='center' justifyContent='center'>
+      <Grid item>
+        <img height={250} src={magnifyingGlass}></img>
+      </Grid>
+      <Grid item>
+        <Typography variant='h6'>{t('Workflow.WorkflowNotFound')}</Typography>
+      </Grid>
+    </Grid>
   )
 }
 
