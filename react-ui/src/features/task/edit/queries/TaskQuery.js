@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const TASK_QUERY = gql`
   query getTaskDef($name: String!) {
-    getTaskDef(tasktype: $name) {
+    getTaskDefinition(tasktype: $name) {
       name
       readOnly
       createTime

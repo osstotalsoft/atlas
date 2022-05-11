@@ -38,7 +38,7 @@ const TaskContainer = () => {
     variables: { name },
     skip: isNew,
     onCompleted: taskData => {
-      resetTask(taskData?.getTaskDef)
+      resetTask(taskData?.getTaskDefinition)
     }
   })
 
