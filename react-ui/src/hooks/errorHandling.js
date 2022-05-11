@@ -41,12 +41,12 @@ export function useClientQueryWithErrorHandling() {
 
 export const useError = () => {
   const addToast = useToast()
-  const generateErrorMessage = error => `${error.extensions.code} - ${error.message}`
+  const generateErrorMessage = error => `${error?.extensions?.code} - ${error?.message}`
   const generateSimpleErrorMessage = message => `There is a problem communicating with the server. ${message}`
   const addErrorToast = useCallback(
-    message => {
-      const logId = match(/Log Id: < (.*) > Request Id:/, message)[1]
-      addToast(<LinkedToast logId={logId}>{generateSimpleErrorMessage(message)}</LinkedToast>, 'error', false)
+    errorMessage => {
+      const logId = match(/Log Id: < (.*) > Request Id:/, errorMessage)[1]
+      addToast(<LinkedToast logId={logId}>{errorMessage}</LinkedToast>, 'error', false)
     },
     [addToast]
   )
@@ -72,13 +72,13 @@ export const useError = () => {
   return useCallback(
     error => {
       if (!error?.graphQLErrors && !error?.networkError?.result?.errors) {
-        addErrorToast(generateSimpleErrorMessage(error.message))
+        addErrorToast(generateSimpleErrorMessage(error?.message))
         return
       }
 
       const graphQLErrors = error?.graphQLErrors ?? []
       graphQLErrors.forEach(err => {
-        err?.extensions?.code ? addErrorToast(generateErrorMessage(err)) : addErrorToast(generateSimpleErrorMessage(err.message))
+        err?.extensions?.code ? addErrorToast(generateErrorMessage(err)) : addErrorToast(generateSimpleErrorMessage(err?.message))
       })
 
       const networkErrors = error?.networkError?.result?.errors ?? []
