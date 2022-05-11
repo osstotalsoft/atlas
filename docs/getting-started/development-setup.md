@@ -65,4 +65,4 @@ yarn start
 
 </details>
 
-### **Now, you're all set!**     :tada: **** :tada::tada:****
+### **You're all set, now!**     :tada: **** :tada::tada:****
