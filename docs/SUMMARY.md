@@ -4,7 +4,7 @@
 
 * [About project](README.md)
 * [High level architecture](getting-started/high-level-architecture.md)
-*
+* [Development setup](getting-started/development-setup.md)
 
 ## User guides
 
