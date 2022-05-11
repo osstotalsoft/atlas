@@ -2,16 +2,18 @@
 
 Even if you would like to adapt the application to your needs or you'd like to contribute to Atlas, here are the steps to follow in order to make the application up and running:
 
-**First of all, prepare your development environment and ensure you have installed the following prerequisites:**
+First of all, prepare your development environment and ensure you have installed the following prerequisites:
 
 * Visual Studio Code: [https://code.visualstudio.com/download](https://code.visualstudio.com/download)
 * Git: [https://git-scm.com/download/win](https://git-scm.com/download/win)
 * Git Extensions: [https://github.com/gitextensions/gitextensions/releases](https://github.com/gitextensions/gitextensions/releases)
 * Node.js: [https://nodejs.org/en/download/](https://nodejs.org/en/download/)****
 
-### **React application configuration**&#x20;
+<details>
 
-**Step 1:**  Go to .env configuration file from react-ui folder and set following variable with your own values:
+<summary>React application configuration  </summary>
+
+**Step 1:**  Go to .env configuration file from react-ui folder and set the following variables with your own values:
 
 * REACT\_APP\_IDENTITY\_CLIENT\_ID_:_ This should be the public identifier of Atlas
 * REACT\_APP\_IDENTITY\_SCOPE: The list of scopes requested that will be present in the JWT token
@@ -21,17 +23,20 @@ Even if you would like to adapt the application to your needs or you'd like to c
 
 **Step 2:** Run the following commands to start the project
 
-<mark style="color:purple;">`yarn install`</mark>
-
-<mark style="color:purple;">`yarn start`</mark>
+```powershell
+yarn install
+yarn start
+```
 
 **Step 3**: Check the application at: [http://localhost:3000](http://localhost:3000)
 
-****
+</details>
 
-### **Graph-QL Server configuration**
+<details>
 
-**Step 1:** Go to .env configuration file from gql-bff folder and set following variable with your own values:
+<summary>Graph-QL Server configuration</summary>
+
+**Step 1:** Go to .env configuration file from gql-bff folder and set the following variables with your own values:
 
 * REACT\_APP\_IDENTITY\_AUTHORITY: The url to your Identity Server
 * IDENTITY\_OPENID\_CONFIGURATION ???
@@ -39,3 +44,25 @@ Even if you would like to adapt the application to your needs or you'd like to c
 * API\_URL
 * BASE\_API\_URL
 * IS\_MULTITENANT
+
+**Step 2**: Set up the Elastic connection by running the following commands in a PowerShell terminal/command prompt:
+
+```powershell
+$env:KUBECONFIG=[insert path to the kubeconfig file for QA]
+kubectl port-forward svc/elasticsearch-master [portNumber]:9200 -n elastic
+```
+
+**Step 3:** Run the following commands to start the project
+
+```powershell
+yarn install
+yarn start
+```
+
+**Step 4:** Check the Elastic is running at: [http://localhost:9000](http://localhost:9000)
+
+**Step 5:** Check the GQL server is running at: [http://localhost:5000/graphql](http://localhost:5000/graphql)
+
+</details>
+
+****
