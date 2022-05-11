@@ -18,4 +18,4 @@ The server side component consists of an Apollo Server application on which we h
 
 Elasticsearch is used by the server as an external database for different functionalities as logs and history.&#x20;
 
-Conductor API is called by the server to benefit of Conductor functionalities which underlies the storage and orchestration of all the workflows. The API gives us the possibility to create and update the resources definitions, execute different actions on the workflows or tasks, and returns the resulting information about the processes activity.
+Conductor API is called by the server to benefit of [Conductor ](https://netflix.github.io/conductor/)functionalities which underlies the storage and orchestration of all the workflows. The API gives us the possibility to create and update the resources definitions, execute different actions on the workflows or tasks, and returns the resulting information about the processes activity.
