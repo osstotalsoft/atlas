@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const TASK_QUERY = gql`
-  query getTaskDef($name: String!, $isNew: Boolean!, $limit: Int!) {
-    getTaskDefinition(tasktype: $name) @skip(if: $isNew) {
+  query getTaskDef($name: String!) {
+    getTaskDef(tasktype: $name) {
       name
       readOnly
       createTime
@@ -16,9 +16,6 @@ export const TASK_QUERY = gql`
       responseTimeoutSeconds
       rateLimitPerFrequency
       rateLimitFrequencyInSeconds
-    }
-    getTaskDefs(limit: $limit) {
-      name
     }
   }
 `

@@ -267,6 +267,7 @@
     "Phone": "Numarul de telefon nu este valid",
     "NoSpace": "Nu poate incepe cu spatiu",
     "Integer": "Valoarea trebuie sa fie un numar intreg",
+    "UniqueName": "Numele trebuie sa fie unic",
     "UniqueNameAndVersion": "Numele si versiunea trebuie sa fie unice",
     "InvalidSink": "Sink-ul trebuie sa fie de tipul conductor/nats_stream:topic",
     "NameCannotBeNew": "Numele nu poate fi 'new'",

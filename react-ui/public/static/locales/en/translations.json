@@ -273,6 +273,7 @@
     "Phone": "The value is not a valid phone number",
     "NoSpace": "Can not begin with space",
     "Integer": "The value must be an integer",
+    "UniqueName": "Name must be unique",
     "UniqueNameAndVersion": "Name and version must be unique",
     "InvalidSink": "Sink must be of type conductor/nats_stream:topic",
     "NameCannotBeNew": "Name cannot be 'new'",

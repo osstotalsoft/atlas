@@ -19,6 +19,7 @@ import { buildValidator } from '../validator'
 import { useDirtyFieldValidation } from '@totalsoft/pure-validations-react'
 import { omit } from 'ramda'
 import { TASK_LIST_QUERY } from '../../list/queries/TaskListQuery'
+import { TASK_NAMES_QUERY } from '../queries/TaskNamesQuery'
 
 const TaskContainer = () => {
   const showError = useError()
@@ -33,12 +34,16 @@ const TaskContainer = () => {
   const [taskLens, dirtyInfo, resetTask] = useChangeTrackingLens(defaultConfiguration)
   const task = taskLens |> get
 
-  const { data, loading } = useQueryWithErrorHandling(TASK_QUERY, {
-    variables: { name, isNew, limit },
+  const { loading } = useQueryWithErrorHandling(TASK_QUERY, {
+    variables: { name },
+    skip: isNew,
     onCompleted: taskData => {
-      resetTask(taskData?.getTaskDefinition)
+      resetTask(taskData?.getTaskDef)
     }
   })
+
+  const { data } = useQueryWithErrorHandling(TASK_NAMES_QUERY, { variables: { limit } })
+
   const { data: timeoutPoliciesData } = useQueryWithErrorHandling(TIMEOUT_POLICY_OPTIONS)
   const timeoutPolicyList = timeoutPoliciesData?.__type?.enumValues || emptyArray
 
@@ -56,7 +61,7 @@ const TaskContainer = () => {
       if (isNew || isPropertyDirty('name', dirtyInfo)) history.push(`/tasks/${task?.name}`)
     },
     onError: error => showError(error),
-    refetchQueries: [{ query: TASK_QUERY, variables: { name, isNew, limit } }, { query: TASK_LIST_QUERY }]
+    refetchQueries: [{ query: TASK_QUERY, variables: { name: task?.name } }, { query: TASK_LIST_QUERY }]
   })
 
   const handleSave = useCallback(() => {
