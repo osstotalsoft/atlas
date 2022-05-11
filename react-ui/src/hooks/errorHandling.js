@@ -46,7 +46,7 @@ export const useError = () => {
   const addErrorToast = useCallback(
     errorMessage => {
       const logId = match(/Log Id: < (.*) > Request Id:/, errorMessage)[1]
-      addToast(<LinkedToast logId={logId}>{errorMessage}</LinkedToast>, 'error', false)
+      addToast(<LinkedToast logId={logId}>{generateSimpleErrorMessage(errorMessage)}</LinkedToast>, 'error', false)
     },
     [addToast]
   )
@@ -72,13 +72,13 @@ export const useError = () => {
   return useCallback(
     error => {
       if (!error?.graphQLErrors && !error?.networkError?.result?.errors) {
-        addErrorToast(generateSimpleErrorMessage(error?.message))
+        addErrorToast(error?.message)
         return
       }
 
       const graphQLErrors = error?.graphQLErrors ?? []
       graphQLErrors.forEach(err => {
-        err?.extensions?.code ? addErrorToast(generateErrorMessage(err)) : addErrorToast(generateSimpleErrorMessage(err?.message))
+        err?.extensions?.code ? addErrorToast(generateErrorMessage(err)) : addErrorToast(err?.message)
       })
 
       const networkErrors = error?.networkError?.result?.errors ?? []
