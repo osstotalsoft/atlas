@@ -12,9 +12,10 @@ One of the main attraction points of this application may be the workflow design
 
 #### Back-End application
 
+The server side component consists of an Apollo Server application on which we have defined the GraphQL schema that specifies all of the types and fields available in our graph. In order to quickly transform the Conductor REST API into a GraphQL Gateway, we chose to use [Graph QL Mesh](https://www.graphql-mesh.com) which permitted to extend the unified schema with custom types and resolvers which gave us the flexibility to implement all the desired behavior.&#x20;
 
+#### Third party services
 
+Elasticsearch is used by the server as an external database for different functionalities as logs and history.&#x20;
 
-
-
-
+Conductor API is called by the server to benefit of Conductor functionalities which underlies the storage and orchestration of all the workflows. The API gives us the possibility to create and update the resources definitions, execute different actions on the workflows or tasks, and returns the resulting information about the processes activity.
