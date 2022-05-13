@@ -14,15 +14,14 @@ const executionResolvers = {
       const execution = await dataSources?.executionApi?.getExecution(
         workflowId
       );
-      const executionTenantId = execution?.input?.Headers?.tenantId;
-
       if (!isMultiTenant) return execution;
 
+      const executionTenantId = execution?.input?.Headers?.tenantId;
       if (userCanSeeResource(executionTenantId, tenantId)) {
         return execution;
       } else
         return new ForbiddenError(
-          "You are not authorized to see this event handler."
+          "You are not authorized to see this execution."
         );
     },
 
@@ -34,11 +33,8 @@ const executionResolvers = {
       if (isMultiTenant) queryArray.push(`input='(tenantId=${tenantId})'`);
 
       const query = queryArray.join("AND");
-
       const newArgs = { ...args, query };
-      const res = await dataSources?.executionApi?.getExecutionList(newArgs);
-
-      return res;
+      return await dataSources?.executionApi?.getExecutionList(newArgs);
     },
   },
   Workflow: {
@@ -46,7 +42,6 @@ const executionResolvers = {
       if (!isMultiTenant) return false;
 
       const exTenantId = parent?.input?.Headers?.tenantId;
-
       return !userCanEditResource(exTenantId, externalUser);
     },
     input: (parent, _args, context, _info) => {
@@ -54,7 +49,6 @@ const executionResolvers = {
         ...parent.input,
         Headers: omit(["tenantId"], parent?.input?.Headers),
       };
-
       return newInput;
     },
   },
