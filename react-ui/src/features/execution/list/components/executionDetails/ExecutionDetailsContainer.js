@@ -76,7 +76,7 @@ const ExecutionDetailsContainer = () => {
             <Tab
               className={classes.tabLabel}
               label={t('Execution.EditRerun')}
-              disabled={executionDetails?.status === executionStatus.RUNNING}
+              disabled={executionDetails?.status === executionStatus.RUNNING || executionDetails?.readOnly}
             />
             <Tab className={classes.tabLabel} label={t('Execution.ExecutionFlow')} />
           </Tabs>

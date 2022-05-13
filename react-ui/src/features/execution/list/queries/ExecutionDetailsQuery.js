@@ -19,6 +19,7 @@ export const EXECUTION_DETAILS_QUERY = gql`
       reasonForIncompletion
       startTime
       status
+      readOnly
       taskToDomain
       tasks {
         callbackAfterSeconds
