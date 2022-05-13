@@ -91,7 +91,7 @@ const ExecutionSummary = ({ summary, workflowId, execution, startPolling }) => {
               <Typography display='block' className={classes.primaryText}>
                 {t('Execution.Actions')}
               </Typography>
-              <ExecutionActions status={execution?.status} workflowId={workflowId} startPolling={startPolling} />
+              <ExecutionActions status={execution?.status} workflowId={workflowId} startPolling={startPolling} readOnly={execution?.readOnly || false} />
             </>
           }
         />

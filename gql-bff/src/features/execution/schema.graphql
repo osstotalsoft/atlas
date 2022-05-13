@@ -1,3 +1,7 @@
+extend type Workflow {
+  readOnly: Boolean
+}
+
 extend type Query {
   getExecution(includeTasks: Boolean, workflowId: String!): Workflow
   getExecutionList(size: Int, start: Int, freeText: String, query: String, sort: String): SearchResultWorkflowSummary
