@@ -13,7 +13,6 @@ import { nodeConfig } from '../../../designer/constants/NodeConfig'
 import ExecuteWorkflowModal from 'features/workflow/common/components/ExecuteWorkflowModal'
 import GeneralSettingsDialog from './modals/GeneralSettingsDialog'
 import { emptyObject } from 'utils/constants'
-import { useStateLens } from '@totalsoft/react-state-lens'
 import { useTranslation } from 'react-i18next'
 import { get, set } from '@totalsoft/change-tracking-react'
 import { emptyString } from 'utils/constants'
@@ -47,7 +46,6 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const [previewDialog, setPreviewDialog] = useState(false)
   const [currentWorkflow, setCurrentWorkflow] = useState(null)
 
-  const inputLens = useStateLens(emptyObject)
   const workflow = workflowLens |> get
   const { engine } = diagram
 
@@ -235,7 +233,6 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         toggleExecDialog={toggleExecDialog}
         name={workflow?.name || emptyString}
         version={workflow?.version || workflowConfig.version}
-        inputLens={inputLens}
       />
       <GeneralSettingsDialog
         open={settingsDialog}
