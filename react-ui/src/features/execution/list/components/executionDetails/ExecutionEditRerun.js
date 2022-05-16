@@ -6,7 +6,7 @@ import { Typography, CustomTextField, Button } from '@bit/totalsoft_oss.react-mu
 import { EXECUTE_WORKFLOW_MUTATION } from 'features/workflow/list/mutations/ExecuteWorkflowMutation'
 import { useMutation } from '@apollo/client'
 import { useCallback } from 'react'
-import { curry, prop } from 'ramda'
+import { curry, prop, isNil } from 'ramda'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { emptyObject } from 'utils/constants'
 import { useStateLens, get, set } from '@totalsoft/react-state-lens'
@@ -37,7 +37,7 @@ const ExecutionEditRerun = ({ workflow }) => {
 
   const keys = [...new Set(inputsArray)]
   const values = []
-  keys.map(k => values.push(prop(k, input) ? prop(k, input) : ''))
+  keys.map(k => values.push(!isNil(prop(k, input)) ? prop(k, input) : ''))
 
   const [executeWorkflow, { loading }] = useMutation(EXECUTE_WORKFLOW_MUTATION, {
     onCompleted: data => {
