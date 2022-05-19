@@ -2,7 +2,7 @@ import { useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import React, { useCallback, useState } from 'react'
 import { TASK_LIST_QUERY } from '../queries/TaskListQuery'
 import TaskList from './TaskList'
-import { filterList } from 'utils/functions'
+import { filterList, sortBy } from 'utils/functions'
 import { taskListFilter } from 'apollo/cacheKeyFunctions'
 import TaskListFilter from './TaskListFilter'
 import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
@@ -13,6 +13,9 @@ import { tasksPager } from 'apollo/cacheKeyFunctions'
 import { useHistory } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
+import { emptyArray } from 'utils/constants'
+import { sortingDirection, sortTaskByField } from 'features/common/constants'
+import { pipe } from 'ramda'
 
 const TasksListContainer = () => {
   const history = useHistory()
@@ -64,7 +67,7 @@ const TasksListContainer = () => {
         pager={pager}
         setPager={setPager}
         loading={loading}
-        taskList={filterList(filters)(data?.getTaskDefinitionList)}
+        taskList={pipe(filterList(filters), sortBy(sortTaskByField, sortingDirection.DESC))(data?.getTaskDefinitionList || emptyArray)}
         onEditTask={handleEditTask}
         onAddTask={handleAddTask}
         onRefresh={refetch}
