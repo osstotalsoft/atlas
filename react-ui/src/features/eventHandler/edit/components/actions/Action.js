@@ -19,22 +19,22 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
   const { t } = useTranslation()
   const action = actionLens |> get
   const actionName = action?.action
-  const editMode = action.editMode
+  const editMode = action?.editMode
 
   const actionDetailsLens =
     actionName === actionType.COMPLETE_TASK
-      ? actionLens.completeTask
+      ? actionLens?.completeTask
       : actionName === actionType.FAIL_TASK
-      ? actionLens.failTask
-      : actionLens.startWorkflow
+      ? actionLens?.failTask
+      : actionLens?.startWorkflow
 
   const handlePropertyChanged = useCallback(() => {
-    set(actionLens.expandInlineJSON, !action?.expandInlineJSON)
-  }, [action?.expandInlineJSON, actionLens.expandInlineJSON])
+    set(actionLens?.expandInlineJSON, !action?.expandInlineJSON)
+  }, [action?.expandInlineJSON, actionLens?.expandInlineJSON])
 
   const handleEditAction = useCallback(() => {
     onEditAction(action)
-    set(actionLens.editMode, true)
+    set(actionLens?.editMode, true)
   }, [action, actionLens.editMode, onEditAction])
 
   const handleActionTypeChange = useCallback(action => set(actionLens, { editMode: true, action }), [actionLens])
@@ -92,9 +92,9 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
               )}
             </Grid>
             {actionName === actionType.START_WORKFLOW ? (
-              <ActionHeaderStart actionDetailsLens={actionDetailsLens} editMode={editMode} />
+              <ActionHeaderStart actionDetailsLens={actionDetailsLens} editMode={editMode || false} />
             ) : (
-              <ActionHeaderCompleteFail actionDetailsLens={actionDetailsLens} editMode={editMode} />
+              <ActionHeaderCompleteFail actionDetailsLens={actionDetailsLens} editMode={editMode || false} />
             )}
           </Grid>
         </Td>

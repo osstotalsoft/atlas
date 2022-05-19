@@ -26,26 +26,26 @@ const ActionList = ({ handlerLens, editInProgress, validation }) => {
   const handleEditAction = useCallback(action => setInitialAction(action), [])
 
   const handleCancelEdit = useCallback(
-    actionLens => () => {
+    (actionLens, index) => () => {
       if (!initialAction) {
-        over(handlerLens.actions, remove(0, 1))
+        over(handlerLens?.actions, remove(index, 1))
         return
       }
       set(actionLens, initialAction)
       setInitialAction(null)
     },
-    [handlerLens.actions, initialAction]
+    [handlerLens?.actions, initialAction]
   )
 
   const handleSaveAction = useCallback(
     actionLens => () => {
-      set(actionLens.editMode, false)
+      set(actionLens?.editMode, false)
       setInitialAction(null)
     },
     []
   )
 
-  const handleDeleteAction = useCallback(index => () => over(handlerLens.actions, remove(index, 1)), [handlerLens])
+  const handleDeleteAction = useCallback(index => () => over(handlerLens?.actions, remove(index, 1)), [handlerLens])
 
   return (
     <>
@@ -57,7 +57,7 @@ const ActionList = ({ handlerLens, editInProgress, validation }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {handlerLens.actions
+            {handlerLens?.actions
               |> sequence
               |> addIndex(map)((actionLens, index) => (
                 <Action
@@ -65,7 +65,7 @@ const ActionList = ({ handlerLens, editInProgress, validation }) => {
                   actionLens={actionLens}
                   onEditAction={handleEditAction}
                   onDeleteAction={handleDeleteAction(index)}
-                  onCancelEdit={handleCancelEdit(actionLens)}
+                  onCancelEdit={handleCancelEdit(actionLens, index)}
                   onSaveAction={handleSaveAction(actionLens)}
                   editInProgress={editInProgress}
                   validation={validation[index]}
@@ -80,13 +80,13 @@ const ActionList = ({ handlerLens, editInProgress, validation }) => {
           </Typography>
         )}
       </Grid>
-      {handlerLens.actions
+      {handlerLens?.actions
         |> sequence
         |> addIndex(map)((actionLens, index) => {
           const action = actionLens |> get
           return (
-            action.editMode &&
-            action.action && (
+            action?.editMode &&
+            action?.action && (
               <Card key={index}>
                 <ActionDetails key={index} actionLens={actionLens} disableSave={disableSave} />
               </Card>

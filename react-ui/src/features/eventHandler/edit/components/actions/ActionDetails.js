@@ -9,10 +9,10 @@ const ActionDetails = ({ actionLens, disableSave }) => {
   const { action } = actionLens |> get
   const actionDetailsLens =
     action === actionType.COMPLETE_TASK
-      ? actionLens.completeTask
+      ? actionLens?.completeTask
       : action === actionType.FAIL_TASK
-      ? actionLens.failTask
-      : actionLens.startWorkflow
+      ? actionLens?.failTask
+      : actionLens?.startWorkflow
 
   return action === actionType.START_WORKFLOW ? (
     <ActionDetailsStart actionDetailsLens={actionDetailsLens} disableSave={disableSave} />

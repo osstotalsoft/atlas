@@ -6,6 +6,8 @@ export const sortWorkflowsByField = 'updateTime'
 
 export const sortHistoryByField = 'timeStamp'
 
+export const sortTaskByField = 'createTime'
+
 export const sortingDirection = {
   ASC: 'ASC',
   DESC: 'DESC'
