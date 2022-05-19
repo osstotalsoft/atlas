@@ -1,6 +1,6 @@
 # 🍕 High level architecture
 
-The application is composed by a front-end application created with [React](https://reactjs.org) and backend for front-end application using [graph-ql mesh](https://www.graphql-mesh.com) technology, serving as a gateway between application and other services.
+The application is composed by a front-end application created with [React](https://reactjs.org/) and backend for front-end application using [graph-ql mesh](https://www.graphql-mesh.com/) technology, serving as a gateway between application and other services.
 
 ![](<../.gitbook/assets/download (1).jpeg>)
 
@@ -12,7 +12,7 @@ One of the main attraction points of this application may be the workflow design
 
 #### Back-End application
 
-The server side component consists of an Apollo Server application on which we have defined the GraphQL schema that specifies all of the types and fields available in our graph. In order to quickly transform the Conductor REST API into a GraphQL Gateway, we chose to use [Graph QL Mesh](https://www.graphql-mesh.com) which permitted to extend the unified schema with custom types and resolvers which gave us the flexibility to implement all the desired behavior.&#x20;
+The server side component consists of an Apollo Server application on which we have defined the GraphQL schema that specifies all of the types and fields available in our graph. In order to quickly transform the Conductor REST API into a GraphQL Gateway, we chose to use [Graph QL Mesh](https://www.graphql-mesh.com/) which permitted to extend the unified schema with custom types and resolvers which gave us the flexibility to implement all the desired behavior.&#x20;
 
 #### Third party services
 

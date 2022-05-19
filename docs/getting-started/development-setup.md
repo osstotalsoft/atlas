@@ -28,7 +28,7 @@ yarn install
 yarn start
 ```
 
-**Step 3**: Check the application at: [http://localhost:3000](http://localhost:3000)
+**Step 3**: Check the application at: [http://localhost:3000](http://localhost:3000/)
 
 </details>
 
