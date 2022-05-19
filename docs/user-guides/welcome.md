@@ -7,3 +7,5 @@ Before starting, we recommend to take a look at the [Conductor documentation](ht
 Here is a demonstration video:
 
 {% embed url="https://youtu.be/Qnj5EiOjK-I" %}
+
+The project is Open Source and can be found at: [https://github.com/osstotalsoft/atlas](https://github.com/osstotalsoft/atlas). Don't hesitate to clone the repo and tell us your impression! Thank you!
