@@ -94,7 +94,7 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
             {actionName === actionType.START_WORKFLOW ? (
               <ActionHeaderStart actionDetailsLens={actionDetailsLens} editMode={editMode || false} />
             ) : (
-              <ActionHeaderCompleteFail actionDetailsLens={actionDetailsLens} editMode={editMode} />
+              <ActionHeaderCompleteFail actionDetailsLens={actionDetailsLens} editMode={editMode || false} />
             )}
           </Grid>
         </Td>
