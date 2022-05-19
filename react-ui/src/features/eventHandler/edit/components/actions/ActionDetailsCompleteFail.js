@@ -12,7 +12,7 @@ const ActionDetailsCompleteFail = ({ actionDetailsLens, disableSave }) => {
   return (
     <Grid container spacing={2} className={classes.tableContent}>
       <Grid item xs={12}>
-        <CompleteFailWorkflowInputList outputLens={actionDetailsLens.output} disableSave={disableSave} />
+        <CompleteFailWorkflowInputList outputLens={actionDetailsLens?.output} disableSave={disableSave} />
       </Grid>
       <Grid item xs={10} />
     </Grid>

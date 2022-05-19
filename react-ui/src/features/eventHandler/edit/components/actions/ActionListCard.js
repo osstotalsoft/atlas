@@ -11,8 +11,8 @@ const ActionListCard = ({ handlerLens, editInProgress, validation }) => {
   const { t } = useTranslation()
 
   const handleAddAction = useCallback(() => {
-    over(handlerLens.actions, append({ editMode: true }))
-  }, [handlerLens.actions])
+    over(handlerLens?.actions, append({ editMode: true }))
+  }, [handlerLens?.actions])
 
   return (
     <IconCard
