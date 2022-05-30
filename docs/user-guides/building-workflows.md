@@ -1,4 +1,4 @@
-# 🎨 Building workflows
+# Building workflows
 
 ### Creating a new workflow
 

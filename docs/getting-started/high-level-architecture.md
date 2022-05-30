@@ -1,4 +1,4 @@
-# 🍕 High level architecture
+# High level architecture
 
 The application is composed by a front-end application created with [React](https://reactjs.org/) and backend for front-end application using [graph-ql mesh](https://www.graphql-mesh.com/) technology, serving as a gateway between application and other services.
 

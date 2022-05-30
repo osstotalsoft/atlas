@@ -1,4 +1,4 @@
-# 🚲 Executing workflows
+# Executing workflows
 
 As you may have already noticed in the previous chapter, the task parameters can take absolute values, or parametrized values.&#x20;
 

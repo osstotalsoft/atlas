@@ -1,4 +1,4 @@
-# 🎾 Welcome
+# Welcome
 
 Welcome to Atlas - a graphical interface used to create, modify and manage workflows!&#x20;
 

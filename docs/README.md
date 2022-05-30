@@ -1,4 +1,4 @@
-# 👍 About project
+# About project
 
 ![](../react-ui/src/assets/img/LogoAtlas.png)
 
