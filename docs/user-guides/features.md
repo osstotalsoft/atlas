@@ -44,6 +44,24 @@ Also, after creating a workflow definition, you can save it as a Json file.
 
 ![](../.gitbook/assets/Screenshot\_6.png)
 
+### <mark style="color:green;">Cloning</mark>
+
+Assuming there is a workflow definition you would like to duplicate and use it further, go to workflows list and clone it:
+
+![](../.gitbook/assets/Screenshot\_8.png)
+
+Provide the name and the version to the new workflow and you are ready to use it as any other workflow.
+
+### <mark style="color:green;">Event Handlers configuration</mark>
+
+Using Atlas, you can define and manage handlers for your events.
+
+### <mark style="color:green;">Tasks configuration</mark>
+
+Besides the System Tasks, provided by the Conductor, we can define in Atlas a custom task type, based on Conductor documentation.
+
+![](../.gitbook/assets/Screenshot\_10.png)
+
 ### <mark style="color:green;">Undo/Redo</mark>
 
-You did something wrong? Don't worry, you can use Ctrl + Z and Ctrl + Y
+You did something wrong? Don't worry, you can use Ctrl + Z and Ctrl + Y as you are used to in order to undo or redo the actions.&#x20;

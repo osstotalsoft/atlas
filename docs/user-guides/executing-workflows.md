@@ -42,3 +42,5 @@ Here, you can see what tasks have been executed and their statuses, review the i
 
 Also, you can visualize the execution diagram and understand the path that the flow has taken and what decision have been made.&#x20;
 
+![](../.gitbook/assets/Screenshot\_9.png)
+
