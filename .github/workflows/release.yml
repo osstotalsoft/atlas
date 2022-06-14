@@ -113,7 +113,7 @@ jobs:
       HELM_PACKAGE_DIR: helm
     defaults:
       run:
-        working-directory: ./gql_bff
+        working-directory: ./gql-bff
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -122,7 +122,7 @@ jobs:
         run: yarn
 
       - name: Test
-        run: yarn run test:ci
+        run: yarn jest
 
       - name: Set release version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
