@@ -72,7 +72,7 @@ jobs:
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
         env:
-          HELM_CHARTS_DIR: helm
+          HELM_CHARTS_DIR: helm/atlas-application
         run: |
           sed -i "/  tag:/c\  tag: \"${{ env.RELEASE_VERSION }}\"" ${{ env.HELM_CHARTS_DIR }}/values.yaml
           mkdir -p ${{ env.ARTIFACT_DIR }}/${{ env.HELM_PACKAGE_DIR }}
@@ -156,7 +156,7 @@ jobs:
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
         env:
-          HELM_CHARTS_DIR: helm
+          HELM_CHARTS_DIR: helm/atlas-gql-mesh
         run: |
           sed -i "/  tag:/c\  tag: \"${{ env.RELEASE_VERSION }}\"" ${{ env.HELM_CHARTS_DIR }}/values.yaml
           mkdir -p ${{ env.ARTIFACT_DIR }}/${{ env.HELM_PACKAGE_DIR }}
