@@ -25,3 +25,16 @@ jobs:
         
     - name: Build
       run: yarn build
+  build-gql:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./gql-bff
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install
+      run: yarn
+
+    - name: Test
+      run: yarn jest
