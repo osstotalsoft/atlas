@@ -151,7 +151,7 @@ jobs:
         env:
           ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}
           ATLAS_TAG: ${{ env.RELEASE_VERSION }}
-        run: docker image push -t ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }}
+        run: docker image push ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }}
 
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
