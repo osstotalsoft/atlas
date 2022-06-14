@@ -61,7 +61,7 @@ jobs:
         env:
           ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}
           ATLAS_TAG: ${{ env.RELEASE_VERSION }}
-        run: docker build -f ./Dockerfile -t  ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }}
+        run: docker build -f ./Dockerfile -t  ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }} .
       
       - name: Push images
         env:
@@ -145,7 +145,7 @@ jobs:
         env:
           ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}
           ATLAS_TAG: ${{ env.RELEASE_VERSION }}
-        run: docker build -f ./Dockerfile -t  ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }}
+        run: docker build -f ./Dockerfile -t  ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }} .
       
       - name: Push images
         env:
