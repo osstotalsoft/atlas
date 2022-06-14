@@ -22,9 +22,10 @@ jobs:
 
     - name: Test
       run: yarn run test:ci
+
+    - name: Build images
+      run: docker build -f ./Dockerfile
         
-    - name: Build
-      run: yarn build
   build-gql:
     runs-on: ubuntu-latest
     defaults:
@@ -38,3 +39,6 @@ jobs:
 
     - name: Test
       run: yarn jest
+
+    - name: Build images
+      run: docker build -f ./Dockerfile
