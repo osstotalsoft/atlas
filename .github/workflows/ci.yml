@@ -1,0 +1,44 @@
+
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-ui:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./react-ui
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install
+      run: yarn
+
+    - name: Test
+      run: yarn run test:ci
+
+    - name: Build images
+      run: docker build -f ./Dockerfile .
+        
+  build-gql:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./gql-bff
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install
+      run: yarn
+
+    - name: Test
+      run: yarn jest
+
+    - name: Build images
+      run: docker build -f ./Dockerfile .
