@@ -1,4 +1,4 @@
-# 🎨 Building workflows
+# Building workflows
 
 ### Creating a new workflow
 
@@ -37,7 +37,7 @@ Decision task works by evaluating either a single parameter or an entire express
 
 ![](../.gitbook/assets/DecisionTask.gif)
 
-### Fork and JOIN
+### `Fork and JOIN`
 
 The 'Fork' function is used to schedule a parallel set of tasks. A Join task is needed to wait for the completion of all the tasks spawned by fork task and aggregate the outputs in a single Json object.
 
@@ -47,13 +47,13 @@ A Join Task **MUST** follow a Fork Task
 
 ![](../.gitbook/assets/ForkJoinTask.JPG)
 
-### Http
+### `Http`
 
 An Http task is used to make calls to another microservice over HTTP. There can be used all the methods like GET, PUT, POST, DELETE and there can be configured custom headers depending on the type of the call.
 
 ![](../.gitbook/assets/HttpTask.gif)
 
-### Terminate
+### `Terminate`
 
 This task can terminate a workflow with a given status and modify it's output with a given parameter. It can act as a "return statement" for conditions where you simply want to terminate the workflow.
 

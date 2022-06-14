@@ -1,4 +1,4 @@
-# 🐧 Development setup
+# Development setup
 
 Even if you would like to adapt the application to your needs or you'd like to contribute to Atlas, here are the steps to follow in order to make the application up and running:
 

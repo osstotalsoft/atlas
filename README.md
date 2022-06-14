@@ -3,35 +3,9 @@
 ## About project
 Atlas is a graphical interface, built on top of the Netflix's [Conductor](https://netflix.github.io/conductor/), used to create, modify and manage workflows in a very intuitive way enabling customers to create automated processes without having advanced technical knowledge.
 
-The project documentation is under construction and we will come back with it as soon as possible. 
+:green_book: Here you can find the full [documentation](https://totalsoft.gitbook.io/atlas-workflow-designer/getting-started/aboutproject)
 
-## Prerequisites:
-
-• Visual Studio Code: https://code.visualstudio.com/download<br>
-• Git: https://git-scm.com/download/win <br>
-• Git Extensions: https://github.com/gitextensions/gitextensions/releases <br>
-• Node.js: https://nodejs.org/en/download/<br>
-• Before starting, we recommend to take a look at the [Conductor documentation](https://netflix.github.io/conductor/configuration/taskdef/) as an introduction to Tasks, Workflows, Definitions and some other related concepts.
-
-## Start project in development:
-
-Clone this repository and set up Elastic by running the following commands in a Powershell terminal/command prompt:
-
-    $env:KUBECONFIG=[insert path to the kubeconfig file for QA]
-    kubectl port-forward svc/elasticsearch-master [portNumber]:9200 -n elastic
-> **Note**: A SSO authentication system must be up and running on your infrastructure in order to authenticate to Atlas, using your configured account.
-## Start the project
-
-Run the following commands to start the projects:
-
-### `npm install`
-
-### `npm start`
-
-This will start up the apps on: <br>
-• [http://localhost:3000](http://localhost:3000) - React app <br>
-• [http://localhost:5000/graphql](http://localhost:5000/graphql) - GQL-Mesh <br>
-• [http://localhost:9000](http://localhost:9000) - Elastic
+Watch the movie : https://youtu.be/Qnj5EiOjK-I
 
 ## Creating a new workflow
 To create a new workflow, click on the Add button, configure your desired tasks sequentiality, fill in the general
