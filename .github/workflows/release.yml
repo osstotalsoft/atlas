@@ -26,7 +26,10 @@ jobs:
       packages: write
     env:
       ARTIFACT_DIR: ./release
+      ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}
+      ATLAS_TAG: ${{ env.RELEASE_VERSION }}
       HELM_PACKAGE_DIR: helm
+      HELM_REPO_CODE_PATH: helm-charts-ui
     defaults:
       run:
         working-directory: ./react-ui
@@ -43,11 +46,6 @@ jobs:
       - name: Set release version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
 
-      # - name: Build
-      #   env:
-      #     ATLAS_VERSION: ${{ env.RELEASE_VERSION }}
-      #   run: make build-linux
-
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
@@ -58,15 +56,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Build images
-        env:
-          ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}
-          ATLAS_TAG: ${{ env.RELEASE_VERSION }}
         run: docker build -f ./Dockerfile -t ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }} .
       
       - name: Push images
-        env:
-          ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}
-          ATLAS_TAG: ${{ env.RELEASE_VERSION }}
         run: docker image push ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }}
 
       - name: Package Helm chart
@@ -82,7 +74,6 @@ jobs:
         uses: actions/checkout@v2
         env:
           HELM_REPO: osstotalsoft/helm-charts
-          HELM_REPO_CODE_PATH: helm-charts-ui
         with:
           repository: ${{ env.HELM_REPO }}
           ref: refs/heads/main
@@ -91,7 +82,6 @@ jobs:
       
       - name: Upload helm charts to Helm Repo
         env:
-          HELM_REPO_CODE_PATH: helm-charts-ui
           HELM_REPO: https://osstotalsoft.github.io/helm-charts/
         run: |
           cd ${{ env.ARTIFACT_DIR }}/${{ env.HELM_PACKAGE_DIR }}
@@ -104,13 +94,17 @@ jobs:
           git commit -m "Atlas release UI - ${{ env.RELEASE_VERSION }}"
           git push
   build-gql:
+    needs: build-ui
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     env:
       ARTIFACT_DIR: ./release
+      ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}
+      ATLAS_TAG: ${{ env.RELEASE_VERSION }}
       HELM_PACKAGE_DIR: helm
+      HELM_REPO_CODE_PATH: helm-charts-gql
     defaults:
       run:
         working-directory: ./gql-bff
@@ -127,11 +121,6 @@ jobs:
       - name: Set release version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
 
-      # - name: Build
-      #   env:
-      #     ATLAS_VERSION: ${{ env.RELEASE_VERSION }}
-      #   run: make build-linux
-
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
@@ -142,15 +131,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Build images
-        env:
-          ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}
-          ATLAS_TAG: ${{ env.RELEASE_VERSION }}
         run: docker build -f ./Dockerfile -t  ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }} .
       
       - name: Push images
-        env:
-          ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}
-          ATLAS_TAG: ${{ env.RELEASE_VERSION }}
         run: docker image push ${{ env.ATLAS_REGISTRY }}:${{ env.ATLAS_TAG }}
 
       - name: Package Helm chart
@@ -166,7 +149,6 @@ jobs:
         uses: actions/checkout@v2
         env:
           HELM_REPO: osstotalsoft/helm-charts
-          HELM_REPO_CODE_PATH: helm-charts-gql
         with:
           repository: ${{ env.HELM_REPO }}
           ref: refs/heads/main
@@ -175,7 +157,6 @@ jobs:
       
       - name: Upload helm charts to Helm Repo
         env:
-          HELM_REPO_CODE_PATH: helm-charts-gql
           HELM_REPO: https://osstotalsoft.github.io/helm-charts/
         run: |
           cd ${{ env.ARTIFACT_DIR }}/${{ env.HELM_PACKAGE_DIR }}

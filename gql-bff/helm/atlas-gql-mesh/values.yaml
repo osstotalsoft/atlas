@@ -19,7 +19,7 @@ gql:
   replicaCount: 1
   name: "atlas-gql-mesh"
   image:
-    repository: "tsacr.azurecr.io/"
+    repository: "ghcr.io/osstotalsoft/"
     pullPolicy: IfNotPresent
     name: atlas-gql-mesh
     tag: "" # overwrite from pipeline

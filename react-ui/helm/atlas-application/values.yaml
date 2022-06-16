@@ -4,8 +4,8 @@
 replicaCount: 1
 
 image:
-  repository: "[ORGANIZATION].azurecr.io/atlas-application"
-  tag: 
+  repository: "ghcr.io/osstotalsoft/atlas-ui"
+  tag: ""
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
