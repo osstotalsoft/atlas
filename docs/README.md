@@ -8,6 +8,6 @@
 
 Here is a demonstration video:
 
-{% embed url="https://www.youtube.com/watch?v=Qnj5EiOjK-I" %}
+{% embed url="https://youtu.be/K7V5Eyawhbs" %}
 
 :thumbsup: The open source project can be found on [this ](https://github.com/osstotalsoft/atlas)GitHub repository and we are very happy to announce that your contribution would be highly appreciated! &#x20;
