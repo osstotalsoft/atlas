@@ -63,9 +63,9 @@ function UserMenu({ drawerOpen, avatar, language, changeLanguage, withGradient }
   )
 
   const userName = oidcUser?.profile?.firstName
-    ? `${oidcUser.profile.name} ${oidcUser.profile.lastName}`
+    ? `${oidcUser?.profile.name} ${oidcUser?.profile.lastName}`
     : oidcUser?.profile
-    ? oidcUser.profile.name.split('@')[0]
+    ? oidcUser?.profile.name.split('@')[0]
     : 'User'
   const [tenant, setTenant] = useState(
     myTenants && oidcUser?.profile?.tid && myTenants.find(t => t.externalId.toUpperCase() === oidcUser?.profile?.tid.toUpperCase())

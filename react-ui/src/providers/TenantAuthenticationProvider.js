@@ -9,6 +9,7 @@ import { NotAuthenticated } from 'components/login/NotAuthenticated'
 import { SessionExpired } from 'components/login/SessionExpired'
 import { Forbidden } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { useSessionStorage } from 'hooks/sessionStorage'
+import { env } from 'utils/env'
 
 export const TenantContext = createContext()
 const TenantAuthenticationProvider = props => {
@@ -31,13 +32,14 @@ const TenantAuthenticationProvider = props => {
   )
 
   const configuration = getAuthenticationConfiguration(tenant)
+  const isEnabled = env.REACT_APP_IDENTITY_AUTHORITY ? true : false
 
   return (
     <TenantContext.Provider value={setTenantCallback}>
       <AuthenticationProvider
         configuration={configuration}
         loggerLevel={oidcLog.INFO}
-        isEnabled={true}
+        isEnabled={isEnabled}
         authenticating={Authenticating}
         callbackComponentOverride={CallbackPage}
         notAuthenticated={NotAuthenticated}

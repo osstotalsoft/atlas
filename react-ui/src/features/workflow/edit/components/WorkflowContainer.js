@@ -154,10 +154,10 @@ const WorkflowContainer = () => {
           timeoutSeconds: workflow?.timeoutSeconds,
           failureWorkflow: workflow?.failureWorkflow,
           workflowStatusListenerEnabled: workflow?.workflowStatusListenerEnabled,
-          createdBy: isNew ? oidcUser.profile.name : workflow?.createdBy,
+          createdBy: isNew ? oidcUser?.profile.name : workflow?.createdBy,
           createTime: isNew ? new Date().getTime() : workflow?.createTime,
-          ownerEmail: workflow?.ownerEmail || oidcUser.profile.preferred_username,
-          updatedBy: isNew ? emptyString : oidcUser.profile.name,
+          ownerEmail: workflow?.ownerEmail || oidcUser?.profile.preferred_username,
+          updatedBy: isNew ? emptyString : oidcUser?.profile.name,
           updateTime: isNew ? undefined : new Date().getTime()
         }
 
@@ -173,8 +173,8 @@ const WorkflowContainer = () => {
     isNew,
     isValid,
     name,
-    oidcUser.profile.name,
-    oidcUser.profile.preferred_username,
+    oidcUser?.profile.name,
+    oidcUser?.profile.preferred_username,
     showError,
     version,
     workflow?.createTime,
