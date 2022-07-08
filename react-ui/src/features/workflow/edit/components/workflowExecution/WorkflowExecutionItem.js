@@ -31,7 +31,7 @@ const WorkflowExecutionItem = ({ execution, onSeeDetails, startPolling }) => {
         <Typography>{execution?.status}</Typography>
       </Td>
       <Td className={classes.tableContent}>
-        <ExecutionActions workflowId={execution?.workflowId} status={execution?.status} startPolling={startPolling} />
+        <ExecutionActions workflowId={execution?.workflowId} status={execution?.status} startPolling={startPolling} readOnly={execution?.readOnly || false} />
       </Td>
     </Tr>
   )

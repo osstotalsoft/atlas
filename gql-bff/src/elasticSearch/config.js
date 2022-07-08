@@ -8,7 +8,7 @@ module.exports = {
   snapshots_body: {
     settings,
     mappings: {
-      snapshot: {
+      _doc: {
         properties: {
           timeStamp: {
             type: "date",
@@ -41,7 +41,7 @@ module.exports = {
   logs_body: {
     settings,
     mappings: {
-      log: {
+      _doc: {
         properties: {
           timeStamp: {
             type: "date",
