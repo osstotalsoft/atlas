@@ -9,7 +9,7 @@ type WorkflowHistory {
   snapshotNumber: Int!
   timeStamp: DateTime!
   createdBy: String
-  changedBy: String!
+  changedBy: String
   definition: WorkflowDef!
 }
 
