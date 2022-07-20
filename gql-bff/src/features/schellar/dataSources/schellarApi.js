@@ -1,0 +1,31 @@
+const { NoCacheRESTDataSource } = require("../../../utils/noCacheRESTDataSource");
+const { removeQuotes } = require("../../../utils/functions");
+
+class SchellarApi extends NoCacheRESTDataSource {
+  constructor() {
+    super();
+    this.baseURL = removeQuotes(`${process.env.SCHELLAR_URL}`);
+  }
+
+  async getSchedules() {
+    return await this.get(`/schedule`);
+  }
+
+  async createSchedule(body) {
+    return await this.post(`/schedule`, body, {
+      headers: { "content-type": "application/json" },
+    });
+  }
+
+  async updateSchedule(name, body) {
+    return await this.put(`/schedule/${name}`, body, {
+      headers: { "content-type": "application/json" },
+    });
+  }
+
+  async deleteSchedule(name) {
+    return await this.delete(`/schedule/${name}`);
+  }
+}
+
+module.exports = SchellarApi;
