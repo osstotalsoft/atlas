@@ -2,7 +2,7 @@ const { Client } = require("@elastic/elasticsearch");
 const { snapshots_body, logs_body } = require("./config");
 const { elasticLogs, workflowSnapshots } = require("./registeredIndexes");
 
-const { ELASTIC_SEARCH_HOST } = process.env;
+const { ELASTIC_SEARCH_HOST, ELASTIC_USER, ELASTIC_PASSWORD } = process.env;
 
 const esSchema = {
   size: 1000,
@@ -15,6 +15,10 @@ const esSchema = {
 
 const esClient = new Client({
   node: ELASTIC_SEARCH_HOST,
+  auth: {
+    username: ELASTIC_USER,
+    password: ELASTIC_PASSWORD,
+  },
   pingTimeout: 60000,
 });
 
