@@ -70,11 +70,11 @@ const TaskContainer = () => {
     if (isNew)
       saveTask({
         variables: {
-          input: [{ ...omit(['readOnly'], task), createTime: new Date().getTime(), ownerEmail: oidcUser.profile.preferred_username }]
+          input: [{ ...omit(['readOnly'], task), createTime: new Date().getTime(), ownerEmail: oidcUser?.profile.preferred_username }]
         }
       })
     else saveTask({ variables: { input: omit(['readOnly'], task) } })
-  }, [isNew, oidcUser.profile.preferred_username, saveTask, task, validate])
+  }, [isNew, oidcUser?.profile.preferred_username, saveTask, task, validate])
 
   useEffect(() => {
     validate(task, dirtyInfo)

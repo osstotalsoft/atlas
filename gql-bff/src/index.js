@@ -35,12 +35,15 @@ const {
 app.use(errorHandlingMiddleware());
 app.use(bodyParser());
 app.use(cors());
+
+const hasAuthConf =
+  process.env.IDENTITY_AUTHORITY && process.env.IDENTITY_OPENID_CONFIGURATION;
 app.use(
   ignore(
     jwtTokenValidation,
     jwtTokenUserIdentification,
     tenantIdentification()
-  ).if((ctx) => introspectionRoute(ctx))
+  ).if((ctx) => (introspectionRoute(ctx) || !hasAuthConf))
 );
 
 const { elastic } = require("./elasticSearch");

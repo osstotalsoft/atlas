@@ -101,8 +101,8 @@ const WorkflowListContainer = () => {
               ...omitDeep(workflow, fieldsToBeRemoved),
               name: futureCloneName,
               version: futureCloneVersion,
-              createdBy: oidcUser.profile.name,
-              ownerEmail: oidcUser.profile.preferred_username,
+              createdBy: oidcUser?.profile.name,
+              ownerEmail: oidcUser?.profile.preferred_username,
               timeoutSeconds: workflow?.timeoutSeconds || 0,
               updatedBy: emptyString,
               createTime: new Date().getTime()
@@ -110,7 +110,7 @@ const WorkflowListContainer = () => {
           }
         })
     },
-    [clientQuery, createWorkflow, oidcUser.profile.name, oidcUser.profile.preferred_username]
+    [clientQuery, createWorkflow, oidcUser?.profile.name, oidcUser?.profile.preferred_username]
   )
 
   return (
