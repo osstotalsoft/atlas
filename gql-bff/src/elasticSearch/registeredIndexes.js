@@ -1,10 +1,10 @@
 module.exports = {
   elasticLogs: {
     index: "atlas_logs",
-    type: "log",
+    type: "_doc",
   },
   workflowSnapshots: {
     index: "atlas_snapshots",
-    type: "snapshot",
+    type: "_doc",
   },
 };

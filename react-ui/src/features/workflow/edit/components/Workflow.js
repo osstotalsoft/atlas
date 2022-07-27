@@ -177,8 +177,8 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
           resetWorkflow({
             ...wf,
             description: wf?.description,
-            createdBy: oidcUser.profile.name,
-            ownerEmail: oidcUser.profile.preferred_username
+            createdBy: oidcUser?.profile.name,
+            ownerEmail: oidcUser?.profile.preferred_username
           })
 
           warningIfTaskComponentMissing(wf)
@@ -187,7 +187,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         showError(new Error('Invalid Json format. ' + err))
       }
     },
-    [engine, oidcUser.profile.name, oidcUser.profile.preferred_username, resetWorkflow, showError, warningIfTaskComponentMissing]
+    [engine, oidcUser?.profile.name, oidcUser?.profile.preferred_username, resetWorkflow, showError, warningIfTaskComponentMissing]
   )
 
   const handleExport = useCallback(() => {

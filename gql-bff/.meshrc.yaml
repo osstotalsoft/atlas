@@ -2,7 +2,7 @@ sources:
   - name: Conductor
     handler:
       openapi:
-        source: ${API_URL}
+        source: ${BASE_API_URL}/api-docs
         baseUrl: ${BASE_API_URL}
 additionalTypeDefs:
   - ./src/features/workflow/schema.graphql
