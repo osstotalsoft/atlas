@@ -26,7 +26,6 @@ jobs:
       packages: write
     env:
       ARTIFACT_DIR: ./release
-      ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}
       HELM_PACKAGE_DIR: helm
       HELM_REPO_CODE_PATH: helm-charts-ui
     defaults:
@@ -55,10 +54,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Build images
-        run: docker build -f ./Dockerfile -t ${{ env.ATLAS_REGISTRY }}:${{ env.RELEASE_VERSION }} .
+        run: docker build -f ./Dockerfile -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }} .
       
       - name: Push images
-        run: docker image push ${{ env.ATLAS_REGISTRY }}:${{ env.RELEASE_VERSION }}
+        run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }}
 
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
@@ -100,7 +99,6 @@ jobs:
       packages: write
     env:
       ARTIFACT_DIR: ./release
-      ATLAS_REGISTRY: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}
       HELM_PACKAGE_DIR: helm
       HELM_REPO_CODE_PATH: helm-charts-gql
     defaults:
@@ -129,10 +127,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Build images
-        run: docker build -f ./Dockerfile -t  ${{ env.ATLAS_REGISTRY }}:${{ env.RELEASE_VERSION }} .
+        run: docker build -f ./Dockerfile -t  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }} .
       
       - name: Push images
-        run: docker image push ${{ env.ATLAS_REGISTRY }}:${{ env.RELEASE_VERSION }}
+        run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }}
 
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
