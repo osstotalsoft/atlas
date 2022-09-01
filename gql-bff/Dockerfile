@@ -12,8 +12,7 @@ RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
     adduser --system --uid $imageUserId --ingroup $imageUserGroup $imageUser
 
 # Install app dependencies
-COPY --chown=$imageUser:$imageUserGroup package.json ./
-COPY yarn.lock ./
+COPY --chown=$imageUser:$imageUserGroup package.json yarn.lock ./
 
 RUN yarn install
 # If you are building your code for production
@@ -22,10 +21,11 @@ RUN yarn install
 # Bundle app source
 COPY --chown=$imageUser:$imageUserGroup . .
 
+
 USER $imageUser
 
 EXPOSE 4000
 
 
 CMD ["/bin/bash", "-c", "test -f /vault/secrets/credentials.vault && echo 'INFO: Vault credentials loaded.' && \
-    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && yarn start --config-env production"]
+    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && yarn run start:production"]

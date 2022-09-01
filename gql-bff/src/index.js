@@ -6,6 +6,13 @@ if (result.error) {
   dotenv.config({ path });
 }
 
+if (process.env.NODE_ENV) {
+  dotenv.config({ path: `./.env.${process.env.NODE_ENV}`, override: true });
+}
+
+const keyPerFileEnv = require("@totalsoft/key-per-file-configuration");
+keyPerFileEnv.load();
+
 const Koa = require("koa");
 const { ApolloServer } = require("apollo-server-koa");
 const cors = require("@koa/cors");
@@ -66,7 +73,7 @@ async function main() {
         ctx?.request?.body?.operationName
       );
       return {
-        tenantId: ctx?.tenantId,
+        tenant: ctx?.tenant,
         externalUser: ctx?.externalUser,
         baseApiUrl: process.env.BASE_API_URL.replace(/['"]+/g, ""),
         logger: { logInfo, logDebug, logError },

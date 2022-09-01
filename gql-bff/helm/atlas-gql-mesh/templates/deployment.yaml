@@ -29,7 +29,7 @@ spec:
     {{- end }}
       containers:
         - name: {{ $current.name }}
-          image: "{{ $current.image.repository }}{{ $current.image.name}}:{{ $current.image.tag | default .Chart.AppVersion  }}"
+          image: "{{ $current.image.repository }}{{ $current.image.name}}:{{ $current.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ $current.image.pullPolicy }}
           ports:
             - name: http
@@ -38,28 +38,40 @@ spec:
           resources:
             {{- toYaml $current.resources | trim | nindent 12 }}
           env:
+          - name: IS_MULTITENANT
+            value: {{ $global.multiTenancy.tenancyType | eq "MultiTenant" | quote }}
           {{- range $key, $value := $current.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
-          {{- if $global.configMapMount.enabled }}
+          {{- if $global.runtimeConfiguration.enabled }}
           volumeMounts:
-          - mountPath: /usr/src/app/{{ $global.configMapMount.mountPath }}
-            name: {{ $global.configMapMount.configMap }}
-            subPath: {{ $global.configMapMount.subPath }}
+            - name: runtime-configs
+              readOnly: true
+              mountPath: /usr/src/app/runtime/configs
+            - name: runtime-secrets
+              readOnly: true
+              mountPath: /usr/src/app/runtime/secrets
           {{- end }}
       {{- if $global.imagePullSecrets }}
       imagePullSecrets:
       {{- toYaml $global.imagePullSecrets | trim | nindent 8 }}
       {{- end }}
+      {{- if $global.runtimeConfiguration.enabled }}
+      volumes:
+        - name: runtime-configs
+          configMap:
+            name: {{ $global.runtimeConfiguration.configMap }}
+            defaultMode: 420
+        - name: runtime-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ $global.runtimeConfiguration.csi.secretProviderClass }}
+      {{- end }}
       {{- with $current.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if $global.configMapMount.enabled }}
-      volumes:
-      - name: {{ $global.configMapMount.configMap }}
-        configMap: 
-          name: {{ $global.configMapMount.configMap }}
       {{- end }}
 {{- end -}}

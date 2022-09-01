@@ -1,0 +1,16 @@
+**/.vscode
+**/.git
+**/.gitignore
+**/Dockerfile*
+**/node_modules
+LICENSE
+README.md
+.dockerignore
+.eslintrc.json
+.husky
+.prettierrc
+coverage
+GitVersion.yml
+__mocks__
+helm
+.env.development
