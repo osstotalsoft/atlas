@@ -1,6 +1,6 @@
 const validateToken = require("./auth/auth");
-const tenantIdentification = require("./tenantIdentification");
 const errorHandlingMiddleware = require("./errorHandling/errorHandlingMiddleware");
+const tenantIdentification = require("./tenantIdentification");
 
 module.exports = {
   ...validateToken,

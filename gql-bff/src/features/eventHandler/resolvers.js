@@ -10,7 +10,7 @@ const isMultitenant = JSON.parse(process.env.IS_MULTITENANT);
 const eventHandlerResolvers = {
   Query: {
     eventHandler: async (_parent, args, context, _info) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
       const response = await dataSources?.eventHandlerApi?.getEventHandler(
         args
       );
@@ -18,7 +18,7 @@ const eventHandlerResolvers = {
       if (!isMultitenant) return response;
 
       const evHandTenantId = getTenantIdFromHandler(response?.condition);
-      if (userCanSeeResource(evHandTenantId, tenantId)) {
+      if (userCanSeeResource(evHandTenantId, tenant?.id)) {
         return response;
       } else
         return new ForbiddenError(
@@ -26,13 +26,13 @@ const eventHandlerResolvers = {
         );
     },
     eventHandlerList: async (_parent, _args, context, _info) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
 
       const allEventHandlers =
         await dataSources?.eventHandlerApi?.getEventHandlerList();
 
       if (!isMultitenant) return allEventHandlers;
-      else return filterEvHandlersByTenant(allEventHandlers, tenantId);
+      else return filterEvHandlersByTenant(allEventHandlers, tenant?.id);
     },
   },
   EventHandler: {
@@ -66,14 +66,14 @@ const eventHandlerResolvers = {
   },
   Mutation: {
     createEventHandler: async (_parent, { eventHandlerInput }, context) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
 
       const body = {
         ...eventHandlerInput,
         condition: updateHandlerCondition(
           eventHandlerInput?.condition,
           isMultitenant,
-          tenantId
+          tenant?.id
         ),
       };
 
@@ -82,14 +82,14 @@ const eventHandlerResolvers = {
     },
 
     editEventHandler: async (_parent, { eventHandlerInput }, context) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
 
       const body = {
         ...eventHandlerInput,
         condition: updateHandlerCondition(
           eventHandlerInput?.condition,
           isMultitenant,
-          tenantId
+          tenant?.id
         ),
       };
 
