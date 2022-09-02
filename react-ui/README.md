@@ -28,9 +28,9 @@ Depending on the event message structure you are using, go to `.env` file and se
 
 Run the following commands to start the projects:
 
-#### `npm install`
+#### `yarn`
 
-#### `npm start`
+#### `yarn start`
 
 This will start up the apps on: <br>
 • [http://localhost:3000](http://localhost:3000) - React app <br>
