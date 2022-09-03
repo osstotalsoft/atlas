@@ -1,10 +1,15 @@
-const { NoCacheRESTDataSource } = require("../../../utils/noCacheRESTDataSource");
+const {
+  NoCacheRESTDataSource,
+} = require("../../../utils/noCacheRESTDataSource");
 const { removeQuotes } = require("../../../utils/functions");
 
 class SchellarApi extends NoCacheRESTDataSource {
   constructor() {
     super();
     this.baseURL = removeQuotes(`${process.env.SCHELLAR_URL}`);
+  }
+  async getSchedule(name) {
+    return this.get(`/schedule/${name}`);
   }
 
   async getSchedules() {

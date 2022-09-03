@@ -20,7 +20,8 @@
     "Executions": "Executions",
     "SystemTasks": "System_Tasks",
     "EventHandlers": "Event handlers",
-    "Configurations": "Configurations"
+    "Configurations": "Configurations",
+    "Schedule": "Schedule"
   },
   "Tooltips": {
     "Logout": "Logout",
@@ -37,6 +38,23 @@
     "InvalidDateMessage": "Invalid Date Format",
     "MinDateMessage": "Date should not be before minimal date",
     "MaxDateMessage": "Date should not be after maximal date"
+  },
+  "Schedule": {
+    "Data": "Schedule",
+    "Name": "Name",
+    "CronString": "CronString",
+    "Enabled": "Enabled",
+    "Disabled": "Disabled",
+    "ParallelRuns": "Parallel Runs",
+    "Workflow": "Workflow",
+    "Cron": "Cron",
+    "WorkflowContext": "WorkflowContext",
+    "ScheduleList": "Schedule List",
+    "From":"From",
+    "To": "To",
+    "Buttons": {
+      "Add": "Add"
+    }
   },
   "Workflow": {
     "AddName": "Add name",

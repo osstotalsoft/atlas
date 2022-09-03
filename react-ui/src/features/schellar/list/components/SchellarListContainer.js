@@ -1,10 +1,8 @@
 import { useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import React, { useCallback, useState } from 'react'
 import { SCHELLAR_LIST_QUERY } from '../queries/SchellarListQueries'
-import { filterList, sortBy } from 'utils/functions'
-import { taskListFilter } from 'apollo/cacheKeyFunctions'
-import TaskListFilter from './TaskListFilter'
-import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
+import { DELETE_SCHELLAR_MUTATION } from '../mutations/DeleteSchellar'
+import { sortBy } from 'utils/functions'
 import { defaults } from 'apollo/defaultCacheData'
 import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { tasksPager } from 'apollo/cacheKeyFunctions'
@@ -14,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { emptyArray } from 'utils/constants'
 import { sortingDirection, sortTaskByField } from 'features/common/constants'
 import { pipe } from 'ramda'
+import SchellarList from './SchellarList'
 
 const SchellarListContainer = () => {
   const history = useHistory()
@@ -24,51 +23,44 @@ const SchellarListContainer = () => {
   const { t } = useTranslation()
   const addToast = useToast()
 
-  const { loading, data, refetch } = useQueryWithErrorHandling(TASK_LIST_QUERY)
-  const [filters, setFilters] = useApolloLocalStorage(taskListFilter)
+  const { loading, data, refetch } = useQueryWithErrorHandling(SCHELLAR_LIST_QUERY)
 
-  const [deleteTask] = useMutation(DELETE_TASK_DEF_MUTATION, {
+  const [deleteSchedule] = useMutation(DELETE_SCHELLAR_MUTATION, {
     onCompleted: () => {
       addToast(t('General.DeletingSucceeded'), 'success')
     },
     onError: error => showError(error),
     refetchQueries: [
       {
-        query: TASK_LIST_QUERY
+        query: SCHELLAR_LIST_QUERY
       }
     ]
   })
 
-  const handleChangeFilters = useCallback(
-    (prop, value) => {
-      setFilters(current => ({ ...current, [prop]: value }))
-      setPager(currentPager => ({ ...currentPager, page: 0 })) //reset pager
+  const handleEditSchedule = useCallback(
+    schedule => {
+      history.push(`/schedule/${schedule?.name}`)
     },
-    [setFilters]
+    [history]
   )
-
-  const handleAddTask = useCallback(() => {
-    history.push('/tasks/new')
+  const handleAddSchedule = useCallback(() => {
+    history.push('/schedule/new')
   }, [history])
 
-  const handleDeleteRow = useCallback(
-    name => {
-      deleteTask({ variables: { name } })
-    },
-    [deleteTask]
-  )
+  const handleDeleteRow = useCallback(name => {
+    deleteSchedule({ variables: { name } })
+  }, [deleteSchedule])
   return (
     <>
-      <SchellarListFilters loading={loading} filters={filters} onChangeFilters={handleChangeFilters} />
       <SchellarList
         pager={pager}
         setPager={setPager}
         loading={loading}
-        list={pipe(filterList(filters), sortBy(sortTaskByField, sortingDirection.DESC))(data?.getSchedules || emptyArray)}
-        onEditTask={handleEditSchedule}
-        onAddTask={handleAddSchedule}
+        list={pipe(sortBy(sortTaskByField, sortingDirection.DESC))(data?.scheduleList || emptyArray)}
+        onEdit={handleEditSchedule}
+        onAdd={handleAddSchedule}
         onRefresh={refetch}
-        onDeleteRow={handleDeleteRow}
+        onDelete={handleDeleteRow}
       />
     </>
   )

@@ -11,7 +11,7 @@ const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT);
 
 const scheduleResolvers = {
   Query: {
-    getSchedules: async (_parent, {}, context, _info) => {
+    scheduleList: async (_parent, {}, context, _info) => {
       const { dataSources, tenantId } = context;
 
       const schedules = await dataSources.schellarApi.getSchedules();
@@ -24,34 +24,40 @@ const scheduleResolvers = {
         return new ForbiddenError("You are not authorized to see this task.");
         */
     },
+    schedule: async (_parent, { name }, context, _info) => {
+      const { dataSources, tenantId } = context;
+
+      const schedule = await dataSources.schellarApi.getSchedule(name);
+      if (!isMultiTenant) return schedule;
+    },
   },
   Mutation: {
-    createSchedule: async (_parent, { input }, context) => {
+    createSchedule: async (_parent, { scheduleInput }, context) => {
       const { dataSources, externalUser } = context;
 
-      const bodyInputs = input?.map((t) => {
-        return {
-          ...t,
-          workflowContext: {
-            ...t.workflowContext,
-            tenantId: isGlobalAdmin(externalUser)
-              ? null
-              : externalUser?.tenantId,
-          },
-        };
-      });
+      const bodyInputs = {
+        ...scheduleInput,
+        workflowContext: {
+          ...scheduleInput?.workflowContext,
+          tenantId: isGlobalAdmin(externalUser) ? null : externalUser?.tenantId,
+        },
+      };
 
       return await dataSources.schellarApi.createSchedule(bodyInputs);
     },
-    updateSchedule: async (_parent, { name, input }, context) => {
+    updateSchedule: async (_parent, { name, scheduleInput }, context) => {
       const { dataSources } = context;
 
-      return await dataSources.schellarApi.updateSchedule(name, input);
+      await dataSources.schellarApi.updateSchedule(name, scheduleInput);
+
+      return "";
     },
     removeSchedule: async (_parent, { name }, context) => {
       const { dataSources } = context;
 
-      return await dataSources.schellarApi.deleteSchedule(name);
+      await dataSources.schellarApi.deleteSchedule(name);
+
+      return "";
     },
   },
 };

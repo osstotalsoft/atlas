@@ -1,33 +1,34 @@
 input ScheduleInput {
-    name: String!
-    enabled: Boolean!
-    cronString: String!
-    fromDate: String
-    toDate: String
-    workflowName: String!
-    workflowVersion: String
-    workflowContext: String
-    parallelRuns: Boolean
+  name: String!
+  enabled: Boolean
+  cronString: String!
+  fromDate: String
+  toDate: String
+  workflowName: String!
+  workflowVersion: String
+  workflowContext: JSON
+  parallelRuns: Boolean
 }
 
 type Schedule {
-    name: String!
-    enabled: Boolean!
-    cronString: String!
-    fromDate: String
-    toDate: String
-    workflowName: String!
-    workflowVersion: String
-    workflowContext: String
-    parallelRuns: Boolean
+  name: String!
+  enabled: Boolean
+  cronString: String!
+  fromDate: String
+  toDate: String
+  workflowName: String!
+  workflowVersion: String
+  workflowContext: JSON
+  parallelRuns: Boolean
 }
 
 extend type Query {
-  getSchedules: [Schedule]
+  schedule(name: String!): Schedule
+  scheduleList: [Schedule]
 }
 
 extend type Mutation {
-  createSchedule(scheduleInput: [ScheduleInput]!): String
-  updateSchedule(name: String!, scheduleInput: [ScheduleInput]!): String
+  createSchedule(scheduleInput: ScheduleInput!): String
+  updateSchedule(name: String!, scheduleInput: ScheduleInput!): String
   removeSchedule(name: String!): String
 }
