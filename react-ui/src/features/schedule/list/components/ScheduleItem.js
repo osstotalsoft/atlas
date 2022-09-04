@@ -8,7 +8,7 @@ import styles from '../styles'
 
 const useStyles = makeStyles(styles)
 
-const SchellarItem = ({ schedule, onDelete, onEdit }) => {
+const ScheduleItem = ({ schedule, onDelete, onEdit }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -69,10 +69,10 @@ const SchellarItem = ({ schedule, onDelete, onEdit }) => {
   )
 }
 
-SchellarItem.propTypes = {
+ScheduleItem.propTypes = {
   schedule: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired
 }
 
-export default SchellarItem
+export default ScheduleItem

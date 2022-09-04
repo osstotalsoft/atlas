@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const SCHELLAR_LIST_QUERY = gql`
+export const SCHEDULE_LIST_QUERY = gql`
   query scheduleList {
     scheduleList {
       name

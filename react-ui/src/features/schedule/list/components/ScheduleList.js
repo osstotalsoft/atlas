@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import SchellarItem from './SchellarItem'
+import ScheduleItem from './ScheduleItem'
 import { AddButton, CardTitle, IconCard, LoadingFakeText, Pagination } from '@bit/totalsoft_oss.react-mui.kit.core'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
@@ -13,7 +13,7 @@ import styles from '../styles'
 const defaultPager = defaults[eventHandlersPager]
 const useStyles = makeStyles(styles)
 
-const SchellarList = ({ pager, setPager, onRefresh, onDelete, onEdit, onAdd, list, loading }) => {
+const ScheduleList = ({ pager, setPager, onRefresh, onDelete, onEdit, onAdd, list, loading }) => {
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -61,7 +61,7 @@ const SchellarList = ({ pager, setPager, onRefresh, onDelete, onEdit, onAdd, lis
                 </Thead>
                 <Tbody>
                   {currentPageHandlers?.map((schedule, index) => (
-                    <SchellarItem key={index} schedule={schedule} onDelete={onDelete} onEdit={onEdit} />
+                    <ScheduleItem key={index} schedule={schedule} onDelete={onDelete} onEdit={onEdit} />
                   ))}
                 </Tbody>
               </Table>
@@ -81,7 +81,7 @@ const SchellarList = ({ pager, setPager, onRefresh, onDelete, onEdit, onAdd, lis
   )
 }
 
-SchellarList.propTypes = {
+ScheduleList.propTypes = {
   list: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   pager: PropTypes.object.isRequired,
@@ -92,4 +92,4 @@ SchellarList.propTypes = {
   onAdd: PropTypes.func.isRequired
 }
 
-export default SchellarList
+export default ScheduleList

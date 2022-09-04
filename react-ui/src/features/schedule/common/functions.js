@@ -1,8 +1,8 @@
-import { SCHELLAR_LIST_QUERY } from '../list/queries/SchellarListQueries'
+import { SCHEDULE_LIST_QUERY } from '../list/queries/ScheduleListQueries'
 
 export const updateCacheList = (cache, variables, newList) => {
   cache.writeQuery({
-    query: SCHELLAR_LIST_QUERY,
+    query: SCHEDULE_LIST_QUERY,
     data: {
       scheduleList: newList
     },

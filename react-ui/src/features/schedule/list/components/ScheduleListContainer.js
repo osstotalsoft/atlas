@@ -1,7 +1,7 @@
 import { useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import React, { useCallback, useState } from 'react'
-import { SCHELLAR_LIST_QUERY } from '../queries/SchellarListQueries'
-import { DELETE_SCHELLAR_MUTATION } from '../mutations/DeleteSchellar'
+import { SCHEDULE_LIST_QUERY } from '../queries/ScheduleListQueries'
+import { DELETE_SCHEDULE_MUTATION } from '../mutations/DeleteSchedule'
 import { sortBy } from 'utils/functions'
 import { defaults } from 'apollo/defaultCacheData'
 import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
@@ -12,9 +12,9 @@ import { useTranslation } from 'react-i18next'
 import { emptyArray } from 'utils/constants'
 import { sortingDirection, sortTaskByField } from 'features/common/constants'
 import { pipe } from 'ramda'
-import SchellarList from './SchellarList'
+import ScheduleList from './ScheduleList'
 
-const SchellarListContainer = () => {
+const ScheduleListContainer = () => {
   const history = useHistory()
 
   const defaultPager = defaults[tasksPager]
@@ -23,16 +23,16 @@ const SchellarListContainer = () => {
   const { t } = useTranslation()
   const addToast = useToast()
 
-  const { loading, data, refetch } = useQueryWithErrorHandling(SCHELLAR_LIST_QUERY)
+  const { loading, data, refetch } = useQueryWithErrorHandling(SCHEDULE_LIST_QUERY)
 
-  const [deleteSchedule] = useMutation(DELETE_SCHELLAR_MUTATION, {
+  const [deleteSchedule] = useMutation(DELETE_SCHEDULE_MUTATION, {
     onCompleted: () => {
       addToast(t('General.DeletingSucceeded'), 'success')
     },
     onError: error => showError(error),
     refetchQueries: [
       {
-        query: SCHELLAR_LIST_QUERY
+        query: SCHEDULE_LIST_QUERY
       }
     ]
   })
@@ -52,7 +52,7 @@ const SchellarListContainer = () => {
   }, [deleteSchedule])
   return (
     <>
-      <SchellarList
+      <ScheduleList
         pager={pager}
         setPager={setPager}
         loading={loading}
@@ -66,4 +66,4 @@ const SchellarListContainer = () => {
   )
 }
 
-export default SchellarListContainer
+export default ScheduleListContainer

@@ -14,7 +14,7 @@ const scheduleResolvers = {
     scheduleList: async (_parent, {}, context, _info) => {
       const { dataSources, tenantId } = context;
 
-      const schedules = await dataSources.schellarApi.getSchedules();
+      const schedules = await dataSources.scheduleApi.getSchedules();
       if (!isMultiTenant) return schedules;
 
       /*const taskTenantId = getTenantIdFromDescription(task?.description);
@@ -27,7 +27,7 @@ const scheduleResolvers = {
     schedule: async (_parent, { name }, context, _info) => {
       const { dataSources, tenantId } = context;
 
-      const schedule = await dataSources.schellarApi.getSchedule(name);
+      const schedule = await dataSources.scheduleApi.getSchedule(name);
       if (!isMultiTenant) return schedule;
     },
   },
@@ -43,19 +43,19 @@ const scheduleResolvers = {
         },
       };
 
-      return await dataSources.schellarApi.createSchedule(bodyInputs);
+      return await dataSources.scheduleApi.createSchedule(bodyInputs);
     },
     updateSchedule: async (_parent, { name, scheduleInput }, context) => {
       const { dataSources } = context;
 
-      await dataSources.schellarApi.updateSchedule(name, scheduleInput);
+      await dataSources.scheduleApi.updateSchedule(name, scheduleInput);
 
       return "";
     },
     removeSchedule: async (_parent, { name }, context) => {
       const { dataSources } = context;
 
-      await dataSources.schellarApi.deleteSchedule(name);
+      await dataSources.scheduleApi.deleteSchedule(name);
 
       return "";
     },

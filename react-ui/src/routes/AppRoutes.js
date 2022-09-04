@@ -14,8 +14,8 @@ import ErrorLogContainer from 'features/errorLogs/components/ErrorLogContainer'
 import EventHandlerListContainer from 'features/eventHandler/list/components/EventHandlerListContainer'
 import EventHandlerContainer from 'features/eventHandler/edit/components/EventHandlerContainer'
 import WorkflowContainer from 'features/workflow/edit/components/WorkflowContainer'
-import SchellarListContainer from 'features/schellar/list/components/SchellarListContainer'
-import ScheduleContainer from 'features/schellar/edit/components/ScheduleContainer'
+import ScheduleListContainer from 'features/schedule/list/components/ScheduleListContainer'
+import ScheduleContainer from 'features/schedule/edit/components/ScheduleContainer'
 
 export default function AppRoutes() {
   return (
@@ -31,7 +31,7 @@ export default function AppRoutes() {
       <CustomRoute isPrivate={true} exact path='/tasks' component={TaskListContainer} />
       <CustomRoute isPrivate={true} exact path='/tasks/:new(new)' component={TaskContainer} />
       <CustomRoute isPrivate={true} exact path='/tasks/:name' component={TaskContainer} />
-      <CustomRoute isPrivate={true} exact path='/schedule' component={SchellarListContainer} />
+      <CustomRoute isPrivate={true} exact path='/schedule' component={ScheduleListContainer} />
       <CustomRoute isPrivate={true} exact path='/schedule/:new(new)' component={ScheduleContainer} />
       <CustomRoute isPrivate={true} exact path='/schedule/:name' component={ScheduleContainer} />
       <CustomRoute

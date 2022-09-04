@@ -11,7 +11,8 @@ additionalTypeDefs:
   - ./src/features/execution/schema.graphql
   - ./src/features/logs/schema.graphql
   - ./src/features/eventHandler/schema.graphql
-  - ./src/features/schellar/schema.graphql
+  - ./src/features/schedule/schema.graphql
+  - ./src/features/features/schema.graphql
 
 additionalResolvers:
   - ./src/startup/additionalResolvers.js

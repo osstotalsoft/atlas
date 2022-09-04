@@ -6,7 +6,8 @@ const workflowHistoryResolvers = require("../features/workflowHistory/resolvers"
 const eventHandlerResolvers = require("../features/eventHandler/resolvers");
 const logsResolvers = require("../features/logs/resolvers");
 const executionResolvers = require("../features/execution/resolvers");
-const schellarResolvers = require("../features/schellar/resolvers");
+const scheduleResolvers = require("../features/schedule/resolvers");
+const featuresResolvers = require("../features/features/resolvers");
 
 const additionalResolvers = merge(
   workflowResolvers,
@@ -15,7 +16,8 @@ const additionalResolvers = merge(
   logsResolvers,
   executionResolvers,
   taskResolvers,
-  schellarResolvers
+  scheduleResolvers,
+  featuresResolvers
 );
 
 module.exports = additionalResolvers;

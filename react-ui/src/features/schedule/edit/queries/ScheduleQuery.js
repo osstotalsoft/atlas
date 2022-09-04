@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const SCHELLAR_QUERY = gql`
+export const SCHEDULE_QUERY = gql`
   query schedule($name: String!, $isNew: Boolean!) {
     schedule(name: $name)  @skip(if: $isNew) {
       name

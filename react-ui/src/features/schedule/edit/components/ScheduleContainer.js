@@ -7,9 +7,9 @@ import { useMutation } from '@apollo/client'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { ADD_SCHEDULE_MUTATION, UPDATE_SCHEDULE_MUTATION } from '../mutations/ScheduleMutations'
-import { SCHELLAR_QUERY } from '../queries/ScheduleQuery'
+import { SCHEDULE_QUERY } from '../queries/ScheduleQuery'
 import { WORKFLOW_LIST_QUERY } from 'features/workflow/list/queries/WorkflowListQuery'
-import { SCHELLAR_LIST_QUERY } from 'features/schellar/list/queries/SchellarListQueries'
+import { SCHEDULE_LIST_QUERY } from 'features/schedule/list/queries/ScheduleListQueries'
 import { isDirty } from '@totalsoft/change-tracking'
 import { queryLimit } from 'features/common/constants'
 import { buildValidator } from '../validator'
@@ -45,14 +45,14 @@ const ScheduleContainer = () => {
   const schedule = scheduleLens |> get
 
   const { data: workflows } = useQueryWithErrorHandling(WORKFLOW_LIST_QUERY, { variables: { limit: queryLimit } })
-  const { data: schedules } = useQueryWithErrorHandling(SCHELLAR_LIST_QUERY, { variables: { limit: queryLimit } })
+  const { data: schedules } = useQueryWithErrorHandling(SCHEDULE_LIST_QUERY, { variables: { limit: queryLimit } })
 
   const scheduleValidator = useMemo(() => buildValidator(schedules?.scheduleList, name), [schedules?.scheduleList, name])
   const [validation, validate, resetValidation] = useDirtyFieldValidation(scheduleValidator)
 
   const editInProgress = schedule?.actions?.some(s => s?.editMode)
 
-  const { loading } = useQueryWithErrorHandling(SCHELLAR_QUERY, {
+  const { loading } = useQueryWithErrorHandling(SCHEDULE_QUERY, {
     variables: { name, isNew },
     onCompleted: data => {
       const current = data?.schedule
@@ -62,12 +62,12 @@ const ScheduleContainer = () => {
 
   const updateCacheAfterEdit = async () => {
     try {
-      await clientQuery(SCHELLAR_LIST_QUERY, {
+      await clientQuery(SCHEDULE_LIST_QUERY, {
         variables: { name, isNew },
         fetchPolicy: 'network-only'
       })
 
-      await clientQuery(SCHELLAR_QUERY, {
+      await clientQuery(SCHEDULE_QUERY, {
         variables: { name, isNew },
         fetchPolicy: 'network-only'
       })
@@ -79,7 +79,7 @@ const ScheduleContainer = () => {
   const updateCacheAfterAdd = async cache => {
     try {
       const existingschedules = cache.readQuery({
-        query: SCHELLAR_LIST_QUERY,
+        query: SCHEDULE_LIST_QUERY,
         variables: { limit: queryLimit }
       })
       const newCollection = [schedule, ...(existingschedules?.eventscheduleList || emptyArray)]
