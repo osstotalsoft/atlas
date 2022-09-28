@@ -92,6 +92,20 @@ export const nodeConfig = {
     hasParametersTab: true,
     getInstance: task => new TaskNodeModel(task)
   },
+  SIMPLE: {
+    name: 'TASK',
+    type: 'SIMPLE',
+    color: 'rgb(123,132,220)',
+    hasParametersTab: true,
+    getInstance: task => new TaskNodeModel(task)
+  },
+  DYNAMIC: {
+    name: 'TASK',
+    type: 'DYNAMIC',
+    color: 'rgb(123,132,220)',
+    hasParametersTab: true,
+    getInstance: task => new TaskNodeModel(task)
+  },
   END: {
     name: 'END',
     type: 'END',

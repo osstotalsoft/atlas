@@ -49,3 +49,16 @@ An Http task is used to make calls to another microservice over HTTP. There can 
 ## Terminate
 This task can terminate a workflow with a given status and modify it's output with a given parameter. It can act as a "return statement" for conditions where you simply want to terminate the workflow.
 ![Image alt text](react-ui/src/assets/img/Readme/TerminateTask.gif)
+
+## Docker
+Run 
+> docker compose up -d
+to start conductor-server with in memory database
+
+## Schellar integration
+https://github.com/flaviostutz/schellar
+
+Run 
+> docker compose --profile scheduler up -d
+to start conductor-server with in memory database and schellar (with mongo db). Configure schellar url in gql .env file (SCHEDULE_URL=http://localhost:3001)
+![Image alt text](react-ui/src/assets/img/Readme/TerminateTask.gif)

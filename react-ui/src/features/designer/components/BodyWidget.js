@@ -22,7 +22,7 @@ const BodyWidget = ({ canvasClass, workflow, engine, setIsDirty, locked }) => {
 
   const handleOnDrop = useCallback(
     event => {
-      if (event?.dataTransfer) {
+      if (event?.dataTransfer?.getData('storm-diagram-node')) {
         setIsDirty(true)
         const data = JSON.parse(event?.dataTransfer?.getData('storm-diagram-node'))
 

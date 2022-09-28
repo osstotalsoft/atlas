@@ -25,3 +25,4 @@ yarn-error.log*
 junit.xml
 .eslintcache
 .vscode/*
+gql-bff/.env.development

@@ -26,7 +26,8 @@ export const scheduleConfig = {
   parallelRuns: false,
   workflowVersion: '1',
   fromDate: new Date(),
-  toDate: new Date()
+  toDate: new Date(),
+  workflowContext: "{}"
 }
 
 const ScheduleContainer = () => {
