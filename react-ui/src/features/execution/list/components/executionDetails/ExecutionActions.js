@@ -93,24 +93,48 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
       case executionStatus.TERMINATED:
       case executionStatus.COMPLETED:
         return (
-          <IconButton size='small' color='themeNoBackground' tooltip={t('Execution.Buttons.Restart')} onClick={handleRestartExecution} disabled={readOnly}>
+          <IconButton
+            size='small'
+            color='themeNoBackground'
+            tooltip={t('Execution.Buttons.Restart')}
+            onClick={handleRestartExecution}
+            disabled={readOnly}
+          >
             <RepeatIcon fontSize='small' />
           </IconButton>
         )
       case executionStatus.FAILED:
         return (
           <Grid container>
-            <IconButton size='small' color='themeNoBackground' tooltip={t('Execution.Buttons.Restart')} onClick={handleRestartExecution} disabled={readOnly}>
+            <IconButton
+              size='small'
+              color='themeNoBackground'
+              tooltip={t('Execution.Buttons.Restart')}
+              onClick={handleRestartExecution}
+              disabled={readOnly}
+            >
               <RepeatIcon fontSize='small' />
             </IconButton>
-            <IconButton size='small' color='themeNoBackground' tooltip={t('Execution.Buttons.Retry')} onClick={handleRetryExecution} disabled={readOnly}>
+            <IconButton
+              size='small'
+              color='themeNoBackground'
+              tooltip={t('Execution.Buttons.Retry')}
+              onClick={handleRetryExecution}
+              disabled={readOnly}
+            >
               <ReplayIcon fontSize='small' />
             </IconButton>
           </Grid>
         )
       case executionStatus.PAUSED:
         return (
-          <IconButton size='small' color='themeNoBackground' tooltip={t('Execution.Buttons.Resume')} onClick={handleResumeExecution} disabled={readOnly}>
+          <IconButton
+            size='small'
+            color='themeNoBackground'
+            tooltip={t('Execution.Buttons.Resume')}
+            onClick={handleResumeExecution}
+            disabled={readOnly}
+          >
             <PlayArrowIcon fontSize='small' />
           </IconButton>
         )
@@ -125,7 +149,13 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
             >
               <CloseIcon fontSize='small' />
             </IconButton>
-            <IconButton size='small' color='themeNoBackground' tooltip={t('Execution.Buttons.Pause')} onClick={handlePauseExecution} disabled={readOnly}>
+            <IconButton
+              size='small'
+              color='themeNoBackground'
+              tooltip={t('Execution.Buttons.Pause')}
+              onClick={handlePauseExecution}
+              disabled={readOnly}
+            >
               <PauseIcon fontSize='small' />
             </IconButton>
           </Grid>
@@ -133,7 +163,16 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
       default:
         return <Typography>{t('Execution.NoActions')}</Typography>
     }
-  }, [handlePauseExecution, handleRestartExecution, handleResumeExecution, handleRetryExecution, handleTerminateExecution, readOnly, status, t])
+  }, [
+    handlePauseExecution,
+    handleRestartExecution,
+    handleResumeExecution,
+    handleRetryExecution,
+    handleTerminateExecution,
+    readOnly,
+    status,
+    t
+  ])
 
   return <>{renderActions()}</>
 }

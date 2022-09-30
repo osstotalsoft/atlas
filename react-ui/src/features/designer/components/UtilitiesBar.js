@@ -57,13 +57,7 @@ const UtilitiesBar = ({ isNew, isDirty, onExecute, onPreviewJson, onDelete, onSh
             <CloudUploadOutlined />
           </IconButton>
           {confirmation && (
-            <input
-              accept='application/txt,application/json'
-              id='contained-button-file'
-              type='file'
-              hidden
-              onChange={handleSelectFile}
-            />
+            <input accept='application/txt,application/json' id='contained-button-file' type='file' hidden onChange={handleSelectFile} />
           )}
         </label>
         <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Export')} onClick={onExport}>
