@@ -3,7 +3,7 @@ const { userCanSeeResource } = require("../common/functions");
 const updateHandlerCondition = (initialCondition, isMultiTenant, tenantId) => {
   let condArray = new Array();
 
-  if (isMultiTenant) condArray.push(`\$.Headers['nbb-tenantId']==='${tenantId}'`);
+  if (isMultiTenant) condArray.push(`\$.Headers['nbb-tenantId'] === '${tenantId}'`);
   if (initialCondition) condArray.push(initialCondition);
 
   return condArray.join(" && ");
@@ -11,7 +11,7 @@ const updateHandlerCondition = (initialCondition, isMultiTenant, tenantId) => {
 
 const getTenantIdFromHandler = (condition) => {
   //get the tenant condition
-  const tenantConditionExp = RegExp(`\\$\\.Headers\\['nbb-tenantId'\\]==='([\\w-]+)'`);
+  const tenantConditionExp = RegExp(`\\$\\.Headers\\['nbb-tenantId'\\] === '([\\w-]+)'`);
   const match = condition?.match(tenantConditionExp);
 
   //get the tenantId

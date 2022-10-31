@@ -37,8 +37,8 @@ const eventHandlerResolvers = {
   },
   EventHandler: {
     condition: (parent, _args, _context, _info) => {
-      const longRegex = /\$\.Headers\['nbb-tenantId'\]==='[a-f\d\-]+' &&/g;
-      const shortRegex = /\$\.Headers\['nbb-tenantId'\]==='[a-f\d\-]+'/g;
+      const longRegex = /\$\.Headers\['nbb-tenantId'\] === '[\w-]+' &&/g;
+      const shortRegex = /\$\.Headers\['nbb-tenantId'\] === '[\w-]+'/g;
 
       const cond = parent?.condition?.replace(longRegex, "");
       return cond?.replace(shortRegex, "");
