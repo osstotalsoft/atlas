@@ -9,13 +9,13 @@ describe("EventHandler functions must work as expected", () => {
       initialCond: "param1 === true",
       isMultitenant: true,
       tenantId: "68a448a2-e7d8-4875-8127-f18668217eb6",
-      expectedCond: `\$.Headers.TenantId === '68a448a2-e7d8-4875-8127-f18668217eb6' && param1 === true`,
+      expectedCond: `\$.Headers['nbb-tenantId'] === '68a448a2-e7d8-4875-8127-f18668217eb6' && param1 === true`,
     },
     {
       initialCond: "",
       isMultitenant: true,
       tenantId: "68a448a2-e7d8-4875-8127-f18668217eb6",
-      expectedCond: `\$.Headers.TenantId === '68a448a2-e7d8-4875-8127-f18668217eb6'`,
+      expectedCond: `\$.Headers['nbb-tenantId'] === '68a448a2-e7d8-4875-8127-f18668217eb6'`,
     },
     {
       initialCond: "param1 === true",
@@ -35,10 +35,10 @@ describe("EventHandler functions must work as expected", () => {
     const resourceList = [
       {
         condition:
-          "$.Headers.TenantId === '68a448a2-e7d8-4875-8127-f18668217eb6' && param1 === true",
+          "$.Headers['nbb-tenantId'] === '68a448a2-e7d8-4875-8127-f18668217eb6' && param1 === true",
       },
       {
-        condition: "$.Headers.TenantId === '111' && param1 === true",
+        condition: "$.Headers['nbb-tenantId'] === '111' && param1 === true",
       },
       { condition: "param1 === true" },
     ];
@@ -46,7 +46,7 @@ describe("EventHandler functions must work as expected", () => {
     const expectedList = [
       {
         condition:
-          "$.Headers.TenantId === '68a448a2-e7d8-4875-8127-f18668217eb6' && param1 === true",
+          "$.Headers['nbb-tenantId'] === '68a448a2-e7d8-4875-8127-f18668217eb6' && param1 === true",
       },
       {
         condition: "param1 === true",
