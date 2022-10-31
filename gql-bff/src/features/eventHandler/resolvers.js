@@ -37,8 +37,8 @@ const eventHandlerResolvers = {
   },
   EventHandler: {
     condition: (parent, _args, _context, _info) => {
-      const longRegex = /\$\.Headers\.TenantId === '[\w-]+' &&/g;
-      const shortRegex = /\$\.Headers\.TenantId === '[\w-]+'/g;
+      const longRegex = /\$\.Headers\['nbb-tenantId'\]==='[a-f\d\-]+' &&/g;
+      const shortRegex = /\$\.Headers\['nbb-tenantId'\]==='[a-f\d\-]+'/g;
 
       const cond = parent?.condition?.replace(longRegex, "");
       return cond?.replace(shortRegex, "");
@@ -70,6 +70,14 @@ const eventHandlerResolvers = {
 
       const body = {
         ...eventHandlerInput,
+        actions: eventHandlerInput.actions.map((a) => {
+          return {
+            ...a,
+            start_workflow: a.startWorkflow3,
+            complete_task: a.completeTask,
+            fail_task: a.failTask,
+          };
+        }),
         condition: updateHandlerCondition(
           eventHandlerInput?.condition,
           isMultitenant,
@@ -86,13 +94,20 @@ const eventHandlerResolvers = {
 
       const body = {
         ...eventHandlerInput,
+        actions: eventHandlerInput.actions.map((a) => {
+          return {
+            ...a,
+            start_workflow: a.startWorkflow3,
+            complete_task: a.completeTask,
+            fail_task: a.failTask,
+          };
+        }),
         condition: updateHandlerCondition(
           eventHandlerInput?.condition,
           isMultitenant,
           tenant?.id
         ),
       };
-
       //Update Event Handler in Conductor
       await dataSources.eventHandlerApi.editEventHandler(body);
     },
