@@ -27,6 +27,10 @@ const LanguageSelector = ({ language, changeLanguage, drawerOpen }) => {
         <Flag name='RO' format='png' pngSize={32} shiny={true} basePath='/static/flags' />
         {drawerOpen && <Typography className={classes.langSelectorText}>{'Romana'}</Typography>}
       </ListItem>
+      <ListItem button value='fr' className={classes.langSelectorItem}>
+        <Flag name='FR' format='png' pngSize={32} shiny={true} basePath='/static/flags' />
+        {drawerOpen && <Typography className={classes.langSelectorText}>{'Français'}</Typography>}
+      </ListItem>
       <ListItem button value='en' className={classes.langSelectorItem}>
         <Flag name='GB' format='png' pngSize={32} shiny={true} basePath='/static/flags' />
         {drawerOpen && <Typography className={classes.langSelectorText}>{'English'}</Typography>}
