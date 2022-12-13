@@ -9,7 +9,7 @@ Atlas is a graphical interface, built on top of the Netflix's [Conductor](https:
 • Git: https://git-scm.com/download/win <br>
 • Git Extensions: https://github.com/gitextensions/gitextensions/releases <br>
 • Node.js: https://nodejs.org/en/download/<br>
-• Before starting, we recommend to take a look at the [Conductor documentation](https://netflix.github.io/conductor/configuration/taskdef/) as an introduction to Tasks, Workflows, Definitions and some other related concepts.
+• Before starting, we recommend to take a look at the [Conductor documentation](https://conductor.netflix.com/configuration/taskdef.html) as an introduction to Tasks, Workflows, Definitions and some other related concepts.
 
 ## Start project in development:
 
