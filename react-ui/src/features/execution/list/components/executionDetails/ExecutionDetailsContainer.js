@@ -12,7 +12,7 @@ import { EXECUTION_DETAILS_QUERY } from '../../queries/ExecutionDetailsQuery'
 import { useQueryWithErrorHandling } from 'hooks/errorHandling'
 import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
 import { emptyArray, emptyObject } from 'utils/constants'
-import Grapher from 'features/designer/diagram/Grapher'
+import WorkflowGraphContainer from '../../../../designer/diagram/WorkflowGraphContainer'
 import { useRouteMatch } from 'react-router-dom'
 import { useHeader } from 'providers/AreasProvider'
 import StandardHeader from 'components/layout/StandardHeader'
@@ -27,7 +27,7 @@ const ExecutionDetailsContainer = () => {
   const classes = useStyles()
   const match = useRouteMatch()
 
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(4)
   const [, setHeader] = useHeader(<StandardHeader />)
 
   const workflowId = match.params.workflowId
@@ -43,7 +43,7 @@ const ExecutionDetailsContainer = () => {
 
   useEffect(() => {
     if (!executionDetails?.status) return
-    if (executionDetails.status === executionStatus.RUNNING) startPolling(500)
+    if (executionDetails.status === executionStatus.RUNNING) startPolling(5000)
     else stopPolling()
   }, [executionDetails, startPolling, stopPolling])
 
@@ -96,7 +96,7 @@ const ExecutionDetailsContainer = () => {
           <ExecutionEditRerun workflow={executionDetails} />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <Grapher workflow={executionDetails} layout='TD-auto' />
+          <WorkflowGraphContainer flow={executionDetails} />
         </TabPanel>
       </Grid>
     </Grid>

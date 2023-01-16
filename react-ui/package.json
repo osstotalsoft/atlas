@@ -51,6 +51,7 @@
     "omit-deep-lodash": "^1.1.5",
     "pathfinding": "^0.4.18",
     "paths-js": "^0.4.11",
+    "parse-svg-path": "0.1.2",
     "ramda": "^0.28.0",
     "react": "^17.0.2",
     "react-ace": "^9.4.0",
@@ -70,7 +71,8 @@
     "styled-components": "^5.3.1",
     "subscriptions-transport-ws": "^0.11.0",
     "url-search-params-polyfill": "^8.1.1",
-    "use-debounce": "^7.0.0"
+    "use-debounce": "^7.0.0",
+    "date-fns": "2.29.3"
   },
   "resolutions": {
     "@projectstorm/react-diagrams-core": "6.5.0",
