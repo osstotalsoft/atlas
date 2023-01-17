@@ -18,7 +18,8 @@
     "Logout": "Déconnexion",
     "HidePassword": "Masquer le mot de passe",
     "ShowPassword": "Afficher le mot de passe",
-    "BackToList": "Retour à la liste"
+    "BackToList": "Retour à la liste",
+    "ParentFlow": "Workflow parent"
   },
   "Dialog": {
     "Yes": "Oui",

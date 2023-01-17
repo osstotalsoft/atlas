@@ -25,7 +25,6 @@ const WorkflowGraph = ({ style, className, dag, executionMode, onClick }) => {
   }, [dag])
 
   const collapseDfChildren = (parentRef, childrenRef) => {
-    const graph = graph
     const dagGraph = dag.graph
 
     const tally = childrenRef
@@ -207,8 +206,8 @@ const WorkflowGraph = ({ style, className, dag, executionMode, onClick }) => {
     const node = graph.node(taskRef)
     inner.selectAll('g.node').classed('selected', false)
     if (node.type === 'DF_TASK_PLACEHOLDER') {
-      const node = dag.graph.node(e)
-      onClick({ ref: node })
+      const graph_node = dag.graph.node(node.firstDfRef)
+      onClick({ ref: graph_node })
       if (taskRef) {
         inner.select(`g[id='${taskRef}']`).classed('selected', true)
       }

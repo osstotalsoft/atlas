@@ -11,8 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Alert from '@material-ui/lab/Alert'
 import { useTranslation } from 'react-i18next'
 import { Autocomplete } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { Link } from '@material-ui/core'
-import LaunchIcon from '@material-ui/icons/Launch'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   wrapper: {
@@ -95,6 +94,7 @@ const WorkflowGraphContainer = ({ flow }) => {
   const [selectedTask, setSelectedTask] = useState(null)
   const dag = useMemo(() => (flow ? new WorkflowDAG(flow) : null), [flow])
   const classes = useStyles(initialDrawerState)
+  const history = useHistory()
   const { t } = useTranslation()
 
   const handleClose = useCallback(() => {
@@ -111,7 +111,9 @@ const WorkflowGraphContainer = ({ flow }) => {
   }
 
   const error = failedTaskError(flow)
-  const handleChangeFlow = useCallback(flowId => {}, [])
+  const handleChangeFlow = useCallback(flowId => {
+    history.push(`/executions/${flowId}`)
+  }, [history])
 
   const handleSelectedTask = useCallback(task => {
     setSelectedTask({
@@ -144,9 +146,9 @@ const WorkflowGraphContainer = ({ flow }) => {
 
   const changeDfOption = useCallback(v => {
     setSelectedTask({
-      ref: v
+      ref: dag.graph.node(v)
     })
-  }, [])
+  }, [dag.graph])
   const changeRetryOption = useCallback(
     selectedTask => v => {
       setSelectedTask({

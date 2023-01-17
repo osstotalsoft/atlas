@@ -26,7 +26,8 @@
     "Logout": "Logout",
     "HidePassword": "Hide password",
     "ShowPassword": "Show password",
-    "BackToList": "Back to list"
+    "BackToList": "Back to list",
+    "ParentFlow": "Parent workflow"
   },
   "Dialog": {
     "Yes": "Yes",

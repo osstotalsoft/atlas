@@ -6,6 +6,7 @@ import { EditButton, Typography, IconButton } from '@bit/totalsoft_oss.react-mui
 import { makeStyles } from '@material-ui/core'
 import tableStyle from 'assets/jss/components/tableStyle'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { Link } from '@material-ui/core'
 
 const useStyles = makeStyles(tableStyle)
 
@@ -28,7 +29,7 @@ const ExecutionItem = ({ onSeeDetails, onGotoDefinition, execution }) => {
           <Typography>{execution?.version}</Typography>
         </Td>
         <Td className={classes.tableContent}>
-          <Typography>{execution?.workflowId}</Typography>
+          <Typography><Link href={"executions/" + execution?.workflowId} underline="none">{execution?.workflowId}</Link></Typography>
         </Td>
         <Td className={classes.tableContent}>
           <Typography>{execution?.status}</Typography>

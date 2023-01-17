@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Grid, makeStyles, Box } from '@material-ui/core'
-import { BackToButton, SaveButton, Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { BackToButton, SaveButton, Typography, IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import ReplyIcon from '@material-ui/icons/Reply';
 
 const useStyles = makeStyles(theme => ({ title: { ...theme.header.title } }))
 
-const StandardHeader = ({ headerText, secondaryHeaderText, path, onSave, disableSaving, saving }) => {
+const StandardHeader = ({ headerText, secondaryHeaderText, path, parentPath, onSave, disableSaving, saving }) => {
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -26,6 +27,11 @@ const StandardHeader = ({ headerText, secondaryHeaderText, path, onSave, disable
         </Box>
       </Grid>
       <Grid item xs={6} sm={3} lg={6} container justifyContent='flex-end' spacing={1}>
+        <Grid item>{parentPath && <IconButton title={t('Tooltips.ParentFlow')} href={parentPath}>
+          <ReplyIcon />
+        </IconButton>
+        }
+        </Grid>
         <Grid item>{path && <BackToButton title={t('Tooltips.BackToList')} path={path} />}</Grid>
         <Grid item>
           {onSave && (
@@ -45,6 +51,7 @@ StandardHeader.propTypes = {
   headerText: PropTypes.string,
   secondaryHeaderText: PropTypes.string,
   path: PropTypes.string,
+  parentPath: PropTypes.string,
   onSave: PropTypes.func,
   disableSaving: PropTypes.bool,
   saving: PropTypes.bool

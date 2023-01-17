@@ -8,7 +8,7 @@ import LaunchIcon from '@material-ui/icons/Launch'
 const TaskSummary = ({ taskResult, changeFlow }) => {
   // To accommodate unexecuted tasks, read type & name & ref out of workflowTask
 
-  const changeWorkflow = id => changeFlow(id)
+  const changeWorkflow = id => () => changeFlow(id)
 
   const data = [
     { label: 'Task Type', value: taskResult.workflowTask.type },

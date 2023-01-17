@@ -48,8 +48,8 @@ const ExecutionDetailsContainer = () => {
   }, [executionDetails, startPolling, stopPolling])
 
   useEffect(() => {
-    setHeader(<StandardHeader headerText={executionDetails?.workflowName} path='/executions' />)
-  }, [executionDetails?.workflowName, setHeader])
+    setHeader(<StandardHeader headerText={executionDetails?.workflowName} path='/executions' parentPath={executionDetails?.parentWorkflowId ? `/executions/${executionDetails?.parentWorkflowId}` : null} />)
+  }, [executionDetails?.workflowName, executionDetails?.parentWorkflowId, setHeader])
 
   const handleChange = useCallback((event, newValue) => {
     setValue(newValue)
