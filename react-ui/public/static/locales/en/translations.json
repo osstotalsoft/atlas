@@ -231,8 +231,8 @@
   },
   "WorkflowHistory": {
     "Version": "Version",
-    "TimeStamp": "TimeStamp",
-    "ChangedBy": "ChangedBy",
+    "TimeStamp": "Time stamp",
+    "ChangedBy": "Changed by",
     "Dialog": {
       "Revert": "Are you sure you want to revert to the definition from {{timeStamp}}?",
       "Compare": {

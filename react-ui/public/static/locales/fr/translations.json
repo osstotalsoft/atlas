@@ -1,0 +1,497 @@
+{
+  "BuildVersion": "v",
+  "RowsOf": "de",
+  "RowsPerPage": "Lignes par page",
+  "MyProfile": "Mon Profil",
+  "Forbidden": "Non autorisé à voir cette page !",
+  "LeavingWithoutSaving": "Quitter sans enregistrer ?",
+  "NavBar": {
+    "Workflows": "Workflows",
+    "Tasks": "Tâches",
+    "Settings": "Paramètres",
+    "Executions": "Exécutions",
+    "SystemTasks": "System_Tasks",
+    "EventHandlers": "Gestionnaires d'événements",
+    "Configurations": "Configurations"
+  },
+  "Tooltips": {
+    "Logout": "Déconnexion",
+    "HidePassword": "Masquer le mot de passe",
+    "ShowPassword": "Afficher le mot de passe",
+    "BackToList": "Retour à la liste"
+  },
+  "Dialog": {
+    "Yes": "Oui",
+    "No": "Non",
+    "DeleteTaskQuestion": "Êtes-vous sûr de vouloir supprimer la tâche ?"
+  },
+  "DateTime": {
+    "InvalidDateMessage": "Format de date invalide",
+    "MinDateMessage": "La date ne doit pas être antérieure à la date minimale",
+    "MaxDateMessage": "La date ne doit pas être postérieure à la date maximale"
+  },
+  "Workflow": {
+    "AddName": "Ajouter un nom",
+    "Name": "Nom",
+    "Version": "Version",
+    "Description": "Description",
+    "NoDescription": "Aucune description",
+    "CreatedBy": "Créé Par",
+    "UpdatedBy": "Mis à jour par",
+    "TimeoutSeconds": "Délai d'expiration secondes",
+    "FailureWorkflow": "Workflow d'échec",
+    "WorkflowNotFound": "La définition du Workflows est introuvable. Elle a probablement été supprimée. ",
+    "MissingWorkflows": "Le ou les workflows suivants sont introuvables: {{missingSubWorkflows}}. Ils ont probablement été supprimés.",
+    "WorkflowStatusListenerEnabled": "Écouteur d'état du workflow activé",
+    "Buttons": {
+      "AddWorkflow": "Ajouter un workflow",
+      "Clone": "Cloner",
+      "Cancel": "Annuler",
+      "Execute": "Exécuter",
+      "Executing": "Exécution...",
+      "GoToExecution": "Aller à l'exécution"
+    },
+    "Dialog": {
+      "CloneWorkflow": "Veuillez saisir un nom pour votre nouveau workflow",
+      "DeleteWorkflow": "Êtes-vous sûr de vouloir supprimer le workflow?",
+      "CancelEdit": "Êtes-vous sûr de vouloir annuler les modifications?",
+      "PreviewJson": "Configuration du workflow JSON",
+      "ExecuteWorkflowDialogTitle": "Paramètres d'entrée d'exécution",
+      "ExecuteWorkflowDialogSubtitle": "(Les paramètres d'entrée peuvent prendre des chaînes ou des objets JSON comme valeurs)"
+    },
+    "SideMenu": {
+      "Tabs": {
+        "Executions": "Exécutions",
+        "History": "Histoire"
+      }
+    },
+    "Notification": {
+      "ClonedSuccessfully": "Le workflow a été cloné avec succès"
+    }
+  },
+  "WorkflowTask": {
+    "Name": "Nom",
+    "TaskReferenceName": "Nom de la référence de la tâche",
+    "Description": "Description",
+    "Optional": "Facultatif",
+    "StartDelay": "Délai de commencer",
+    "InputParameter": {
+      "Name": "Nom du paramètre d'entrée",
+      "ScriptExpression": "Expression de script",
+      "DefaultText": "Ajouter un nouveau nom de paramètre",
+      "Payload": "Charge utile"
+    },
+    "Buttons": {
+      "AddParameter": "Ajouter un paramètre",
+      "DeleteParameter": "Supprimer le paramètre"
+    },
+    "Decision": {
+      "Case": "Cas",
+      "CaseValueParam": "Paramètre",
+      "CaseExpression": "Expression",
+      "AddCaseValue": "Ajouter une nouvelle valeur de cas",
+      "DefaultCase": "Cas par défaut",
+      "Buttons": {
+        "AddCaseValue": "Ajouter une nouvelle valeur de cas"
+      }
+    },
+    "Terminate": {
+      "Completed": "TERMINÉ",
+      "Failed": "ÉCHEC",
+      "WorkflowOutput": "Sortie du workflow"
+    },
+    "Http": {
+      "Uri": "Uri",
+      "Method": "Method",
+      "Accept": "Accept",
+      "ContentType": "Content Type",
+      "Headers": "Headers",
+      "Body": "Body",
+      "VipAddress": "Vip Address",
+      "AsyncComplete": "Async Complete",
+      "OauthConsumerKey": "Oauth Consumer Key",
+      "OauthConsumerSecret": "Oauth Consumer Secret",
+      "ConnectionTimeOut": "Connection TimeOut",
+      "ReadTimeOut": "ReadTimeOut"
+    },
+    "Event": {
+      "Action": "Action",
+      "Payload": "Payload",
+      "Sink": "Synch",
+      "CompleteSink": "Complète Synch",
+      "AsyncComplete": "Complète Asynch"
+    }
+  },
+  "Task": {
+    "Name": "Nom",
+    "Description": "Description",
+    "NoDescription": "Aucune description",
+    "CreateTime": "Créé temps",
+    "OwnerEmail": "Courriel du propriétaire",
+    "CreatedBy": "Créé Par",
+    "RetryCount": "Nombre de tentatives",
+    "RetryLogic": "Réessayer la logique",
+    "RetryDelaySeconds": "Retry Delay Seconds",
+    "TimeoutPolicy": "Politique d'expiration",
+    "TimeoutSeconds": "Timeout secondes",
+    "ResponseTimeoutSeconds": "Délai de réponse en secondes",
+    "MissingTasks": "La ou les tâches suivantes sont introuvables : {{missingTasks}}. Elles ont probablement été supprimées.",
+    "InputKeys": "Touches d'entrée",
+    "OutputKeys": "Touches de sortie",
+    "Data": "Données",
+    "Buttons": {
+      "AddTask": "Ajouter une tâche"
+    }
+  },
+  "WorkflowHistory": {
+    "Version": "Version",
+    "TimeStamp": "Données et heure",
+    "ChangedBy": "Changé par",
+    "Dialog": {
+      "Revert": "Êtes-vous sûr de vouloir revenir à la définition de {{timeStamp}}?",
+      "Compare": {
+        "OldDefinition": "Ancienne définition",
+        "CurrentDefinition": "Définition actuelle"
+      }
+    },
+    "Buttons": {
+      "Preview": "Afficher JSON",
+      "Compare": "Comparer à cette définition",
+      "Revert": "Revenir à cette définition",
+      "CurrentDefinition": "Définition actuelle"
+    }
+  },
+  "Execution": {
+    "Executions": "Exécutions",
+    "Name": "Nom ",
+    "Version": "Version",
+    "WorkflowId": "Workflow Id",
+    "Status": "Statut",
+    "StartTime": "Commence à",
+    "EndTime": "Terminé à",
+    "Details": "Détails",
+    "TotalTime": "Durée totale (sec)",
+    "TaskDetails": "Détails de la tâche",
+    "IO": "Entrée/Sortie",
+    "JSON": "JSON",
+    "EditRerun": "Modifier et réexécuter",
+    "ExecutionFlow": "Flux d'exécution",
+    "Input": "Entrée",
+    "Output": "Sortie",
+    "WorkflowJSON": "Flux JSON",
+    "EditRerunWorkflow": "Modifier et relancer le workflow",
+    "Actions": "Actions",
+    "NoActions": "Aucune action disponible",
+    "Task": {
+      "Type": "Type de tâche",
+      "Task": "Tâche",
+      "SubWorkflow": "Sous-flux",
+      "RefName": "Nom de référence",
+      "PollCount": "Aucun sondage",
+      "CallAfter": "Répondre (sec)"
+    },
+    "Diagram": {
+      "Tabs": {
+        "Summary": "Résumé",
+        "Json": "Json"
+      },
+      "Legend": {
+        "Scheduled": "Exécution planifiée",
+        "Executed": "Tâche exécutée avec succès",
+        "NotExecuted": "La tâche n'a pas été exécutée",
+        "InProgress": "La tâche est en cours d'exécution",
+        "Error": "Tâche exécutée avec des erreurs"
+      }
+    },
+    "Buttons": {
+      "GoToExecution": "Voir l'exécution",
+      "GoToDefinition": "Voir la définition",
+      "SeeDetails": "Voir les détails",
+      "Terminate": "Terminer",
+      "Pause": "Arrête",
+      "Resume": "Reprendre",
+      "Retry": "Réessayer",
+      "Restart": "Redémarrer"
+    },
+    "Notifications": {
+      "Restart": "L'exécution a été redémarrée avec succès",
+      "Retry": "L'exécution est en cours",
+      "Pause": "L'exécution a été arrêtée",
+      "Resume": "L'exécution a repris",
+      "Terminate": "L'exécution est terminée"
+    }
+  },
+  "EventHandler": {
+    "EventHandlers": "Gestionnaires d'événements",
+    "EventHandlerInfo": "Informations sur le gestionnaire d'événements",
+    "Active": "Actif",
+    "Inactive": "Inactif",
+    "Name": "Nom",
+    "Sink": "Évier",
+    "Actions": "Actions",
+    "Action": "Action",
+    "ExpandInlineJSON": "Développer le JSON en ligne",
+    "Output": "Sortie",
+    "WorkflowId": "ID du workflow",
+    "TaskId": "ID de la tâche",
+    "TaskRefName": "Nom de référence de la tâche",
+    "WorkflowName": "Nom du workflow",
+    "Version": "Version",
+    "InputParameter": "Paramètre d'entrée",
+    "InputValue": "Valeur d'entrée",
+    "OutputParameter": "Paramètre de sortie",
+    "OutputValue": "Valeur de sortie",
+    "Condition": "État",
+    "Buttons": {
+      "AddEventHandler": "Ajouter un gestionnaire d'événements",
+      "AddAction": "Ajouter une action"
+    },
+    "Dialog": {
+      "Delete": "Êtes-vous sûr de vouloir supprimer le gestionnaire ?"
+    }
+  },
+  "Log": {
+    "Log": "Journal {{id}}",
+    "LogId": "Id du journal",
+    "RequestId": "Id de la demande",
+    "Code": "Code",
+    "Message": "Message",
+    "Details": "Détails",
+    "Timestamp": "Données et heure",
+    "Type": "Type"
+  },
+  "Validations": {
+    "Cnp": "La valeur n'est pas un numéro d'identifiant valide",
+    "UniqueCnp": "Le numéro d'identifiant n'est pas unique",
+    "Phone": "La valeur n'est pas un numéro de téléphone valide",
+    "NoSpace": "Impossible de commencer par l'espace",
+    "Integer": "La valeur doit être un entier",
+    "UniqueName": "Le nom doit être unique",
+    "UniqueNameAndVersion": "Le nom et la version doivent être uniques",
+    "InvalidSink": "Le récepteur doit être de type conductor/nats_stream:topic",
+    "NameCannotBeNew": "Le nom ne peut pas être 'new'",
+    "Generic": {
+      "Mandatory": "La valeur est obligatoire",
+      "AtLeastOne": "Il doit y avoir au moins un élément",
+      "Regex": "La valeur a un format invalide",
+      "Email": "La valeur n'est pas une adresse email valide",
+      "OutOfRange": "La valeur doit être comprise entre {{min}} et {{max}}",
+      "Greater": "La valeur doit être supérieure à {{min}}",
+      "GreaterOrEqual": "La valeur doit être supérieure ou égale à {{min}}",
+      "Less": "La valeur doit être inférieure à {{max}}",
+      "LessOrEqual": "La valeur doit être inférieure ou égale à {{max}}",
+      "MaxCharacters": "La longueur doit être inférieure à {{max}}",
+      "MinCharacters": "La longueur doit être supérieure à {{min}}",
+      "Unique": "La valeur de {{selector}} doit être unique"
+    }
+  },
+  "EditTaskModal": {
+    "Tabs": {
+      "General": "Général",
+      "InputParameters": "Paramètres d'entrée",
+      "Advanced": "Avancé"
+    }
+  },
+  "Designer": {
+    "DeleteConfirmation": "Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?",
+    "ImportConfirmation": "Attention, toutes les modifications seront perdues. Êtes-vous sûr de vouloir continuer ?",
+    "StartTour": "Voulez-vous faire une visite virtuelle ?",
+    "UtilitiesBar": {
+      "Undo": "Annuler",
+      "Redo": "Refaire",
+      "PreviewJson": "Aperçu JSON",
+      "Lock": "Schéma de verrouillage",
+      "Import": "Importer depuis JSON",
+      "Export": "Exporter au format JSON",
+      "Delete": "Supprimer la sélection",
+      "Execute": "Exécuter le workflow",
+      "GeneralSettings": "Paramètres généraux"
+    },
+    "Tour": {
+      "BadgeContent": "{{curr}} sur {{tot}}",
+      "Welcome": "Bienvenue dans notre visite ! Utilisez les boutons ci-dessous ou les touches fléchées pour vous déplacer dans les étapes.",
+      "SystemTasks": "Vous pouvez dessiner un workflow en utilisant ces tâches système définies par le Conductor.",
+      "DefineTask": "Vous pouvez également définir vos propres tâches ici.",
+      "Tasks": "Après enregistrement, elles apparaîtront dans cette liste.",
+      "Workflows": "Ici, vous pouvez trouver tous les workflows qui ont été créés et les utiliser comme sous-workflows.",
+      "Help1": "Lorsque vous n'êtes pas sûr de la signification de quelque chose,",
+      "Help2": "vous pouvez toujours cliquer sur le signe d'aide pour plus d'informations.",
+      "Event": "Glissez-déposez une tâche pour l'ajouter à votre workflow.",
+      "StartNode": "Chaque workflow doit commencer par un nœud START et se terminer par un nœud END.",
+      "ConnectPort": "Utilisez le port de droite pour le connecter à une tâche.",
+      "LinkUnfocused": "Assurez-vous que le lien n'est pas ciblé (en cliquant en dehors de celui-ci) avant d'enregistrer.",
+      "DeleteLink": "Pour supprimer un lien:",
+      "BoxSelection": "Pour sélectionner une section entière, utilisez SHIFT et faites glisser",
+      "TaskSettings": "Double-cliquez sur une tâche pour configurer ses paramètres.",
+      "Utilities": "Vous trouverez ici quelques actions pour vous aider à concevoir et gérer votre workflow:",
+      "WorkflowSettings": "Cliquez ici pour ajouter la description du workflow et quelques paramètres avancés.",
+      "Save": "Enfin, vous pouvez enregistrer le workflow en cliquant sur ce bouton."
+    }
+  },
+  "Helpers": {
+    "Common": {
+      "SeeDocumentation": "Pour plus d'informations, consultez la documentation ici.",
+      "Here": "ici",
+      "Output": "Résultat"
+    },
+    "Tray": {
+      "SystemTasks": "Tâches exécutées par le serveur Conductor.",
+      "Tasks": "Tâches exécutées par vos propres ouvriers.",
+      "Workflows": "Tâches permettant d'imbriquer un workflow dans un autre workflow.",
+      "Start": {
+        "Def": "Tâche qui démarre le workflow.",
+        "Mandatory": "Il est obligatoire pour créer un workflow."
+      },
+      "Lambda": {
+        "Def": "Tâche qui permet d'exécuter une logique ad-hoc lors de l'exécution du workflow, à l'aide d'expressions Javascript.",
+        "Details": "Ceci est particulièrement utile pour exécuter des évaluations simples dans le serveur Conductor, plutôt que de créer des Workers.",
+        "ResultTerm": "résultat",
+        "ResultDef": "contient la sortie renvoyée par la Javascript expression (scriptExpression)",
+        "ReferenceOutput": "La sortie de la tâche peut ensuite être référencée dans des tâches en aval telles que : ${[TASK_REFERENCE_NAME].output.result.[VARIABLE_NAME]}",
+        "ReferenceOutputHighlight": "${[TASK_REFERENCE_NAME].output.result.[VARIABLE_NAME]}"
+      },
+      "Decision": {
+        "Def": "Tâche qui détermine l'exécution de différentes branches de décision en fonction de différentes conditions.",
+        "Details": "C'est similaire à l'instruction case...switch dans un langage de programmation.",
+        "CaseOutputTerm": "caseOutput",
+        "CaseOutputDef": "une liste des cas correspondants"
+      },
+      "Event": {
+        "Def": "Tâche qui permet de publier un événement (message) sur Conductor ou sur un système d'événements externe.",
+        "Details": "C'est utile pour créer des dépendances basées sur des événements pour les workflows et les tâches.",
+        "WorkflowInstanceIdTerm": "workflowInstanceId",
+        "WorkflowTypeTerm": "workflowType",
+        "WorkflowVersionTerm": "workflowVersion",
+        "CorrelationIdTerm": "correlationId",
+        "SinkTerm": "Sink",
+        "SinkDef": "copie des données d'entrée 'sink'",
+        "AsyncCompleteTerm": "asyncComplete",
+        "AsyncCompleteDef": "copie des données d'entrée 'asyncComplete'",
+        "EventProducedTerm": "event_produced",
+        "EventProducedDef": "nom de l'événement produit"
+      },
+      "Http": {
+        "Def": "Tâche utilisée pour appeler un autre micro-service via HTTP.",
+        "Output": "Sortie (accessible via output.response)",
+        "BodyTerm": "corps",
+        "BodyDef": "Corps JSON contenant la réponse si elle est présente",
+        "HeadersTerm": "en-têtes",
+        "HeadersDef": "en-têtes de réponse",
+        "StatusCodeTerm": "statusCode",
+        "StatusCodeDef": "Code d'état HTTP (1xx - réponse d'information, 2xx - succès, 3xx - redirection, 4xx - erreur client, 5xx - erreur serveur)",
+        "ReasonPhraseTerm": "reasonPhrase",
+        "ReasonPhraseDef": "Expression de raison du code d'état HTTP"
+      },
+      "Fork": {
+        "Def": "Tâche utilisée pour planifier un ensemble parallèle de tâches.",
+        "Important": "IMPORTANT : une tâche FORK doit être suivie d'un JOIN",
+        "OutputTerm": "un objet JSON avec la clé étant le nom de référence de la tâche et la valeur comme sortie de la tâche fork"
+      },
+      "Join": {
+        "Def": "Tâche utilisée pour attendre la fin d'une ou plusieurs tâches provenant de tâches fork"
+      },
+      "DynamicFork": {
+        "Def": "Tâche identique à la tâche FORK, sauf que la liste des tâches à forker est fournie au moment de l'exécution à l'aide de l'entrée de la tâche.",
+        "Details": "Utile lorsque le nombre de tâches à bifurquer n'est pas fixe et varie en fonction de l'entrée.",
+        "ComparisonFork": "Contrairement à FORK, qui peut exécuter des flux parallèles avec chaque fork exécutant une série de tâches en séquence, DYNAMIC_FORK est limité à une seule tâche par fork.",
+        "ForkedTask": "Cependant, une tâche forkée peut être un sous-workflow, permettant des flux d'exécution plus complexes.",
+        "Important": "IMPORTANT : une tâche FORK doit être suivie d'un JOIN"
+      },
+      "Terminate": {
+        "Def": "Tâche qui peut terminer un workflow avec un statut donné et modifier la sortie du workflow avec un paramètre donné.",
+        "OutputTerm": "sortie",
+        "OutputDef": "le contenu de workflowOutput de inputParameters ; un objet vide si workflowOutput n'est pas défini"
+      },
+      "End": {
+        "Def": "Tâche qui termine le workflow.",
+        "Mandatory": "Il est obligatoire pour créer un workflow."
+      }
+    },
+    "SystemTaskDef": {
+      "Common": {
+        "Name": "Nom de la tâche.",
+        "TaskRefName": "Alias ​​utilisé pour référencer la tâche dans le workflow.",
+        "UniqueTaskRef": "Doit être unique dans le workflow.",
+        "Description": "Description de la tâche.",
+        "AddNewParam": "Ici, vous devez définir les noms des paramètres d'entrée que le workflow reçoit.",
+        "NewParamValues": "Après cela, vous pouvez définir leurs valeurs ci-dessous. Pour les valeurs qui doivent être définies par l'utilisateur lors de l'exécution, remplissez : ${workflow.input.[PARAMETER_NAME]}",
+        "NewParamNote": "REMARQUE : Les paramètres d'entrée peuvent recevoir des valeurs de chaîne ou des objets JSON.",
+        "NewParamValuesHighlight": "${workflow.input.[PARAMETER_NAME]}",
+        "Optional": "Si une tâche est facultative, son échec est considéré comme inoffensif pour l'exécution du workflow et le workflow est autorisé à progresser dans un tel scénario.",
+        "StartDelay": "Retarde le démarrage de la tâche d'un certain nombre de secondes.",
+        "TrueTerm": "vrai",
+        "TrueDef": "maintient la tâche IN_PROGRESS, attend qu'un événement externe (via Conductor ou EventHandler) la termine.",
+        "FalseTerm": "faux",
+        "FalseDef": "marquer l'état COMPLETED lors de l'exécution"
+      },
+      "Lambda": {
+        "ScriptExpression": "Expression JavaScript évaluée lors de l'exécution du workflow.",
+        "Important": "Il doit renvoyer une valeur."
+      },
+      "Decision": {
+        "ParameterOrExpression": "La tâche de décision reçoit soit : plusieurs cas de décision basés sur une valeur de paramètre, soit une expression.",
+        "ParameterTerm": "cas de décision multiples",
+        "ParameterDef": "basé sur une valeur de paramètre (similaire au cas...switch dans les langages de programmation",
+        "ExpressionTerm": "expression",
+        "ExpressionDef": "une expression JavaScript; utilisée lorsque la casse doit dépendre de valeurs complexes",
+        "Important": "Dans les expressions Javascript, les noms de tâche avec des opérateurs arithmétiques ne doivent pas être utilisés.",
+        "AddNewCase": "Ajoute une nouvelle valeur possible pour un cas de décision. Si la valeur correspond à l'entrée de la tâche, seule cette branche de décision sera exécutée.",
+        "CaseValueParam": "Nom du paramètre dans l'entrée de tâche dont la valeur sera utilisée comme commutateur."
+      },
+      "Event": {
+        "SinkDef": "Nom qualifié de l'événement qui se produit.",
+        "SinkExample": "ex.: conductor:topic ou nats_stream:topic",
+        "Payload": "Informations transmises à travers l'événement."
+      },
+      "Http": {
+        "UriDef": "URI pour le service.",
+        "UriDetails": "Peut être partiel lors de l'utilisation de vipAddress ou inclure l'adresse du serveur.",
+        "MethodDef": "Méthode HTTP.",
+        "MethodDetails": "L'un des éléments suivants: GET, PUT, POST, DELETE, OPTIONS, HEAD.",
+        "AcceptDef": "En-tête Accepté comme demandé par le serveur.",
+        "AcceptDefault": "Par défaut: application/json",
+        "ContentTypeDef": "Type de contenu.",
+        "ContentTypeDetails": "Les types pris en charge sont text/plain, text/html et application/json",
+        "ContentTypeDefault": "Par défaut: application/json",
+        "VipAddressDef": "Lors de l'utilisation d'URL de service basées sur la découverte.",
+        "ConsumerKeyDef": "Clé client client OAuth.",
+        "OAuthDocumentation": "Consultez la documentation OAuth ici.",
+        "OAuthDocumentationKeyword": "ici",
+        "ConsumerSecretDef": "Secret consommateur OAuth.",
+        "ConnectionTimeoutDef": "Délai jusqu'à l'expiration de la connexion en millisecondes.",
+        "ConnectionTimeoutDetails": "Si défini sur 0, équivalent à l'infini.",
+        "ConnectionTimeoutDefault": "Par défaut: 100",
+        "ReadTimeoutDef": "Délai jusqu'à l'expiration du délai de lecture en millisecondes.",
+        "ReadTimeoutDetails": "Si défini sur 0, équivalent à l'infini.",
+        "ReadTimeoutDefault": "Par défaut: 150",
+        "HeadersDef": "Paires clé-valeur d'en-têtes http supplémentaires qui seront envoyées avec la requête.",
+        "BodyDef": "Corps de la requête"
+      },
+      "Terminate": {
+        "FailedOrCompletedDef": "État d'achèvement.",
+        "WorkflowOutputDef": "La sortie attendue du workflow."
+      }
+    }
+  },
+  "General": {
+    "Search": "Chercher",
+    "Saving": "Enregistrement...",
+    "SavingSucceeded": "Enregistrement réussi!",
+    "DeletingSucceeded": "Suppression réussie!",
+    "RevertSucceeded": "Retour exécuté avec succès!",
+    "Buttons": {
+      "Add": "Ajouter",
+      "Edit": "Modifier",
+      "Delete": "Supprimer",
+      "Save": "Enregistrer",
+      "Saving": "Enregistrement...",
+      "Cancel": "Annuler",
+      "Close": "Fermer",
+      "ApplyFilters": "Appliquer les filtres",
+      "ResetFilters": "Réinitialiser les filtres",
+      "True": "Vrai",
+      "False": "Faux",
+      "Beautify": "Formater le code"
+    }
+  }
+}

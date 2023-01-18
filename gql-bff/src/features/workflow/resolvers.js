@@ -12,13 +12,13 @@ const {
 const workflowResolvers = {
   Query: {
     getWorkflow: async (_parent, { name, version }, context, _info) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
 
       const workflow = await dataSources.workflowApi.getWorkflow(name, version);
       if (!isMultiTenant) return workflow;
 
       const wfTenantId = getTenantIdFromDescription(workflow?.description);
-      if (userCanSeeResource(wfTenantId, tenantId)) {
+      if (userCanSeeResource(wfTenantId, tenant?.id)) {
         return workflow;
       } else
         return new ForbiddenError(
@@ -27,10 +27,10 @@ const workflowResolvers = {
     },
 
     getWorkflowList: async (_parent, _args, context, _info) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
       const allWorkflows = await dataSources.workflowApi.getWorkflowList();
       if (!isMultiTenant) return allWorkflows;
-      else return filterResourcesByTenant(allWorkflows, tenantId);
+      else return filterResourcesByTenant(allWorkflows, tenant?.id);
     },
   },
 

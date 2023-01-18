@@ -15,25 +15,33 @@ const ErrorLogItem = ({ log }) => {
     <Grid container className={classes.container} spacing={2} alignItems='stretch'>
       <Grid item xs={12} sm={6} lg={5}>
         <Paper elevation={1} className={classes.paper}>
-          <Typography variant={'body2'} className={classes.primaryText}>{t('Log.Message')}</Typography>
+          <Typography variant={'body2'} className={classes.primaryText}>
+            {t('Log.Message')}
+          </Typography>
           <Typography>{log?.message}</Typography>
         </Paper>
       </Grid>
       <Grid item xs={12} sm={6} lg={4}>
         <Paper elevation={1} className={classes.paper}>
-          <Typography variant={'body2'} className={classes.primaryText}>{t('Log.RequestId')}</Typography>
+          <Typography variant={'body2'} className={classes.primaryText}>
+            {t('Log.RequestId')}
+          </Typography>
           <Typography>{log?.requestId}</Typography>
         </Paper>
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
         <Paper elevation={1} className={classes.paper}>
-          <Typography variant={'body2'} className={classes.primaryText}>{t('Log.Code')}</Typography>
+          <Typography variant={'body2'} className={classes.primaryText}>
+            {t('Log.Code')}
+          </Typography>
           <Typography>{log?.code}</Typography>
         </Paper>
       </Grid>
       <Grid item xs={12}>
         <Paper elevation={1} className={classes.paper}>
-          <Typography variant={'body2'} className={classes.primaryText}>{t('Log.Details')}</Typography>
+          <Typography variant={'body2'} className={classes.primaryText}>
+            {t('Log.Details')}
+          </Typography>
           <Typography>{log?.details}</Typography>
         </Paper>
       </Grid>

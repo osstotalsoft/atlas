@@ -8,7 +8,7 @@ export const tasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask'
+      link: 'https://conductor.netflix.com/configuration/systask.html'
     }
   ],
   TASKS: [
@@ -20,7 +20,7 @@ export const tasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/gettingstarted/basicconcepts/#worker-tasks'
+      link:  'https://conductor.netflix.com/gettingstarted/basicconcepts.html#worker-tasks'
     }
   ],
   WORKFLOWS: [
@@ -32,7 +32,7 @@ export const tasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#sub-workflow'
+      link: 'https://conductor.netflix.com/reference-docs/sub-workflow-task.html'
     }
   ]
 }
@@ -77,7 +77,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#lambda-task'
+      link: 'https://conductor.netflix.com/reference-docs/inline-task.html'
     }
   ],
   DECISION: [
@@ -104,7 +104,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#decision'
+      link: 'https://conductor.netflix.com/reference-docs/switch-task.html'
     }
   ],
   EVENT: [
@@ -151,7 +151,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#event'
+      link: 'https://conductor.netflix.com/reference-docs/event-task.html'
     }
   ],
   HTTP: [
@@ -177,7 +177,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#http'
+      link: 'https://conductor.netflix.com/reference-docs/http-task.html'
     }
   ],
   FORK_JOIN: [
@@ -197,7 +197,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#fork'
+      link: 'https://conductor.netflix.com/reference-docs/fork-task.html'
     }
   ],
   JOIN: [
@@ -206,7 +206,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#join'
+      link: 'https://conductor.netflix.com/reference-docs/join-task.html'
     }
   ],
   FORK_JOIN_DYNAMIC: [
@@ -232,7 +232,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#dynamic-fork'
+      link: 'https://conductor.netflix.com/reference-docs/dynamic-fork-task.html'
     }
   ],
   TERMINATE: [
@@ -255,7 +255,7 @@ export const sysTasksHelpConfig = {
       type: 'hyperlink',
       text: 'Helpers.Common.SeeDocumentation',
       keyword: 'Helpers.Common.Here',
-      link: 'https://netflix.github.io/conductor/configuration/systask/#terminate-task'
+      link: 'https://conductor.netflix.com/reference-docs/terminate-task.html'
     }
   ],
   END: [{ type: 'title', text: 'Helpers.Tray.End.Def' }, { type: 'divider' }, { type: 'important', text: 'Helpers.Tray.End.Mandatory' }]
