@@ -5,7 +5,7 @@ services:
     environment:
       - CONFIG_PROP=config-local.properties
       - INDEXING_ENABLED=true
-    image: niemen/conductor-server:6.1.0
+    image: niemen/conductor-server:6.2.2
     networks:
       - internal
     ports:
