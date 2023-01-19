@@ -1,18 +1,18 @@
 const jsonwebtoken = require("jsonwebtoken");
-const { tenantService } = require("../../multiTenancy");
-const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT);
+const { tenantService } = require("@totalsoft/tenant-configuration");
+const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT || "false");
 
 const tenantIdentification = () => async (ctx, next) => {
-  if (!ctx.tenantId) {
+  if (!ctx.tenant) {
     if (!isMultiTenant) {
-      ctx.tenantId = null;
+      ctx.tenant = {};
       await next();
       return;
     }
 
     const tenantId = getTenantIdFromJwt(ctx);
-    if(!tenantId) throw new Error('Tenant Id was not provided while the application is configured as multitenant.')
-    ctx.tenantId = await tenantService.getTenantFromId(tenantId)?.id;
+
+    ctx.tenant = await tenantService.getTenantFromId(tenantId);
   }
   await next();
 };

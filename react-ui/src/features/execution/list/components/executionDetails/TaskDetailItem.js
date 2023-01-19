@@ -15,10 +15,10 @@ const TaskDetailItem = ({ task }) => {
   const classes = useStyles()
   const history = useHistory()
 
-  const handleSubWorkflowClick = useCallback(() => history.push(`/executions/${task?.outputData?.subWorkflowId}`), [
-    history,
-    task?.outputData?.subWorkflowId
-  ])
+  const handleSubWorkflowClick = useCallback(
+    () => history.push(`/executions/${task?.outputData?.subWorkflowId}`),
+    [history, task?.outputData?.subWorkflowId]
+  )
 
   return (
     <Tr>

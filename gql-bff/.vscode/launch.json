@@ -19,6 +19,9 @@
             "name": "debug",
             "runtimeExecutable": "node",
             "runtimeArgs": ["src/index.js"],
+            "env": {
+              "NODE_ENV": "development"
+            }
           },
         {
           "name": "Debug Jest Tests",

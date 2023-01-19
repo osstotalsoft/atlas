@@ -3,13 +3,16 @@
 # Declare variables to be passed into your templates.
 global:
   imagePullSecrets:
-    - name: "registrykey"
+  - name: "registrykey"
 
-  configMapMount:
+  runtimeConfiguration:
     enabled: false
-    configMap: ""
-    mountPath: ""
-    subPath: ""
+    configMap: atlas-runtime-config
+    csi:
+      secretProviderClass: atlas-runtime-secrets
+
+  multiTenancy:
+    tenancyType: "MonoTenant" # "MultiTenant" "MonoTenant"
 
   gateway:
     enabled: false
@@ -43,5 +46,4 @@ gql:
     API_URL: "[API_URL]"
     BASE_API_URL: "[BASE_API_URL]"
     PORT: "4000"
-    IS_MULTITENANT: "false"
     #

@@ -9,7 +9,7 @@ const { omit } = require("ramda");
 const executionResolvers = {
   Query: {
     getExecution: async (_parent, { workflowId }, context, _info) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
 
       const execution = await dataSources?.executionApi?.getExecution(
         workflowId
@@ -17,7 +17,7 @@ const executionResolvers = {
       if (!isMultiTenant) return execution;
 
       const executionTenantId = execution?.input?.Headers?.tenantId;
-      if (userCanSeeResource(executionTenantId, tenantId)) {
+      if (userCanSeeResource(executionTenantId, tenant?.id)) {
         return execution;
       } else
         return new ForbiddenError(
@@ -26,11 +26,11 @@ const executionResolvers = {
     },
 
     getExecutionList: async (_parent, args, context, _info) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
 
       let queryArray = new Array();
       if (args?.query) queryArray.push(args?.query);
-      if (isMultiTenant) queryArray.push(`input='(tenantId=${tenantId})'`);
+      if (isMultiTenant) queryArray.push(`input='(tenantId=${tenant?.id})'`);
 
       const query = queryArray.join("AND");
       const newArgs = { ...args, query };
@@ -54,12 +54,12 @@ const executionResolvers = {
   },
   Mutation: {
     executeWorkflow: async (_parent, { requestInput }, context) => {
-      const { dataSources, tenantId } = context;
+      const { dataSources, tenant } = context;
       const body = {
         ...requestInput,
         input: {
           ...requestInput?.input,
-          Headers: { ...requestInput?.input?.Headers, tenantId },
+          Headers: { ...requestInput?.input?.Headers, tenantId: tenant?.id },
         },
       };
       return await dataSources.executionApi.executeWorkflow(body);
