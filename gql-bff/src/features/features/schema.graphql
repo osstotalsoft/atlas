@@ -1,0 +1,7 @@
+type Feature {
+  schedule: Boolean
+}
+
+extend type Query {
+  features: Feature
+}

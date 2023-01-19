@@ -5,6 +5,7 @@ import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MenuIcon from '@material-ui/icons/Menu'
 
+
 const menuItems = [
   { icon: <AccountTreeIcon />, text: 'NavBar.Workflows', path: '/workflows', name: 'Workflows' },
   { icon: <PlayCircleFilledIcon />, text: 'NavBar.Executions', path: '/executions', name: 'Executions' },
