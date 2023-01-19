@@ -717,3 +717,224 @@ td.rdtYear:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(54, 56, 58);
 }
+
+
+/* Workflow Grapher */
+
+/* gray11*/
+.graphWrapper {
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  user-select: none;
+  padding-left: 50px;
+}
+.graphToolbar {
+  flex: 0;
+}
+.graphSvg {
+  width: 100%;
+  min-height: 600px;
+  flex-grow: 1;
+  overflow: visible;
+}
+.node:hover rect, .node:hover polygon {
+  filter: url("#brightness");
+}
+.node text {
+  fill: #333;
+  font-size: 13px;
+  pointer-events: none;
+}
+.node rect, .node circle, .node polygon {
+  stroke: #333;
+  fill: #fff;
+  stroke-width: 0.6px;
+}
+.node rect {
+  rx: 5px;
+  ry: 5px;
+}
+.node.type-SUB_WORKFLOW rect {
+  stroke-width: 5px;
+}
+.node.type-TERMINAL circle {
+  stroke: #333;
+  fill: #eee;
+  stroke-width: 0.6px;
+}
+.node.type-TERMINAL text {
+  color: #333;
+  font-weight: bold;
+}
+.node.type-TERMINAL.dimmed circle {
+  stroke: #c8c8c8;
+}
+.node.dimmed.bar rect {
+  stroke: #c8c8c8 !important;
+  fill: #c8c8c8;
+}
+.node.dimmed text {
+  fill: #c8c8c8;
+}
+.node.dimmed rect, .node.dimmed polygon, .node.dimmed circle {
+  fill: #fff;
+  stroke: #c8c8c8;
+}
+.node.status_COMPLETED.bar rect {
+  stroke: #163e1d !important;
+  fill: #163e1d;
+}
+.node.status_COMPLETED text {
+  fill: #163e1d;
+}
+.node.status_COMPLETED rect, .node.status_COMPLETED polygon, .node.status_COMPLETED circle {
+  fill: #aee1b8;
+  stroke: #163e1d;
+}
+.node.status_COMPLETED_WITH_ERRORS.bar rect {
+  stroke: #8b5b02 !important;
+  fill: #8b5b02;
+}
+.node.status_COMPLETED_WITH_ERRORS text {
+  fill: #8b5b02;
+}
+.node.status_COMPLETED_WITH_ERRORS rect, .node.status_COMPLETED_WITH_ERRORS polygon, .node.status_COMPLETED_WITH_ERRORS circle {
+  fill: #feeac5;
+  stroke: #8b5b02;
+}
+.node.status_IN_PROGRESS.bar rect {
+  stroke: #c2920d !important;
+  fill: #c2920d;
+}
+.node.status_IN_PROGRESS text {
+  fill: #c2920d;
+}
+.node.status_IN_PROGRESS rect, .node.status_IN_PROGRESS polygon, .node.status_IN_PROGRESS circle {
+  fill: #fff5da;
+  stroke: #c2920d;
+}
+.node.status_SCHEDULED.bar rect {
+  stroke: #11497a !important;
+  fill: #11497a;
+}
+.node.status_SCHEDULED text {
+  fill: #11497a;
+}
+.node.status_SCHEDULED rect, .node.status_SCHEDULED polygon, .node.status_SCHEDULED circle {
+  fill: #cbe2f7;
+  stroke: #11497a;
+}
+.node.status_CANCELED.bar rect {
+  stroke: #26194b !important;
+  fill: #26194b;
+}
+.node.status_CANCELED text {
+  fill: #26194b;
+}
+.node.status_CANCELED rect, .node.status_CANCELED polygon, .node.status_CANCELED circle {
+  fill: #ded5f8;
+  stroke: #26194b;
+}
+.node.status_FAILED.bar rect, .node.status_FAILED_WITH_TERMINAL_ERROR.bar rect, .node.status_TIMED_OUT.bar rect, .node.status_DF_PARTIAL.bar rect {
+  stroke: #7f050b !important;
+  fill: #7f050b;
+}
+.node.status_FAILED text, .node.status_FAILED_WITH_TERMINAL_ERROR text, .node.status_TIMED_OUT text, .node.status_DF_PARTIAL text {
+  fill: #7f050b;
+}
+.node.status_FAILED rect, .node.status_FAILED_WITH_TERMINAL_ERROR rect, .node.status_TIMED_OUT rect, .node.status_DF_PARTIAL rect, .node.status_FAILED polygon, .node.status_FAILED_WITH_TERMINAL_ERROR polygon, .node.status_TIMED_OUT polygon, .node.status_DF_PARTIAL polygon, .node.status_FAILED circle, .node.status_FAILED_WITH_TERMINAL_ERROR circle, .node.status_TIMED_OUT circle, .node.status_DF_PARTIAL circle {
+  fill: #f9c6c9;
+  stroke: #7f050b;
+}
+.node.status_SKIPPED.bar rect {
+  stroke: gray !important;
+  fill: gray;
+}
+.node.status_SKIPPED text {
+  fill: gray;
+}
+.node.status_SKIPPED rect, .node.status_SKIPPED polygon, .node.status_SKIPPED circle {
+  fill: #fff;
+  stroke: gray;
+}
+.node.selected {
+  filter: url("#dropShadow");
+}
+.node.bar {
+ /* &.type-EXCLUSIVE_JOIN {
+    rect {
+      stroke: $dark-color;
+      fill: #fff;
+      stroke-width: $outline-width;
+   }
+    rect.underline {
+      stroke-width: 0;
+      fill: $dark-color;
+   }
+    text {
+      fill: $dark-color;
+   }
+    &.dimmed {
+      rect {
+        stroke: $light-color;
+        fill: #fff;
+     }
+      text {
+        fill: $light-color;
+     }
+   }
+ }
+  */
+}
+.node.bar.type-FORK_JOIN_DYNAMIC rect {
+  stroke: #333;
+  stroke-width: 5;
+  stroke-dasharray: 10;
+}
+.node.bar.type-FORK_JOIN_DYNAMIC.dimmed rect {
+  stroke: #c8c8c8;
+}
+.node.bar rect {
+  rx: 0px;
+  ry: 0px;
+  stroke-width: 0;
+  fill: #333;
+}
+.node.bar text {
+  fill: #fff;
+}
+.node.bar.dimmed rect {
+  fill: #c8c8c8;
+}
+.edgePath path {
+  marker-end: url(#endarrow);
+  stroke: #333;
+  stroke-width: 1px;
+}
+.edgePath.reverse path {
+  marker-end: none;
+  marker-start: url(#startarrow);
+}
+.edgePath.dimmed path {
+  stroke: #c8c8c8;
+  stroke-dasharray: 5;
+  marker-end: url(#endarrow-dimmed);
+}
+.edgePath.dimmed marker {
+  fill: #c8c8c8;
+}
+.edgePath.dimmed.reverse path {
+  marker-end: none;
+  marker-start: url(#startarrow-dimmed);
+}
+.edgePath.executed path {
+  stroke-width: 2px;
+}
+.edgeLabel {
+  fill: blue;
+  font-size: 12px;
+}
+.edgeLabel.dimmed text {
+  fill: #c8c8c8;
+}

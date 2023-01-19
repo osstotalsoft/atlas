@@ -19,7 +19,8 @@
     "Logout": "Iesire",
     "HidePassword": "Ascunde parola",
     "ShowPassword": "Arata parola",
-    "BackToList": "Inapoi la lista"
+    "BackToList": "Inapoi la lista",
+    "ParentFlow": "Flow-ul principal"
   },
   "Dialog": {
     "Yes": "Da",
