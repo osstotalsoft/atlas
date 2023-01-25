@@ -28,6 +28,7 @@ async function initializeIndex(indexName, body) {
   else {
     console.log(`index "${indexName}" is missing. Creating...`);
     await esClient.indices.create({
+      include_type_name: true,
       index: indexName,
       body,
     });
