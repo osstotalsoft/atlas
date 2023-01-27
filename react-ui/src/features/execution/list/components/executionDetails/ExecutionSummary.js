@@ -15,7 +15,7 @@ import ExecutionActions from './ExecutionActions'
 
 const useStyles = makeStyles(styles)
 
-const ExecutionSummary = ({ summary, workflowId, execution, startPolling }) => {
+const ExecutionSummary = ({ workflowId, execution, startPolling }) => {
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -33,7 +33,7 @@ const ExecutionSummary = ({ summary, workflowId, execution, startPolling }) => {
               <Typography display='block' className={classes.primaryText}>
                 {t('Execution.TotalTime')}
               </Typography>
-              <Typography>{summary?.executionTime ? summary?.executionTime / 1000 : totalTime}</Typography>
+              <Typography>{totalTime}</Typography>
             </>
           }
         />
@@ -48,7 +48,7 @@ const ExecutionSummary = ({ summary, workflowId, execution, startPolling }) => {
                 {t('Execution.StartTime')}
               </Typography>
               <Typography>
-                {t('DATE_FORMAT', { date: summary?.startTime ? { value: summary?.startTime, format: 'DD-MM-YYYY HH:mm:ss' } : '-' })}
+                {t('DATE_FORMAT', { date: execution?.startTime ? { value: execution?.startTime, format: 'DD-MM-YYYY HH:mm:ss' } : '-' })}
               </Typography>
             </>
           }
@@ -106,7 +106,6 @@ const ExecutionSummary = ({ summary, workflowId, execution, startPolling }) => {
 }
 
 ExecutionSummary.propTypes = {
-  summary: PropTypes.object.isRequired,
   workflowId: PropTypes.string.isRequired,
   execution: PropTypes.object.isRequired,
   startPolling: PropTypes.func.isRequired

@@ -6,6 +6,7 @@ services:
       - CONFIG_PROP=config-local.properties
       - ES_VERSION=6
       - INDEXING_ENABLED=true
+      - "-Dpolyglot.engine.WarnInterpreterOnly=false"
     image: niemen/conductor-server:6.2.4
     networks:
       - internal

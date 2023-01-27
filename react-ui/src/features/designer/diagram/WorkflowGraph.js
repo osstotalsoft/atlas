@@ -92,6 +92,9 @@ const WorkflowGraph = ({ style, className, dag, executionMode, onClick }) => {
 
   const drawGraph = () => {
     if (inner) inner.remove()
+    if (!svg.select("g").selectAll("g.node").empty()) {
+      svg.select("g").remove()
+    }
     inner = svg.append('g')
 
     const graphx = new graphlib.Graph({ compound: true }).setGraph({
