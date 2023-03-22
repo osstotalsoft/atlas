@@ -4,10 +4,10 @@ services:
   conductor-server:
     environment:
       - CONFIG_PROP=config-local.properties
-      - ES_VERSION=7
+      - ES_VERSION=6
       - INDEXING_ENABLED=true
-      - JAVA_OPTS=-Dpolyglot.engine.WarnInterpreterOnly=false
-    image: niemen/conductor-server:7.1.5
+      - "-Dpolyglot.engine.WarnInterpreterOnly=false"
+    image: niemen/conductor-server:6.2.5
     networks:
       - internal
     ports:
@@ -57,14 +57,14 @@ services:
       - redis:/data
 
   elasticsearch:
-    image: elasticsearch:7.17.9
+    image: elasticsearch:6.8.23
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx1024m"
       - transport.host=0.0.0.0
       - discovery.type=single-node
       - xpack.security.enabled=false
     volumes:
-      - esdata-conductor:/usr/share/elasticsearch/data
+      - es6data-conductor:/usr/share/elasticsearch/data
     networks:
       - internal
     ports:
@@ -122,7 +122,7 @@ services:
       - 27017-27019:27017-27019
 
 volumes:
-  esdata-conductor:
+  es6data-conductor:
     driver: local
   redis:
     driver: local

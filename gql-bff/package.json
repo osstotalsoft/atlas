@@ -1,11 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=development node src/index.js", 
+    "start": "cross-env NODE_ENV=development node src/index.js",
     "start:production": "cross-env NODE_ENV=production node src/index.js"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^6.8.8",
+    "es6": "npm:@elastic/elasticsearch@^6.8.8",
+    "es8": "npm:@elastic/elasticsearch@^8.6.0",
     "@graphql-mesh/cli": "^0.29.12",
     "@graphql-mesh/openapi": "0.16.9",
     "@koa/cors": "^3.1.0",
@@ -22,7 +23,7 @@
     "humps": "^2.0.1",
     "i": "^0.3.6",
     "jsonwebtoken": "^8.5.1",
-    "jwks-rsa": "^2.0.3",
+    "jwks-rsa": "^3.0.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-graphql": "^0.8.0",
