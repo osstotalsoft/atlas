@@ -4,18 +4,21 @@ const jsonwebtoken = require("jsonwebtoken");
 const { IDENTITY_AUTHORITY, IDENTITY_OPENID_CONFIGURATION } = process.env;
 
 const client = {
-  cache: true,
+  cache: true, // Default Value
+  cacheMaxEntries: 5, // Default value
+  cacheMaxAge: 600000, // Defaults to 10m
   rateLimit: true,
   jwksRequestsPerMinute: 2,
   jwksUri: `${IDENTITY_AUTHORITY}${IDENTITY_OPENID_CONFIGURATION}`,
+  debug: true
 };
+const validateJwtToken = jwt({
+  secret: jwksRsa.koaJwtSecret(client),
+  issuer: IDENTITY_AUTHORITY,
+  algorithms: ["RS256"]
+});
 
 const jwtTokenValidation = (ctx, next) => {
-  const validateJwtToken = jwt({
-    secret: jwksRsa.koaJwtSecret(client),
-    issuer: IDENTITY_AUTHORITY,
-    algorithms: ["RS256"],
-  });
   return validateJwtToken(ctx, next);
 };
 

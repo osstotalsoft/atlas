@@ -11,13 +11,12 @@ import { executionStatus } from '../../constants/executionStatusList'
 import { EXECUTION_DETAILS_QUERY } from '../../queries/ExecutionDetailsQuery'
 import { useQueryWithErrorHandling } from 'hooks/errorHandling'
 import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
-import { emptyArray, emptyObject } from 'utils/constants'
+import { emptyArray } from 'utils/constants'
 import WorkflowGraphContainer from '../../../../designer/diagram/WorkflowGraphContainer'
 import { useRouteMatch } from 'react-router-dom'
 import { useHeader } from 'providers/AreasProvider'
 import StandardHeader from 'components/layout/StandardHeader'
 import AppBar from '@material-ui/core/AppBar'
-import { EXECUTION_LIST_QUERY } from '../../queries/ExecutionListQuery'
 import JsonViewer from 'features/common/components/JsonViewer'
 
 const useStyles = makeStyles(styles)
@@ -31,10 +30,6 @@ const ExecutionDetailsContainer = () => {
   const [, setHeader] = useHeader(<StandardHeader />)
 
   const workflowId = match.params.workflowId
-
-  const { data: summaryData } = useQueryWithErrorHandling(EXECUTION_LIST_QUERY, {
-    variables: { query: `workflowId="${workflowId}"` }
-  })
 
   const { loading, data, startPolling, stopPolling } = useQueryWithErrorHandling(EXECUTION_DETAILS_QUERY, {
     variables: { includeTasks: true, workflowId }
@@ -63,7 +58,6 @@ const ExecutionDetailsContainer = () => {
         <ExecutionSummary
           execution={executionDetails}
           workflowId={workflowId}
-          summary={summaryData?.getExecutionList?.results[0] || emptyObject}
           startPolling={startPolling}
         />
       </Grid>

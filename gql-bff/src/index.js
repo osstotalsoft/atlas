@@ -50,15 +50,18 @@ app.use(
     jwtTokenValidation,
     jwtTokenUserIdentification,
     tenantIdentification()
-  ).if((ctx) => (introspectionRoute(ctx) || !hasAuthConf))
+  ).if((ctx) => introspectionRoute(ctx) || !hasAuthConf)
 );
 
 const { elastic } = require("./elasticSearch");
+const { initElastic } = require("./elasticSearch/client");
 const { getDataSources } = require("./startup/dataSources");
 
 async function main() {
   const { getMesh } = require("@graphql-mesh/runtime");
   const { findAndParseConfig } = require("@graphql-mesh/config");
+
+  await initElastic();
 
   const meshConfig = await findAndParseConfig();
   const { schema } = await getMesh(meshConfig);
