@@ -208,7 +208,7 @@ export const createNode = (engine, task, branchX = null, branchY = null, forkDep
       })
 
       branches.forEach((caseBranch, caseNum) => {
-        caseBranch.forEach((branchTask, k) => {
+        caseBranch?.forEach((branchTask, k) => {
           const { branchPosX, branchPosY } = calculateNestedPosition(
             engine,
             branchTask,
