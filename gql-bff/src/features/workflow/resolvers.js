@@ -6,7 +6,6 @@ const {
   getTenantIdFromDescription,
   userCanEditResource,
   filterResourcesByTenant,
-  isGlobalAdmin,
 } = require("../common/functions");
 
 const workflowResolvers = {
@@ -61,7 +60,7 @@ const workflowResolvers = {
           tenantId: isGlobalAdmin(externalUser) ? null : externalUser?.tenantId,
         }),
       };
-      
+
       //Create or Update workflow in Conductor
       await dataSources.workflowApi.createOrUpdateWorkflow(
         JSON.stringify([body])

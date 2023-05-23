@@ -4,7 +4,6 @@ const {
   getTenantIdFromDescription,
   userCanEditResource,
   filterResourcesByTenant,
-  isGlobalAdmin,
 } = require("../common/functions");
 
 const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT);
@@ -39,7 +38,7 @@ const scheduleResolvers = {
         ...scheduleInput,
         workflowContext: {
           ...scheduleInput?.workflowContext,
-          tenantId: isGlobalAdmin(externalUser) ? null : externalUser?.tenantId,
+          tenantId: externalUser?.tenantId,
         },
       };
 

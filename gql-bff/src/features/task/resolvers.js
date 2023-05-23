@@ -4,7 +4,6 @@ const {
   getTenantIdFromDescription,
   userCanEditResource,
   filterResourcesByTenant,
-  isGlobalAdmin,
 } = require("../common/functions");
 
 const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT);
@@ -57,9 +56,7 @@ const taskResolvers = {
           ...t,
           description: JSON.stringify({
             description: t?.description,
-            tenantId: isGlobalAdmin(externalUser)
-              ? null
-              : externalUser?.tenantId,
+            tenantId: externalUser?.tenantId,
           }),
         };
       });
