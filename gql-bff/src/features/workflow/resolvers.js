@@ -57,7 +57,7 @@ const workflowResolvers = {
         ...input,
         description: JSON.stringify({
           description: input?.description,
-          tenantId: isGlobalAdmin(externalUser) ? null : externalUser?.tenantId,
+          tenantId: externalUser?.tenantId,
         }),
       };
 
