@@ -19,7 +19,8 @@ export default class EventNodeModel extends DefaultNodeModel {
       optional: task?.optional ?? false,
       startDelay: task?.startDelay ?? 0,
       sink: task?.sink ?? 'conductor',
-      asyncComplete: task?.asyncComplete ?? false
+      asyncComplete: task?.asyncComplete ?? false,
+      asyncHandler: ""
     }
 
     this.addPort(new DefaultPortModel({ in: true, name: 'in' }))

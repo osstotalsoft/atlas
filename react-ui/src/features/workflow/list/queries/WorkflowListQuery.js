@@ -17,3 +17,9 @@ export const WORKFLOW_LIST_QUERY = gql`
     }
   }
 `
+
+export const WORKFLOW_EXPORT_QUERY = gql`
+   query exportWorkflows($workflowList: [String]) {
+    exportWorkflows(workflowList: $workflowList)
+  }
+`

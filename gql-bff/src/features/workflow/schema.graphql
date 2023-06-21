@@ -5,8 +5,10 @@ extend type WorkflowDef {
 extend type Query {
   getWorkflow(name: String!, version: Int!): WorkflowDef
   getWorkflowList: [WorkflowDef]
+  exportWorkflows(workflowList: [String]): String
 }
 
 extend type Mutation {
   createOrUpdateWorkflow(input: WorkflowDefInput!): JSON
+  importWorkflows(input: String!, replacements: String!): String
 }

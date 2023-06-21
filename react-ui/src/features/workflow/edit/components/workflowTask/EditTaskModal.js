@@ -59,7 +59,7 @@ const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChang
               onPayloadChange={onPayloadChange}
             />
           )}
-          {tabIndex == 2 && <AdvancedSettings inputsLens={inputsLens.inputs} />}
+          {tabIndex == 2 && <AdvancedSettings inputsLens={inputsLens.inputs} validation={validation?.inputs} />}
         </Grid>
       </Grid>
       <Box marginTop='20px'>

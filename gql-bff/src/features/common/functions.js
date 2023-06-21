@@ -39,6 +39,29 @@ const filterResourcesByTenant = (list, tenantId) => {
   });
 };
 
+const getImportData = (input, replacements) => {
+  let tempData = input;
+  const replace = JSON.parse(replacements);
+  Object.keys(replace).forEach((key) => {
+    tempData = tempData.replaceAll(key, replace[key]);
+  });
+
+  return JSON.parse(tempData);
+};
+
+const getTenantImportData = (input, replacements) => {
+  let tempData = input;
+  Object.keys(replace).forEach((key) => {
+    if (key === "{{NamePrefix}}" && isMultiTenant) {
+      tempData = tempData.replaceAll(key, replace[key]);
+    } else {
+      tempData = tempData.replaceAll(key, replace[key]);
+    }
+  });
+
+  const data = JSON.parse(input);
+};
+
 module.exports = {
   isGlobalAdmin,
   isTenantAdmin,
@@ -46,4 +69,6 @@ module.exports = {
   userCanSeeResource,
   userCanEditResource,
   filterResourcesByTenant,
+  getImportData,
+  getTenantImportData,
 };

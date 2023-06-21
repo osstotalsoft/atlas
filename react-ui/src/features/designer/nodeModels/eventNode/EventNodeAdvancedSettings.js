@@ -2,17 +2,22 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Typography } from '@material-ui/core'
 import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { CustomTextField, Autocomplete } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { useTranslation } from 'react-i18next'
 import { get, set } from '@totalsoft/react-state-lens'
-import { onTextBoxChange } from 'utils/propertyChangeAdapters'
+import { onTextBoxChange, onDynamicInputChange } from 'utils/propertyChangeAdapters'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { commonTaskDefHelpConfig, eventHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
 import { emptyString } from 'utils/constants'
+import { getErrors, isValid } from '@totalsoft/pure-validations-react'
+import { useQueryWithErrorHandling } from 'hooks/errorHandling'
+import { EVENT_HANDLER_LIST_QUERY } from 'features/eventHandler/list/queries/EventHandlerListQuery'
 
-const EventNodeAdvancedSettings = ({ inputsLens }) => {
+const EventNodeAdvancedSettings = ({ inputsLens, validation }) => {
   const { t } = useTranslation()
+
+  const { data } = useQueryWithErrorHandling(EVENT_HANDLER_LIST_QUERY, { variables: { limit: 10000 } })
 
   const handleToggleChange = useCallback(
     value => {
@@ -20,6 +25,10 @@ const EventNodeAdvancedSettings = ({ inputsLens }) => {
     },
     [inputsLens?.asyncComplete]
   )
+
+  const handleOnChange = useCallback(value => {
+    set(inputsLens?.asyncHandler, value)
+  })
 
   return (
     <Grid container spacing={2} alignItems='center'>
@@ -39,7 +48,18 @@ const EventNodeAdvancedSettings = ({ inputsLens }) => {
           <Help icon={<CustomHelpIcon />} helpConfig={commonTaskDefHelpConfig.ASYNC_COMPLETE} hasTranslations={true} />
         </Grid>
       </Grid>
-      <Grid item xs={6} />
+      <Grid item xs={6}>
+        <Autocomplete
+          fullWidth
+          options={data?.eventHandlerList ?? []}
+          valueKey='name'
+          simpleValue
+          value={(inputsLens?.asyncHandler |> get) || emptyString}
+          onChange={handleOnChange}
+          error={!isValid(validation?.asyncHandler)}
+          helperText={getErrors(validation?.asyncHandler)}
+        />
+      </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
           <CustomTextField
@@ -59,7 +79,8 @@ const EventNodeAdvancedSettings = ({ inputsLens }) => {
 }
 
 EventNodeAdvancedSettings.propTypes = {
-  inputsLens: PropTypes.object.isRequired
+  inputsLens: PropTypes.object.isRequired,
+  validation: PropTypes.object.isRequired
 }
 
 export default EventNodeAdvancedSettings

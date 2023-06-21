@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import WorkflowList from './WorkflowList'
 import WorkflowListFilter from './WorkflowListFilter'
-import { WORKFLOW_LIST_QUERY } from '../queries/WorkflowListQuery'
+import { WORKFLOW_LIST_QUERY, WORKFLOW_EXPORT_QUERY } from '../queries/WorkflowListQuery'
 import { DELETE_WORKFLOW_MUTATION } from '../mutations/DeleteWorkflowMutation'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
@@ -21,6 +21,10 @@ import { pipe } from 'ramda'
 import { emptyArray, emptyString } from 'utils/constants'
 import { CREATE_UPDATE_WORKFLOW_MUTATION } from 'features/workflow/edit/mutations/CreateOrUpdateWorkflowMutation'
 import omitDeep from 'omit-deep-lodash'
+import { useLazyQuery } from '@apollo/client'
+import ExportDialog from './ExportDialog'
+import ImportDialog from './ImportDialog'
+import { IMPORT_WORKFLOW_MUTATION } from '../mutations/ImportMutation'
 
 const WorkflowListContainer = () => {
   const { t } = useTranslation()
@@ -31,8 +35,35 @@ const WorkflowListContainer = () => {
 
   const defaultPager = defaults[workflowsPager]
   const [pager, setPager] = useState(defaultPager)
+  const [exportModal, setExportModal] = useState(false)
+  const [exportData, setExportData] = useState('')
+  const [importModal, setImportModal] = useState(false)
+  const [importData, setImportData] = useState('')
 
   const { loading, data, refetch } = useQueryWithErrorHandling(WORKFLOW_LIST_QUERY)
+  const [getWorkflowsForExport] = useLazyQuery(WORKFLOW_EXPORT_QUERY, {
+    fetchPolicy: 'no-cache',
+    onCompleted: result => {
+      setExportModal(true)
+      setExportData(result.exportWorkflows)
+    }
+  })
+
+  const [importWorkflows] = useMutation(IMPORT_WORKFLOW_MUTATION, {
+    onCompleted: () => {
+      refetch()
+      setImportModal(false)
+    },
+    onError: error => showError(error)
+  })
+
+  const handleImport = useCallback(
+    (input, replacements) => {
+      importWorkflows({ variables: { input, replacements } })
+    },
+    [importWorkflows]
+  )
+
   const [filters, setFilters] = useApolloLocalStorage(workflowListFilter)
   const [cloneName, setCloneName] = useState()
   const [cloneVersion, setCloneVersion] = useState()
@@ -113,8 +144,45 @@ const WorkflowListContainer = () => {
     [clientQuery, createWorkflow, oidcUser?.profile.name, oidcUser?.profile.preferred_username]
   )
 
+  const onExportButton = useCallback(
+    workflowList => {
+      getWorkflowsForExport({
+        variables: { workflowList }
+      })
+    },
+    [getWorkflowsForExport]
+  )
+
+  const onCloseExportModal = useCallback(() => setExportModal(false), [setExportModal])
+  const onCloseImportModal = useCallback(() => {
+    setImportModal(false)
+    refetch()
+  }, [setImportModal, refetch])
+
+  const onImport = useCallback(
+    event => {
+      const file = event.target.files[0]
+
+      const reader = new FileReader()
+      reader.addEventListener(
+        'loadend',
+        _event => {
+          setImportData(_event.target.result)
+          setImportModal(true)
+          _event.target.value = ''
+        },
+        false
+      )
+
+      reader.readAsText(file)
+    },
+    [setImportData]
+  )
+
   return (
     <>
+      {importModal && <ImportDialog data={importData} open={importModal} onClose={onCloseImportModal} onImport={handleImport} />}
+      <ExportDialog data={exportData} open={exportModal} onClose={onCloseExportModal} />
       <WorkflowListFilter loading={loading} filters={filters} onChangeFilters={handleChangeFilters} />
       <WorkflowList
         pager={pager}
@@ -126,6 +194,8 @@ const WorkflowListContainer = () => {
         onDeleteWorkflow={handleDeleteWorkflow}
         onCloneWorkflow={handleCloneWorkflow}
         onRefresh={refetch}
+        onExportButton={onExportButton}
+        onImport={onImport}
       />
     </>
   )

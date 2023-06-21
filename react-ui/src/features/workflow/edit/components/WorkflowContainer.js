@@ -198,7 +198,20 @@ const WorkflowContainer = () => {
       const noEditList = [nodeConfig.START.type, nodeConfig.END.type, nodeConfig.FORK_JOIN.type, nodeConfig.JOIN.type]
       if (node && !includes(node?.type, noEditList)) {
         node.setSelected(false)
-        resetInputs({ id: node?.options?.id, inputs: node?.inputs })
+
+        var desc = null
+        try {
+          desc = JSON.parse(node?.inputs.description)
+        } catch {console.log('no desc')}
+
+        if (desc) {
+          resetInputs({
+            id: node?.options?.id,
+            inputs: { ...node?.inputs, asyncHandler: desc?.asyncHandler, description: desc?.description }
+          })
+        } else {
+          resetInputs({ id: node?.options?.id, inputs: node?.inputs })
+        }
         showTaskDialog(true)
       }
     },

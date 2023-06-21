@@ -6,6 +6,8 @@ const {
   getTenantIdFromDescription,
   userCanEditResource,
   filterResourcesByTenant,
+  getImportData,
+  getTenantImportData,
 } = require("../common/functions");
 
 const workflowResolvers = {
@@ -31,6 +33,67 @@ const workflowResolvers = {
       if (!isMultiTenant) return allWorkflows;
       else return filterResourcesByTenant(allWorkflows, tenant?.id);
     },
+
+    exportWorkflows: async (_parent, { workflowList }, context, _info) => {
+      const { dataSources, tenant } = context;
+
+      const conductorHandlers =
+        await dataSources.eventHandlerApi.getEventHandlerList();
+      const handlers = [];
+      const flows = [];
+
+      if (workflowList.length === 0) {
+        const allWorkflows = await dataSources.workflowApi.getWorkflowList();
+        if (isMultiTenant) {
+          const tenantFlows = filterResourcesByTenant(allWorkflows, tenant?.id);
+        } else {
+          for (const flow of allWorkflows) {
+            flows.push(flow);
+
+            const regex = /\\"asyncHandler\\":\\"([a-zA-Z_]*)\\"/g;
+            const str = JSON.stringify(flow);
+            const h = [...str.matchAll(regex)].map((a) => a[1]);
+            handlers.push(
+              ...conductorHandlers.filter((a) => h.includes(a.name))
+            );
+            handlers.push(
+              ...conductorHandlers.filter((a) =>
+                a.actions.some(
+                  (x) =>
+                    x.action === "start_workflow" &&
+                    x?.start_workflow?.name === flow.name
+                )
+              )
+            );
+          }
+        }
+      } else {
+        for (const flow of workflowList) {
+          const name = flow.split("/");
+          const conductorFlow = await dataSources.workflowApi.getWorkflow(
+            name[0],
+            name[1]
+          );
+          flows.push(conductorFlow);
+
+          const regex = /\\"asyncHandler\\":\\"([a-zA-Z_]*)\\"/g;
+          const str = JSON.stringify(conductorFlow);
+          const h = [...str.matchAll(regex)].map((a) => a[1]);
+          handlers.push(...conductorHandlers.filter((a) => h.includes(a.name)));
+          handlers.push(
+            ...conductorHandlers.filter((a) =>
+              a.actions.some(
+                (x) =>
+                  x.action === "start_workflow" &&
+                  x?.start_workflow?.name === name[0]
+              )
+            )
+          );
+        }
+      }
+
+      return JSON.stringify({ flows, handlers });
+    },
   },
 
   WorkflowDef: {
@@ -51,6 +114,45 @@ const workflowResolvers = {
     },
   },
   Mutation: {
+    importWorkflows: async (_parent, { input, replacements }, context) => {
+      const { dataSources, externalUser } = context;
+
+      var data = null;
+      if (isMultiTenant) {
+        data = getTenantImportData(input, replacements);
+      } else {
+        data = getImportData(input, replacements);
+      }
+
+      for (const flow of data.flows) {
+        await dataSources.workflowApi.createOrUpdateWorkflow(
+          JSON.stringify([
+            {
+              ...flow,
+              description: JSON.stringify({
+                description: flow?.description,
+                tenantId: externalUser?.tenantId,
+              }),
+            },
+          ])
+        );
+      }
+
+      const conductorHandlers =
+        await dataSources.eventHandlerApi.getEventHandlerList();
+      for (const handler of data.handlers) {
+        if (conductorHandlers.find((a) => a.name === handler.name)) {
+          await dataSources.eventHandlerApi.editEventHandler(
+            JSON.stringify({ ...handler })
+          );
+        } else {
+          await dataSources.eventHandlerApi.createEventHandler(
+            JSON.stringify({ ...handler })
+          );
+        }
+      }
+      return "";
+    },
     createOrUpdateWorkflow: async (_parent, { input }, context) => {
       const { dataSources, externalUser } = context;
       const body = {

@@ -112,8 +112,8 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   }, [])
 
   const togglePreviewDialog = useCallback(() => {
-    const { name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy } = workflow
-    setCurrentWorkflow({ ...parseDiagramToJSON(engine), name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy })
+    const { name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy, version } = workflow
+    setCurrentWorkflow({ ...parseDiagramToJSON(engine), name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy, version })
     setPreviewDialog(current => !current)
   }, [engine, workflow])
 
@@ -193,8 +193,8 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const handleExport = useCallback(() => {
     try {
       const jsonObject = parseDiagramToJSON(engine)
-      const { name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy } = workflow
-      const finalObject = { ...jsonObject, name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy }
+      const { name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy, version } = workflow
+      const finalObject = { ...jsonObject, name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy, version }
       const fileContent = JSON.stringify(finalObject, null, 2)
       const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' })
       const fileName = workflow?.name ? `${workflow?.name}` : defaultFileName
@@ -232,7 +232,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         open={execDialog}
         toggleExecDialog={toggleExecDialog}
         name={workflow?.name || emptyString}
-        version={workflow?.version || workflowConfig.version}
+        version={workflow?.version ?? workflowConfig.version}
       />
       <GeneralSettingsDialog
         open={settingsDialog}

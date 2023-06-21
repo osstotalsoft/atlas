@@ -20,7 +20,7 @@ const saveSnapshot = async (workflow) => {
     snapshotNumber: await getSnapshotNumber(workflow?.name, workflow?.version),
     version: workflow?.version,
     workflowName: workflow?.name,
-    definition: workflow,
+    definition: JSON.stringify(workflow),
     createdBy: workflow?.createdBy,
     changedBy: workflow?.updatedBy,
     timeStamp: new Date(),
