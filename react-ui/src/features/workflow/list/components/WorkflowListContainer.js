@@ -182,7 +182,7 @@ const WorkflowListContainer = () => {
   return (
     <>
       {importModal && <ImportDialog data={importData} open={importModal} onClose={onCloseImportModal} onImport={handleImport} />}
-      <ExportDialog data={exportData} open={exportModal} onClose={onCloseExportModal} />
+      {exportData && <ExportDialog data={exportData} open={exportModal} onClose={onCloseExportModal} />}
       <WorkflowListFilter loading={loading} filters={filters} onChangeFilters={handleChangeFilters} />
       <WorkflowList
         pager={pager}

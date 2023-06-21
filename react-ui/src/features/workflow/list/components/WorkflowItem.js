@@ -16,7 +16,7 @@ import AddNameModal from 'features/workflow/common/components/AddNameModal'
 import { useChangeTrackingLens } from '@totalsoft/change-tracking-react'
 import { get } from '@totalsoft/rules-algebra-react'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
-import { Checkbox, FormControlLabel, Grid } from '@material-ui/core'
+import { Checkbox, FormControlLabel } from '@material-ui/core'
 
 const useStyles = makeStyles(styles)
 

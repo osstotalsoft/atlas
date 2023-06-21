@@ -4,7 +4,7 @@ import { CustomTextField, DialogDisplay, Button } from '@bit/totalsoft_oss.react
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import { makeStyles, Typography, useTheme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)
@@ -16,13 +16,14 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
 
   useEffect(() => {
     let toReplace = {}
-    const prefixRegex = /({{NatsPrefix}})/g
-    const natsPrefix = [...data.matchAll(prefixRegex)].map(a => a[1])[0]
-    toReplace[natsPrefix] = ''
-
-    const nameRegex = /({{NamePrefix}})/g
-    const namePrefix = [...data.matchAll(nameRegex)].map(a => a[1])[0]
-    toReplace[namePrefix] = ''
+    //const prefixRegex = /({{NatsPrefix}})/g
+    //const natsPrefix = [...data.matchAll(prefixRegex)].map(a => a[1])[0]
+    toReplace['{{NatsPrefix}}'] = ''
+    const nameRegex = /({{NamePrefix}})/
+    const namePrefix = data.match(nameRegex)
+    if (namePrefix[0]) {
+      toReplace[namePrefix[0]] = ''
+    }
 
     const uriRegex = /(?<=")https?:\/\/[^"]+/g
     const urls = [...data.matchAll(uriRegex)].map(a => a[0])
@@ -53,7 +54,7 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
     })*/
 
     onImport(data, JSON.stringify(replace))
-  }, [data, replace])
+  }, [data, onImport, replace])
 
   return (
     <>
@@ -62,11 +63,7 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
         maxWidth={'lg'}
         id='export'
         open={open}
-        title={
-          <>
-            <Typography variant='h6'>{t('Export')}</Typography>
-          </>
-        }
+        title={t('Import')}
         onClose={handleOnClose}
         actions={[
           <Button key='export' color='primary' size='sm' onClick={handleOnImport}>
@@ -87,7 +84,9 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
               <Tbody>
                 {Object.keys(replace).map((key, index) => (
                   <Tr key={index}>
-                    <Td style={{ wordBreak: 'break-all' }} className={classes.tableContent}>{key}</Td>
+                    <Td style={{ wordBreak: 'break-all' }} className={classes.tableContent}>
+                      {key}
+                    </Td>
                     <Td className={classes.tableContent}>
                       <CustomTextField
                         fullWidth
