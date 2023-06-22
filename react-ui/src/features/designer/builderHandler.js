@@ -78,7 +78,16 @@ const handleDecideNode = decideNode => {
           inputLinks = getLinksArray('in', currentNode)
           outputLinks = getLinksArray('out', currentNode)
         } else {
-          branchArray.push(currentNode.inputs)
+          if (currentNode.inputs['asyncHandler']) {
+            branchArray.push({
+              ...currentNode.inputs,
+              asyncHandler: undefined,
+              description: JSON.stringify({ description: currentNode.inputs.description, asyncHandler: currentNode.inputs['asyncHandler'] })
+            })
+          } else {
+            branchArray.push({ ...currentNode.inputs, asyncHandler: undefined })
+          }
+
           currentNode = outputLinks[0].targetPort.getNode()
 
           inputLinks = getLinksArray('in', currentNode)
@@ -189,7 +198,17 @@ const parseTaskToJSON = (link, parentNode, tasks) => {
       }
       default:
         parentNode = link.targetPort.parent
-        tasks.push(parentNode.inputs)
+
+        if (parentNode.inputs['asyncHandler']) {
+          tasks.push({
+            ...parentNode.inputs,
+            asyncHandler: undefined,
+            description: JSON.stringify({ description: parentNode.inputs.description, asyncHandler: parentNode.inputs['asyncHandler'] })
+          })
+        } else {
+          tasks.push({ ...parentNode.inputs, asyncHandler: undefined })
+        }
+
         break
     }
   }

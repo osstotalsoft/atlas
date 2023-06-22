@@ -39,6 +39,93 @@ const filterResourcesByTenant = (list, tenantId) => {
   });
 };
 
+const getImportData = (input, replacements) => {
+  let tempData = input;
+  const replace = JSON.parse(replacements);
+  Object.keys(replace).forEach((key) => {
+    if (key === "{{NatsPrefix}}" && !tempData.includes(key)) {
+      tempData = tempData.replaceAll(
+        "nats_stream:ch.",
+        `nats_stream:${replace[key]}ch.`
+      );
+    }
+    tempData = tempData.replaceAll(key, replace[key]);
+  });
+
+  return JSON.parse(tempData);
+};
+
+const getTenantImportData = (input, replacements, tenant) => {
+  const { code, id } = tenant;
+  const replace = JSON.parse(replacements);
+  let tempData = input;
+  Object.keys(replace).forEach((key) => {
+    if (key === "{{NamePrefix}}") {
+      tempData = tempData.replaceAll(
+        key,
+        `${code.toUpperCase()}_${replace[key]}`
+      );
+    } else {
+      tempData = tempData.replaceAll(key, replace[key]);
+    }
+  });
+
+  return JSON.parse(tempData);
+};
+
+const getDescription = (data) => {
+  try {
+    const desc = JSON.parse(data);
+    return desc.description;
+  } catch {
+    return data;
+  }
+};
+const getWorkflowDescription = (flow, tenantId, isMultiTenant) => {
+  if (isMultiTenant) {
+    return JSON.stringify({
+      description: getDescription(flow.description),
+      tenantId: tenantId,
+    });
+  } else {
+    return getDescription(flow.description);
+  }
+};
+
+const updateHandlerCondition = (initialCondition, isMultiTenant, tenantId) => {
+  let condArray = new Array();
+
+  if (isMultiTenant) {
+    if (initialCondition.includes("$.Headers['nbb-tenantId']")) {
+      const tempConditions = initialCondition.split("&&").map((a) => a.trim());
+      const tempNewCondictions = new Array();
+      for (cond of tempConditions) {
+        if (cond.startsWith("$.Headers['nbb-tenantId']")) {
+          tempNewCondictions.push(
+            `\$.Headers['nbb-tenantId'] === '${tenantId}'`
+          );
+        } else {
+          tempNewCondictions.push(cond);
+        }
+      }
+
+      return tempNewCondictions.join(" && ");
+    } else {
+      condArray.push(`\$.Headers['nbb-tenantId'] === '${tenantId}'`);
+      return condArray.join(" && ");
+    }
+  } else {
+    if (initialCondition.includes("$.Headers['nbb-tenantId']")) {
+      const tempConditions = initialCondition.split("&&").map((a) => a.trim());
+      return tempConditions
+        .filter((a) => !a.startsWith("$.Headers['nbb-tenantId']"))
+        .join(" && ");
+    } else {
+      return initialCondition;
+    }
+  }
+};
+
 module.exports = {
   isGlobalAdmin,
   isTenantAdmin,
@@ -46,4 +133,8 @@ module.exports = {
   userCanSeeResource,
   userCanEditResource,
   filterResourcesByTenant,
+  getImportData,
+  getTenantImportData,
+  getWorkflowDescription,
+  updateHandlerCondition,
 };

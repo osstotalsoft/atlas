@@ -16,10 +16,11 @@ import AddNameModal from 'features/workflow/common/components/AddNameModal'
 import { useChangeTrackingLens } from '@totalsoft/change-tracking-react'
 import { get } from '@totalsoft/rules-algebra-react'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
+import { Checkbox, FormControlLabel } from '@material-ui/core'
 
 const useStyles = makeStyles(styles)
 
-const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkflow }) => {
+const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkflow, selected, onSelect }) => {
   const { name, version, description, createdBy, updatedBy } = workflow
   const { t } = useTranslation()
   const classes = useStyles()
@@ -70,9 +71,24 @@ const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkf
     closeDeleteDialog()
   }, [closeDeleteDialog, name, onDeleteWorkflow, version])
 
+  const handleSelect = useCallback(
+    name => (event) => {
+      onSelect(name, event.target.checked)
+    },
+    [onSelect]
+  )
+
   return (
     <>
       <Tr>
+        <Td className={classes.tableContent}>
+          <FormControlLabel
+            control={
+              <Checkbox color='primary' checked={selected?.includes(`${name}/${version}`)} onChange={handleSelect(`${name}/${version}`)} />
+            }
+            label=''
+          />
+        </Td>
         <Td className={classes.tableContent}>
           <ExecuteButton title={t('Workflow.Buttons.Execute')} onClick={toggleExecDialog} />
         </Td>
@@ -129,7 +145,9 @@ WorkflowItem.propTypes = {
   workflow: PropTypes.object.isRequired,
   onEditWorkflow: PropTypes.func.isRequired,
   onDeleteWorkflow: PropTypes.func.isRequired,
-  onCloneWorkflow: PropTypes.func.isRequired
+  onCloneWorkflow: PropTypes.func.isRequired,
+  selected: PropTypes.array,
+  onSelect: PropTypes.func
 }
 
 export default WorkflowItem

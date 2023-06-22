@@ -889,7 +889,8 @@ input WorkflowTaskInput {
   taskDefinition: TaskDefInput
   taskReferenceName: String!
   type: String
-  workflowTaskType: WorkflowTaskType
+  workflowTaskType: WorkflowTaskType,
+  asyncHandler: String
 }
 
 input SubWorkflowParamsInput {

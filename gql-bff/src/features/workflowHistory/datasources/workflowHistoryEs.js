@@ -6,7 +6,7 @@ const {
 const getWorkflowHistory = async (workflowName, version) => {
   const { index } = workflowSnapshots;
   const hits = await elastic.search(index, { workflowName, version });
-  return hits;
+  return hits.map(a => ({...a, definition: JSON.parse(a.definition)}));
 };
 
 module.exports = { getWorkflowHistory };

@@ -19,7 +19,7 @@ module.exports = {
           type: "text",
         },
         definition: {
-          type: "object",
+          type: "text",
         },
         workflowName: {
           type: "text",
@@ -80,7 +80,7 @@ module.exports = {
             type: "text",
           },
           definition: {
-            type: "object",
+            type: "text",
           },
           workflowName: {
             type: "text",

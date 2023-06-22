@@ -1,5 +1,16 @@
 import { areNameAndVersionUnique, isNamedNew } from 'utils/simple-validations/validations'
-import { Validator, Success, Failure, ValidationError, required, stopOnFirstFailure, fromModel, shape } from '@totalsoft/pure-validations'
+import {
+  Validator,
+  Success,
+  Failure,
+  ValidationError,
+  required,
+  stopOnFirstFailure,
+  fromModel,
+  shape,
+  fromRoot,
+  when
+} from '@totalsoft/pure-validations'
 import { any } from 'ramda'
 import i18next from 'i18next'
 
@@ -19,7 +30,8 @@ export const buildWfTaskValidator = (taskList, ownName) =>
     shape({
       inputs: shape({
         name: required,
-        taskReferenceName: [isTaskReferenceNameUniqueNoId(taskList, ownName), required] |> stopOnFirstFailure
+        taskReferenceName: [isTaskReferenceNameUniqueNoId(taskList, ownName), required] |> stopOnFirstFailure,
+        asyncHandler: fromRoot(root => required |> when(root.asyncComplete))
       })
     })
   )

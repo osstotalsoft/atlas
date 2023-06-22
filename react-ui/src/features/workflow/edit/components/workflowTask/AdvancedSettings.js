@@ -13,7 +13,7 @@ import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { commonTaskDefHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
 import HttpNodeAdvancedSettings from 'features/designer/nodeModels/httpNode/HttpNodeAdvancedSettings'
 
-const AdvancedSettings = ({ inputsLens }) => {
+const AdvancedSettings = ({ inputsLens, validation }) => {
   const inputs = inputsLens |> get
   const { t } = useTranslation()
 
@@ -62,7 +62,7 @@ const AdvancedSettings = ({ inputsLens }) => {
         </Grid>
         <Grid item xs={12}>
           {inputs?.type === nodeConfig.TERMINATE.type && <TerminateNodeAdvancedSettings inputsParamsLens={inputsLens?.inputParameters} />}
-          {inputs?.type === nodeConfig.EVENT.type && <EventNodeAdvancedSettings inputsLens={inputsLens} />}
+          {inputs?.type === nodeConfig.EVENT.type && <EventNodeAdvancedSettings inputsLens={inputsLens} validation={validation} />}
           {inputs?.type === nodeConfig.HTTP.type && <HttpNodeAdvancedSettings inputsParamsLens={inputsLens?.inputParameters} />}
         </Grid>
       </Grid>
@@ -71,7 +71,8 @@ const AdvancedSettings = ({ inputsLens }) => {
 }
 
 AdvancedSettings.propTypes = {
-  inputsLens: PropTypes.object.isRequired
+  inputsLens: PropTypes.object.isRequired,
+  validation: PropTypes.object.isRequired
 }
 
 export default AdvancedSettings
