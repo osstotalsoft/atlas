@@ -30,8 +30,18 @@ export const buildWfTaskValidator = (taskList, ownName) =>
     shape({
       inputs: shape({
         name: required,
+        taskReferenceName: [isTaskReferenceNameUniqueNoId(taskList, ownName), required] |> stopOnFirstFailure
+      })
+    })
+  )
+
+export const buildWfEventTaskValidator = (taskList, ownName) =>
+  fromModel(() =>
+    shape({
+      inputs: shape({
+        name: required,
         taskReferenceName: [isTaskReferenceNameUniqueNoId(taskList, ownName), required] |> stopOnFirstFailure,
-        asyncHandler: fromRoot(root => required |> when(root.asyncComplete))
+        asyncHandler: fromRoot(root => required |> when(root?.asyncComplete))
       })
     })
   )

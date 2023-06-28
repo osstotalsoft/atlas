@@ -51,7 +51,7 @@
     "Cron": "Cron",
     "WorkflowContext": "WorkflowContext",
     "ScheduleList": "Schedule List",
-    "From":"From",
+    "From": "From",
     "To": "To",
     "Buttons": {
       "Add": "Add"
@@ -519,5 +519,16 @@
       "False": "False",
       "Beautify": "Beautify"
     }
+  },
+  "Export": {
+    "ExportButton": "Export workflows",
+    "Download": "Download workflows",
+    "Export": "Export workflows",
+    "Value": "Value",
+    "Replacement": "Replacement",
+    "NamePrefix": "Name Prefix",
+    "Import": "Import workflows",
+    "ImportButton": "Import workflows",
+    "Placeholder": "Placeholder/Value"
   }
 }

@@ -5,7 +5,7 @@ import SwitchWithInternalState from 'features/common/components/SwitchWithIntern
 import { CustomTextField, Autocomplete } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { useTranslation } from 'react-i18next'
 import { get, set } from '@totalsoft/react-state-lens'
-import { onTextBoxChange, onDynamicInputChange } from 'utils/propertyChangeAdapters'
+import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { commonTaskDefHelpConfig, eventHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
@@ -26,9 +26,12 @@ const EventNodeAdvancedSettings = ({ inputsLens, validation }) => {
     [inputsLens?.asyncComplete]
   )
 
-  const handleOnChange = useCallback(value => {
-    set(inputsLens?.asyncHandler, value)
-  })
+  const handleOnChange = useCallback(
+    value => {
+      set(inputsLens?.asyncHandler, value)
+    },
+    [inputsLens?.asyncHandler]
+  )
 
   return (
     <Grid container spacing={2} alignItems='center'>

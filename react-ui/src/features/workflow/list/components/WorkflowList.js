@@ -81,7 +81,7 @@ const WorkflowList = ({
               key='exportButton'
               color={'theme'}
               variant='filled'
-              title={t('Workflow.Buttons.ExportButton')}
+              title={t('Export.ExportButton')}
               onClick={onHandleExportButton}
             >
               <ImportExportIcon />
@@ -91,10 +91,10 @@ const WorkflowList = ({
               key='importButton'
               color={'theme'}
               variant='filled'
-              title={t('Workflow.Buttons.ImportButton')}
+              title={t('Export.ImportButton')}
               onClick={onHandleImportButton}
             >
-              <input ref={fileInputRef} style={{ display: 'none' }} type='file' onChange={onImport} />
+              <input ref={fileInputRef}  accept=".json" style={{ display: 'none' }} type='file' onChange={onImport} />
               <PublishIcon />
             </IconButton>
           ]}

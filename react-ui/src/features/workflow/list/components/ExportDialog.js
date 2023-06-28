@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { CustomTextField, DialogDisplay, Button } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import { makeStyles, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)
@@ -54,11 +54,11 @@ const ExportDialog = ({ open, data, onClose }) => {
         maxWidth={'lg'}
         id='export'
         open={open}
-        title={t('Export')}
+        title={t('Export.Export')}
         onClose={handleOnClose}
         actions={[
           <Button key='export' color='primary' size='sm' onClick={handleOnExport}>
-            Export
+            {t('Export.Download')}
           </Button>
         ]}
         content={
@@ -67,16 +67,16 @@ const ExportDialog = ({ open, data, onClose }) => {
               <Thead>
                 <Tr>
                   <Th style={{ width: '50%' }} className={`${classes.tableHeader}`}>
-                    Value
+                    {t('Export.Value')}
                   </Th>
-                  <Th className={`${classes.tableHeader}`}>Replacement</Th>
+                  <Th className={`${classes.tableHeader}`}>{t('Export.Replacement')}</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 <Tr>
-                  <Td className={classes.tableContent}>Name Prefix</Td>
+                  <Td className={classes.tableContent}>{t('Export.NamePrefix')}</Td>
                   <Td className={classes.tableContent}>
-                    <CustomTextField fullWidth label={t('replacement')} value={namePrefix ?? emptyString} onChange={handleNameChange} />
+                    <CustomTextField fullWidth label={t('Export.Replacement')} value={namePrefix ?? emptyString} onChange={handleNameChange} />
                   </Td>
                 </Tr>
               </Tbody>
