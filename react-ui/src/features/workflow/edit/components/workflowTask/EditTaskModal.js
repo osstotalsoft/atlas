@@ -27,7 +27,7 @@ const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChang
       inputs.type === 'EVENT'
         ? buildWfEventTaskValidator(initialWorkflowTasks, initialName)
         : buildWfTaskValidator(initialWorkflowTasks, initialName),
-    [initialName, initialWorkflowTasks]
+    [initialName, initialWorkflowTasks, inputs.type]
   )
 
   const [validation, validate, resetValidation] = useDirtyFieldValidation(taskValidator)
