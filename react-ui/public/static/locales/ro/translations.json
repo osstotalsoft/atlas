@@ -495,5 +495,16 @@
       "False": "Fals",
       "Beautify": "Formateaza codul"
     }
+  },
+  "Export": {
+    "ExportButton": "Exporta workflows",
+    "Download": "Download workflows",
+    "Export": "Export workflows",
+    "Value": "Valoare",
+    "Replacement": "Înlocuire",
+    "NamePrefix": "Prefix nume",
+    "Import": "Importa workflows",
+    "ImportButton": "Importa workflows",
+    "Placeholder": "Valoare"
   }
 }

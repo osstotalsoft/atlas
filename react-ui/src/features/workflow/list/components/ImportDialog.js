@@ -16,12 +16,10 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
 
   useEffect(() => {
     let toReplace = {}
-    //const prefixRegex = /({{NatsPrefix}})/g
-    //const natsPrefix = [...data.matchAll(prefixRegex)].map(a => a[1])[0]
     toReplace['{{NatsPrefix}}'] = ''
     const nameRegex = /({{NamePrefix}})/
     const namePrefix = data.match(nameRegex)
-    if (namePrefix[0]) {
+    if (namePrefix && namePrefix[0]) {
       toReplace[namePrefix[0]] = ''
     }
 
@@ -63,11 +61,11 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
         maxWidth={'lg'}
         id='export'
         open={open}
-        title={t('Import')}
+        title={t('Export.Import')}
         onClose={handleOnClose}
         actions={[
           <Button key='export' color='primary' size='sm' onClick={handleOnImport}>
-            Import
+            {t('Export.Import')}
           </Button>
         ]}
         content={
@@ -76,9 +74,9 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
               <Thead>
                 <Tr>
                   <Th style={{ width: '50%' }} className={`${classes.tableHeader}`}>
-                    Value
+                    {t('Export.Placeholder')}
                   </Th>
-                  <Th className={`${classes.tableHeader}`}>Replacement</Th>
+                  <Th className={`${classes.tableHeader}`}>{t('Export.Replacement')}</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -90,7 +88,7 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
                     <Td className={classes.tableContent}>
                       <CustomTextField
                         fullWidth
-                        label={t('replacement')}
+                        label={t('Export.Replacement')}
                         value={replace[key] ?? emptyString}
                         onChange={handleChange(key)}
                       />

@@ -9,7 +9,7 @@ import InputParameters from './InputParameters'
 import GeneralSettings from './GeneralSettings'
 import AdvancedSettings from './AdvancedSettings'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
-import { buildWfTaskValidator } from '../../../common/validator'
+import { buildWfTaskValidator, buildWfEventTaskValidator } from '../../../common/validator'
 import { useDirtyFieldValidation } from '@totalsoft/pure-validations-react'
 
 const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChange, workflowTasks, readOnly }) => {
@@ -22,7 +22,13 @@ const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChang
   const [initialName] = useState(inputs?.taskReferenceName)
   const [initialWorkflowTasks] = useState(workflowTasks)
 
-  const taskValidator = useMemo(() => buildWfTaskValidator(initialWorkflowTasks, initialName), [initialName, initialWorkflowTasks])
+  const taskValidator = useMemo(
+    () =>
+      inputs.type === 'EVENT'
+        ? buildWfEventTaskValidator(initialWorkflowTasks, initialName)
+        : buildWfTaskValidator(initialWorkflowTasks, initialName),
+    [initialName, initialWorkflowTasks, inputs.type]
+  )
 
   const [validation, validate, resetValidation] = useDirtyFieldValidation(taskValidator)
 

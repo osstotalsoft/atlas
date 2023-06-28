@@ -38,11 +38,10 @@ const executionResolvers = {
     },
   },
   Workflow: {
-    readOnly: (parent, _args, { externalUser }, _info) => {
+    readOnly: (_parent, _args, { externalUser, tenant }, _info) => {
       if (!isMultiTenant) return false;
 
-      const exTenantId = parent?.input?.Headers?.tenantId;
-      return !userCanEditResource(exTenantId, externalUser);
+      return !userCanEditResource(tenant?.id, externalUser);
     },
     input: (parent, _args, context, _info) => {
       const newInput = {
