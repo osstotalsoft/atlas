@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { PortWidget } from '@projectstorm/react-diagrams'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 import WorkflowPresentationDialog from 'features/common/components/modals/WorkflowPresentationDialog'
-import SearchIcon from '@material-ui/icons/Search'
+import SearchIcon from '@mui/icons-material/Search'
 
 export class SubworkflowNodeWidget extends React.Component {
   state = {

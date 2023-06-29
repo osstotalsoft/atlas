@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import PropTypes from 'prop-types'
 import { set } from '@totalsoft/rules-algebra-react'
 import AddButton from '@bit/totalsoft_oss.react-mui.add-button'

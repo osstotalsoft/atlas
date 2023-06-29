@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { Td, Tr } from 'react-super-responsive-table'
 import { DeleteButton, EditButton, Typography, CustomDialog } from '@bit/totalsoft_oss.react-mui.kit.core'
 import styles from '../styles/styles'
-import { Box, makeStyles, Switch } from '@material-ui/core'
+import { Box, Switch } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import omitDeep from 'omit-deep-lodash'
 
 const useStyles = makeStyles(styles)

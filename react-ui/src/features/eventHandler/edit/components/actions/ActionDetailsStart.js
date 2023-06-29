@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from 'assets/jss/components/tableStyle'
-import { Grid, makeStyles } from '@material-ui/core'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import StartWorkflowInputList from './StartWorkflowInputList'
 
 const useStyles = makeStyles(styles)

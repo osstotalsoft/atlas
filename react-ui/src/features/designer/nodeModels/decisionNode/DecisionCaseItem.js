@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import { emptyString } from 'utils/constants'
 import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
 import DeleteButton from '@bit/totalsoft_oss.react-mui.delete-button'

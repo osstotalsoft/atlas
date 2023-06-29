@@ -7,7 +7,7 @@ import { theme as redTheme } from '@bit/totalsoft_oss.react-mui.themes.red-theme
 import { theme as vividOrangeTheme } from '@bit/totalsoft_oss.react-mui.themes.vivid-orange-theme'
 import { theme as lightBlueTheme } from '@bit/totalsoft_oss.react-mui.themes.light-blue-theme'
 
-import { createTheme } from '@material-ui/core'
+import { createTheme } from '@mui/material'
 
 const getTheme = () => {
   const subDomain = env.REACT_APP_THEME

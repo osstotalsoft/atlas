@@ -6,7 +6,7 @@ import { nodeConfig } from 'features/designer/constants/NodeConfig'
 import LambdaNodeInputParameters from 'features/designer/nodeModels/lambdaNode/LambdaNodeInputParameters'
 import HttpNodeInputParameters from 'features/designer/nodeModels/httpNode/HttpNodeInputParameters'
 import InputParametersHeader from './InputParametersHeader'
-import { Divider } from '@material-ui/core'
+import { Divider } from '@mui/material'
 import EventNodeInputParameters from 'features/designer/nodeModels/eventNode/EventNodeInputParameters'
 
 const InputParameters = ({ inputParametersLens, nodeType, onPayloadChange }) => {

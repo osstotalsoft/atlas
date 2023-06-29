@@ -4,7 +4,7 @@ import DynamicForkNode from './DynamicForkNode'
 import { PortWidget } from '@projectstorm/react-diagrams'
 import '../../styles/classes.css'
 import dynamicForkNodeStyle from './dynamicForkNodeStyle'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(dynamicForkNodeStyle)
 

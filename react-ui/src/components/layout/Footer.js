@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { useFooter } from 'providers/AreasProvider'
 
 // material-ui components
-import { makeStyles, AppBar, Toolbar } from '@material-ui/core'
-
+import { AppBar, Toolbar } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import footerStyle from 'assets/jss/components/footerStyle'
 
 const useStyles = makeStyles(footerStyle)

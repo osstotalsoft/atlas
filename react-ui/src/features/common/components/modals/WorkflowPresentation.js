@@ -8,7 +8,7 @@ import { emptyObject } from 'utils/constants'
 import { useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import magnifyingGlass from 'assets/img/magnifyingGlass.png'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import Typography from '@bit/totalsoft_oss.react-mui.typography'
 
 const WorkflowPresentation = ({ name, version }) => {

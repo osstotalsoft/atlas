@@ -9,7 +9,7 @@ import clickOnHelp from 'assets/img/tour/clickOnHelp.gif'
 import generalSettings from 'assets/img/tour/generalSettings.PNG'
 import workflowSettings from 'assets/img/tour/workflowSettingsDialog.PNG'
 import styles from './styles'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(styles)

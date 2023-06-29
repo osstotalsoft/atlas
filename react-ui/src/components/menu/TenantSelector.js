@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Select, ListItem, makeStyles } from '@material-ui/core'
+import { Select, ListItem } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
 import tenantSelectorStyle from 'assets/jss/components/tenantSelectorStyle'
-import { PersonOutline } from '@material-ui/icons'
+import { PersonOutline } from '@mui/icons-material'
 import { gql } from '@apollo/client'
 
 export const MY_TENANTS_QUERY = gql`

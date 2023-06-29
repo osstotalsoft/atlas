@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Grid, makeStyles, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
 import GoToExecutionButton from 'features/workflow/common/components/GoToExecutionButton'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'

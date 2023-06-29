@@ -1,8 +1,8 @@
 import React from 'react'
-import grey from '@material-ui/core/colors/grey'
+import grey from '@mui/material/colors/grey'
 import PropTypes from 'prop-types'
-import { Paper } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core'
+import { Paper } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 const styles = {
   wrapper: {

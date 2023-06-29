@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Td, Tr } from 'react-super-responsive-table'
 import { EditButton, Typography, IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import tableStyle from 'assets/jss/components/tableStyle'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import { Link } from '@material-ui/core'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import { Link } from '@mui/material'
 
 const useStyles = makeStyles(tableStyle)
 

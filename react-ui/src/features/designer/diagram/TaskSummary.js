@@ -2,8 +2,8 @@ import React from 'react'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import KeyValueTable from './KeyValueTable'
-import { Link } from '@material-ui/core'
-import LaunchIcon from '@material-ui/icons/Launch'
+import { Link } from '@mui/material'
+import LaunchIcon from '@mui/icons-material/Launch'
 
 const TaskSummary = ({ taskResult, changeFlow }) => {
   // To accommodate unexecuted tasks, read type & name & ref out of workflowTask

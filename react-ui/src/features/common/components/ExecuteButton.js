@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ExecuteIcon from '@material-ui/icons/PlayCircleFilledWhite'
+import ExecuteIcon from '@mui/icons-material/PlayCircleFilledWhite'
 import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
 
 const ExecuteButton = ({ title, onClick }) => (

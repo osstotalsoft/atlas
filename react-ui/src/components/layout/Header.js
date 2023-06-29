@@ -7,14 +7,15 @@ import { reduce } from 'ramda'
 import { emptyArray } from 'utils/constants'
 import { useHeader } from 'providers/AreasProvider'
 // material-ui components
-import { makeStyles, AppBar, Toolbar, Hidden, Typography } from '@material-ui/core'
+import { AppBar, Toolbar, Hidden, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
 
 // material-ui icons
-import MoreVert from '@material-ui/icons/MoreVert'
-import ViewList from '@material-ui/icons/ViewList'
-import Menu from '@material-ui/icons/Menu'
+import MoreVert from '@mui/icons-material/MoreVert'
+import ViewList from '@mui/icons-material/ViewList'
+import Menu from '@mui/icons-material/Menu'
 
 // core components
 import headerStyle from 'assets/jss/components/headerStyle'

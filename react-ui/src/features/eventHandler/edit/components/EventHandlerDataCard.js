@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { IconCard, LoadingFakeText } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { Info } from '@material-ui/icons'
+import { Info } from '@mui/icons-material'
 import EventHandlerData from './EventHandlerData'
 import { useTranslation } from 'react-i18next'
 

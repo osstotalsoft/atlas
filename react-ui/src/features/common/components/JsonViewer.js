@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper } from '@mui/material'
 import ReactJson from 'react-json-view'
 import omitDeep from 'omit-deep-lodash'
 import { removeEmpty } from 'utils/functions'

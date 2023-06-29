@@ -2,7 +2,7 @@ import React from 'react'
 import { useInView } from 'react-intersection-observer'
 import PropTypes from 'prop-types'
 import styles from 'assets/jss/components/infiniteScrollStyle'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(styles)
 

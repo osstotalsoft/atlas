@@ -5,7 +5,7 @@ import { useRouteMatch } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import ErrorLogItem from './ErrorLogItem'
 import IconCard from '@bit/totalsoft_oss.react-mui.icon-card'
-import { Info } from '@material-ui/icons'
+import { Info } from '@mui/icons-material'
 import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
 
 const ErrorLogContainer = () => {

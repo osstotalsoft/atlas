@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Box, Divider, Grid, makeStyles } from '@material-ui/core'
+import { Box, Divider, Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
 import AddButton from '@bit/totalsoft_oss.react-mui.add-button'
 import { useTranslation } from 'react-i18next'

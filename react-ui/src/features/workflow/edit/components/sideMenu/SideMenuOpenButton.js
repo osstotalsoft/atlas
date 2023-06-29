@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { IconButton, makeStyles } from '@material-ui/core'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import { IconButton } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import infoSideMenuStyle from './sideMenuStyle'
 
 const useStyles = makeStyles(infoSideMenuStyle)

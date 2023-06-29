@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import { useTranslation } from 'react-i18next'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import styles from 'assets/jss/components/tableStyle'
 
 const useStyles = makeStyles(styles)

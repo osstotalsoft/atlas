@@ -6,7 +6,7 @@ import JsonLint from 'jsonlint-mod'
 
 import { get } from '@totalsoft/rules-algebra-react'
 import PropTypes from 'prop-types'
-import { Divider, Paper, Grid } from '@material-ui/core'
+import { Divider, Paper, Grid } from '@mui/material'
 import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { emptyObject } from 'utils/constants'
 import { useTranslation } from 'react-i18next'

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { useTranslation } from 'react-i18next'

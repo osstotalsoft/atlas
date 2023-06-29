@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
-import { Grid, makeStyles, Box } from '@material-ui/core'
+import { Grid, Box } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { BackToButton, SaveButton, Typography, IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
-import ReplyIcon from '@material-ui/icons/Reply';
+import ReplyIcon from '@mui/icons-material/Reply';
 
 const useStyles = makeStyles(theme => ({ title: { ...theme.header.title } }))
 

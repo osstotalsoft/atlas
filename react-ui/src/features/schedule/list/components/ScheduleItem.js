@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Td, Tr } from 'react-super-responsive-table'
 import { DeleteButton, EditButton, Typography, CustomDialog } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { Box, makeStyles, Switch } from '@material-ui/core'
+import { Box, Switch } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import styles from '../styles'
 
 const useStyles = makeStyles(styles)

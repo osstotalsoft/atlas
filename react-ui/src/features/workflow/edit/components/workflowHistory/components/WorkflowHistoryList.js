@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import styles from '../styles'
 import WorkflowHistoryItem from './WorkflowHistoryItem'
 import { useTranslation } from 'react-i18next'

@@ -4,7 +4,7 @@ import { CustomTextField, DialogDisplay, Button } from '@bit/totalsoft_oss.react
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)

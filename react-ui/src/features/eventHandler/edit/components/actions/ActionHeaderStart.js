@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import { get, set } from '@totalsoft/react-state-lens'
 import PropTypes from 'prop-types'
 import { CustomTextField } from '@bit/totalsoft_oss.react-mui.kit.core'

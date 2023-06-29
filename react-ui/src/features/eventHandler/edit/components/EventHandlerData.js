@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
 import { get, set } from '@totalsoft/change-tracking-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'

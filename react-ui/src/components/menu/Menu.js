@@ -1,6 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { List, makeStyles } from '@material-ui/core'
+import { List } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { useLocation } from 'react-router-dom'
 import menuConfig from 'constants/menuConfig'
 import menuStyle from 'assets/jss/components/menuStyle'
@@ -8,7 +9,7 @@ import MenuItem from './MenuItem'
 import CollapsibleMenuItem from './CollapsibleMenuItem'
 import { gql } from '@apollo/client'
 import { useQueryWithErrorHandling } from 'hooks/errorHandling'
-import ScheduleIcon from '@material-ui/icons/Schedule'
+import ScheduleIcon from '@mui/icons-material/Schedule'
 
 export const FEATURE_FLAGS = gql`
   query featureFlags {

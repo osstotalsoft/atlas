@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import PropTypes from 'prop-types'

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
 import appStyle from 'assets/jss/components/appStyle'
 import logo from 'assets/img/logo.png'

@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Grid, makeStyles } from '@material-ui/core'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import styles from '../../styles/styles'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
 import Action from './Action'

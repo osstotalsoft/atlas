@@ -1,5 +1,5 @@
 import React from 'react'
-import Person from '@material-ui/icons/Person'
+import Person from '@mui/icons-material/Person'
 
 const userMenuItems = [{ icon: <Person />, text: 'MyProfile', path: '/myProfile', name: 'MyProfile' }]
 

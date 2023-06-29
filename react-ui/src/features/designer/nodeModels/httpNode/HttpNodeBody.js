@@ -6,10 +6,11 @@ import styles from '../../styles/styles'
 import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import { get, set } from '@totalsoft/react-state-lens'
-import { Grid, makeStyles } from '@material-ui/core'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
 import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
-import LocalFloristIcon from '@material-ui/icons/LocalFlorist'
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist'
 import beautify from 'js-beautify'
 
 const useStyles = makeStyles(styles)

@@ -4,7 +4,8 @@ import ExecutionSummary from './ExecutionSummary'
 import TaskDetailList from './TaskDetailList'
 import ExecutionIO from './ExecutionIO'
 import ExecutionEditRerun from './ExecutionEditRerun'
-import { Tabs, Tab, makeStyles, Grid } from '@material-ui/core'
+import { Tabs, Tab, Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import TabPanel from 'features/common/components/TabPanel/TabPanel'
 import styles from '../../styles'
 import { executionStatus } from '../../constants/executionStatusList'
@@ -16,7 +17,7 @@ import WorkflowGraphContainer from '../../../../designer/diagram/WorkflowGraphCo
 import { useRouteMatch } from 'react-router-dom'
 import { useHeader } from 'providers/AreasProvider'
 import StandardHeader from 'components/layout/StandardHeader'
-import AppBar from '@material-ui/core/AppBar'
+import AppBar from '@mui/material/AppBar'
 import JsonViewer from 'features/common/components/JsonViewer'
 
 const useStyles = makeStyles(styles)

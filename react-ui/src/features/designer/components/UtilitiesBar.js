@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, Paper } from '@material-ui/core'
+import { Paper } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
 import {
   CloudDownloadOutlined,
@@ -10,9 +11,9 @@ import {
   Redo,
   DescriptionOutlined,
   SettingsOutlined
-} from '@material-ui/icons'
-import PlayCircleIcon from '@material-ui/icons/PlayCircleOutline'
-import { Grid } from '@material-ui/core'
+} from '@mui/icons-material'
+import PlayCircleIcon from '@mui/icons-material/PlayCircleOutline'
+import { Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import styles from '../styles/styles'
 

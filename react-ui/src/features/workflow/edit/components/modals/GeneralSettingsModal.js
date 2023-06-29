@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { Checkbox, FormControlLabel, Grid } from '@material-ui/core'
+import { Checkbox, FormControlLabel, Grid } from '@mui/material'
 import { CustomTextField, Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { set, get } from '@totalsoft/change-tracking-react'
 import { onCheckBoxChange } from 'utils/propertyChangeAdapters'

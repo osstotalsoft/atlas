@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, Paper } from '@material-ui/core'
+import { Box, Grid, Paper } from '@mui/material'
 import { Typography, CustomTextField, Button } from '@bit/totalsoft_oss.react-mui.kit.core'
 import { EXECUTE_WORKFLOW_MUTATION } from 'features/workflow/list/mutations/ExecuteWorkflowMutation'
 import { useMutation } from '@apollo/client'

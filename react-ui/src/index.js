@@ -6,7 +6,7 @@ import routes from './routes'
 import { BrowserRouter } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
 import { theme } from 'utils/theme'
-import { MuiThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider } from '@mui/styles'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 import 'utils/i18n'
 import './assets/css/index.css'
@@ -17,21 +17,24 @@ import AuthApolloProvider from 'apollo/AuthApolloProvider'
 import AuthProvider from 'providers/TenantAuthenticationProvider'
 import { SidebarProvider } from 'providers/SidebarProvider'
 import { ClipboardProvider } from 'providers/ClipboardProvider'
+import { StyledEngineProvider } from '@mui/material/styles'
 
 ReactDOM.render(
-  <AreasWrapper>
-    <AuthProvider>
-      <AuthApolloProvider>
-        <MuiThemeProvider theme={theme}>
-          <SidebarProvider>
-            <ClipboardProvider>
-              <BrowserRouter>{routes}</BrowserRouter>
-            </ClipboardProvider>
-          </SidebarProvider>
-        </MuiThemeProvider>
-      </AuthApolloProvider>
-    </AuthProvider>
-  </AreasWrapper>,
+  <StyledEngineProvider injectFirst>
+    <AreasWrapper>
+      <AuthProvider>
+        <AuthApolloProvider>
+          <ThemeProvider theme={theme}>
+            <SidebarProvider>
+              <ClipboardProvider>
+                <BrowserRouter>{routes}</BrowserRouter>
+              </ClipboardProvider>
+            </SidebarProvider>
+          </ThemeProvider>
+        </AuthApolloProvider>
+      </AuthProvider>
+    </AreasWrapper>
+  </StyledEngineProvider>,
   document.getElementById('root')
 )
 

@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Typography, makeStyles } from '@material-ui/core'
+import { Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
 import DeleteButton from '@bit/totalsoft_oss.react-mui.delete-button'
 import { get, over, set, useChangeTrackingLens } from '@totalsoft/change-tracking-react'

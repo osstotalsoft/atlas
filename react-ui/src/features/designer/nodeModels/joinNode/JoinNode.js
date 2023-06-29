@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import joinNodeStyle from './joinNodeStyle'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 
 const useStyles = makeStyles(joinNodeStyle)

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { AddButton, CardTitle, IconCard } from '@bit/totalsoft_oss.react-mui.kit.core'
-import DynamicFeedIcon from '@material-ui/icons/DynamicFeed'
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
 import ActionList from './ActionList'
 import { useTranslation } from 'react-i18next'
 import { over } from '@totalsoft/react-state-lens'

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Tabs, Tab, Paper } from '@material-ui/core'
+import { Tabs, Tab, Paper } from '@mui/material'
 import PropTypes from 'prop-types'
 import TaskSummary from './TaskSummary'
 import ReactJson from 'react-json-view'
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@mui/styles'
 import _ from 'lodash'
 
 const useStyles = makeStyles(() => ({

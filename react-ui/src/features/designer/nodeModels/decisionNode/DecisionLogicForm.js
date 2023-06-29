@@ -11,7 +11,7 @@ import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { decisionHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 
 const DecisionLogicForm = ({ inputsLens, toggle }) => {
   const { t } = useTranslation()
