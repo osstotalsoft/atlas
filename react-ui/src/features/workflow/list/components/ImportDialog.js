@@ -31,8 +31,8 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
   }, [data])
 
   const handleChange = useCallback(
-    type => event => {
-      setReplace(prev => ({ ...prev, [type]: event.target.value }))
+    (value, event) => {
+      setReplace(prev => ({ ...prev, [event.target.id]: event.target.value }))
     },
     [setReplace]
   )
@@ -46,11 +46,6 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
   )
 
   const handleOnImport = useCallback(() => {
-    /*let tempData = data
-    Object.keys(replace).forEach(key => {
-      tempData = tempData.replaceAll(key, replace[key])
-    })*/
-
     onImport(data, JSON.stringify(replace))
   }, [data, onImport, replace])
 
@@ -88,9 +83,11 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
                     <Td className={classes.tableContent}>
                       <TextField
                         fullWidth
+                        id={key}
+                        name={key}
                         label={t('Export.Replacement')}
                         value={replace[key] ?? emptyString}
-                        onChange={handleChange(key)}
+                        onChange={handleChange}
                       />
                     </Td>
                   </Tr>

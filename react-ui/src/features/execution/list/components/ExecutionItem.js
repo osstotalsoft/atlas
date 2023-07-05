@@ -51,7 +51,6 @@ const ExecutionItem = ({ onSeeDetails, onGotoDefinition, execution }) => {
             type='view'
             variant='text'
             tooltip={t('Execution.Buttons.SeeDetails')}
-            editMode={false}
             onClick={handleSeeDetails}
           />
           <IconButton

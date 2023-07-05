@@ -38,8 +38,8 @@ const DecisionCasesForm = ({ inputsLens }) => {
     [inputsLens]
   )
 
-  const handleChange = useCallback(event => {
-    setLocalCase(event.target.value)
+  const handleChange = useCallback(value => {
+    setLocalCase(value)
   }, [])
 
   const handleKeyPressed = useCallback(({ keyCode }) => keyCode === 13 && handleAddCase(), [handleAddCase])

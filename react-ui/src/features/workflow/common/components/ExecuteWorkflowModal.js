@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextField } from '@totalsoft/rocket-ui'
 import GoToExecutionButton from 'features/workflow/common/components/GoToExecutionButton'

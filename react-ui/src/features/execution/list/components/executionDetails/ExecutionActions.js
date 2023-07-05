@@ -95,6 +95,7 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
           <IconButton
             size='small'
             color='secondary'
+            variant='text'
             tooltip={t('Execution.Buttons.Restart')}
             onClick={handleRestartExecution}
             disabled={readOnly}
@@ -108,6 +109,7 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
             <IconButton
               size='small'
               color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Restart')}
               onClick={handleRestartExecution}
               disabled={readOnly}
@@ -116,7 +118,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
             </IconButton>
             <IconButton
               size='small'
-              color='primary'
+              color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Retry')}
               onClick={handleRetryExecution}
               disabled={readOnly}
@@ -129,7 +132,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
         return (
           <IconButton
             size='small'
-            color='primary'
+            color='secondary'
+            variant='text'
             tooltip={t('Execution.Buttons.Resume')}
             onClick={handleResumeExecution}
             disabled={readOnly}
@@ -142,7 +146,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
           <Grid container>
             <IconButton
               size='small'
-              color='primary'
+              color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Terminate')}
               onClick={handleTerminateExecution}
             >
@@ -150,7 +155,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
             </IconButton>
             <IconButton
               size='small'
-              color='primary'
+              color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Pause')}
               onClick={handlePauseExecution}
               disabled={readOnly}

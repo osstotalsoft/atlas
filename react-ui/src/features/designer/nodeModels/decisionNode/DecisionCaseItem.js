@@ -26,7 +26,7 @@ const DecisionCaseItem = ({ caseItem, index, onChange, onRemove }) => {
         />
       </Grid>
       <Grid item xs={2}>
-        <IconButton type='delete' key='deleteButton' color='primary' title={t('General.Buttons.Delete')} onClick={onRemove} />
+        <IconButton type='delete' key='deleteButton' color='secondary' variant='text' title={t('General.Buttons.Delete')} onClick={onRemove} />
       </Grid>
     </>
   )

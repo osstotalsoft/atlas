@@ -11,14 +11,14 @@ const useStyles = makeStyles(styles)
 
 const ExportDialog = ({ open, data, onClose }) => {
   const { t } = useTranslation()
-  const [namePrefix, setnamePrefix] = useState('')
+  const [namePrefix, setNamePrefix] = useState('')
   const classes = useStyles()
 
   const handleNameChange = useCallback(
-    event => {
-      setnamePrefix(event.target.value)
+    value => {
+      setNamePrefix(value)
     },
-    [setnamePrefix]
+    [setNamePrefix]
   )
 
   const handleOnClose = useCallback(

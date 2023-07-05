@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-json'
 import 'ace-builds/src-noconflict/theme-tomorrow'
-import 'ace-builds/webpack-resolver'
+//this is required for dev
+//import 'ace-builds/webpack-resolver'
 import JsonLint from 'jsonlint-mod'
 
 import { get } from '@totalsoft/rules-algebra-react'
@@ -57,7 +58,7 @@ const EventNodeInputParameters = ({ inputParametersLens, onPayloadChange }) => {
       <AceEditor
         annotations={annotations}
         debounceChangePeriod={200}
-        mode={'json'}
+        mode='json'
         width='100%'
         height='400px'
         theme='tomorrow'
