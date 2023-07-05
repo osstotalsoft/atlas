@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton } from '@totalsoft/rocket-ui'
 import SearchIcon from '@mui/icons-material/Search'
 import WorkflowPresentationDialog from './modals/WorkflowPresentationDialog'
 
@@ -10,7 +10,7 @@ const PresentationDiagramButton = ({ subworkflowName, subworkflowVersion, iconSi
 
   return (
     <>
-      <IconButton size={iconSize} className='help' onClick={handleToggleDialog} color='themeNoBackground'>
+      <IconButton size={iconSize} className='help' onClick={handleToggleDialog} color='secondary' variant='text'>
         <SearchIcon />
       </IconButton>
       <WorkflowPresentationDialog

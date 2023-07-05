@@ -5,7 +5,7 @@ import EventHandlerListFilter from './EventHandlerListFilter'
 import { filterList } from 'utils/functions'
 import { EVENT_HANDLER_LIST_QUERY } from '../queries/EventHandlerListQuery'
 import { DELETE_EVENT_HANDLER_MUTATION } from '../mutations/DeleteEventHandlerMutation'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
 import { eventHandlersFilter } from 'apollo/cacheKeyFunctions'
 import { queryLimit } from 'features/common/constants'
@@ -13,13 +13,13 @@ import { useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { useMutation } from '@apollo/client'
 import { defaults } from 'apollo/defaultCacheData'
 import { eventHandlersPager } from 'apollo/cacheKeyFunctions'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const defaultPager = defaults[eventHandlersPager]
 
 const EventHandlerListContainer = () => {
   const { t } = useTranslation()
-  const history = useHistory()
+  const history = useNavigate()
   const addToast = useToast()
   const showError = useError()
 
@@ -52,12 +52,12 @@ const EventHandlerListContainer = () => {
 
   const handleEditHandler = useCallback(
     handler => {
-      history.push(`/eventHandlers/${handler?.event}/${handler?.name}`)
+      history(`/eventHandlers/${handler?.event}/${handler?.name}`)
     },
     [history]
   )
 
-  const handleAddHandler = useCallback(() => history.push('/eventHandlers/new'), [history])
+  const handleAddHandler = useCallback(() => history('/eventHandlers/new'), [history])
 
   return (
     <>

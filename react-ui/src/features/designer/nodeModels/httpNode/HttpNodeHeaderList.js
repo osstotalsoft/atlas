@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import AddButton from '@bit/totalsoft_oss.react-mui.add-button'
+import { IconButton } from '@totalsoft/rocket-ui'
 import HttpNodeHeaderItem from './HttpNodeHeaderItem'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
 import { makeStyles } from '@mui/styles'
@@ -28,13 +28,15 @@ const HttpNodeHeaderList = ({ httpRequestLens }) => {
         <Tr>
           <Th className={classes.tableHeader}>{t('WorkflowTask.Http.Headers')}</Th>
           <Th className={`${classes.tableHeader} ${classes.buttonsColumn}`}>
-            <AddButton
+            <IconButton
               key='addButton'
-              size='small'
+              type='add'
+              size='tiny'
+              variant='text'
               fontSize='medium'
               title={t('General.Buttons.Add')}
               onClick={handleAddNewItem}
-              color='themeNoBackground'
+              color='secondary'
             />
           </Th>
         </Tr>

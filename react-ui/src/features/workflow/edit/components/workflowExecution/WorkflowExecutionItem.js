@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Td, Tr } from 'react-super-responsive-table'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Typography } from '@totalsoft/rocket-ui'
 import { makeStyles } from '@mui/styles'
 import tableStyle from 'assets/jss/components/tableStyle'
 import ExecutionActions from 'features/execution/list/components/executionDetails/ExecutionActions'

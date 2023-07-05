@@ -1,15 +1,14 @@
 import React from 'react'
 import { ERROR_LOG_QUERY } from '../queries/ErrorLogListQuery'
 import { useQueryWithErrorHandling } from 'hooks/errorHandling'
-import { useRouteMatch } from 'react-router'
+import { useResolvedPath } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import ErrorLogItem from './ErrorLogItem'
-import IconCard from '@bit/totalsoft_oss.react-mui.icon-card'
+import { Card, FakeText } from '@totalsoft/rocket-ui'
 import { Info } from '@mui/icons-material'
-import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
 
 const ErrorLogContainer = () => {
-  const match = useRouteMatch()
+  const match = useResolvedPath("").pathname;
   const { t } = useTranslation()
 
   const { loading, data } = useQueryWithErrorHandling(ERROR_LOG_QUERY, {
@@ -18,9 +17,9 @@ const ErrorLogContainer = () => {
     }
   })
 
-  if (loading) return <LoadingFakeText lines={10} />
+  if (loading) return <FakeText lines={10} />
 
-  return <IconCard icon={Info} title={t('Log.Log', { id: data?.log?.id })} content={<ErrorLogItem log={data?.log} />} />
+  return <Card icon={Info} title={t('Log.Log', { id: data?.log?.id })} content={<ErrorLogItem log={data?.log} />} />
 }
 
 export default ErrorLogContainer

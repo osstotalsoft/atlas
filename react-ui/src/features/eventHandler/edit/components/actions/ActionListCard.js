@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { AddButton, CardTitle, IconCard } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton, Card } from '@totalsoft/rocket-ui'
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
 import ActionList from './ActionList'
 import { useTranslation } from 'react-i18next'
@@ -15,24 +15,22 @@ const ActionListCard = ({ handlerLens, editInProgress, validation }) => {
   }, [handlerLens?.actions])
 
   return (
-    <IconCard
+    <Card
       icon={DynamicFeedIcon}
-      title={
-        <CardTitle
-          title={t('EventHandler.Actions')}
-          actions={[
-            <AddButton
-              key='addButton'
-              color={'theme'}
-              title={t('EventHandler.Buttons.AddAction')}
-              onClick={handleAddAction}
-              disabled={editInProgress}
-            />
-          ]}
+      title={t('EventHandler.Actions')}
+      actions={[
+        <IconButton
+          key='addButton'
+          color='secondary'
+          type='add'
+          title={t('EventHandler.Buttons.AddAction')}
+          onClick={handleAddAction}
+          disabled={editInProgress}
         />
-      }
-      content={<ActionList handlerLens={handlerLens} editInProgress={editInProgress} validation={validation} />}
-    />
+      ]}
+    >
+      <ActionList handlerLens={handlerLens} editInProgress={editInProgress} validation={validation} />
+    </Card>
   )
 }
 

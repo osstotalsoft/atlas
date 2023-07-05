@@ -13,6 +13,8 @@ const tableStyles = theme => ({
   },
   tableHeader: {
     ...theme.table.tableHeader,
+    backgroundColor: '#f0fbff',
+    color: "#555555",
     whiteSpace: 'nowrap'
   },
   tableContent: {

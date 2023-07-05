@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 import { Grid, Paper } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import Typography from '@bit/totalsoft_oss.react-mui.typography'
+import { Typography } from '@totalsoft/rocket-ui'
 import styles from '../../styles'
 
 const useStyles = makeStyles(styles)

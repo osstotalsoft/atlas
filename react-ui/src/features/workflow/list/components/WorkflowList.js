@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
-import { LoadingFakeText, IconCard, CardTitle, AddButton, Pagination, IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { FakeText, Card, Pagination, IconButton } from '@totalsoft/rocket-ui'
 import AccountTreeIcon from '@mui/icons-material/AccountTree'
 import ImportExportIcon from '@mui/icons-material/ImportExport'
 import PublishIcon from '@mui/icons-material/Publish'
@@ -71,82 +71,64 @@ const WorkflowList = ({
   )
 
   return (
-    <IconCard
+    <Card
       icon={AccountTreeIcon}
-      title={
-        <CardTitle
-          title={t('Workflow.Name')}
-          actions={[
-            <AddButton key='addButton' color={'theme'} title={t('Workflow.Buttons.AddWorkflow')} onClick={onAddWorkflow} />,
-            <IconButton
-              key='exportButton'
-              color={'theme'}
-              variant='filled'
-              title={t('Export.ExportButton')}
-              onClick={onHandleExportButton}
-            >
-              <ImportExportIcon />
-            </IconButton>,
+      actions={[
+        <IconButton key='addButton' type="add" color='secondary' title={t('Workflow.Buttons.AddWorkflow')} onClick={onAddWorkflow} />,
+        <IconButton key='exportButton' color='secondary' title={t('Export.ExportButton')} onClick={onHandleExportButton}>
+          <ImportExportIcon />
+        </IconButton>,
 
-            <IconButton
-              key='importButton'
-              color={'theme'}
-              variant='filled'
-              title={t('Export.ImportButton')}
-              onClick={onHandleImportButton}
-            >
-              <input ref={fileInputRef}  accept=".json" style={{ display: 'none' }} type='file' onChange={onImport} />
-              <PublishIcon />
-            </IconButton>
-          ]}
-        />
-      }
-      content={
-        loading ? (
-          <LoadingFakeText lines={10} />
-        ) : (
-          <>
-            <Grid className={classes.enableScrollX}>
-              <Table className={classes.table}>
-                <Thead>
-                  <Tr>
-                    <Th className={`${classes.tableHeader}`}></Th>
-                    <Th className={`${classes.tableHeader} ${classes.executeColumn}`}>{t('Workflow.Buttons.Execute')}</Th>
-                    <Th className={classes.tableHeader}>{t('Workflow.Name')}</Th>
-                    <Th className={classes.tableHeader}>{t('Workflow.Version')}</Th>
-                    <Th className={classes.tableHeader}>{t('Workflow.Description')}</Th>
-                    <Th className={classes.tableHeader}>{t('Workflow.CreatedBy')}</Th>
-                    <Th className={classes.tableHeader}>{t('Workflow.UpdatedBy')}</Th>
-                    <Th className={classes.tableHeader} />
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {currentPageWorkflows?.map(workflow => (
-                    <WorkflowItem
-                      key={workflow?.name + workflow?.version}
-                      workflow={workflow}
-                      onEditWorkflow={onEditWorkflow}
-                      onDeleteWorkflow={onDeleteWorkflow}
-                      onCloneWorkflow={onCloneWorkflow}
-                      onSelect={onSelect}
-                      selected={selected}
-                    />
-                  ))}
-                </Tbody>
-              </Table>
-            </Grid>
-            <Pagination
-              totalCount={pager.totalCount}
-              pageSize={pager.pageSize}
-              page={pager.page}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onPageChange={handlePageChange}
-              onRefresh={onRefresh}
-            />
-          </>
-        )
-      }
-    />
+        <IconButton key='importButton' color='secondary' title={t('Export.ImportButton')} onClick={onHandleImportButton}>
+          <input ref={fileInputRef} accept='.json' style={{ display: 'none' }} type='file' onChange={onImport} />
+          <PublishIcon />
+        </IconButton>
+      ]}
+    >
+      {loading ? (
+        <FakeText lines={10} />
+      ) : (
+        <>
+          <Grid className={classes.enableScrollX}>
+            <Table className={classes.table}>
+              <Thead>
+                <Tr>
+                  <Th className={`${classes.tableHeader}`}></Th>
+                  <Th className={`${classes.tableHeader} ${classes.executeColumn}`}>{t('Workflow.Buttons.Execute')}</Th>
+                  <Th className={classes.tableHeader}>{t('Workflow.Name')}</Th>
+                  <Th className={classes.tableHeader}>{t('Workflow.Version')}</Th>
+                  <Th className={classes.tableHeader}>{t('Workflow.Description')}</Th>
+                  <Th className={classes.tableHeader}>{t('Workflow.CreatedBy')}</Th>
+                  <Th className={classes.tableHeader}>{t('Workflow.UpdatedBy')}</Th>
+                  <Th className={classes.tableHeader} />
+                </Tr>
+              </Thead>
+              <Tbody>
+                {currentPageWorkflows?.map(workflow => (
+                  <WorkflowItem
+                    key={workflow?.name + workflow?.version}
+                    workflow={workflow}
+                    onEditWorkflow={onEditWorkflow}
+                    onDeleteWorkflow={onDeleteWorkflow}
+                    onCloneWorkflow={onCloneWorkflow}
+                    onSelect={onSelect}
+                    selected={selected}
+                  />
+                ))}
+              </Tbody>
+            </Table>
+          </Grid>
+          <Pagination
+            count={pager.totalCount}
+            pageSize={pager.pageSize}
+            page={pager.page}
+            onRowsPerPageChange={handleRowsPerPageChange}
+            onPageChange={handlePageChange}
+            onRefresh={onRefresh}
+          />
+        </>
+      )}
+    </Card>
   )
 }
 

@@ -1,12 +1,12 @@
 import 'url-search-params-polyfill'
 
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from "react-dom/client";
 import routes from './routes'
 import { BrowserRouter } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
 import { theme } from 'utils/theme'
-import { ThemeProvider } from '@mui/styles'
+import { ThemeProvider } from '@mui/material/styles'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 import 'utils/i18n'
 import './assets/css/index.css'
@@ -19,7 +19,9 @@ import { SidebarProvider } from 'providers/SidebarProvider'
 import { ClipboardProvider } from 'providers/ClipboardProvider'
 import { StyledEngineProvider } from '@mui/material/styles'
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'))
+
+root.render(
   <StyledEngineProvider injectFirst>
     <AreasWrapper>
       <AuthProvider>
@@ -34,8 +36,7 @@ ReactDOM.render(
         </AuthApolloProvider>
       </AuthProvider>
     </AreasWrapper>
-  </StyledEngineProvider>,
-  document.getElementById('root')
+  </StyledEngineProvider>
 )
 
 // If you want your app to work offline and load faster, you can change

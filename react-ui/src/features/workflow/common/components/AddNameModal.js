@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Grid } from '@mui/material'
-import { CustomTextField } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { TextField } from '@totalsoft/rocket-ui'
 import { buildValidator } from '../validator'
 import { useDirtyFieldValidation, isValid, getErrors } from '@totalsoft/pure-validations-react'
 import { useQueryWithErrorHandling } from 'hooks/errorHandling'
@@ -28,7 +28,7 @@ const AddNameModal = ({ nameLens, versionLens, dirtyInfo }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} sm={6}>
-        <CustomTextField
+        <TextField
           fullWidth
           label={t('Workflow.Name')}
           value={(nameLens |> get) || emptyString}
@@ -39,7 +39,7 @@ const AddNameModal = ({ nameLens, versionLens, dirtyInfo }) => {
         />
       </Grid>
       <Grid item xs={6} sm={6}>
-        <CustomTextField
+        <TextField
           fullWidth
           isNumeric
           label={t('Workflow.Version')}

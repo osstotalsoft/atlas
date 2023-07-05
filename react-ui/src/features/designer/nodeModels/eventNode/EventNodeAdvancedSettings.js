@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Typography } from '@mui/material'
 import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
-import { CustomTextField, Autocomplete } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { TextField, Autocomplete } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { get, set } from '@totalsoft/react-state-lens'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
@@ -65,7 +65,7 @@ const EventNodeAdvancedSettings = ({ inputsLens, validation }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Event.Sink')}
             value={(inputsLens?.sink |> get) || emptyString}

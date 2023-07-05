@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
-import { LoadingFakeText, IconCard, CardTitle, AddButton, Pagination } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { FakeText, Card, IconButton, Pagination } from '@totalsoft/rocket-ui'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { Grid } from '@mui/material'
 import { makeStyles } from '@mui/styles'
@@ -34,48 +34,43 @@ const TaskList = ({ pager, setPager, taskList, loading, onEditTask, onAddTask, o
   )
 
   return (
-    <IconCard
+    <Card
       icon={AssignmentIcon}
-      title={
-        <CardTitle
-          title={t('Task.Name')}
-          actions={[<AddButton key='addButton' color={'theme'} title={t('Task.Buttons.AddTask')} onClick={onAddTask} />]}
-        />
-      }
-      content={
-        loading ? (
-          <LoadingFakeText lines={10} />
-        ) : (
-          <>
-            <Grid className={classes.enableScrollX}>
-              <Table className={classes.table}>
-                <Thead>
-                  <Tr>
-                    <Th className={classes.tableHeader}>{t('Task.Name')}</Th>
-                    <Th className={classes.tableHeader}>{t('Task.Description')}</Th>
-                    <Th className={classes.tableHeader}>{t('Task.CreateTime')}</Th>
-                    <Th className={classes.tableHeader} />
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {currentPageTasks?.map(task => (
-                    <TaskItem key={task?.name} task={task} onEditTask={onEditTask} onDeleteRow={onDeleteRow} />
-                  ))}
-                </Tbody>
-              </Table>
-            </Grid>
-            <Pagination
-              totalCount={pager.totalCount}
-              pageSize={pager.pageSize}
-              page={pager.page}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onPageChange={handlePageChange}
-              onRefresh={onRefresh}
-            />
-          </>
-        )
-      }
-    />
+      title={t('Task.Name')}
+      actions={[<IconButton key='addButton' type='add' color='secondary' title={t('Task.Buttons.AddTask')} onClick={onAddTask} />]}
+    >
+      {loading ? (
+        <FakeText lines={10} />
+      ) : (
+        <>
+          <Grid className={classes.enableScrollX}>
+            <Table className={classes.table}>
+              <Thead>
+                <Tr>
+                  <Th className={classes.tableHeader}>{t('Task.Name')}</Th>
+                  <Th className={classes.tableHeader}>{t('Task.Description')}</Th>
+                  <Th className={classes.tableHeader}>{t('Task.CreateTime')}</Th>
+                  <Th className={classes.tableHeader} />
+                </Tr>
+              </Thead>
+              <Tbody>
+                {currentPageTasks?.map(task => (
+                  <TaskItem key={task?.name} task={task} onEditTask={onEditTask} onDeleteRow={onDeleteRow} />
+                ))}
+              </Tbody>
+            </Table>
+          </Grid>
+          <Pagination
+            count={pager.totalCount}
+            pageSize={pager.pageSize}
+            page={pager.page}
+            onRowsPerPageChange={handleRowsPerPageChange}
+            onPageChange={handlePageChange}
+            onRefresh={onRefresh}
+          />
+        </>
+      )}
+    </Card>
   )
 }
 

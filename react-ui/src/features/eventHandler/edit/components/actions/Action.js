@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles'
 import styles from 'assets/jss/components/tableStyle'
 import { useTranslation } from 'react-i18next'
 import { get, set } from '@totalsoft/react-state-lens'
-import { DeleteButton, EditButton, Autocomplete, SaveButton, CancelButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton, Autocomplete } from '@totalsoft/rocket-ui'
 import { actionTypeList, actionType } from '../../../common/constants'
 import { emptyString } from 'utils/constants'
 import { isValid, getErrors } from '@totalsoft/pure-validations-react'
@@ -69,26 +69,44 @@ const Action = ({ actionLens, onEditAction, onDeleteAction, onSaveAction, onCanc
             <Grid item container xs={12} sm={2} lg={2} justifyContent='flex-end'>
               {editInProgress ? (
                 <>
-                  <SaveButton
-                    size={'small'}
+                  <IconButton
+                    size='small'
                     fontSize='medium'
-                    color={'themeNoBackground'}
+                    color='secondary'
+                    type='save'
+                    variant='text'
                     title={t('General.Buttons.Save')}
                     onClick={onSaveAction}
                     disabled={saveDisabled}
                   />
-                  <CancelButton
-                    size={'small'}
+                  <IconButton
+                    size='small'
                     fontSize='medium'
+                    color='secondary'
+                    type='cancel'
+                    variant='text'
                     title={t('General.Buttons.Cancel')}
-                    color={'themeNoBackground'}
                     onClick={onCancelEdit}
                   />
                 </>
               ) : (
                 <>
-                  <EditButton size={'small'} color={'themeNoBackground'} title={t('General.Buttons.Edit')} onClick={handleEditAction} />
-                  <DeleteButton size={'small'} title={t('General.Buttons.Delete')} color={'themeNoBackground'} onClick={onDeleteAction} />
+                  <IconButton
+                    size='tiny'
+                    color='secondary'
+                    variant='text'
+                    type='edit'
+                    title={t('General.Buttons.Edit')}
+                    onClick={handleEditAction}
+                  />
+                  <IconButton
+                    size='tiny'
+                    color='secondary'
+                    variant='text'
+                    type='delete'
+                    title={t('General.Buttons.Delete')}
+                    onClick={onDeleteAction}
+                  />
                 </>
               )}
             </Grid>

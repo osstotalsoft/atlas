@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Typography } from '@totalsoft/rocket-ui'
 import { Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import styles from 'assets/jss/components/helperStyle'

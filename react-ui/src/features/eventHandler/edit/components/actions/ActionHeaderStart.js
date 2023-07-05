@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid } from '@mui/material'
 import { get, set } from '@totalsoft/react-state-lens'
 import PropTypes from 'prop-types'
-import { CustomTextField } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { TextField } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
@@ -14,7 +14,7 @@ const ActionHeaderStart = ({ actionDetailsLens, editMode }) => {
   return (
     <>
       <Grid item xs={12} sm={6} lg={6}>
-        <CustomTextField
+        <TextField
           label={t('EventHandler.WorkflowName')}
           fullWidth
           value={actionDetails?.name || emptyString}
@@ -23,7 +23,7 @@ const ActionHeaderStart = ({ actionDetailsLens, editMode }) => {
         />
       </Grid>
       <Grid item xs={12} sm={6} lg={6}>
-        <CustomTextField
+        <TextField
           label={t('EventHandler.Version')}
           fullWidth
           isNumeric

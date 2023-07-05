@@ -2,15 +2,14 @@ import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Grid } from '@mui/material'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { TextField, DateTime } from '@totalsoft/rocket-ui'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { emptyString } from 'utils/constants'
 import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
 import { isValid, getErrors } from '@totalsoft/pure-validations-react'
-import { IconCard, LoadingFakeText, Autocomplete } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Card, FakeText, Autocomplete } from '@totalsoft/rocket-ui'
 import { Info } from '@mui/icons-material'
-import DateTime from '@bit/totalsoft_oss.react-mui.date-time'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Typography } from '@totalsoft/rocket-ui'
 import { get, set } from '@totalsoft/react-state-lens'
 import JsonLint from 'jsonlint-mod'
 import AceEditor from 'react-ace'
@@ -57,91 +56,87 @@ const ScheduleData = ({ scheduleLens, validation, loading, workflows }) => {
     [scheduleLens.workflowContext]
   )
 
-  if (loading) return <LoadingFakeText lines={3} />
+  if (loading) return <FakeText lines={3} />
 
   return (
-    <IconCard
-      icon={Info}
-      title={t('Schedule.Data')}
-      content={
-        <Grid container spacing={2} justifyContent='flex-start' alignItems='flex-end'>
-          <Grid item xs={12} sm={12} lg={12}>
-            <CustomTextField
-              label={t('Schedule.Name')}
-              fullWidth
-              value={schedule?.name || emptyString}
-              onChange={scheduleLens.name |> set |> onTextBoxChange}
-              error={!isValid(validation?.name)}
-              helperText={getErrors(validation?.name)}
-              debounceBy={200}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} lg={12}>
-            <CustomTextField
-              label={t('Schedule.CronString')}
-              fullWidth
-              value={schedule?.cronString || emptyString}
-              onChange={scheduleLens.cronString |> set |> onTextBoxChange}
-              error={!isValid(validation?.cronString)}
-              helperText={getErrors(validation?.cronString)}
-              debounceBy={200}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12}>
-            <Autocomplete
-              fullWidth
-              options={workflows}
-              valueKey='name'
-              simpleValue
-              value={`${schedule?.workflowName}/${schedule?.workflowVersion}` || emptyString}
-              onChange={handleWorkflowChange}
-              error={!isValid(validation?.workflowName)}
-              helperText={getErrors(validation?.workflowName)}
-            />
-          </Grid>
-          <Grid item xs={3} sm={3}>
-            <DateTime clearable label={t('Schedule.From')} value={schedule?.fromDate} onChange={scheduleLens.fromDate |> set} />
-          </Grid>
-          <Grid item xs={3} sm={3}>
-            <DateTime clearable label={t('Schedule.To')} value={schedule?.toDate} onChange={scheduleLens.toDate |> set} />
-          </Grid>
-
-          <Grid item xs={12} sm={12} lg={12}>
-            <SwitchWithInternalState
-              labelOn={t('Schedule.Enabled')}
-              labelOff={t('Schedule.Disabled')}
-              checked={schedule?.enabled || false}
-              onChange={handleActiveChanged}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} lg={12}>
-            <SwitchWithInternalState
-              labelOn={t('Schedule.ParallelRuns')}
-              labelOff={t('Schedule.ParallelRuns')}
-              checked={schedule?.parallelRuns || false}
-              onChange={handleParalledRunsChanged}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} lg={12}>
-            <Typography variant='body1'>{t('Schedule.WorkflowContext')}</Typography>
-            <AceEditor
-              mode={'json'}
-              width='100%'
-              height={'300px'}
-              theme='tomorrow'
-              fontSize={16}
-              annotations={annotations}
-              debounceChangePeriod={200}
-              value={(scheduleLens?.workflowContext |> get) || emptyString}
-              onChange={onContextChange}
-              wrapEnabled={true}
-            />
-          </Grid>
+    <Card icon={Info} title={t('Schedule.Data')}>
+      <Grid container spacing={2} justifyContent='flex-start' alignItems='flex-end'>
+        <Grid item xs={12} sm={12} lg={12}>
+          <TextField
+            label={t('Schedule.Name')}
+            fullWidth
+            value={schedule?.name || emptyString}
+            onChange={scheduleLens.name |> set |> onTextBoxChange}
+            error={!isValid(validation?.name)}
+            helperText={getErrors(validation?.name)}
+            debounceBy={200}
+          />
         </Grid>
-      }
-    />
+        <Grid item xs={12} sm={12} lg={12}>
+          <TextField
+            label={t('Schedule.CronString')}
+            fullWidth
+            value={schedule?.cronString || emptyString}
+            onChange={scheduleLens.cronString |> set |> onTextBoxChange}
+            error={!isValid(validation?.cronString)}
+            helperText={getErrors(validation?.cronString)}
+            debounceBy={200}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={12}>
+          <Autocomplete
+            fullWidth
+            options={workflows}
+            valueKey='name'
+            simpleValue
+            value={`${schedule?.workflowName}/${schedule?.workflowVersion}` || emptyString}
+            onChange={handleWorkflowChange}
+            error={!isValid(validation?.workflowName)}
+            helperText={getErrors(validation?.workflowName)}
+          />
+        </Grid>
+        <Grid item xs={3} sm={3}>
+          <DateTime clearable label={t('Schedule.From')} value={schedule?.fromDate} onChange={scheduleLens.fromDate |> set} />
+        </Grid>
+        <Grid item xs={3} sm={3}>
+          <DateTime clearable label={t('Schedule.To')} value={schedule?.toDate} onChange={scheduleLens.toDate |> set} />
+        </Grid>
+
+        <Grid item xs={12} sm={12} lg={12}>
+          <SwitchWithInternalState
+            labelOn={t('Schedule.Enabled')}
+            labelOff={t('Schedule.Disabled')}
+            checked={schedule?.enabled || false}
+            onChange={handleActiveChanged}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} lg={12}>
+          <SwitchWithInternalState
+            labelOn={t('Schedule.ParallelRuns')}
+            labelOff={t('Schedule.ParallelRuns')}
+            checked={schedule?.parallelRuns || false}
+            onChange={handleParalledRunsChanged}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={12} lg={12}>
+          <Typography variant='body1'>{t('Schedule.WorkflowContext')}</Typography>
+          <AceEditor
+            mode={'json'}
+            width='100%'
+            height={'300px'}
+            theme='tomorrow'
+            fontSize={16}
+            annotations={annotations}
+            debounceChangePeriod={200}
+            value={(scheduleLens?.workflowContext |> get) || emptyString}
+            onChange={onContextChange}
+            wrapEnabled={true}
+          />
+        </Grid>
+      </Grid>
+    </Card>
   )
 }
 

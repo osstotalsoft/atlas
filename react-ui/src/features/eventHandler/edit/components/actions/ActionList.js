@@ -9,9 +9,9 @@ import { sequence } from '@totalsoft/rules-algebra-react'
 import { map, addIndex, remove } from 'ramda'
 import { useTranslation } from 'react-i18next'
 import ActionDetails from './ActionDetails'
-import Card from '@bit/totalsoft_oss.react-mui.card'
+import { Card } from '@totalsoft/rocket-ui'
 import { set, get, over } from '@totalsoft/change-tracking-react'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Typography } from '@totalsoft/rocket-ui'
 import { isValid, getErrors } from '@totalsoft/pure-validations-react'
 
 const useStyles = makeStyles(styles)

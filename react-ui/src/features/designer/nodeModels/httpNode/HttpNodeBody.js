@@ -9,7 +9,7 @@ import { get, set } from '@totalsoft/react-state-lens'
 import { Grid } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton } from '@totalsoft/rocket-ui'
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist'
 import beautify from 'js-beautify'
 
@@ -32,7 +32,7 @@ const HttpNodeBody = ({ httpRequestLens }) => {
             <Grid container justifyContent='space-between'>
               <Grid item>{t('WorkflowTask.Http.Body')}</Grid>
               <Grid item>
-                <IconButton size='small' color={'themeNoBackground'} tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
+                <IconButton size='tiny' variant="text" color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
                   <LocalFloristIcon />
                 </IconButton>
               </Grid>

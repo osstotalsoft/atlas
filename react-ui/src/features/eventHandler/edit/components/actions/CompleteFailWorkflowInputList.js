@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
 import { makeStyles } from '@mui/styles'
 import styles from '../../styles/styles'
-import AddButton from '@bit/totalsoft_oss.react-mui.add-button'
+import { IconButton } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { get, over, promap } from '@totalsoft/react-state-lens'
 import { append, fromPairs, head, last, toPairs } from 'ramda'
@@ -30,13 +30,13 @@ const CompleteFailWorkflowInputList = ({ outputLens, disableSave }) => {
           <Th className={`${classes.tableHeader} ${classes.parametersColumn}`}>{t('EventHandler.OutputParameter')}</Th>
           <Th className={`${classes.tableHeader} ${classes.valuesColumn}`}>{t('EventHandler.OutputValue')}</Th>
           <Th className={`${classes.tableHeader} ${classes.buttonsColumn}`}>
-            <AddButton
+            <IconButton
               key='addButton'
               size='small'
               fontSize='medium'
               title={t('General.Buttons.Add')}
               onClick={handleAddNewItem}
-              color='themeNoBackground'
+              color='primary'
             />
           </Th>
         </Tr>

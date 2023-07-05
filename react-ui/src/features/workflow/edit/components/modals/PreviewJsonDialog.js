@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CustomDialog from '@bit/totalsoft_oss.react-mui.custom-dialog'
+import { Dialog } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import JsonViewer from 'features/common/components/JsonViewer'
 
 function PreviewJsonDialog({ workflow, open, onClose }) {
   const { t } = useTranslation()
   return (
-    <CustomDialog
+    <Dialog
       id='previewJson'
       open={open}
       showActions={false}

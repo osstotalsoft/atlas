@@ -58,8 +58,8 @@ const headerStyle = theme => {
         marginRight: '30px'
       }
     },
-    title: theme.header.title,
-    titleMobile: theme.header.titleMobile,
+    //title: theme.header.title,
+    //titleMobile: theme.header.titleMobile,
     primary: {
       backgroundColor: primaryColor,
       color: '#FFFFFF',

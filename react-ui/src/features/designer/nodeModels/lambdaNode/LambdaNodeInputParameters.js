@@ -8,7 +8,7 @@ import { makeStyles } from '@mui/styles'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { useTranslation } from 'react-i18next'
 import Help from 'features/common/Help/Help'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton } from '@totalsoft/rocket-ui'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist'
 import { lambdaHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
@@ -41,7 +41,7 @@ const LambdaNodeInputParameters = ({ inputParametersLens }) => {
                   <Help icon={<CustomHelpIcon />} helpConfig={lambdaHelpConfig.SCRIPT_EXPRESSION} hasTranslations={true} />
                 </Grid>
                 <Grid item>
-                  <IconButton size='small' color={'themeNoBackground'} tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
+                  <IconButton size='tiny' variant="text" color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
                     <LocalFloristIcon />
                   </IconButton>
                 </Grid>

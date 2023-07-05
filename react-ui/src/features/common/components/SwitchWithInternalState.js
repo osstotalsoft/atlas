@@ -18,7 +18,7 @@ function SwitchWithInternalState({ checked, onChange, disabled, labelOff, labelO
 
   return (
     <FormControlLabel
-      control={<Switch checked={state} onChange={handlePropertyChanged} disabled={disabled} name='isOptional' color='secondary' />}
+      control={<Switch checked={state} onChange={handlePropertyChanged} disabled={disabled} name='isOptional' color="secondary" />}
       label={state ? labelOn : labelOff}
     />
   )

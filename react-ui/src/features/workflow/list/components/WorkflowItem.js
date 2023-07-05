@@ -5,13 +5,12 @@ import { useTranslation } from 'react-i18next'
 import { Box } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import styles from '../../common/styles'
-import { CustomDialog, DeleteButton, EditButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Dialog, IconButton, Button } from '@totalsoft/rocket-ui'
 import ExecuteWorkflowModal from '../../common/components/ExecuteWorkflowModal'
 import ExecuteButton from 'features/common/components/ExecuteButton'
 import { emptyObject } from 'utils/constants'
 import { useStateLens } from '@totalsoft/react-state-lens'
 import { emptyString } from 'utils/constants'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
 import FileCopy from '@mui/icons-material/FileCopy'
 import AddNameModal from 'features/workflow/common/components/AddNameModal'
 import { useChangeTrackingLens } from '@totalsoft/change-tracking-react'
@@ -73,7 +72,7 @@ const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkf
   }, [closeDeleteDialog, name, onDeleteWorkflow, version])
 
   const handleSelect = useCallback(
-    name => (event) => {
+    name => event => {
       onSelect(name, event.target.checked)
     },
     [onSelect]
@@ -99,37 +98,56 @@ const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkf
         <Td className={classes.tableContent}>{createdBy}</Td>
         <Td className={classes.tableContent}>{updatedBy}</Td>
         <Td className={classes.tableContent}>
-          <Box textAlign='right'>
-            <EditButton size={'small'} color={'themeNoBackground'} title={t('General.Buttons.Edit')} onClick={handleEditWorkflow} />
-            <IconButton color={'themeNoBackground'} tooltip={t('Workflow.Buttons.Clone')} size='small' onClick={showCloneDialog}>
+          <Box textAlign='right' style={{ display: 'flex' }}>
+            <IconButton
+              type='edit'
+              variant='text'
+              size='tiny'
+              color='secondary'
+              title={t('General.Buttons.Edit')}
+              onClick={handleEditWorkflow}
+            />
+            <IconButton color='secondary' tooltip={t('Workflow.Buttons.Clone')} variant='text' size='tiny' onClick={showCloneDialog}>
               <FileCopy />
             </IconButton>
-            <DeleteButton size={'small'} title={t('General.Buttons.Delete')} color={'themeNoBackground'} onClick={showDeleteDialog} />
+            <IconButton
+              type='delete'
+              variant='text'
+              size='tiny'
+              title={t('General.Buttons.Delete')}
+              color='secondary'
+              onClick={showDeleteDialog}
+            />
           </Box>
         </Td>
       </Tr>
-      <CustomDialog
+      <Dialog
         id='cloneDialog'
         title={t('Workflow.Dialog.CloneWorkflow')}
         maxWidth='xs'
         open={cloneDialog}
-        showActions
-        onYes={handleCloneWorkflow}
-        onClose={closeCloneDialog}
-        textDialogYes={t('Workflow.Buttons.Clone')}
-        textDialogNo={t('Workflow.Buttons.Cancel')}
+        showX={false}
+        actions={
+          <>
+            <Button onClick={handleCloneWorkflow} color='secondary' variant='contained' size='small'>
+              {t('Workflow.Buttons.Clone')}
+            </Button>
+            <Button onClick={closeCloneDialog} color='primary' variant='contained' size='small'>
+              {t('Workflow.Buttons.Cancel')}
+            </Button>
+          </>
+        }
         content={<AddNameModal nameLens={nameLens} versionLens={versionLens} dirtyInfo={nameDirtyInfo || versionDirtyInfo} />}
       />
-      <CustomDialog
+      <Dialog
         id='deleteDialog'
         title={t('Workflow.Dialog.DeleteWorkflow')}
         maxWidth='xs'
         open={deleteDialog}
-        showActions
+        defaultActions
+        showX={false}
         onYes={handleDeleteWorkflow}
         onClose={closeDeleteDialog}
-        textDialogYes={t('Dialog.Yes')}
-        textDialogNo={t('Dialog.No')}
       />
       <ExecuteWorkflowModal
         open={execDialog}

@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 import { useChangeTrackingLens, get } from '@totalsoft/change-tracking-react'
 import { useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { SAVE_TASK_MUTATION } from '../mutations/SaveTaskMutation'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 import { TASK_QUERY } from '../queries/TaskQuery.js'
 import { TIMEOUT_POLICY_OPTIONS } from '../queries/TimeoutPolicyListQuery'
 import { RETRY_LOGIC_OPTIONS } from '../queries/RetryLogicListQuery'
 import { isDirty, isPropertyDirty } from '@totalsoft/change-tracking'
-import { useRouteMatch, useHistory } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import Task from './Task'
@@ -24,11 +24,12 @@ import { TASK_NAMES_QUERY } from '../queries/TaskNamesQuery'
 const TaskContainer = () => {
   const showError = useError()
   const addToast = useToast()
-  const history = useHistory()
-  const match = useRouteMatch()
+  const history = useNavigate()
+  const { new: paramNew } = useParams()
+  const name = paramNew
   const { t } = useTranslation()
-  const name = match.params.name
-  const isNew = match.params.new === 'new'
+
+  const isNew = paramNew === 'new'
   const { oidcUser } = useReactOidc()
 
   const [taskLens, dirtyInfo, resetTask] = useChangeTrackingLens(defaultConfiguration)
@@ -58,7 +59,7 @@ const TaskContainer = () => {
       addToast(t('General.SavingSucceeded'), 'success')
       resetValidation()
       resetTask(task)
-      if (isNew || isPropertyDirty('name', dirtyInfo)) history.push(`/tasks/${task?.name}`)
+      if (isNew || isPropertyDirty('name', dirtyInfo)) history(`/tasks/${task?.name}`)
     },
     onError: error => showError(error),
     refetchQueries: [{ query: TASK_QUERY, variables: { name: task?.name } }, { query: TASK_LIST_QUERY }]

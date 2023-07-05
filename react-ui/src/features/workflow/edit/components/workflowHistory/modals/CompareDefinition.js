@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer'
 import omitDeep from 'omit-deep-lodash'
 import { useTranslation } from 'react-i18next'
-import Typography from '@bit/totalsoft_oss.react-mui.typography'
+import { Typography } from '@totalsoft/rocket-ui'
 import sortobject from 'deep-sort-object'
 import { fieldsToBeRemoved } from 'features/common/constants'
 

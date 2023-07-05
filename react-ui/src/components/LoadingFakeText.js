@@ -23,7 +23,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-const LoadingFakeText = ({ lines = 4, onPaper = false, ...props }) => {
+const FakeText = ({ lines = 4, onPaper = false, ...props }) => {
   const classes = useStyles()
   const fakeText = (
     <div className={classes.wrapper} {...props}>
@@ -40,7 +40,7 @@ const LoadingFakeText = ({ lines = 4, onPaper = false, ...props }) => {
   return fakeText
 }
 
-LoadingFakeText.propTypes = {
+FakeText.propTypes = {
   /**
    * The number of lines appearing.
    */
@@ -51,4 +51,4 @@ LoadingFakeText.propTypes = {
   onPaper: PropTypes.bool
 }
 
-export default LoadingFakeText
+export default FakeText

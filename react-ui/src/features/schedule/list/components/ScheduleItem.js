@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Td, Tr } from 'react-super-responsive-table'
-import { DeleteButton, EditButton, Typography, CustomDialog } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton, Typography, Dialog } from '@totalsoft/rocket-ui'
 import { Box, Switch } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import styles from '../styles'
@@ -31,7 +31,7 @@ const ScheduleItem = ({ schedule, onDelete, onEdit }) => {
     <>
       <Tr>
         <Td className={classes.tableContent}>
-          <Switch size='small' checked={schedule?.enabled} />
+          <Switch size='small' color='secondary' checked={schedule?.enabled} />
         </Td>
         <Td className={classes.tableContent}>
           <Typography>{schedule?.name}</Typography>
@@ -43,28 +43,27 @@ const ScheduleItem = ({ schedule, onDelete, onEdit }) => {
           <Typography>{schedule?.cronString}</Typography>
         </Td>
         <Td className={classes.tableContent}>
-          <Switch size='small' checked={schedule?.parallelRuns} />
+          <Switch size='small' color='secondary' checked={schedule?.parallelRuns} />
         </Td>
         <Td className={classes.tableContent}>
           <pre>{JSON.stringify(schedule?.workflowContext)}</pre>
         </Td>
         <Td className={classes.tableContent}>
           <Box textAlign='right' className={classes.buttonBox}>
-            <EditButton size={'small'} color={'themeNoBackground'} title={t('General.Buttons.Edit')} onClick={handleEdit} />
-            <DeleteButton size={'small'} title={t('General.Buttons.Delete')} color={'themeNoBackground'} onClick={toggleDeleteDialog} />
+            <IconButton size='tiny' variant='text' color='secondary' type='edit' title={t('General.Buttons.Edit')} onClick={handleEdit} />
+            <IconButton size='tiny' variant='text' color='secondary' type='delete' title={t('General.Buttons.Delete')} onClick={toggleDeleteDialog} />
           </Box>
         </Td>
       </Tr>
-      <CustomDialog
+      <Dialog
         id='deleteDialog'
         title={t('Schedule.Dialog.Delete')}
         maxWidth='xs'
         open={deleteDialog}
-        showActions
+        defaultActions 
         onYes={handleDelete}
         onClose={toggleDeleteDialog}
-        textDialogYes={t('Dialog.Yes')}
-        textDialogNo={t('Dialog.No')}
+        showX={false}
       />
     </>
   )

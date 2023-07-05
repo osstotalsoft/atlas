@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import EventHandlerDataCard from './EventHandlerDataCard'
 import ActionListCard from './actions/ActionListCard'
 import StandardHeader from 'components/layout/StandardHeader.js'
 import { useHeader } from 'providers/AreasProvider'
 import { useMutation } from '@apollo/client'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 import { ADD_EVENT_HANDLER_MUTATION } from '../mutations/AddEventHandlerMutation'
 import { UPDATE_EVENT_HANDLER_MUTATION } from '../mutations/UpdateEventHandlerMutation'
 import { isDirty, isPropertyDirty } from '@totalsoft/change-tracking'
@@ -23,14 +23,13 @@ import { emptyArray } from 'utils/constants'
 
 const EventHandlerContainer = () => {
   const { t } = useTranslation()
-  const history = useHistory()
-  const match = useRouteMatch()
+  const history = useNavigate()
   const [, setHeader] = useHeader(<StandardHeader />)
   const showError = useError()
   const addToast = useToast()
+  const { name, event, new: paramNew } = useParams()
 
-  const { name, event } = match.params
-  const isNew = match.params.new === 'new'
+  const isNew = paramNew === 'new'
   const clientQuery = useClientQueryWithErrorHandling()
 
   const [handlerLens, dirtyInfo, resetHandler] = useChangeTrackingLens(handlerConfig)
@@ -79,7 +78,7 @@ const EventHandlerContainer = () => {
     onCompleted: () => {
       addToast(t('General.SavingSucceeded'), 'success')
       resetValidation()
-      history.push(`/eventHandlers/${handler?.event}/${handler?.name}`)
+      history(`/eventHandlers/${handler?.event}/${handler?.name}`)
     },
     onError: error => showError(error),
     update: updateCacheAfterAdd
@@ -89,7 +88,7 @@ const EventHandlerContainer = () => {
     onCompleted: () => {
       addToast(t('General.SavingSucceeded'), 'success')
       resetValidation()
-      if (isPropertyDirty('event', dirtyInfo)) history.push(`/eventHandlers/${handler?.event}/${handler?.name}`)
+      if (isPropertyDirty('event', dirtyInfo)) history(`/eventHandlers/${handler?.event}/${handler?.name}`)
     },
     onError: error => showError(error),
     update: updateCacheAfterEdit

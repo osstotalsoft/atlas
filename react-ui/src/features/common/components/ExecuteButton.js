@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ExecuteIcon from '@mui/icons-material/PlayCircleFilledWhite'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton } from '@totalsoft/rocket-ui'
 
 const ExecuteButton = ({ title, onClick }) => (
-  <IconButton size={'small'} color={'themeNoBackground'} onClick={onClick} tooltip={title}>
+  <IconButton variant='text' size='tiny' color='secondary' onClick={onClick} tooltip={title}>
     <ExecuteIcon mr={2} />
   </IconButton>
 )

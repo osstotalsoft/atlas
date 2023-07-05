@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import EventHandlerItem from './EventHandlerItem'
-import { AddButton, CardTitle, IconCard, LoadingFakeText, Pagination } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton, Card, FakeText, Pagination } from '@totalsoft/rocket-ui'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
 import { Grid } from '@mui/material'
@@ -34,50 +34,45 @@ const EventHandlerList = ({ pager, setPager, onRefresh, onDeleteHandler, onEditH
   }, [totalCount, setPager, handlerList])
 
   return (
-    <IconCard
+    <Card
       icon={NotificationsIcon}
-      title={
-        <CardTitle
-          title={t('EventHandler.EventHandlers')}
-          actions={[<AddButton key='addButton' color={'theme'} title={t('EventHandler.Buttons.AddEventHandler')} onClick={onAddHandler} />]}
-        />
-      }
-      content={
-        loading ? (
-          <LoadingFakeText lines={10} />
-        ) : (
-          <>
-            <Grid className={classes.enableScrollX}>
-              <Table className={classes.table}>
-                <Thead>
-                  <Tr>
-                    <Th className={classes.tableHeader}>{t('EventHandler.Active')}</Th>
-                    <Th className={classes.tableHeader}>{t('EventHandler.Name')}</Th>
-                    <Th className={classes.tableHeader}>{t('EventHandler.Sink')}</Th>
-                    <Th className={classes.tableHeader}>{t('EventHandler.Condition')}</Th>
-                    <Th className={classes.tableHeader}>{t('EventHandler.Actions')}</Th>
-                    <Th className={classes.tableHeader} />
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {currentPageHandlers?.map((handler, index) => (
-                    <EventHandlerItem key={index} handler={handler} onDeleteHandler={onDeleteHandler} onEditHandler={onEditHandler} />
-                  ))}
-                </Tbody>
-              </Table>
-            </Grid>
-            <Pagination
-              totalCount={totalCount}
-              pageSize={pageSize}
-              page={page}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onPageChange={handlePageChange}
-              onRefresh={onRefresh}
-            />
-          </>
-        )
-      }
-    />
+      title={t('EventHandler.EventHandlers')}
+      actions={[<IconButton key='addButton' type='add' color='secondary' title={t('EventHandler.Buttons.AddEventHandler')} onClick={onAddHandler} />]}
+    >
+      {loading ? (
+        <FakeText lines={10} />
+      ) : (
+        <>
+          <Grid className={classes.enableScrollX}>
+            <Table className={classes.table}>
+              <Thead>
+                <Tr>
+                  <Th className={classes.tableHeader}>{t('EventHandler.Active')}</Th>
+                  <Th className={classes.tableHeader}>{t('EventHandler.Name')}</Th>
+                  <Th className={classes.tableHeader}>{t('EventHandler.Sink')}</Th>
+                  <Th className={classes.tableHeader}>{t('EventHandler.Condition')}</Th>
+                  <Th className={classes.tableHeader}>{t('EventHandler.Actions')}</Th>
+                  <Th className={classes.tableHeader} />
+                </Tr>
+              </Thead>
+              <Tbody>
+                {currentPageHandlers?.map((handler, index) => (
+                  <EventHandlerItem key={index} handler={handler} onDeleteHandler={onDeleteHandler} onEditHandler={onEditHandler} />
+                ))}
+              </Tbody>
+            </Table>
+          </Grid>
+          <Pagination
+            count={totalCount}
+            pageSize={pageSize}
+            page={page}
+            onRowsPerPageChange={handleRowsPerPageChange}
+            onPageChange={handlePageChange}
+            onRefresh={onRefresh}
+          />
+        </>
+      )}
+    </Card>
   )
 }
 

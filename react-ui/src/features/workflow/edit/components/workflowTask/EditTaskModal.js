@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { get } from '@totalsoft/rules-algebra-react'
 import { Grid, Tabs, Tab, Box } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
-import { Button } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Button } from '@totalsoft/rocket-ui'
 import InputParameters from './InputParameters'
 import GeneralSettings from './GeneralSettings'
 import AdvancedSettings from './AdvancedSettings'
@@ -69,10 +69,10 @@ const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChang
         </Grid>
       </Grid>
       <Box marginTop='20px'>
-        <Button color='primary' size='sm' onClick={handleSave} disabled={readOnly}>
+        <Button color='primary' size='small' style={{ marginRight: '20px' }} onClick={handleSave} disabled={readOnly}>
           {t('General.Buttons.Save')}
         </Button>
-        <Button color='primary' size='sm' onClick={onCancel}>
+        <Button color='primary' size='small' onClick={onCancel}>
           {t('General.Buttons.Cancel')}
         </Button>
       </Box>

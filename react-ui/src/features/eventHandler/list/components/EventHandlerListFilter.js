@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { CustomTextField, IconCard, LoadingFakeText } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { TextField, Card, FakeText } from '@totalsoft/rocket-ui'
 import { Search } from '@mui/icons-material'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -16,35 +16,32 @@ const EventHandlerListFilter = ({ loading, filters, onChangeFilters }) => {
   const handleSinkChange = useCallback(onTextBoxChange(handleFilterPropertyChange('event')), [handleFilterPropertyChange]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) {
-    return <LoadingFakeText lines={3} />
+    return <FakeText lines={3} />
   }
 
   return (
-    <IconCard
-      icon={Search}
-      content={
-        <Grid container spacing={3}>
-          <Grid item lg={3} xs={12}>
-            <CustomTextField
-              fullWidth
-              label={t('EventHandler.Name')}
-              value={filters.name || emptyString}
-              onChange={handleNameChange}
-              debounceBy={200}
-            />
-          </Grid>
-          <Grid item lg={3} xs={12}>
-            <CustomTextField
-              fullWidth
-              label={t('EventHandler.Sink')}
-              value={filters.event || emptyString}
-              onChange={handleSinkChange}
-              debounceBy={200}
-            />
-          </Grid>
+    <Card icon={Search}>
+      <Grid container spacing={3}>
+        <Grid item lg={3} xs={12}>
+          <TextField
+            fullWidth
+            label={t('EventHandler.Name')}
+            value={filters.name || emptyString}
+            onChange={handleNameChange}
+            debounceBy={200}
+          />
         </Grid>
-      }
-    />
+        <Grid item lg={3} xs={12}>
+          <TextField
+            fullWidth
+            label={t('EventHandler.Sink')}
+            value={filters.event || emptyString}
+            onChange={handleSinkChange}
+            debounceBy={200}
+          />
+        </Grid>
+      </Grid>
+    </Card>
   )
 }
 

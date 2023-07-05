@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Box, Divider, Grid } from '@mui/material'
+import { TextField, IconButton, Typography } from '@totalsoft/rocket-ui'
 import { makeStyles } from '@mui/styles'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
-import AddButton from '@bit/totalsoft_oss.react-mui.add-button'
 import { useTranslation } from 'react-i18next'
 import DecisionCasesList from './DecisionCasesList'
 import { emptyString } from 'utils/constants'
@@ -13,7 +12,6 @@ import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { decisionHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
 import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
-import Typography from '@bit/totalsoft_oss.react-mui.typography'
 
 const useStyles = makeStyles(taskEditModalStyle)
 
@@ -50,7 +48,7 @@ const DecisionCasesForm = ({ inputsLens }) => {
     <Grid container spacing={2}>
       <Grid item container xs={12} spacing={2} style={{ minHeight: '90px' }} onKeyDown={handleKeyPressed}>
         <Grid item xs={10}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Decision.AddCaseValue')}
             value={localCase || emptyString}
@@ -60,9 +58,10 @@ const DecisionCasesForm = ({ inputsLens }) => {
           />
         </Grid>
         <Grid item xs={2} container alignItems='center'>
-          <AddButton
+          <IconButton
             key='addButton'
-            color={'themeNoBackground'}
+            type='add'
+            color='secondary'
             size='small'
             fontSize='small'
             title={t('WorkflowTask.Decision.Buttons.AddCaseValue')}

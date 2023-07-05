@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton } from '@totalsoft/rocket-ui'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 
 const HelpButton = ({ onClick }) => {

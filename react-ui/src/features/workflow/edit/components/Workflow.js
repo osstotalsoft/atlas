@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
+import { FakeText } from '@totalsoft/rocket-ui'
 import BodyWidget from 'features/designer/components/BodyWidget'
 import UtilitiesBar from 'features/designer/components/UtilitiesBar'
 import TrayWidgetList from 'features/designer/components/TrayWidgetList'
@@ -27,7 +27,7 @@ import SideMenu from './sideMenu/SideMenu'
 import PreviewJsonDialog from './modals/PreviewJsonDialog'
 import { defaultFileName } from 'features/workflow/common/constants'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 
 const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty }) => {
   const { t } = useTranslation()
@@ -60,7 +60,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
       case tasksConfig.WORKFLOWS:
         {
           if (!wfCalled) runWfQuery()
-          if (wfCalled && loadingWf) return <LoadingFakeText lines={3} />
+          if (wfCalled && loadingWf) return () => {}
           const wflList = wfData?.getWorkflowList
           const trayList = wflList?.map(wfl => ({
             type: nodeConfig.SUB_WORKFLOW.type,
@@ -75,7 +75,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         break
       case tasksConfig.TASKS: {
         if (!tskCalled) runTskQuery()
-        if (tskCalled && loadingTsk) return <LoadingFakeText lines={3} />
+        if (tskCalled && loadingTsk) return () => {}
         const tskList = tskData?.getTaskDefinitionList
         const trayList = tskList?.map(wfl => ({
           type: nodeConfig.TASK.type,
@@ -208,7 +208,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const handleRedo = useCallback(() => diagram.redo(), [diagram])
 
   if (loading) {
-    return <LoadingFakeText lines={3} />
+    return <FakeText lines={3} />
   }
 
   return (

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { useCallback } from 'react'
 import { emptyFunction } from 'utils/constants'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 import { Link } from 'react-router-dom'
 import { match } from 'ramda'
 

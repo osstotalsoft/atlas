@@ -4,9 +4,9 @@ import { SCHEDULE_LIST_QUERY } from '../queries/ScheduleListQueries'
 import { DELETE_SCHEDULE_MUTATION } from '../mutations/DeleteSchedule'
 import { sortBy } from 'utils/functions'
 import { defaults } from 'apollo/defaultCacheData'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 import { tasksPager } from 'apollo/cacheKeyFunctions'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { emptyArray } from 'utils/constants'
@@ -15,7 +15,7 @@ import { pipe } from 'ramda'
 import ScheduleList from './ScheduleList'
 
 const ScheduleListContainer = () => {
-  const history = useHistory()
+  const history = useNavigate()
 
   const defaultPager = defaults[tasksPager]
   const [pager, setPager] = useState(defaultPager)
@@ -39,12 +39,12 @@ const ScheduleListContainer = () => {
 
   const handleEditSchedule = useCallback(
     schedule => {
-      history.push(`/schedule/${schedule?.name}`)
+      history(`/schedule/${schedule?.name}`)
     },
     [history]
   )
   const handleAddSchedule = useCallback(() => {
-    history.push('/schedule/new')
+    history('/schedule/new')
   }, [history])
 
   const handleDeleteRow = useCallback(name => {

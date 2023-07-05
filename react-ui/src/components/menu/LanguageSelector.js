@@ -1,40 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Flag from 'react-flags'
-import { Select, ListItem } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
-import langSelectorStyle from 'assets/jss/components/langSelectorStyle'
-
-const useStyles = makeStyles(langSelectorStyle)
+import ReactCountryFlag from 'react-country-flag'
+import { ListItem, Select, Typography } from './LanguageStyle'
 
 function EmptyElement() {
   return <span></span>
 }
 
 const LanguageSelector = ({ language, changeLanguage, drawerOpen }) => {
-  const classes = useStyles()
   const iconComponent = !drawerOpen ? { IconComponent: EmptyElement } : {}
 
   return (
-    <Select
-      className={classes.langSelectorContainer}
-      classes={{ selectMenu: classes.langSelectMenu, icon: classes.langSelectCaret }}
-      value={language}
-      onChange={changeLanguage}
-      {...iconComponent}
-    >
-      <ListItem button value='ro' className={classes.langSelectorItem}>
-        <Flag name='RO' format='png' pngSize={32} shiny={true} basePath='/static/flags' />
-        {drawerOpen && <Typography className={classes.langSelectorText}>{'Romana'}</Typography>}
+    <Select value={language} onChange={changeLanguage} {...iconComponent} variant="standard">
+      <ListItem button value="ro">
+        <ReactCountryFlag countryCode="RO" svg style={{ margin: '0px 7px' }} />
+        {drawerOpen && <Typography>{'Romana'}</Typography>}
       </ListItem>
-      <ListItem button value='fr' className={classes.langSelectorItem}>
-        <Flag name='FR' format='png' pngSize={32} shiny={true} basePath='/static/flags' />
-        {drawerOpen && <Typography className={classes.langSelectorText}>{'Français'}</Typography>}
-      </ListItem>
-      <ListItem button value='en' className={classes.langSelectorItem}>
-        <Flag name='GB' format='png' pngSize={32} shiny={true} basePath='/static/flags' />
-        {drawerOpen && <Typography className={classes.langSelectorText}>{'English'}</Typography>}
+      <ListItem button value="en">
+        <ReactCountryFlag countryCode="GB" svg style={{ margin: '0px 7px' }} />
+        {drawerOpen && <Typography>{'English'}</Typography>}
       </ListItem>
     </Select>
   )

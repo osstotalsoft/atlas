@@ -5,7 +5,7 @@ import { emptyString } from 'utils/constants'
 import { Grid } from '@mui/material'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
-import { CustomTextField } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { TextField } from '@totalsoft/rocket-ui'
 import DecisionNodeGeneralSettings from 'features/designer/nodeModels/decisionNode/DecisionNodeGeneralSettings'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 import Help from 'features/common/Help/Help'
@@ -21,7 +21,7 @@ const GeneralSettings = ({ inputsLens, validation }) => {
     <Grid container spacing={4}>
       <Grid item xs={12} container spacing={1} alignItems='center' justifyContent='space-evenly'>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Name')}
             value={(inputsLens?.name |> get) || emptyString}
@@ -38,7 +38,7 @@ const GeneralSettings = ({ inputsLens, validation }) => {
       </Grid>
       <Grid item xs={12} container spacing={1} alignItems='center' justifyContent='space-evenly'>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.TaskReferenceName')}
             value={(inputsLens?.taskReferenceName |> get) || emptyString}
@@ -55,7 +55,7 @@ const GeneralSettings = ({ inputsLens, validation }) => {
       </Grid>
       <Grid item xs={12} container spacing={1} alignItems='center' justifyContent='space-evenly'>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Description')}
             value={(inputsLens?.description |> get) || emptyString}

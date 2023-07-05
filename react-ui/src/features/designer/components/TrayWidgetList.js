@@ -5,7 +5,7 @@ import TrayWidgetFilter from './TrayWidgetFilter'
 import DesignerMenu from './DesignerMenu'
 import { filter, includes } from 'ramda'
 import { emptyString } from 'utils/constants'
-import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
+import { FakeText } from '@totalsoft/rocket-ui'
 import VirtualAndInfiniteScroll from '../../../components/infiniteScroll/VirtualAndInfiniteScroll'
 import TrayWidgetItem from './TrayWidgetItem'
 
@@ -33,7 +33,7 @@ const TrayWidgetList = ({ trayItems, loading, activeTask, setActiveTask }) => {
     : trayItems
   const scrollableList = filteredList?.map(item => ({ ...item, height: item.isSystemTask ? 50 : item.name.length > 30 ? 80 : 65 }))
 
-  if (loading) return <LoadingFakeText lines={8} />
+  if (loading) return <FakeText lines={8} />
   return (
     <S.Tray>
       <DesignerMenu setActiveTask={setActiveTask} />

@@ -1,17 +1,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { CustomDialog } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Dialog } from '@totalsoft/rocket-ui'
 import GeneralSettingsModal from './GeneralSettingsModal'
 
 const GeneralSettingsDialog = ({ open, onClose, onYes, workflowLens }) => {
   const { t } = useTranslation()
 
   return (
-    <CustomDialog
+    <Dialog
       id='generalSettings'
       open={open}
-      showActions
       textDialogYes={t('General.Buttons.Save')}
       textDialogNo={t('General.Buttons.Cancel')}
       onClose={onClose}

@@ -2,15 +2,11 @@ import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
-import DeleteButton from '@bit/totalsoft_oss.react-mui.delete-button'
+import { TextField, IconButton } from '@totalsoft/rocket-ui'
 import { get, over, set, useChangeTrackingLens } from '@totalsoft/change-tracking-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { filter, head, isEmpty, map } from 'ramda'
-import EditButton from '@bit/totalsoft_oss.react-mui.edit-button'
 import { useTranslation } from 'react-i18next'
-import CancelButton from '@bit/totalsoft_oss.react-mui.cancel-button'
-import SaveButton from '@bit/totalsoft_oss.react-mui.save-button'
 import { Td, Tr } from 'react-super-responsive-table'
 import tableStyle from 'assets/jss/components/tableStyle'
 
@@ -60,16 +56,25 @@ const StartWorkflowInputItem = ({ inputItemKey, inputItemValue, inputLens, disab
   return editMode ? (
     <Tr>
       <Td className={classes.tableContent}>
-        <CustomTextField fullWidth value={itemLens[0] |> get} onChange={itemLens[0] |> set |> onTextBoxChange} debounceBy={100} />
+        <TextField fullWidth value={itemLens[0] |> get} onChange={itemLens[0] |> set |> onTextBoxChange} debounceBy={100} />
       </Td>
       <Td className={classes.tableContent}>
-        <CustomTextField fullWidth value={itemLens[1] |> get} onChange={itemLens[1] |> set |> onTextBoxChange} debounceBy={100} />
+        <TextField fullWidth value={itemLens[1] |> get} onChange={itemLens[1] |> set |> onTextBoxChange} debounceBy={100} />
       </Td>
       <Td className={classes.tableContent}>
-        <CancelButton size='small' color={'themeNoBackground'} title={t('General.Buttons.Cancel')} onClick={handleCancelHeaderItem} />
-        <SaveButton
-          size='small'
-          color={'themeNoBackground'}
+        <IconButton
+          size='tiny'
+          color='secondary'
+          type='cancel'
+          variant='text'
+          title={t('General.Buttons.Cancel')}
+          onClick={handleCancelHeaderItem}
+        />
+        <IconButton
+          size='tiny'
+          color='secondary'
+          type='save'
+          variant='text'
           title={t('General.Buttons.Save')}
           onClick={handleSaveItem}
           disabled={!dirtyInfo}
@@ -85,8 +90,22 @@ const StartWorkflowInputItem = ({ inputItemKey, inputItemValue, inputLens, disab
         <Typography variant='caption'> {inputItemValue}</Typography>
       </Td>
       <Td className={classes.tableContent}>
-        <DeleteButton size='small' color={'themeNoBackground'} title={t('General.Buttons.Delete')} onClick={handleRemoveItem} />
-        <EditButton size='small' color={'themeNoBackground'} title={t('General.Buttons.Edit')} onClick={handleEditHeaderItem} />
+        <IconButton
+          size='tiny'
+          color='secondary'
+          type='edit'
+          variant='text'
+          title={t('General.Buttons.Edit')}
+          onClick={handleEditHeaderItem}
+        />
+        <IconButton
+          size='tiny'
+          color='secondary'
+          type='delete'
+          variant='text'
+          title={t('General.Buttons.Delete')}
+          onClick={handleRemoveItem}
+        />
       </Td>
     </Tr>
   )
