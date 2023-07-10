@@ -36,7 +36,8 @@ const CompleteFailWorkflowInputList = ({ outputLens, disableSave }) => {
               fontSize='medium'
               title={t('General.Buttons.Add')}
               onClick={handleAddNewItem}
-              color='primary'
+              color='secondary'
+              type='add'
             />
           </Th>
         </Tr>

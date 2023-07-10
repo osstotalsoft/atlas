@@ -10,7 +10,7 @@ describe('propertyChangeAdapters tests suite:', () => {
   //     expect(Object.is(firstResult, secondResult)).toBe(true);
   // })
 
-  it('addPropertyPrefix should prefix first param: ', () => {
+  it('addPropertyPrefix should prefix first param:', () => {
     const prefix = 'prefix'
     const fn = str => str
     const param = 'param'

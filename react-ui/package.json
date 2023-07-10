@@ -74,7 +74,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "jest",
+    "test": "react-app-rewired test --transformIgnorePatterns \"node_modules/(?!react-dnd)/\" --env=jsdom",
     "test:ci": "cross-env CI=true npm test -- --reporters=default --reporters=jest-junit --coverage --coverageReporters=cobertura --coverageReporters=lcov --coverageReporters=html",
     "eject": "react-scripts eject",
     "eslint:report": "eslint --fix --ext .js .",
@@ -105,7 +105,7 @@
     "@babel/preset-react": "^7.16.7",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^14.0.0",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
+    "babel-jest": "^29.6.1",
     "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
     "enzyme": "^3.11.0",
@@ -114,6 +114,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "husky": "^8.0.3",
     "jest": "^29.6.0",
+    "jest-environment-jsdom": "^29.6.1",
     "jest-junit": "^16.0.0",
     "mini-css-extract-plugin": "2.7.6",
     "prettier": "^3.0.0",
@@ -123,19 +124,13 @@
     "styled-components": "6.0.2"
   },
   "jest": {
-    "verbose": true,
-    "testEnvironment": "jsdom",
-    "moduleDirectories": [
-      "node_modules",
-      "src"
+    "transformIgnorePatterns": [
+      "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
       "\\.(css|less)$": "identity-obj-proxy"
-    },
-    "setupFilesAfterEnv": [
-      "./setupTests.js"
-    ]
+    }
   },
   "babel": {
     "presets": [
@@ -146,20 +141,28 @@
       [
         "@babel/plugin-proposal-pipeline-operator",
         {
-          "proposal": "minimal"
+          "proposal": "minimal",
+          "loose": true
         }
       ],
       [
         "@babel/plugin-transform-runtime",
         {
+          "loose": true,
           "regenerator": true
         }
       ],
       [
-        "@babel/plugin-transform-modules-commonjs"
+        "@babel/plugin-transform-modules-commonjs",
+        {
+          "loose": true
+        }
       ],
       [
-        "@babel/plugin-proposal-class-properties"
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
       ]
     ]
   },

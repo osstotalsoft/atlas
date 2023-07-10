@@ -28,7 +28,7 @@ const EventHandlerListFilter = ({ loading, filters, onChangeFilters }) => {
             label={t('EventHandler.Name')}
             value={filters.name || emptyString}
             onChange={handleNameChange}
-            debounceBy={200}
+            debounceBy={500}
           />
         </Grid>
         <Grid item lg={3} xs={12}>
@@ -37,7 +37,7 @@ const EventHandlerListFilter = ({ loading, filters, onChangeFilters }) => {
             label={t('EventHandler.Sink')}
             value={filters.event || emptyString}
             onChange={handleSinkChange}
-            debounceBy={200}
+            debounceBy={500}
           />
         </Grid>
       </Grid>

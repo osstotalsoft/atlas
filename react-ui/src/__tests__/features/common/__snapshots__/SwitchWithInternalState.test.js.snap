@@ -2,15 +2,15 @@
 
 exports[`Switch with internal state should work as expected Should render correctly 1`] = `
 <label
-  className="MuiFormControlLabel-root"
+  className="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-j204z7-MuiFormControlLabel-root"
 >
   <span
-    className="MuiSwitch-root"
+    className="MuiSwitch-root MuiSwitch-sizeMedium css-julti5-MuiSwitch-root"
   >
     <span
-      aria-disabled={false}
-      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiSwitch-switchBase MuiSwitch-colorSecondary PrivateSwitchBase-checked-2 Mui-checked"
+      className="MuiButtonBase-root MuiSwitch-switchBase MuiSwitch-colorSecondary Mui-checked PrivateSwitchBase-root MuiSwitch-switchBase MuiSwitch-colorSecondary Mui-checked Mui-checked css-priqlz-MuiButtonBase-root-MuiSwitch-switchBase"
       onBlur={[Function]}
+      onContextMenu={[Function]}
       onDragLeave={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -23,27 +23,21 @@ exports[`Switch with internal state should work as expected Should render correc
       onTouchStart={[Function]}
       tabIndex={null}
     >
+      <input
+        checked={true}
+        className="PrivateSwitchBase-input MuiSwitch-input css-1m9pwf3"
+        name="isOptional"
+        onChange={[Function]}
+        required={false}
+        type="checkbox"
+      />
       <span
-        className="MuiIconButton-label"
-      >
-        <input
-          checked={true}
-          className="PrivateSwitchBase-input-4 MuiSwitch-input"
-          name="isOptional"
-          onChange={[Function]}
-          type="checkbox"
-        />
-        <span
-          className="MuiSwitch-thumb"
-        />
-      </span>
+        className="MuiSwitch-thumb css-jsexje-MuiSwitch-thumb"
+      />
     </span>
     <span
-      className="MuiSwitch-track"
+      className="MuiSwitch-track css-1yjjitx-MuiSwitch-track"
     />
   </span>
-  <span
-    className="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
-  />
 </label>
 `;

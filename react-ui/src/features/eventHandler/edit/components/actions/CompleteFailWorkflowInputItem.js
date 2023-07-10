@@ -62,13 +62,22 @@ const CompleteFailWorkflowInputItem = ({ outputItemKey, outputItemValue, outputL
         <TextField fullWidth value={itemLens[1] |> get} onChange={itemLens[1] |> set |> onTextBoxChange} debounceBy={100} />
       </Td>
       <Td className={classes.tableContent}>
-        <IconButton size='small' color='primary' title={t('General.Buttons.Cancel')} onClick={handleCancelHeaderItem} />
         <IconButton
-          size='small'
-          color='primary'
+          size='tiny'
+          color='secondary'
+          type='save'
+          variant='text'
           title={t('General.Buttons.Save')}
           onClick={handleSaveItem}
           disabled={!dirtyInfo}
+        />
+        <IconButton
+          size='tiny'
+          color='secondary'
+          type='cancel'
+          variant='text'
+          title={t('General.Buttons.Cancel')}
+          onClick={handleCancelHeaderItem}
         />
       </Td>
     </Tr>
@@ -81,8 +90,22 @@ const CompleteFailWorkflowInputItem = ({ outputItemKey, outputItemValue, outputL
         <Typography variant='caption'> {outputItemValue}</Typography>
       </Td>
       <Td className={classes.tableContent}>
-        <IconButton size='small' color='primary' title={t('General.Buttons.Delete')} onClick={handleRemoveItem} />
-        <IconButton size='small' color='primary' title={t('General.Buttons.Edit')} onClick={handleEditHeaderItem} />
+        <IconButton
+          size='tiny'
+          color='secondary'
+          type='edit'
+          variant='text'
+          title={t('General.Buttons.Edit')}
+          onClick={handleEditHeaderItem}
+        />
+        <IconButton
+          size='tiny'
+          color='secondary'
+          type='delete'
+          variant='text'
+          title={t('General.Buttons.Delete')}
+          onClick={handleRemoveItem}
+        />
       </Td>
     </Tr>
   )
