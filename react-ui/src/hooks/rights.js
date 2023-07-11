@@ -16,16 +16,17 @@ const GET_USER_DATA = gql`
 `
 
 export function useUserData() {
-  const { oidcUser } = useReactOidc()
-  const externalUserId = oidcUser?.profile?.sub
+  //const { oidcUser } = useReactOidc()
+  //const externalUserId = oidcUser?.profile?.sub
 
-  const { data, ...res } = useQueryWithErrorHandling(GET_USER_DATA, {
+  /*const { data, ...res } = useQueryWithErrorHandling(GET_USER_DATA, {
     variables: {
       externalId: externalUserId
     },
     skip: !externalUserId
   })
-  return { ...res, userData: data?.userData }
+  return { ...res, userData: data?.userData }*/
+  return {}
 }
 
 export const useRights = () => {

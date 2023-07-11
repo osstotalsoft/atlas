@@ -83,7 +83,8 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
           version: wfl.version,
           color: nodeConfig.TASK.color,
           isSystemTask: false,
-          workflow: wfl
+          workflow: wfl,
+          inputKeys: wfl.inputKeys
         }))
         setTrayItems(trayList)
         break

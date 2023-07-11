@@ -20,24 +20,24 @@ import ScheduleContainer from 'features/schedule/edit/components/ScheduleContain
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route exact path='/workflows' element={<CustomRoute isPrivate={false} component={WorkflowListContainer} />} />
-      <Route exact path='/workflows/:new' element={<CustomRoute fullWidth isPrivate={false} component={WorkflowContainer} />} />
-      <Route exact path='/workflows/:name/:version' element={<CustomRoute fullWidth isPrivate={false} component={WorkflowContainer} />} />
+      <Route exact path='/workflows' element={<CustomRoute isPrivate={true} component={WorkflowListContainer} />} />
+      <Route exact path='/workflows/:new' element={<CustomRoute fullWidth isPrivate={true} component={WorkflowContainer} />} />
+      <Route exact path='/workflows/:name/:version' element={<CustomRoute fullWidth isPrivate={true} component={WorkflowContainer} />} />
 
-      <Route exact path='/executions' element={<CustomRoute isPrivate={false} component={ExecutionListContainer} />} />
-      <Route exact path='/executions/:workflowId' element={<CustomRoute isPrivate={false} component={ExecutionDetailsContainer} />} />
+      <Route exact path='/executions' element={<CustomRoute isPrivate={true} component={ExecutionListContainer} />} />
+      <Route exact path='/executions/:workflowId' element={<CustomRoute isPrivate={true} component={ExecutionDetailsContainer} />} />
 
-      <Route exact path='/eventHandlers' element={<CustomRoute isPrivate={false} component={EventHandlerListContainer} />} />
-      <Route exact path='/eventHandlers/:new' element={<CustomRoute isPrivate={false} component={EventHandlerContainer} />} />
-      <Route exact path='/eventHandlers/:event/:name' element={<CustomRoute isPrivate={false} component={EventHandlerContainer} />} />
+      <Route exact path='/eventHandlers' element={<CustomRoute isPrivate={true} component={EventHandlerListContainer} />} />
+      <Route exact path='/eventHandlers/:new' element={<CustomRoute isPrivate={true} component={EventHandlerContainer} />} />
+      <Route exact path='/eventHandlers/:event/:name' element={<CustomRoute isPrivate={true} component={EventHandlerContainer} />} />
 
-      <Route exact path='/tasks' element={<CustomRoute isPrivate={false} component={TaskListContainer} />} />
-      <Route exact path='/tasks/:new' element={<CustomRoute isPrivate={false} component={TaskContainer} />} />
-      <Route exact path='/tasks/:name' element={<CustomRoute isPrivate={false} component={TaskContainer} />} />
+      <Route exact path='/tasks' element={<CustomRoute isPrivate={true} component={TaskListContainer} />} />
+      <Route exact path='/tasks/:new' element={<CustomRoute isPrivate={true} component={TaskContainer} />} />
+      <Route exact path='/tasks/:name' element={<CustomRoute isPrivate={true} component={TaskContainer} />} />
 
-      <Route exact path='/schedule' element={<CustomRoute isPrivate={false} component={ScheduleListContainer} />} />
-      <Route exact path='/schedule/:new' element={<CustomRoute isPrivate={false} component={ScheduleContainer} />} />
-      <Route exact path='/schedule/:name' element={<CustomRoute isPrivate={false} component={ScheduleContainer} />} />
+      <Route exact path='/schedule' element={<CustomRoute isPrivate={true} component={ScheduleListContainer} />} />
+      <Route exact path='/schedule/:new' element={<CustomRoute isPrivate={true} component={ScheduleContainer} />} />
+      <Route exact path='/schedule/:name' element={<CustomRoute isPrivate={true} component={ScheduleContainer} />} />
       <Route
         isPrivate={true}
         exact

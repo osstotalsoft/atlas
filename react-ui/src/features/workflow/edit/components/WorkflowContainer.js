@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import { useParams } from 'react-router-dom'
 import { useHeader } from 'providers/AreasProvider'
 import { useChangeTrackingLens } from '@totalsoft/change-tracking-react'
-import { Dialog, useToast } from '@totalsoft/rocket-ui'
+import { Dialog, useToast, Button } from '@totalsoft/rocket-ui'
 import Workflow from './Workflow'
 import Tour from './tour/Tour'
 import EditTaskModal from './workflowTask/EditTaskModal'
@@ -361,10 +361,15 @@ const WorkflowContainer = () => {
         title={t('Workflow.AddName')}
         disableBackdropClick
         maxWidth='sm'
-        textDialogYes={t('General.Buttons.Save')}
-        textDialogNo={t('General.Buttons.Cancel')}
-        onClose={toggleNameDialog}
-        onYes={handleSave}
+        showAc
+        actions={[
+          <Button key='export' color='secondary' size='small' onClick={handleSave}>
+            {t('General.Buttons.Save')}
+          </Button>,
+          <Button key='export' color='primary' size='small' onClick={toggleNameDialog}>
+            {t('General.Buttons.Close')}
+          </Button>
+        ]}
         content={<AddNameModal nameLens={nameLens} versionLens={versionLens} dirtyInfo={nameDirtyInfo || versionDirtyInfo} />}
       />
       <Dialog
@@ -374,8 +379,7 @@ const WorkflowContainer = () => {
         title={t('Designer.StartTour')}
         onClose={toggleStartTourDialog}
         onYes={handleStartTour}
-        textDialogYes={t('Dialog.Yes')}
-        textDialogNo={t('Dialog.No')}
+        defaultActions
       />
       <Tour isOpen={tourDialog} onRequestClose={handleCloseTour} />
     </>

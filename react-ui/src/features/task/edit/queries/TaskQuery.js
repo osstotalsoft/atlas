@@ -16,6 +16,8 @@ export const TASK_QUERY = gql`
       responseTimeoutSeconds
       rateLimitPerFrequency
       rateLimitFrequencyInSeconds
+      inputKeys
+      outputKeys
     }
   }
 `
