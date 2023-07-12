@@ -24,4 +24,4 @@ yarn-error.log*
 /.vs
 junit.xml
 .eslintcache
-.yarn/*
+.yarn/cache
