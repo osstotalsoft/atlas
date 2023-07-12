@@ -1,9 +1,9 @@
 import React from 'react'
-import AccountTreeIcon from '@material-ui/icons/AccountTree'
-import AssignmentIcon from '@material-ui/icons/Assignment'
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
-import NotificationsIcon from '@material-ui/icons/Notifications'
-import MenuIcon from '@material-ui/icons/Menu'
+import AccountTreeIcon from '@mui/icons-material/AccountTree'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import MenuIcon from '@mui/icons-material/Menu'
 
 
 const menuItems = [

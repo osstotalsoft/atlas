@@ -4,14 +4,14 @@ import 'ace-builds/src-noconflict/theme-tomorrow'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import React from 'react'
 import PropTypes from 'prop-types'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { TextField } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { decisionHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 
 const DecisionLogicForm = ({ inputsLens, toggle }) => {
   const { t } = useTranslation()
@@ -23,7 +23,7 @@ const DecisionLogicForm = ({ inputsLens, toggle }) => {
       {caseValue && (
         <Grid container alignItems='center' spacing={1}>
           <Grid item xs={11}>
-            <CustomTextField
+            <TextField
               fullWidth
               label={t('WorkflowTask.Decision.CaseValueParam')}
               value={(inputsLens?.caseValueParam |> get) || emptyString}

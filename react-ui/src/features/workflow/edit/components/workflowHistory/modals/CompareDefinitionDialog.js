@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import DialogDisplay from '@bit/totalsoft_oss.react-mui.dialog-display'
+import { Dialog } from '@totalsoft/rocket-ui'
 import CompareDefinition from './CompareDefinition'
 import styles from '../styles'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(styles)
 
@@ -11,7 +11,7 @@ const CompareDefinitionDialog = ({ open, onToggleDialog, definition, currentDefi
   const classes = useStyles()
 
   return (
-    <DialogDisplay
+    <Dialog
       id='compareDefinition'
       open={open}
       onClose={onToggleDialog}

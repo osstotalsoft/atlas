@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-json'
 import 'ace-builds/src-noconflict/theme-tomorrow'
+//this is required for dev
+//import 'ace-builds/webpack-resolver'
 import JsonLint from 'jsonlint-mod'
 
 import { get } from '@totalsoft/rules-algebra-react'
 import PropTypes from 'prop-types'
-import { Divider, Paper, Grid } from '@material-ui/core'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Divider, Paper, Grid } from '@mui/material'
+import { Typography } from '@totalsoft/rocket-ui'
 import { emptyObject } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
 import Help from 'features/common/Help/Help'
@@ -56,7 +58,7 @@ const EventNodeInputParameters = ({ inputParametersLens, onPayloadChange }) => {
       <AceEditor
         annotations={annotations}
         debounceChangePeriod={200}
-        mode={'json'}
+        mode='json'
         width='100%'
         height='400px'
         theme='tomorrow'

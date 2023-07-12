@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import PropTypes from 'prop-types'
 import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
 import { useTranslation } from 'react-i18next'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { TextField } from '@totalsoft/rocket-ui'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
@@ -40,7 +40,7 @@ const TerminateNodeAdvancedSettings = ({ inputsParamsLens }) => {
           <Help icon={<CustomHelpIcon />} helpConfig={terminateHelpConfig.FAILED_OR_COMPLETED} hasTranslations={true} />
         </Grid>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Terminate.WorkflowOutput')}
             value={inputsParamsLens?.workflowOutput |> get}

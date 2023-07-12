@@ -1,22 +1,22 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router'
 import tableStyles from 'assets/jss/components/tableStyle'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import { Tr, Td } from 'react-super-responsive-table'
-import { Typography, IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { Typography, IconButton } from '@totalsoft/rocket-ui'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 const useStyles = makeStyles(tableStyles)
 
 const TaskDetailItem = ({ task }) => {
   const { t } = useTranslation()
   const classes = useStyles()
-  const history = useHistory()
+  const history = useNavigate()
 
   const handleSubWorkflowClick = useCallback(
-    () => history.push(`/executions/${task?.outputData?.subWorkflowId}`),
+    () => history(`/executions/${task?.outputData?.subWorkflowId}`),
     [history, task?.outputData?.subWorkflowId]
   )
 
@@ -32,7 +32,7 @@ const TaskDetailItem = ({ task }) => {
         {task?.taskType === 'SUB_WORKFLOW' ? (
           <IconButton
             size='small'
-            color='themeNoBackground'
+            color='primary'
             onClick={handleSubWorkflowClick}
             tooltip={t('Execution.Buttons.GoToExecution')}
           >

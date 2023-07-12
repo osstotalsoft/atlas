@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { FormControlLabel, Switch } from '@material-ui/core'
+import { FormControlLabel, Switch } from '@mui/material'
 function SwitchWithInternalState({ checked, onChange, disabled, labelOff, labelOn }) {
   const [state, setState] = useState(checked)
 
@@ -18,7 +18,7 @@ function SwitchWithInternalState({ checked, onChange, disabled, labelOff, labelO
 
   return (
     <FormControlLabel
-      control={<Switch checked={state} onChange={handlePropertyChanged} disabled={disabled} name='isOptional' color='secondary' />}
+      control={<Switch checked={state} onChange={handlePropertyChanged} disabled={disabled} name='isOptional' color="secondary" />}
       label={state ? labelOn : labelOff}
     />
   )

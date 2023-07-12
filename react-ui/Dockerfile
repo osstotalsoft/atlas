@@ -1,10 +1,12 @@
 # build environment
-FROM node:18 as builder
+FROM node:18-slim as builder
 WORKDIR /app
 
 COPY package.json ./
 COPY yarn.lock ./
 COPY .npmrc ./
+RUN yarn set version 3.5.0
+COPY .yarnrc.yml ./
 RUN yarn install
 
 ARG REACT_APP_VERSION=0.0.0.0

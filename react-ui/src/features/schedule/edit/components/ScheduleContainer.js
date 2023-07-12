@@ -1,11 +1,11 @@
 import React, { Fragment, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import StandardHeader from 'components/layout/StandardHeader.js'
 import { useHeader } from 'providers/AreasProvider'
 import { useMutation } from '@apollo/client'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 import { ADD_SCHEDULE_MUTATION, UPDATE_SCHEDULE_MUTATION } from '../mutations/ScheduleMutations'
 import { SCHEDULE_QUERY } from '../queries/ScheduleQuery'
 import { WORKFLOW_LIST_QUERY } from 'features/workflow/list/queries/WorkflowListQuery'
@@ -27,19 +27,18 @@ export const scheduleConfig = {
   workflowVersion: '1',
   fromDate: new Date(),
   toDate: new Date(),
-  workflowContext: "{}"
+  workflowContext: '{}'
 }
 
 const ScheduleContainer = () => {
   const { t } = useTranslation()
-  const history = useHistory()
-  const match = useRouteMatch()
+  const history = useNavigate()
+  const { new: name } = useParams()
   const [, setHeader] = useHeader(<StandardHeader />)
   const showError = useError()
   const addToast = useToast()
 
-  const { name } = match.params
-  const isNew = match.params.new === 'new'
+  const isNew = name === 'new'
   const clientQuery = useClientQueryWithErrorHandling()
 
   const [scheduleLens, dirtyInfo, resetschedule] = useChangeTrackingLens(scheduleConfig)
@@ -94,7 +93,7 @@ const ScheduleContainer = () => {
     onCompleted: () => {
       addToast(t('General.SavingSucceeded'), 'success')
       resetValidation()
-      history.push(`/schedule/${schedule?.name}`)
+      history(`/schedule/${schedule?.name}`)
     },
     onError: error => showError(error),
     update: updateCacheAfterAdd

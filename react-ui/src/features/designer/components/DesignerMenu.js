@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, Tab, Tabs } from '@material-ui/core'
+import { Tab, Tabs } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import styles from '../styles/sidebarStyles'
 import menuConfig from '../constants/DesignerMenuConfig'
 import { useTranslation } from 'react-i18next'

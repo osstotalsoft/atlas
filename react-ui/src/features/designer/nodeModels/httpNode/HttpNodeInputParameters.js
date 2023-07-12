@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { useTranslation } from 'react-i18next'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { TextField } from '@totalsoft/rocket-ui'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
 import HttpNodeHeaderList from './HttpNodeHeaderList'
@@ -26,7 +26,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
     <Grid item container xs={12} spacing={2}>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.Uri')}
             value={httpRequestLens?.uri |> get}
@@ -41,7 +41,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.Method')}
             value={httpRequestLens?.method |> get}
@@ -56,7 +56,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.Accept')}
             value={httpRequestLens?.accept |> get}
@@ -71,7 +71,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.ContentType')}
             value={httpRequestLens?.contentType |> get}
@@ -86,7 +86,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.VipAddress')}
             value={httpRequestLens?.vipAddress |> get}
@@ -117,7 +117,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.OauthConsumerKey')}
             value={httpRequestLens?.oauthConsumerKey |> get}
@@ -132,7 +132,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.OauthConsumerSecret')}
             value={httpRequestLens?.oauthConsumerSecret |> get}
@@ -147,7 +147,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.ConnectionTimeOut')}
             isNumeric
@@ -162,7 +162,7 @@ const HttpNodeInputParameters = ({ httpRequestLens }) => {
       </Grid>
       <Grid item xs={6} container alignItems='center' spacing={1}>
         <Grid item xs={11}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.Http.ReadTimeOut')}
             isNumeric

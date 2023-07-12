@@ -3,10 +3,10 @@ import dagreD3 from 'dagre-d3'
 import PropTypes from 'prop-types'
 import * as d3 from 'd3'
 import workflowToGraph from '../workflowToGraph'
-import { Card, Grid } from '@material-ui/core'
+import { Card, Grid } from '@mui/material'
 import SubGrapher from './SubGrapher'
 import { useTranslation } from 'react-i18next'
-import { CustomDialog } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Dialog } from '@totalsoft/rocket-ui'
 import { emptyObject, emptyString } from 'utils/constants'
 import DiagramTaskModal from './DiagramTaskModal'
 import { executionStatus } from 'features/execution/list/constants/executionStatusList'
@@ -255,7 +255,7 @@ const Grapher = ({ workflow, layout }) => {
 
         <div style={{ overflowX: 'auto', display: 'inline-block' }}>{subflow}</div>
       </Card>
-      <CustomDialog
+      <Dialog
         id='taskDetails'
         open={taskDialog?.open}
         onClose={handleDialogClose}

@@ -3,15 +3,15 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 import WorkflowGraph from './WorkflowGraph'
 import WorkflowDAG from './WorkflowDAG'
-import { Tooltip } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
+import { Tooltip } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
 import RightPanel from './RightPanel'
-import { makeStyles } from '@material-ui/core/styles'
-import Alert from '@material-ui/lab/Alert'
+import { makeStyles } from '@mui/styles'
+import Alert from '@mui/lab/Alert'
 import { useTranslation } from 'react-i18next'
-import { Autocomplete } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { useHistory } from 'react-router-dom'
+import { Autocomplete } from '@totalsoft/rocket-ui'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = makeStyles({
   wrapper: {
@@ -94,7 +94,7 @@ const WorkflowGraphContainer = ({ flow }) => {
   const [selectedTask, setSelectedTask] = useState(null)
   const dag = useMemo(() => (flow ? new WorkflowDAG(flow) : null), [flow])
   const classes = useStyles(initialDrawerState)
-  const history = useHistory()
+  const history = useNavigate()
   const { t } = useTranslation()
 
   const handleClose = useCallback(() => {
@@ -112,7 +112,7 @@ const WorkflowGraphContainer = ({ flow }) => {
 
   const error = failedTaskError(flow)
   const handleChangeFlow = useCallback(flowId => {
-    history.push(`/executions/${flowId}`)
+    history(`/executions/${flowId}`)
   }, [history])
 
   const handleSelectedTask = useCallback(task => {

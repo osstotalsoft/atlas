@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography } from '@mui/material'
 import { executionStatus } from 'features/execution/list/constants/executionStatusList'
 import { useTranslation } from 'react-i18next'
 

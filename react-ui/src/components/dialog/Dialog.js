@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Dialog as MuiDialog, DialogTitle, DialogContent, makeStyles } from '@material-ui/core'
+import { Dialog as MuiDialog, DialogTitle, DialogContent } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import dialogStyle from './dialogStyle'
 
 const useStyles = makeStyles(dialogStyle)

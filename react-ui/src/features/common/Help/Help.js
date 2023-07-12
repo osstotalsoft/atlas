@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, Popover } from '@material-ui/core'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
-import HelpIcon from '@material-ui/icons/HelpOutline'
+import { Popover } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { IconButton } from '@totalsoft/rocket-ui'
+import HelpIcon from '@mui/icons-material/HelpOutline'
 import HelpContainer from './HelpContainer'
 import helperStyles from 'assets/jss/components/helperStyle'
 
@@ -28,7 +29,8 @@ const Help = ({ helpConfig, hasTranslations, icon, iconSize }) => {
         size={iconSize}
         className='help'
         onClick={handleClick}
-        color='themeNoBackground'
+        color='secondary'
+        variant='text'
         aria-owns={open ? 'mouse-over-popover' : undefined}
         aria-haspopup='true'
       >

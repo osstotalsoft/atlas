@@ -7,14 +7,15 @@ import { reduce } from 'ramda'
 import { emptyArray } from 'utils/constants'
 import { useHeader } from 'providers/AreasProvider'
 // material-ui components
-import { makeStyles, AppBar, Toolbar, Hidden, Typography } from '@material-ui/core'
+import { AppBar, Toolbar, Hidden, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { IconButton } from '@totalsoft/rocket-ui'
 
 // material-ui icons
-import MoreVert from '@material-ui/icons/MoreVert'
-import ViewList from '@material-ui/icons/ViewList'
-import Menu from '@material-ui/icons/Menu'
+import MoreVert from '@mui/icons-material/MoreVert'
+import ViewList from '@mui/icons-material/ViewList'
+import Menu from '@mui/icons-material/Menu'
 
 // core components
 import headerStyle from 'assets/jss/components/headerStyle'
@@ -49,16 +50,16 @@ function Header({ drawerOpen, handleDrawerToggle }) {
   const headerRef = useRef()
 
   return (
-    <AppBar position='sticky' className={classes.appBar + ' ' + classes.theme}>
+    <AppBar color="transparent" position='sticky' className={classes.appBar + ' ' + classes.theme}>
       <Toolbar className={classes.container}>
         <Hidden smDown>
           <div className={classes.sidebarMinimize}>
             {!drawerOpen ? (
-              <IconButton color='primaryNoBackground' onClick={handleDrawerToggle}>
+              <IconButton color='white' onClick={handleDrawerToggle}>
                 <ViewList fontSize='small' />
               </IconButton>
             ) : (
-              <IconButton color='primaryNoBackground' onClick={handleDrawerToggle}>
+              <IconButton color='white' onClick={handleDrawerToggle}>
                 <MoreVert fontSize='small' />
               </IconButton>
             )}
@@ -77,7 +78,7 @@ function Header({ drawerOpen, handleDrawerToggle }) {
           )}
           <div className={classes.w100} ref={headerRef}></div>
           <div className={classes.appResponsive}>
-            <IconButton color='themeWithBackground' aria-label='open drawer' onClick={handleDrawerToggle}>
+            <IconButton color='primary' aria-label='open drawer' onClick={handleDrawerToggle}>
               <Menu fontSize='small' />
             </IconButton>
           </div>

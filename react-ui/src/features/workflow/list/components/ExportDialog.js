@@ -1,24 +1,24 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { CustomTextField, DialogDisplay, Button } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { TextField, Dialog, Button } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)
 
 const ExportDialog = ({ open, data, onClose }) => {
   const { t } = useTranslation()
-  const [namePrefix, setnamePrefix] = useState('')
+  const [namePrefix, setNamePrefix] = useState('')
   const classes = useStyles()
 
   const handleNameChange = useCallback(
-    event => {
-      setnamePrefix(event.target.value)
+    value => {
+      setNamePrefix(value)
     },
-    [setnamePrefix]
+    [setNamePrefix]
   )
 
   const handleOnClose = useCallback(
@@ -49,7 +49,7 @@ const ExportDialog = ({ open, data, onClose }) => {
 
   return (
     <>
-      <DialogDisplay
+      <Dialog
         fullWidth={true}
         maxWidth={'lg'}
         id='export'
@@ -57,7 +57,7 @@ const ExportDialog = ({ open, data, onClose }) => {
         title={t('Export.Export')}
         onClose={handleOnClose}
         actions={[
-          <Button key='export' color='primary' size='sm' onClick={handleOnExport}>
+          <Button key='export' color='primary' size='small' onClick={handleOnExport}>
             {t('Export.Download')}
           </Button>
         ]}
@@ -76,7 +76,7 @@ const ExportDialog = ({ open, data, onClose }) => {
                 <Tr>
                   <Td className={classes.tableContent}>{t('Export.NamePrefix')}</Td>
                   <Td className={classes.tableContent}>
-                    <CustomTextField fullWidth label={t('Export.Replacement')} value={namePrefix ?? emptyString} onChange={handleNameChange} />
+                    <TextField fullWidth label={t('Export.Replacement')} value={namePrefix ?? emptyString} onChange={handleNameChange} />
                   </Td>
                 </Tr>
               </Tbody>

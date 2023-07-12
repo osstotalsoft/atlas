@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import PropTypes from 'prop-types'
-import IconButton from '@bit/totalsoft_oss.react-mui.icon-button'
-import CloseIcon from '@material-ui/icons/Close'
-import PauseIcon from '@material-ui/icons/Pause'
-import ReplayIcon from '@material-ui/icons/Replay'
-import RepeatIcon from '@material-ui/icons/Repeat'
-import PlayArrowIcon from '@material-ui/icons/PlayArrow'
-import { Typography, useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import CloseIcon from '@mui/icons-material/Close'
+import PauseIcon from '@mui/icons-material/Pause'
+import ReplayIcon from '@mui/icons-material/Replay'
+import RepeatIcon from '@mui/icons-material/Repeat'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { IconButton, Typography, useToast } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { executionStatus } from '../../constants/executionStatusList'
 import { useError } from 'hooks/errorHandling'
@@ -95,7 +94,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
         return (
           <IconButton
             size='small'
-            color='themeNoBackground'
+            color='secondary'
+            variant='text'
             tooltip={t('Execution.Buttons.Restart')}
             onClick={handleRestartExecution}
             disabled={readOnly}
@@ -108,7 +108,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
           <Grid container>
             <IconButton
               size='small'
-              color='themeNoBackground'
+              color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Restart')}
               onClick={handleRestartExecution}
               disabled={readOnly}
@@ -117,7 +118,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
             </IconButton>
             <IconButton
               size='small'
-              color='themeNoBackground'
+              color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Retry')}
               onClick={handleRetryExecution}
               disabled={readOnly}
@@ -130,7 +132,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
         return (
           <IconButton
             size='small'
-            color='themeNoBackground'
+            color='secondary'
+            variant='text'
             tooltip={t('Execution.Buttons.Resume')}
             onClick={handleResumeExecution}
             disabled={readOnly}
@@ -143,7 +146,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
           <Grid container>
             <IconButton
               size='small'
-              color='themeNoBackground'
+              color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Terminate')}
               onClick={handleTerminateExecution}
             >
@@ -151,7 +155,8 @@ const ExecutionActions = ({ workflowId, status, startPolling, readOnly }) => {
             </IconButton>
             <IconButton
               size='small'
-              color='themeNoBackground'
+              color='secondary'
+              variant='text'
               tooltip={t('Execution.Buttons.Pause')}
               onClick={handlePauseExecution}
               disabled={readOnly}

@@ -7,7 +7,7 @@ import { Authenticating } from 'components/login/Authenticating'
 import { CallbackPage } from 'components/login/CallbackPage'
 import { NotAuthenticated } from 'components/login/NotAuthenticated'
 import { SessionExpired } from 'components/login/SessionExpired'
-import { Forbidden } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Forbidden } from '@totalsoft/rocket-ui'
 import { useSessionStorage } from 'hooks/sessionStorage'
 import { env } from 'utils/env'
 

@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { CustomTextField, DialogDisplay, Button } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { TextField, Dialog, Button } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)
@@ -31,8 +31,8 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
   }, [data])
 
   const handleChange = useCallback(
-    type => event => {
-      setReplace(prev => ({ ...prev, [type]: event.target.value }))
+    (value, event) => {
+      setReplace(prev => ({ ...prev, [event.target.id]: event.target.value }))
     },
     [setReplace]
   )
@@ -46,17 +46,12 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
   )
 
   const handleOnImport = useCallback(() => {
-    /*let tempData = data
-    Object.keys(replace).forEach(key => {
-      tempData = tempData.replaceAll(key, replace[key])
-    })*/
-
     onImport(data, JSON.stringify(replace))
   }, [data, onImport, replace])
 
   return (
     <>
-      <DialogDisplay
+      <Dialog
         fullWidth={true}
         maxWidth={'lg'}
         id='export'
@@ -64,7 +59,7 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
         title={t('Export.Import')}
         onClose={handleOnClose}
         actions={[
-          <Button key='export' color='primary' size='sm' onClick={handleOnImport}>
+          <Button key='export' color='primary' size='small' onClick={handleOnImport}>
             {t('Export.Import')}
           </Button>
         ]}
@@ -86,11 +81,13 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
                       {key}
                     </Td>
                     <Td className={classes.tableContent}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
+                        id={key}
+                        name={key}
                         label={t('Export.Replacement')}
                         value={replace[key] ?? emptyString}
-                        onChange={handleChange(key)}
+                        onChange={handleChange}
                       />
                     </Td>
                   </Tr>

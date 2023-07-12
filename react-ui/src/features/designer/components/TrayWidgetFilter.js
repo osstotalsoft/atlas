@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Grid, makeStyles } from '@material-ui/core'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { TextField } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import SearchIcon from '@material-ui/icons/Search'
+import SearchIcon from '@mui/icons-material/Search'
 import Help from 'features/common/Help/Help'
 import { emptyString } from 'utils/constants'
 import styles from '../styles/sidebarStyles'
@@ -44,7 +45,7 @@ const TrayWidgetFilter = ({ filters, setFilters, activeTask }) => {
           <Grid item>{activeTask?.helpConfig && <Help iconSize='small' helpConfig={activeTask?.helpConfig} hasTranslations={true} />}</Grid>
         </Grid>
         <Grid item xs={12} style={{ marginTop: '20px' }}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('General.Search')}
             value={filters || emptyString}

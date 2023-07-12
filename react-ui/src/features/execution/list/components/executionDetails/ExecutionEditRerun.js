@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Box, Grid, Paper } from '@material-ui/core'
-import { Typography, CustomTextField, Button } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Box, Grid, Paper } from '@mui/material'
+import { Typography, TextField, Button } from '@totalsoft/rocket-ui'
 import { EXECUTE_WORKFLOW_MUTATION } from 'features/workflow/list/mutations/ExecuteWorkflowMutation'
 import { useMutation } from '@apollo/client'
 import { useCallback } from 'react'
@@ -64,7 +64,7 @@ const ExecutionEditRerun = ({ workflow }) => {
           </Grid>
           {keys.map((key, index) => (
             <Grid item xs={12} md={6} key={key}>
-              <CustomTextField
+              <TextField
                 label={key}
                 fullWidth
                 value={typeof values[index] === 'object' ? JSON.stringify(values[index]) : values[index]}
@@ -83,7 +83,7 @@ const ExecutionEditRerun = ({ workflow }) => {
               {status === executionStatus.EXECUTED ? (
                 <GoToExecutionButton executionId={executionId} />
               ) : (
-                <Button size='sm' color='primary' onClick={handleExecuteWorkflow} disabled={loading}>
+                <Button size='small' color='primary' onClick={handleExecuteWorkflow} disabled={loading}>
                   {loading ? t('Workflow.Buttons.Executing') : t('Workflow.Buttons.Execute')}
                 </Button>
               )}

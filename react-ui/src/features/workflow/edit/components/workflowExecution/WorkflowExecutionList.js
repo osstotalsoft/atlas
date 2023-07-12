@@ -1,28 +1,28 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import styles from './styles'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
 import { useTranslation } from 'react-i18next'
 import WorkflowExecutionItem from './WorkflowExecutionItem'
-import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
-import { useHistory } from 'react-router'
+import { FakeText } from '@totalsoft/rocket-ui'
+import { useNavigate } from 'react-router'
 
 const useStyles = makeStyles(styles)
 
 const WorkflowExecutionList = ({ loading, executionList, startPolling }) => {
   const { t } = useTranslation()
   const classes = useStyles()
-  const history = useHistory()
+  const history = useNavigate()
 
   const handleSeeDetails = useCallback(
     workflowId => {
-      history.push({ pathname: `/executions/${workflowId}` })
+      history({ pathname: `/executions/${workflowId}` })
     },
     [history]
   )
 
-  if (loading) return <LoadingFakeText lines={6} />
+  if (loading) return <FakeText lines={6} />
   return (
     <Table className={classes.table}>
       <Thead>

@@ -2,24 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
-import { Grid, makeStyles, Box } from '@material-ui/core'
-import { BackToButton, SaveButton, Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Grid, Box } from '@mui/material'
+import { BackToButton, IconButton, Typography } from '@totalsoft/rocket-ui'
 import HelpButton from '../../features/common/components/HelpButton'
-
-const useStyles = makeStyles(theme => ({ title: { ...theme.header.title } }))
 
 const CustomHeader = ({ headerText, secondaryHeaderText, path, onSave, disableSaving, saving, onGetHelp }) => {
   const { t } = useTranslation()
-  const classes = useStyles()
 
   return (
     <Grid container justifyContent='flex-start' alignItems='center'>
       <Grid item xs={6} sm={9} lg={6} container justifyContent='flex-start'>
         <Box width='100%' display='flex' overflow='auto'>
           <Box>
-            <Typography variant='subtitle1' className={classes.title}>
-              {headerText || emptyString}
-            </Typography>
+            <Typography variant='subtitle1'>{headerText || emptyString}</Typography>
           </Box>
           <Box marginLeft='10px' alignSelf='center' whiteSpace='nowrap'>
             {secondaryHeaderText && <Typography variant='caption'>{`( ${secondaryHeaderText} )`}</Typography>}
@@ -31,7 +26,8 @@ const CustomHeader = ({ headerText, secondaryHeaderText, path, onSave, disableSa
         <Grid item>{onGetHelp && <HelpButton onClick={onGetHelp} />}</Grid>
         <Grid item>
           {onSave && (
-            <SaveButton
+            <IconButton
+              type='save'
               title={saving ? t('General.Saving') : t('General.Buttons.Save')}
               onClick={onSave}
               disabled={saving || disableSaving}

@@ -1,16 +1,13 @@
 // ##############################
 // // // App styles
 // #############################
-
 import styles from 'assets/jss/styles'
-
 const appStyle = theme => {
   const { drawerWidth, rightDrawerWidth, drawerMiniWidth, defaultFont /*,transition*/ } = styles(theme)
 
   return {
     wrapper: {
       ...defaultFont,
-      backgroundColor: theme.palette.bg.main,
       color: theme.palette.activeColor,
       position: 'relative',
       top: '0',

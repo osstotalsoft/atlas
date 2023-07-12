@@ -4,19 +4,20 @@ import ExecutionSummary from './ExecutionSummary'
 import TaskDetailList from './TaskDetailList'
 import ExecutionIO from './ExecutionIO'
 import ExecutionEditRerun from './ExecutionEditRerun'
-import { Tabs, Tab, makeStyles, Grid } from '@material-ui/core'
+import { Tabs, Tab, Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import TabPanel from 'features/common/components/TabPanel/TabPanel'
 import styles from '../../styles'
 import { executionStatus } from '../../constants/executionStatusList'
 import { EXECUTION_DETAILS_QUERY } from '../../queries/ExecutionDetailsQuery'
 import { useQueryWithErrorHandling } from 'hooks/errorHandling'
-import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
+import { FakeText } from '@totalsoft/rocket-ui'
 import { emptyArray } from 'utils/constants'
 import WorkflowGraphContainer from '../../../../designer/diagram/WorkflowGraphContainer'
-import { useRouteMatch } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useHeader } from 'providers/AreasProvider'
 import StandardHeader from 'components/layout/StandardHeader'
-import AppBar from '@material-ui/core/AppBar'
+import AppBar from '@mui/material/AppBar'
 import JsonViewer from 'features/common/components/JsonViewer'
 
 const useStyles = makeStyles(styles)
@@ -24,12 +25,10 @@ const useStyles = makeStyles(styles)
 const ExecutionDetailsContainer = () => {
   const { t } = useTranslation()
   const classes = useStyles()
-  const match = useRouteMatch()
+  const { workflowId } = useParams()
 
   const [value, setValue] = useState(4)
   const [, setHeader] = useHeader(<StandardHeader />)
-
-  const workflowId = match.params.workflowId
 
   const { loading, data, startPolling, stopPolling } = useQueryWithErrorHandling(EXECUTION_DETAILS_QUERY, {
     variables: { includeTasks: true, workflowId }
@@ -43,23 +42,25 @@ const ExecutionDetailsContainer = () => {
   }, [executionDetails, startPolling, stopPolling])
 
   useEffect(() => {
-    setHeader(<StandardHeader headerText={executionDetails?.workflowName} path='/executions' parentPath={executionDetails?.parentWorkflowId ? `/executions/${executionDetails?.parentWorkflowId}` : null} />)
+    setHeader(
+      <StandardHeader
+        headerText={executionDetails?.workflowName}
+        path='/executions'
+        parentPath={executionDetails?.parentWorkflowId ? `/executions/${executionDetails?.parentWorkflowId}` : null}
+      />
+    )
   }, [executionDetails?.workflowName, executionDetails?.parentWorkflowId, setHeader])
 
   const handleChange = useCallback((event, newValue) => {
     setValue(newValue)
   }, [])
 
-  if (loading) return <LoadingFakeText lines={8} />
+  if (loading) return <FakeText lines={8} />
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <ExecutionSummary
-          execution={executionDetails}
-          workflowId={workflowId}
-          startPolling={startPolling}
-        />
+        <ExecutionSummary execution={executionDetails} workflowId={workflowId} startPolling={startPolling} />
       </Grid>
       <Grid item xs={12}>
         <AppBar position='static' color='default'>

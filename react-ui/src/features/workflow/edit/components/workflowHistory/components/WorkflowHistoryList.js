@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import styles from '../styles'
 import WorkflowHistoryItem from './WorkflowHistoryItem'
 import { useTranslation } from 'react-i18next'
-import LoadingFakeText from '@bit/totalsoft_oss.react-mui.fake-text'
+import { FakeText } from '@totalsoft/rocket-ui'
 import { apply } from 'ramda'
 
 const useStyles = makeStyles(styles)
@@ -19,7 +19,7 @@ const WorkflowHistoryList = ({ workflow, historyList, loading, onRevert }) => {
     historyList?.map(h => h.snapshotNumber)
   )
 
-  if (loading) return <LoadingFakeText lines={6} />
+  if (loading) return <FakeText lines={6} />
   return (
     <Table className={classes.table}>
       <Thead>

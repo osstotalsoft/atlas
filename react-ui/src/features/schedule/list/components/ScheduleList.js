@@ -2,10 +2,11 @@ import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import ScheduleItem from './ScheduleItem'
-import { AddButton, CardTitle, IconCard, LoadingFakeText, Pagination } from '@bit/totalsoft_oss.react-mui.kit.core'
-import NotificationsIcon from '@material-ui/icons/Notifications'
+import { IconButton, Card, FakeText, Pagination } from '@totalsoft/rocket-ui'
+import NotificationsIcon from '@mui/icons-material/Notifications'
 import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
-import { Grid, makeStyles } from '@material-ui/core'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { defaults } from 'apollo/defaultCacheData'
 import { eventHandlersPager } from 'apollo/cacheKeyFunctions'
 import styles from '../styles'
@@ -33,51 +34,46 @@ const ScheduleList = ({ pager, setPager, onRefresh, onDelete, onEdit, onAdd, lis
   }, [totalCount, setPager, list])
 
   return (
-    <IconCard
+    <Card
       icon={NotificationsIcon}
-      title={
-        <CardTitle
-          title={t('Schedule.ScheduleList')}
-          actions={[<AddButton key='addButton' color={'theme'} title={t('Schedule.Buttons.Add')} onClick={onAdd} />]}
-        />
-      }
-      content={
-        loading ? (
-          <LoadingFakeText lines={10} />
-        ) : (
-          <>
-            <Grid className={classes.enableScrollX}>
-              <Table className={classes.table}>
-                <Thead>
-                  <Tr>
-                    <Th className={classes.tableHeader}>{t('Schedule.Enabled')}</Th>
-                    <Th className={classes.tableHeader}>{t('Schedule.Name')}</Th>
-                    <Th className={classes.tableHeader}>{t('Schedule.Workflow')}</Th>
-                    <Th className={classes.tableHeader}>{t('Schedule.Cron')}</Th>
-                    <Th className={classes.tableHeader}>{t('Schedule.ParallelRuns')}</Th>
-                    <Th className={classes.tableHeader}>{t('Schedule.WorkflowContext')}</Th>
-                    <Th className={classes.tableHeader} />
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {currentPageHandlers?.map((schedule, index) => (
-                    <ScheduleItem key={index} schedule={schedule} onDelete={onDelete} onEdit={onEdit} />
-                  ))}
-                </Tbody>
-              </Table>
-            </Grid>
-            <Pagination
-              totalCount={totalCount}
-              pageSize={pageSize}
-              page={page}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onPageChange={handlePageChange}
-              onRefresh={onRefresh}
-            />
-          </>
-        )
-      }
-    />
+      title={t('Schedule.ScheduleList')}
+      actions={[<IconButton key='addButton' type='add' color='secondary' title={t('Schedule.Buttons.Add')} onClick={onAdd} />]}
+    >
+      {loading ? (
+        <FakeText lines={10} />
+      ) : (
+        <>
+          <Grid className={classes.enableScrollX}>
+            <Table className={classes.table}>
+              <Thead>
+                <Tr>
+                  <Th className={classes.tableHeader}>{t('Schedule.Enabled')}</Th>
+                  <Th className={classes.tableHeader}>{t('Schedule.Name')}</Th>
+                  <Th className={classes.tableHeader}>{t('Schedule.Workflow')}</Th>
+                  <Th className={classes.tableHeader}>{t('Schedule.Cron')}</Th>
+                  <Th className={classes.tableHeader}>{t('Schedule.ParallelRuns')}</Th>
+                  <Th className={classes.tableHeader}>{t('Schedule.WorkflowContext')}</Th>
+                  <Th className={classes.tableHeader} />
+                </Tr>
+              </Thead>
+              <Tbody>
+                {currentPageHandlers?.map((schedule, index) => (
+                  <ScheduleItem key={index} schedule={schedule} onDelete={onDelete} onEdit={onEdit} />
+                ))}
+              </Tbody>
+            </Table>
+          </Grid>
+          <Pagination
+            count={totalCount}
+            pageSize={pageSize}
+            page={page}
+            onRowsPerPageChange={handleRowsPerPageChange}
+            onPageChange={handlePageChange}
+            onRefresh={onRefresh}
+          />
+        </>
+      )}
+    </Card>
   )
 }
 

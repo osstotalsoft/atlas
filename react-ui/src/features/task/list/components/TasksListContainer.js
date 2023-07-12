@@ -8,9 +8,9 @@ import TaskListFilter from './TaskListFilter'
 import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
 import { DELETE_TASK_DEF_MUTATION } from '../mutations/DeleteTaskDef'
 import { defaults } from 'apollo/defaultCacheData'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { useToast } from '@totalsoft/rocket-ui'
 import { tasksPager } from 'apollo/cacheKeyFunctions'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { emptyArray } from 'utils/constants'
@@ -18,7 +18,7 @@ import { sortingDirection, sortTaskByField } from 'features/common/constants'
 import { pipe } from 'ramda'
 
 const TasksListContainer = () => {
-  const history = useHistory()
+  const history = useNavigate()
 
   const defaultPager = defaults[tasksPager]
   const [pager, setPager] = useState(defaultPager)
@@ -26,7 +26,7 @@ const TasksListContainer = () => {
   const { t } = useTranslation()
   const addToast = useToast()
 
-  const handleEditTask = useCallback(name => history.push({ pathname: `/tasks/${name}` }), [history])
+  const handleEditTask = useCallback(name => history({ pathname: `/tasks/${name}` }), [history])
   const { loading, data, refetch } = useQueryWithErrorHandling(TASK_LIST_QUERY)
   const [filters, setFilters] = useApolloLocalStorage(taskListFilter)
 
@@ -51,7 +51,7 @@ const TasksListContainer = () => {
   )
 
   const handleAddTask = useCallback(() => {
-    history.push('/tasks/new')
+    history('/tasks/new')
   }, [history])
 
   const handleDeleteRow = useCallback(

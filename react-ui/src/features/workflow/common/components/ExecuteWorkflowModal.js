@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Grid, makeStyles, Typography } from '@material-ui/core'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { TextField } from '@totalsoft/rocket-ui'
 import GoToExecutionButton from 'features/workflow/common/components/GoToExecutionButton'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { curry } from 'ramda'
 import { emptyObject } from 'utils/constants'
 import { get, set } from '@totalsoft/react-state-lens'
-import { Button, DialogDisplay, LoadingFakeText } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Button, Dialog, FakeText } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import styles from '../styles'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
@@ -90,12 +91,12 @@ const ExecuteWorkflowModal = ({ open, toggleExecDialog, name, version }) => {
   }, [toggleExecDialog])
 
   return (
-    <DialogDisplay
+    <Dialog
       id='execDialog'
       title={
         <>
-          <Typography variant='h6'>{t('Workflow.Dialog.ExecuteWorkflowDialogTitle')}</Typography>
-          <Typography variant='h6'>{t('Workflow.Dialog.ExecuteWorkflowDialogSubtitle')}</Typography>
+          <p>{t('Workflow.Dialog.ExecuteWorkflowDialogTitle')}</p>
+          <p>{t('Workflow.Dialog.ExecuteWorkflowDialogSubtitle')}</p>
         </>
       }
       maxWidth='md'
@@ -108,18 +109,18 @@ const ExecuteWorkflowModal = ({ open, toggleExecDialog, name, version }) => {
         status === executionStatus.EXECUTED
           ? [<GoToExecutionButton key='goToExecution' executionId={executionId} />]
           : [
-              <Button key='exec' color='primary' size='sm' disabled={execLoading} onClick={handleExecuteWorkflow}>
+              <Button key='exec' color='primary' size='small' disabled={execLoading} onClick={handleExecuteWorkflow}>
                 {execLoading ? t('Workflow.Buttons.Executing') : t('Workflow.Buttons.Execute')}
               </Button>
             ]
       }
       content={
         <>
-          {loading && <LoadingFakeText lines={3} />}
+          {loading && <FakeText lines={3} />}
           <Grid container spacing={2} style={{ marginBottom: '4px' }}>
             {inputParameters?.map(key => (
               <Grid item xs={12} md={6} key={key}>
-                <CustomTextField
+                <TextField
                   fullWidth
                   label={key}
                   onChange={onTextBoxChange(handleChange(key))}

@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import PropTypes from 'prop-types'
 import { set } from '@totalsoft/rules-algebra-react'
-import AddButton from '@bit/totalsoft_oss.react-mui.add-button'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { TextField, IconButton } from '@totalsoft/rocket-ui'
 import { emptyString } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
 import Help from 'features/common/Help/Help'
@@ -15,8 +14,8 @@ function InputParametersHeader({ inputParametersLens }) {
 
   const [localParam, setLocalParam] = useState()
 
-  const handleParamChange = useCallback(event => {
-    setLocalParam(event.target.value)
+  const handleParamChange = useCallback(value => {
+    setLocalParam(value)
   }, [])
 
   const handleAddParameter = useCallback(() => {
@@ -32,7 +31,7 @@ function InputParametersHeader({ inputParametersLens }) {
     <Grid container spacing={3} onKeyDown={handleKeyPressed}>
       <Grid item container xs={12} md={6} spacing={2} alignItems='center'>
         <Grid item xs={10}>
-          <CustomTextField
+          <TextField
             fullWidth
             label={t('WorkflowTask.InputParameter.DefaultText')}
             value={localParam}
@@ -42,9 +41,11 @@ function InputParametersHeader({ inputParametersLens }) {
           />
         </Grid>
         <Grid item xs={2}>
-          <AddButton
+          <IconButton
             key='addButton'
-            color={'themeNoBackground'}
+            type='add'
+            variant='text'
+            color='secondary'
             size='small'
             fontSize='small'
             title={t('WorkflowTask.Buttons.AddParameter')}

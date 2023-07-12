@@ -4,7 +4,7 @@ import ForkNode from './ForkNode'
 import { PortWidget } from '@projectstorm/react-diagrams'
 import '../../styles/classes.css'
 import forkNodeStyle from './forkNodeStyle'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles(forkNodeStyle)
 

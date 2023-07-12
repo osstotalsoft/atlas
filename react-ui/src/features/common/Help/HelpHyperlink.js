@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Typography } from '@totalsoft/rocket-ui'
 
 const HelpHyperlink = ({ text, keyword, link }) => {
   const keywordPosition = text ? text?.search(keyword) : -1

@@ -1,9 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Prompt, useHistory, useRouteMatch } from 'react-router'
+import { useNavigate } from 'react-router'
+import { useParams } from 'react-router-dom'
 import { useHeader } from 'providers/AreasProvider'
 import { useChangeTrackingLens } from '@totalsoft/change-tracking-react'
-import { CustomDialog, useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Dialog, useToast, Button } from '@totalsoft/rocket-ui'
 import Workflow from './Workflow'
 import Tour from './tour/Tour'
 import EditTaskModal from './workflowTask/EditTaskModal'
@@ -28,7 +29,7 @@ import { demoWf } from './tour/demoWorkflow'
 import { Toolkit } from '@projectstorm/react-canvas-core'
 import AddNameModal from 'features/workflow/common/components/AddNameModal'
 import { WORKFLOW_HISTORY_QUERY } from './workflowHistory/queries/WorkflowHistoryQuery'
-import { NotFound } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { NotFound } from '@totalsoft/rocket-ui'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
 import { skipParametersByParsing } from 'features/workflow/common/constants'
 import { CREATE_UPDATE_WORKFLOW_MUTATION } from '../mutations/CreateOrUpdateWorkflowMutation'
@@ -37,8 +38,8 @@ const WorkflowContainer = () => {
   const { t } = useTranslation()
   const addToast = useToast()
   const showError = useError()
-  const match = useRouteMatch()
-  const history = useHistory()
+  const { version: paramVersion, new: paramNew, name: paramName } = useParams()
+  const history = useNavigate()
   const { oidcUser } = useReactOidc()
 
   const [, setHeader] = useHeader(<CustomHeader />)
@@ -47,16 +48,16 @@ const WorkflowContainer = () => {
   const [localPayload, setLocalPayload] = useState()
 
   const [isDirty, setIsDirty] = useState(false)
-  const isNew = match.params.new === 'new'
+  const isNew = paramNew === 'new'
 
   const [diagram] = useState(getApplicationDiagram())
   const { engine } = diagram
 
-  const workflowVersion = match.params.version ? parseInt(match.params.version) : workflowConfig.version
+  const workflowVersion = paramVersion ? parseInt(paramVersion) : workflowConfig.version
   const [versionLens, versionDirtyInfo] = useChangeTrackingLens(workflowVersion)
   const version = versionLens |> get
 
-  const [nameLens, nameDirtyInfo] = useChangeTrackingLens(match.params.name)
+  const [nameLens, nameDirtyInfo] = useChangeTrackingLens(paramName)
   const name = nameLens |> get
 
   const [inputsLens, inputsDirtyInfo, resetInputs] = useChangeTrackingLens()
@@ -121,7 +122,7 @@ const WorkflowContainer = () => {
       addToast(t('General.SavingSucceeded'), 'success')
       if (isNew) toggleNameDialog()
       setIsDirty(false)
-      if (isNew) history.push(`/workflows/${name}/${version}`)
+      if (isNew) history(`/workflows/${name}/${version}`)
     },
     onError: err => showError(err),
     update: isNew ? updateCacheAfterAdd : updateCacheAfterEdit
@@ -202,7 +203,9 @@ const WorkflowContainer = () => {
         var desc = null
         try {
           desc = JSON.parse(node?.inputs.description)
-        } catch {console.log('no desc')}
+        } catch {
+          console.log('no desc')
+        }
 
         if (desc) {
           resetInputs({
@@ -323,7 +326,7 @@ const WorkflowContainer = () => {
   if (errorStatus === 404) return <NotFound title={t('Workflow.WorkflowNotFound')}></NotFound>
   return (
     <>
-      <Prompt when={isDirty} message={t('LeavingWithoutSaving')} />
+      {/*<Prompt when={isDirty} message={t('LeavingWithoutSaving')} />*/}
       <Workflow
         workflowLens={workflowLens}
         resetWorkflow={resetWorkflow}
@@ -333,12 +336,13 @@ const WorkflowContainer = () => {
         isDirty={isDirty}
         setIsDirty={setIsDirty}
       />
-      <CustomDialog
+      <Dialog
         id='editTask'
         open={taskDialog}
         onClose={handleTaskDialogCancel}
         disableBackdropClick
         maxWidth='lg'
+        showX={false}
         content={
           <EditTaskModal
             inputsLens={inputsLens || emptyObject}
@@ -351,29 +355,31 @@ const WorkflowContainer = () => {
           />
         }
       />
-      <CustomDialog
+      <Dialog
         id='addName'
         open={nameDialog}
         title={t('Workflow.AddName')}
         disableBackdropClick
         maxWidth='sm'
-        showActions
-        textDialogYes={t('General.Buttons.Save')}
-        textDialogNo={t('General.Buttons.Cancel')}
-        onClose={toggleNameDialog}
-        onYes={handleSave}
+        showAc
+        actions={[
+          <Button key='export' color='secondary' size='small' onClick={handleSave}>
+            {t('General.Buttons.Save')}
+          </Button>,
+          <Button key='export' color='primary' size='small' onClick={toggleNameDialog}>
+            {t('General.Buttons.Close')}
+          </Button>
+        ]}
         content={<AddNameModal nameLens={nameLens} versionLens={versionLens} dirtyInfo={nameDirtyInfo || versionDirtyInfo} />}
       />
-      <CustomDialog
+      <Dialog
         id='startTour'
         maxWidth='xs'
         open={startTourDialog}
         title={t('Designer.StartTour')}
-        showActions
         onClose={toggleStartTourDialog}
         onYes={handleStartTour}
-        textDialogYes={t('Dialog.Yes')}
-        textDialogNo={t('Dialog.No')}
+        defaultActions
       />
       <Tour isOpen={tourDialog} onRequestClose={handleCloseTour} />
     </>

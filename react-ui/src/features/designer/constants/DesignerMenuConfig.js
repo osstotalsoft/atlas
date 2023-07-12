@@ -1,7 +1,7 @@
 import React from 'react'
-import AccountTreeIcon from '@material-ui/icons/AccountTree'
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
-import CodeIcon from '@material-ui/icons/Code'
+import AccountTreeIcon from '@mui/icons-material/AccountTree'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import CodeIcon from '@mui/icons-material/Code'
 
 const menuConfig = [
   { icon: <CodeIcon />, text: 'NavBar.SystemTasks', name: 'SystemTasks' },

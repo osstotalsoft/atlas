@@ -18,6 +18,6 @@ export const onSliderChange = (onPropertyChange, min, max) => (_, value) => {
   }
 }
 
-export const onTextBoxChange = onPropertyChange => event => onPropertyChange(event.target.value)
+export const onTextBoxChange = onPropertyChange => value => onPropertyChange(value)
 
 export const onDynamicInputChange = onPropertyChange => (_, value) => onPropertyChange(value)

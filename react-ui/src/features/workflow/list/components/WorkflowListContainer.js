@@ -12,8 +12,8 @@ import { fieldsToBeRemoved, sortingDirection, sortWorkflowsByField } from 'featu
 import { defaults } from 'apollo/defaultCacheData'
 import { workflowsPager } from 'apollo/cacheKeyFunctions'
 import { useMutation } from '@apollo/client'
-import { useToast } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { useHistory } from 'react-router-dom'
+import { useToast } from '@totalsoft/rocket-ui'
+import { useNavigate } from 'react-router-dom'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
 import { WORKFLOW_QUERY } from 'features/workflow/edit/queries/WorkflowQuery'
 import { updateCacheList } from 'features/workflow/common/functions'
@@ -30,7 +30,7 @@ const WorkflowListContainer = () => {
   const { t } = useTranslation()
   const addToast = useToast()
   const showError = useError()
-  const history = useHistory()
+  const history = useNavigate()
   const { oidcUser } = useReactOidc()
 
   const defaultPager = defaults[workflowsPager]
@@ -109,9 +109,11 @@ const WorkflowListContainer = () => {
     [setFilters]
   )
 
-  const handleEditWorkflow = useCallback((name, version) => history.push(`/workflows/${name}/${version}`), [history])
+  const handleEditWorkflow = useCallback((name, version) => history(`/workflows/${name}/${version}`), [history])
 
-  const handleAddWorkflow = useCallback(() => history.push('/workflows/new'), [history])
+  const handleAddWorkflow = useCallback(() => {
+    history('/workflows/new')
+  }, [history])
 
   const handleDeleteWorkflow = useCallback((name, version) => deleteWorkflow({ variables: { name, version } }), [deleteWorkflow])
 

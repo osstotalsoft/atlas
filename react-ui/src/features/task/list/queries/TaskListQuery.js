@@ -6,6 +6,7 @@ export const TASK_LIST_QUERY = gql`
       name
       description
       createTime
+      inputKeys
     }
   }
 `

@@ -2,14 +2,13 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import BodyWidget from 'features/designer/components/BodyWidget'
 import { getApplicationDiagram } from 'features/designer/diagram/getApplicationDiagram'
-import LoadingFakeText from 'components/LoadingFakeText'
 import { WORKFLOW_QUERY } from 'features/workflow/edit/queries/WorkflowQuery'
 import { emptyObject } from 'utils/constants'
 import { useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import magnifyingGlass from 'assets/img/magnifyingGlass.png'
-import { Box } from '@material-ui/core'
-import Typography from '@bit/totalsoft_oss.react-mui.typography'
+import { Box } from '@mui/material'
+import { Typography, FakeText } from '@totalsoft/rocket-ui'
 
 const WorkflowPresentation = ({ name, version }) => {
   const { t } = useTranslation()
@@ -22,7 +21,7 @@ const WorkflowPresentation = ({ name, version }) => {
 
   const workflow = data?.getWorkflow
 
-  if (loading) return <LoadingFakeText lines={8} />
+  if (loading) return <FakeText lines={8} />
 
   return workflow ? (
     <BodyWidget canvasClass={'dataflow-canvas-popover'} workflow={workflow || emptyObject} engine={engine} locked={true} />

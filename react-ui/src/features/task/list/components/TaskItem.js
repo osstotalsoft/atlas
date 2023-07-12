@@ -2,9 +2,10 @@ import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tr, Td } from 'react-super-responsive-table'
 import { useTranslation } from 'react-i18next'
-import { Box, makeStyles } from '@material-ui/core'
+import { Box } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import tableStyle from 'assets/jss/components/tableStyle'
-import { CustomDialog, DeleteButton, EditButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Dialog, IconButton } from '@totalsoft/rocket-ui'
 
 const useStyles = makeStyles(tableStyle)
 
@@ -35,21 +36,28 @@ const TaskItem = ({ task, onEditTask, onDeleteRow }) => {
         <Td className={classes.tableContent}>{t('DATE_FORMAT', { date: { value: task?.createTime, format: 'DD-MM-YYYY HH:mm:ss' } })}</Td>
         <Td className={classes.tableContent}>
           <Box textAlign='right'>
-            <EditButton size={'small'} color={'themeNoBackground'} title={t('General.Buttons.Edit')} onClick={handleEditTask} />
-            <DeleteButton size={'small'} color={'themeNoBackground'} onClick={showDialog} />
+            <IconButton
+              size='tiny'
+              color='secondary'
+              variant='text'
+              type='edit'
+              title={t('General.Buttons.Edit')}
+              onClick={handleEditTask}
+            />
+            <IconButton size='tiny' color='secondary' variant='text' type='delete' onClick={showDialog} />
           </Box>
         </Td>
       </Tr>
-      <CustomDialog
+      <Dialog
         id='deleteDialog'
         title={t('Dialog.DeleteTaskQuestion')}
         maxWidth='xs'
+        showX={false}
         open={deleteDialog}
         showActions
         onYes={handleDeleteTask}
         onClose={closeDialog}
-        textDialogYes={t('Dialog.Yes')}
-        textDialogNo={t('Dialog.No')}
+        defaultActions
       />
     </>
   )

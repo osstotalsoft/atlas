@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows'
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows'
 import { Td, Tr } from 'react-super-responsive-table'
-import { Typography, EditButton, IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
-import { makeStyles, Grid } from '@material-ui/core'
+import { Typography, IconButton } from '@totalsoft/rocket-ui'
+import { Grid } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import tableStyle from 'assets/jss/components/tableStyle'
 import { useTranslation } from 'react-i18next'
 import PreviewJsonDialog from '../../modals/PreviewJsonDialog'
-import HistoryIcon from '@material-ui/icons/History'
-import { CustomDialog } from '@bit/totalsoft_oss.react-mui.kit.core'
+import HistoryIcon from '@mui/icons-material/History'
+import { Dialog } from '@totalsoft/rocket-ui'
 import CompareDefinitionDialog from '../modals/CompareDefinitionDialog'
 import { emptyObject } from 'utils/constants'
 
@@ -50,12 +51,11 @@ const WorkflowHistoryItem = ({ history, workflow, isLatest, onRevert }) => {
         <Td className={classes.tableContent}>
           <Grid container spacing={2} direction='row'>
             <Grid item xs={4}>
-              <EditButton
-                title={'Edit'}
+              <IconButton
                 size='small'
-                color='themeNoBackground'
+                type='edit'
+                color='secondary'
                 tooltip={t('Execution.Buttons.SeeDetails')}
-                editMode={false}
                 onClick={togglePreviewDialog}
               />
             </Grid>
@@ -63,7 +63,7 @@ const WorkflowHistoryItem = ({ history, workflow, isLatest, onRevert }) => {
               <IconButton
                 size='small'
                 tooltip={isLatest ? t('WorkflowHistory.Buttons.CurrentDefinition') : t('WorkflowHistory.Buttons.Revert')}
-                color='themeNoBackground'
+                color='secondary'
                 disabled={isLatest}
                 onClick={toggleRevertDialog}
               >
@@ -74,7 +74,7 @@ const WorkflowHistoryItem = ({ history, workflow, isLatest, onRevert }) => {
               <IconButton
                 size='small'
                 tooltip={t('WorkflowHistory.Buttons.Compare')}
-                color='themeNoBackground'
+                color='secondary'
                 onClick={handleToggleCompare}
               >
                 <CompareArrowsIcon fontSize='small' />
@@ -84,7 +84,7 @@ const WorkflowHistoryItem = ({ history, workflow, isLatest, onRevert }) => {
         </Td>
       </Tr>
       <PreviewJsonDialog open={previewDialog} onClose={togglePreviewDialog} workflow={history?.definition || emptyObject} />
-      <CustomDialog
+      <Dialog
         id='revertDialog'
         title={t('WorkflowHistory.Dialog.Revert', { timeStamp })}
         maxWidth='xs'

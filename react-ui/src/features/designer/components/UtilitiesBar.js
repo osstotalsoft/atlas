@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, Paper } from '@material-ui/core'
-import { IconButton } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Paper } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { IconButton } from '@totalsoft/rocket-ui'
 import {
   CloudDownloadOutlined,
   CloudUploadOutlined,
@@ -10,9 +11,9 @@ import {
   Redo,
   DescriptionOutlined,
   SettingsOutlined
-} from '@material-ui/icons'
-import PlayCircleIcon from '@material-ui/icons/PlayCircleOutline'
-import { Grid } from '@material-ui/core'
+} from '@mui/icons-material'
+import PlayCircleIcon from '@mui/icons-material/PlayCircleOutline'
+import { Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import styles from '../styles/styles'
 
@@ -40,16 +41,16 @@ const UtilitiesBar = ({ isNew, isDirty, onExecute, onPreviewJson, onDelete, onSh
   return (
     <Paper id='utilities-bar' className={classes.utilitiesBar}>
       <Grid container direction='row'>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Undo')} onClick={onUndo}>
+        <IconButton variant='text' color='secondary' tooltip={t('Designer.UtilitiesBar.Undo')} onClick={onUndo}>
           <Undo />
         </IconButton>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Redo')} onClick={onRedo}>
+        <IconButton variant='text' color='secondary' tooltip={t('Designer.UtilitiesBar.Redo')} onClick={onRedo}>
           <Redo />
         </IconButton>
         <label htmlFor='contained-button-file'>
           <IconButton
-            color={'themeNoBackground'}
-            variant='contained'
+            variant='text'
+            color='secondary'
             component='span'
             tooltip={t('Designer.UtilitiesBar.Import')}
             onClick={handleAskConfirmation}
@@ -60,21 +61,22 @@ const UtilitiesBar = ({ isNew, isDirty, onExecute, onPreviewJson, onDelete, onSh
             <input accept='application/txt,application/json' id='contained-button-file' type='file' hidden onChange={handleSelectFile} />
           )}
         </label>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Export')} onClick={onExport}>
+        <IconButton variant='text' color='secondary' tooltip={t('Designer.UtilitiesBar.Export')} onClick={onExport}>
           <CloudDownloadOutlined />
         </IconButton>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.PreviewJson')} onClick={onPreviewJson}>
+        <IconButton variant='text' color='secondary' tooltip={t('Designer.UtilitiesBar.PreviewJson')} onClick={onPreviewJson}>
           <DescriptionOutlined />
         </IconButton>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Delete')} onClick={onDelete}>
+        <IconButton variant='text' color='secondary' tooltip={t('Designer.UtilitiesBar.Delete')} onClick={onDelete}>
           <DeleteOutlined />
         </IconButton>
-        <IconButton color={'themeNoBackground'} tooltip={t('Designer.UtilitiesBar.Execute')} onClick={onExecute} disabled={isNew}>
+        <IconButton variant='text' color='secondary' tooltip={t('Designer.UtilitiesBar.Execute')} onClick={onExecute} disabled={isNew}>
           <PlayCircleIcon />
         </IconButton>
         <IconButton
           id='workflowSettings'
-          color={'themeNoBackground'}
+          variant='text'
+          color='secondary'
           tooltip={t('Designer.UtilitiesBar.GeneralSettings')}
           onClick={onShowSettings}
         >

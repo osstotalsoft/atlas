@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback, useContext } from 'react'
-import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import appStyle from 'assets/jss/components/appStyle'
 import logo from 'assets/img/logo.png'
 import miniLogo from 'assets/img/miniLogo.png'
@@ -13,15 +13,15 @@ import Footer from './layout/Footer'
 
 import AppRoutes from 'routes/AppRoutes'
 
-import { ToastContainer, CheckInternetConnection } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { ToastContainer } from '@totalsoft/rocket-ui'
 import { SidebarContext } from 'providers/SidebarProvider'
 
 const useStyles = makeStyles(appStyle)
 
-function App(props) {
+export default function App() {
   const mainPanelRef = useRef()
   const classes = useStyles()
-  const { location } = props
+  const location = useLocation()
   const { i18n } = useTranslation()
 
   const [drawerOpen, setDrawerOpen] = useContext(SidebarContext)
@@ -68,13 +68,6 @@ function App(props) {
         <Footer fluid />
       </div>
       <ToastContainer />
-      <CheckInternetConnection />
     </div>
   )
 }
-
-App.propTypes = {
-  location: PropTypes.object.isRequired
-}
-
-export default App

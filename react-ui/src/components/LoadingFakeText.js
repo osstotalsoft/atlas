@@ -1,8 +1,8 @@
 import React from 'react'
-import grey from '@material-ui/core/colors/grey'
+import grey from '@mui/material/colors/grey'
 import PropTypes from 'prop-types'
-import { Paper } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core'
+import { Paper } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 const styles = {
   wrapper: {
@@ -23,7 +23,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-const LoadingFakeText = ({ lines = 4, onPaper = false, ...props }) => {
+const FakeText = ({ lines = 4, onPaper = false, ...props }) => {
   const classes = useStyles()
   const fakeText = (
     <div className={classes.wrapper} {...props}>
@@ -40,7 +40,7 @@ const LoadingFakeText = ({ lines = 4, onPaper = false, ...props }) => {
   return fakeText
 }
 
-LoadingFakeText.propTypes = {
+FakeText.propTypes = {
   /**
    * The number of lines appearing.
    */
@@ -51,4 +51,4 @@ LoadingFakeText.propTypes = {
   onPaper: PropTypes.bool
 }
 
-export default LoadingFakeText
+export default FakeText

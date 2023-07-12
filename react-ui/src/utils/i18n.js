@@ -18,7 +18,7 @@ i18n
       ns: ['translations'],
       defaultNS: 'translations',
 
-      debug: true,
+      debug: false,
 
       interpolation: {
         format: function (value, format, lng) {
@@ -74,7 +74,7 @@ i18n
       },
 
       react: {
-        wait: true,
+        useSuspense: true,
         usePureComponent: true
       },
 

@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid } from '@material-ui/core'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
-import DeleteButton from '@bit/totalsoft_oss.react-mui.delete-button'
+import { Grid } from '@mui/material'
+import { TextField, IconButton } from '@totalsoft/rocket-ui'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +12,7 @@ function InputParameterItem({ valueLens, param, onRemove }) {
   return (
     <Grid item container xs={12} md={6} spacing={2}>
       <Grid item xs={10}>
-        <CustomTextField
+        <TextField
           fullWidth
           label={param}
           value={typeof value === 'object' ? JSON.stringify(value) : value}
@@ -25,7 +24,7 @@ function InputParameterItem({ valueLens, param, onRemove }) {
         />
       </Grid>
       <Grid item xs={2}>
-        <DeleteButton key='addButton' color={'themeNoBackground'} title={t('General.Buttons.Delete')} onClick={onRemove} />
+        <IconButton key='addButton' type='delete' color='secondary' variant='text' title={t('General.Buttons.Delete')} onClick={onRemove} />
       </Grid>
     </Grid>
   )

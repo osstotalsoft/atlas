@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Grid, makeStyles, Paper } from '@material-ui/core'
-import { Typography } from '@bit/totalsoft_oss.react-mui.kit.core'
+import { Grid, Paper } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { Typography } from '@totalsoft/rocket-ui'
 import styles from '../styles'
 
 const useStyles = makeStyles(styles)

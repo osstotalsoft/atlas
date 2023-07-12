@@ -2,8 +2,8 @@ import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { useTranslation } from 'react-i18next'
-import { Grid, Typography } from '@material-ui/core'
-import CustomTextField from '@bit/totalsoft_oss.react-mui.custom-text-field'
+import { Grid, Typography } from '@mui/material'
+import { TextField } from '@totalsoft/rocket-ui'
 import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
 import TerminateNodeAdvancedSettings from 'features/designer/nodeModels/terminateNode/TerminateNodeAdvancedSettings'
@@ -47,7 +47,7 @@ const AdvancedSettings = ({ inputsLens, validation }) => {
         <Grid item xs={6} />
         <Grid item xs={6} container alignItems='center' spacing={1}>
           <Grid item xs={11}>
-            <CustomTextField
+            <TextField
               fullWidth
               isNumeric
               label={t('WorkflowTask.StartDelay')}
