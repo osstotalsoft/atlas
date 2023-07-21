@@ -8,7 +8,7 @@ const AUTH = {
 }
 
 const getAuthenticationConfiguration = tenant => {
-  const acr_values = isNullOrWhitespace(tenant) ? undefined : `tenant:${tenant}`
+  const acr_values = isNullOrWhitespace(tenant) ? env.REACT_APP_IDENTITY_ACR : `tenant:${tenant}`
   return {
     client_id: env.REACT_APP_IDENTITY_CLIENT_ID,
     authority: env.REACT_APP_IDENTITY_AUTHORITY,

@@ -27,8 +27,8 @@ const TrayWidgetFilter = ({ filters, setFilters, activeTask }) => {
   const classes = useStyles()
 
   const handleFilterChange = useCallback(
-    event => {
-      setFilters(event?.target?.value)
+    value => {
+      setFilters(value)
     },
     [setFilters]
   )

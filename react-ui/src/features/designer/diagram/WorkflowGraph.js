@@ -92,8 +92,8 @@ const WorkflowGraph = ({ style, className, dag, executionMode, onClick }) => {
 
   const drawGraph = () => {
     if (inner) inner.remove()
-    if (!svg.select("g").selectAll("g.node").empty()) {
-      svg.select("g").remove()
+    if (!svg.select('g').selectAll('g.node').empty()) {
+      svg.select('g').remove()
     }
     inner = svg.append('g')
 
@@ -205,7 +205,7 @@ const WorkflowGraph = ({ style, className, dag, executionMode, onClick }) => {
   }
 
   const handleClick = e => {
-    const taskRef = e
+    const taskRef = e.currentTarget.id
     const node = graph.node(taskRef)
     inner.selectAll('g.node').classed('selected', false)
     if (node.type === 'DF_TASK_PLACEHOLDER') {
@@ -218,7 +218,7 @@ const WorkflowGraph = ({ style, className, dag, executionMode, onClick }) => {
       return null // No-op for click on unexecuted DF card-pile or terminal nodes
     } else {
       // Non-DF, or unexecuted DF vertex
-      const node = dag.graph.node(e)
+      const node = dag.graph.node(taskRef)
       onClick({ ref: node })
       if (taskRef) {
         inner.select(`g[id='${taskRef}']`).classed('selected', true)

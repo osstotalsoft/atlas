@@ -12,7 +12,7 @@ import { includes } from 'ramda'
 import SubworkflowNodeModel from '../nodeModels/subworkflowNode/SubworkflowNodeModel'
 import TaskNodeModel from '../nodeModels/taskNode/TaskNodeModel'
 
-export const nodeConfig = {
+const nodeConfigData = {
   START: {
     name: 'START',
     type: 'START',
@@ -113,6 +113,15 @@ export const nodeConfig = {
     getInstance: () => new EndNodeModel()
   }
 }
+
+const handler = {
+  get(nodeConfigData, prop, _receiver) {
+    return nodeConfigData[prop] ?? nodeConfigData['TASK']
+  }
+}
+
+export const nodeConfig = new Proxy(nodeConfigData, handler);
+
 export const isDefault = type =>
   includes(type, [
     nodeConfig.LAMBDA.type,
