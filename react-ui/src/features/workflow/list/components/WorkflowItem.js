@@ -149,13 +149,15 @@ const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkf
         onYes={handleDeleteWorkflow}
         onClose={closeDeleteDialog}
       />
-      <ExecuteWorkflowModal
-        open={execDialog}
-        toggleExecDialog={toggleExecDialog}
-        name={workflow?.name || emptyString}
-        version={workflow?.version || 0}
-        inputLens={inputLens}
-      />
+      {execDialog && (
+        <ExecuteWorkflowModal
+          open={execDialog}
+          toggleExecDialog={toggleExecDialog}
+          name={workflow?.name || emptyString}
+          version={workflow?.version || 0}
+          inputLens={inputLens}
+        />
+      )}
     </>
   )
 }

@@ -3,9 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { TASK_LIST_QUERY } from '../queries/TaskListQuery'
 import TaskList from './TaskList'
 import { filterList, sortBy } from 'utils/functions'
-import { taskListFilter } from 'apollo/cacheKeyFunctions'
 import TaskListFilter from './TaskListFilter'
-import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
 import { DELETE_TASK_DEF_MUTATION } from '../mutations/DeleteTaskDef'
 import { defaults } from 'apollo/defaultCacheData'
 import { useToast } from '@totalsoft/rocket-ui'
@@ -28,8 +26,7 @@ const TasksListContainer = () => {
 
   const handleEditTask = useCallback(name => history({ pathname: `/tasks/${name}` }), [history])
   const { loading, data, refetch } = useQueryWithErrorHandling(TASK_LIST_QUERY)
-  const [filters, setFilters] = useApolloLocalStorage(taskListFilter)
-
+  const [filters, setFilters] = useState({})
   const [deleteTask] = useMutation(DELETE_TASK_DEF_MUTATION, {
     onCompleted: () => {
       addToast(t('General.DeletingSucceeded'), 'success')

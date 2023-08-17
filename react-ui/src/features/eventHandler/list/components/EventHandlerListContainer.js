@@ -6,8 +6,6 @@ import { filterList } from 'utils/functions'
 import { EVENT_HANDLER_LIST_QUERY } from '../queries/EventHandlerListQuery'
 import { DELETE_EVENT_HANDLER_MUTATION } from '../mutations/DeleteEventHandlerMutation'
 import { useToast } from '@totalsoft/rocket-ui'
-import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
-import { eventHandlersFilter } from 'apollo/cacheKeyFunctions'
 import { queryLimit } from 'features/common/constants'
 import { useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { useMutation } from '@apollo/client'
@@ -23,8 +21,10 @@ const EventHandlerListContainer = () => {
   const addToast = useToast()
   const showError = useError()
 
-  const { loading, data, refetch } = useQueryWithErrorHandling(EVENT_HANDLER_LIST_QUERY, { variables: { limit: queryLimit } })
-  const [filters, setFilters] = useApolloLocalStorage(eventHandlersFilter)
+  const { loading, data, refetch } = useQueryWithErrorHandling(EVENT_HANDLER_LIST_QUERY, {
+    variables: { limit: queryLimit }
+  })
+  const [filters, setFilters] = useState({})
   const [pager, setPager] = useState(defaultPager)
 
   const [deleteHandler] = useMutation(DELETE_EVENT_HANDLER_MUTATION, {
