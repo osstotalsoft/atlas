@@ -236,6 +236,7 @@ const WorkflowContainer = () => {
     }
     if (inputs?.inputs?.type === nodeConfig.EVENT.type) {
       try {
+        node.options.name = inputs?.inputs?.taskReferenceName;
         if (localPayload) {
           const payload = JSON.parse(localPayload)
           node.inputs.inputParameters =
