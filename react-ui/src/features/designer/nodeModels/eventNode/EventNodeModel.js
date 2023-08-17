@@ -7,7 +7,7 @@ import { getDefaultEventMessage } from './functions'
 export default class EventNodeModel extends DefaultNodeModel {
   constructor(task) {
     const { name, type, color } = nodeConfig.EVENT
-    super({ name: task?.name ?? name, color })
+    super({ name: task?.taskReferenceName ?? name, color })
     this.type = type
 
     this.inputs = {

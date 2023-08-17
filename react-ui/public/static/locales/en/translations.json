@@ -532,6 +532,9 @@
     "ImportButton": "Import workflows",
     "Placeholder": "Placeholder/Value",
     "Back": "Back",
-    "Next": "Next"
+    "Next": "Next",
+    "MissingAsyncHandlers": "Missing async handlers",
+    "WorkflowName": "Workflow name",
+    "TaskReferenceName": "Task reference name"
   }
 }

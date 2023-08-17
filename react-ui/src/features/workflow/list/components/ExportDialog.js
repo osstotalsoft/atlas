@@ -1,9 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { TextField, Dialog, Button } from '@totalsoft/rocket-ui'
+import { TextField, Dialog, Button, Typography } from '@totalsoft/rocket-ui'
 import { useTranslation } from 'react-i18next'
 import { emptyString } from 'utils/constants'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import Divider from '@mui/material/Divider'
 import { makeStyles } from '@mui/styles'
 import styles from '../styles/styles'
 
@@ -12,7 +16,14 @@ const useStyles = makeStyles(styles)
 const ExportDialog = ({ open, data, onClose, tenantCode }) => {
   const { t } = useTranslation()
   const [namePrefix, setNamePrefix] = useState(tenantCode ? tenantCode + '_' : '')
+  const [errors, setErrors] = useState([])
   const classes = useStyles()
+
+  useEffect(() => {
+    setErrors(
+      JSON.parse(data).flows.filter(flow => flow.tasks.some(a => a.asyncComplete === true && !a.description?.includes('asyncHandler')))
+    )
+  }, [data])
 
   const handleNameChange = useCallback(
     value => {
@@ -81,6 +92,37 @@ const ExportDialog = ({ open, data, onClose, tenantCode }) => {
                 </Tr>
               </Tbody>
             </Table>
+            <Typography variant='subtitle1' align='center'>
+              {t('Export.MissingAsyncHandlers')}
+            </Typography>
+            <List style={{ color: 'orange' }}>
+              <ListItem key="head">
+                <ListItemText style={{ color: 'black' }}>{t('Export.WorkflowName')}</ListItemText>
+                <List>
+                  <ListItem key="subhead">
+                    <ListItemText style={{ color: 'black', textAlign: 'right' }}>{t('Export.TaskReferenceName')}</ListItemText>
+                  </ListItem>
+                </List>
+              </ListItem>
+              <Divider key='divider' />
+              {errors.map((flow, index) => (
+                <div key={index}>
+                  <ListItem key={index}>
+                    <ListItemText>{flow.name}</ListItemText>
+                    <List>
+                      {flow.tasks
+                        .filter(a => a.asyncComplete === true && !a.description?.includes('asyncHandler'))
+                        .map((task, index) => (
+                          <ListItem key={index}>
+                            <ListItemText style={{ textAlign: 'right' }}>{task.taskReferenceName}</ListItemText>
+                          </ListItem>
+                        ))}
+                    </List>
+                  </ListItem>
+                  <Divider key={`divider_${index}`} />
+                </div>
+              ))}
+            </List>
           </div>
         }
       />
