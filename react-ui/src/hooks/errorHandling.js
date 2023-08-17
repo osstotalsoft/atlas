@@ -19,6 +19,7 @@ export function useQueryWithErrorHandling(query, { onError = emptyFunction, ...p
 
   return useQuery(query, {
     ...props,
+    fetchPolicy: 'no-cache',
     onError: errorHandler
   })
 }

@@ -9,9 +9,9 @@ import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)
 
-const ExportDialog = ({ open, data, onClose }) => {
+const ExportDialog = ({ open, data, onClose, tenantCode }) => {
   const { t } = useTranslation()
-  const [namePrefix, setNamePrefix] = useState('')
+  const [namePrefix, setNamePrefix] = useState(tenantCode ? tenantCode + '_' : '')
   const classes = useStyles()
 
   const handleNameChange = useCallback(
@@ -91,7 +91,8 @@ const ExportDialog = ({ open, data, onClose }) => {
 ExportDialog.propTypes = {
   data: PropTypes.string.isRequired,
   onClose: PropTypes.func,
-  open: PropTypes.bool
+  open: PropTypes.bool,
+  tenantCode: PropTypes.string
 }
 
 export default ExportDialog

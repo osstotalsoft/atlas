@@ -39,13 +39,15 @@ const WorkflowListContainer = () => {
   const [exportData, setExportData] = useState('')
   const [importModal, setImportModal] = useState(false)
   const [importData, setImportData] = useState('')
+  const [tenantCode, setTenantCode] = useState('')
 
   const { loading, data, refetch } = useQueryWithErrorHandling(WORKFLOW_LIST_QUERY)
   const [getWorkflowsForExport] = useLazyQuery(WORKFLOW_EXPORT_QUERY, {
     fetchPolicy: 'no-cache',
     onCompleted: result => {
       setExportModal(true)
-      setExportData(result.exportWorkflows)
+      setExportData(result.exportWorkflows.data)
+      setTenantCode(result.exportWorkflows.tenantCode)
     }
   })
 
@@ -184,7 +186,7 @@ const WorkflowListContainer = () => {
   return (
     <>
       {importModal && <ImportDialog data={importData} open={importModal} onClose={onCloseImportModal} onImport={handleImport} />}
-      {exportData && <ExportDialog data={exportData} open={exportModal} onClose={onCloseExportModal} />}
+      {exportData && <ExportDialog data={exportData} open={exportModal} onClose={onCloseExportModal} tenantCode={tenantCode} />}
       <WorkflowListFilter loading={loading} filters={filters} onChangeFilters={handleChangeFilters} />
       <WorkflowList
         pager={pager}
