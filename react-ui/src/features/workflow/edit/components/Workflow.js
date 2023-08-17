@@ -114,7 +114,15 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
 
   const togglePreviewDialog = useCallback(() => {
     const { name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy, version } = workflow
-    setCurrentWorkflow({ ...parseDiagramToJSON(engine), name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy, version })
+    setCurrentWorkflow({
+      ...parseDiagramToJSON(engine),
+      name,
+      description,
+      timeoutSeconds,
+      workflowStatusListenerEnabled,
+      createdBy,
+      version
+    })
     setPreviewDialog(current => !current)
   }, [engine, workflow])
 
@@ -229,12 +237,14 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
       <TrayWidgetList trayItems={trayItems} activeTask={activeTask} setActiveTask={setActiveTask} />
       <BodyWidget canvasClass={'dataflow-canvas-fullscreen'} workflow={workflow} engine={engine} setIsDirty={setIsDirty} locked={false} />
       <SideMenu workflow={workflow}></SideMenu>
-      <ExecuteWorkflowModal
-        open={execDialog}
-        toggleExecDialog={toggleExecDialog}
-        name={workflow?.name || emptyString}
-        version={workflow?.version ?? workflowConfig.version}
-      />
+      {execDialog && (
+        <ExecuteWorkflowModal
+          open={execDialog}
+          toggleExecDialog={toggleExecDialog}
+          name={workflow?.name || emptyString}
+          version={workflow?.version ?? workflowConfig.version}
+        />
+      )}
       <GeneralSettingsDialog
         open={settingsDialog}
         onClose={handleCancelSettings}

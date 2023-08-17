@@ -24,6 +24,23 @@ export function useQueryWithErrorHandling(query, { onError = emptyFunction, ...p
   })
 }
 
+
+export function useLocalQueryWithErrorHandling(query, { onError = emptyFunction, ...props } = {}) {
+  const showError = useError()
+  const errorHandler = useCallback(
+    error => {
+      onError()
+      showError(error)
+    },
+    [onError, showError]
+  )
+
+  return useQuery(query, {
+    ...props,
+    onError: errorHandler
+  })
+}
+
 export function useClientQueryWithErrorHandling() {
   const client = useApolloClient()
   const showError = useError()

@@ -5,8 +5,6 @@ import WorkflowListFilter from './WorkflowListFilter'
 import { WORKFLOW_LIST_QUERY, WORKFLOW_EXPORT_QUERY } from '../queries/WorkflowListQuery'
 import { DELETE_WORKFLOW_MUTATION } from '../mutations/DeleteWorkflowMutation'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
-import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
-import { workflowListFilter } from 'apollo/cacheKeyFunctions'
 import { filterList, sortBy } from 'utils/functions'
 import { fieldsToBeRemoved, sortingDirection, sortWorkflowsByField } from 'features/common/constants'
 import { defaults } from 'apollo/defaultCacheData'
@@ -66,7 +64,7 @@ const WorkflowListContainer = () => {
     [importWorkflows]
   )
 
-  const [filters, setFilters] = useApolloLocalStorage(workflowListFilter)
+  const [filters, setFilters] = useState({})
   const [cloneName, setCloneName] = useState()
   const [cloneVersion, setCloneVersion] = useState()
   const clientQuery = useClientQueryWithErrorHandling()
