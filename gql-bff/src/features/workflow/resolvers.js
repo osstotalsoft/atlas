@@ -38,6 +38,7 @@ const workflowResolvers = {
 
     exportWorkflows: async (_parent, { workflowList }, context, _info) => {
       const { dataSources, tenant } = context;
+      const { code } = tenant ?? { code: "" };
 
       const conductorHandlers =
         await dataSources.eventHandlerApi.getEventHandlerList();
@@ -113,7 +114,7 @@ const workflowResolvers = {
         }
       }
 
-      return JSON.stringify({ flows, handlers });
+      return { data: JSON.stringify({ flows, handlers }), tenantCode: code };
     },
   },
 
@@ -158,6 +159,13 @@ const workflowResolvers = {
             },
           ])
         );
+
+        const result = await await dataSources.workflowApi.getWorkflow(
+          flow?.name,
+          flow?.version
+        );
+
+        saveSnapshot(result);
       }
 
       const conductorHandlers =

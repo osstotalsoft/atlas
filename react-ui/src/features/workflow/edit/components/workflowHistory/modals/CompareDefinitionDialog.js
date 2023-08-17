@@ -12,6 +12,8 @@ const CompareDefinitionDialog = ({ open, onToggleDialog, definition, currentDefi
 
   return (
     <Dialog
+      fullWidth={true}
+      maxWidth={'xl'}
       id='compareDefinition'
       open={open}
       onClose={onToggleDialog}

@@ -2,10 +2,19 @@ extend type WorkflowDef {
   readOnly: Boolean
 }
 
+type ExportWorkflows {
+  data: String,
+  tenantCode: String
+}
+
 extend type Query {
   getWorkflow(name: String!, version: Int!): WorkflowDef
   getWorkflowList: [WorkflowDef]
-  exportWorkflows(workflowList: [String]): String
+  exportWorkflows(workflowList: [String]): ExportWorkflows
+}
+
+extend input WorkflowTaskInput {
+    asyncHandler: String
 }
 
 extend type Mutation {

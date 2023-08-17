@@ -530,6 +530,8 @@
     "NamePrefix": "Name Prefix",
     "Import": "Import workflows",
     "ImportButton": "Import workflows",
-    "Placeholder": "Placeholder/Value"
+    "Placeholder": "Placeholder/Value",
+    "Back": "Back",
+    "Next": "Next"
   }
 }
