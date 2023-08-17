@@ -114,7 +114,10 @@ const workflowResolvers = {
         }
       }
 
-      return { data: JSON.stringify({ flows, handlers }), tenantCode: code };
+      return {
+        data: JSON.stringify({ flows, handlers }),
+        tenantCode: code.toUpperCase(),
+      };
     },
   },
 
