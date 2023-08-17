@@ -61,10 +61,18 @@ const getTenantImportData = (input, replacements, tenant) => {
   let tempData = input;
   Object.keys(replace).forEach((key) => {
     if (key === "{{NamePrefix}}") {
-      tempData = tempData.replaceAll(
-        key,
-        `${code.toUpperCase()}_${replace[key]}`
-      );
+      if (replace[key].startsWith(code.toUpperCase())) {
+        tempData = tempData.replaceAll(
+          key,
+          `${replace[key]}`
+        );
+      } else {
+        tempData = tempData.replaceAll(
+          key,
+          `${code.toUpperCase()}_${replace[key]}`
+        );
+      }
+      
     } else {
       tempData = tempData.replaceAll(key, replace[key]);
     }
