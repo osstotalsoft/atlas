@@ -6,7 +6,7 @@ import ActionListCard from './actions/ActionListCard'
 import StandardHeader from 'components/layout/StandardHeader.js'
 import { useHeader } from 'providers/AreasProvider'
 import { useMutation } from '@apollo/client'
-import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
+import { useClientQueryWithErrorHandling, useError, useLocalQueryWithErrorHandling, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { useToast } from '@totalsoft/rocket-ui'
 import { ADD_EVENT_HANDLER_MUTATION } from '../mutations/AddEventHandlerMutation'
 import { UPDATE_EVENT_HANDLER_MUTATION } from '../mutations/UpdateEventHandlerMutation'
@@ -40,7 +40,7 @@ const EventHandlerContainer = () => {
   const handlerValidator = useMemo(() => buildValidator(data?.eventHandlerList, name), [data?.eventHandlerList, name])
   const [validation, validate, resetValidation] = useDirtyFieldValidation(handlerValidator)
 
-  const { loading } = useQueryWithErrorHandling(EVENT_HANDLERS_QUERY, {
+  const { loading } = useLocalQueryWithErrorHandling(EVENT_HANDLERS_QUERY, {
     variables: { name, event, activeOnly: false, isNew },
     onCompleted: handlerData => {
       const current = handlerData?.eventHandler
