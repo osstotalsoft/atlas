@@ -155,7 +155,7 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
 
               {t('NavBar.Workflows')}
                 <List>
-                  {importFlows.flows.map((flow, index) => (
+                  {importFlows?.flows?.map((flow, index) => (
                     <ListItem key={index} disablePadding>
                       <ListItemButton id={flow.name} name={flow.name} onClick={onViewClick}>
                         <ListItemText primary={flow.name} />
@@ -165,7 +165,7 @@ const ImportDialog = ({ open, data, onClose, onImport }) => {
                 </List>
                 {t('NavBar.EventHandlers')}
                 <List>
-                  {importFlows.handlers.map((handler, index) => (
+                  {importFlows?.handlers?.map((handler, index) => (
                     <ListItem key={index} disablePadding>
                       <ListItemButton id={handler.name} name={handler.name} onClick={onViewHandlerClick}>
                         <ListItemText primary={handler.name} />
