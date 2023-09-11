@@ -104,7 +104,7 @@ const updateHandlerCondition = (initialCondition, isMultiTenant, tenantId) => {
   let condArray = new Array();
 
   if (isMultiTenant) {
-    if (initialCondition.includes("$.Headers['nbb-tenantId']")) {
+    if (initialCondition?.includes("$.Headers['nbb-tenantId']")) {
       const tempConditions = initialCondition.split("&&").map((a) => a.trim());
       const tempNewCondictions = new Array();
       for (cond of tempConditions) {
@@ -123,7 +123,7 @@ const updateHandlerCondition = (initialCondition, isMultiTenant, tenantId) => {
       return condArray.join(" && ");
     }
   } else {
-    if (initialCondition.includes("$.Headers['nbb-tenantId']")) {
+    if (initialCondition?.includes("$.Headers['nbb-tenantId']")) {
       const tempConditions = initialCondition.split("&&").map((a) => a.trim());
       return tempConditions
         .filter((a) => !a.startsWith("$.Headers['nbb-tenantId']"))
