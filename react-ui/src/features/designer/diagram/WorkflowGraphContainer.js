@@ -104,7 +104,7 @@ const WorkflowGraphContainer = ({ flow }) => {
   const failedTaskError = workflow => {
     const failedTask = workflow.tasks.find(a => a.status === 'FAILED' && a.retried === false)
     if (failedTask) {
-      return t(failedTask.outputData?.payload?.Code || failedTask.outputData?.payload?.Message)
+      return t(failedTask.outputData?.payload?.Code) ??  failedTask.outputData?.payload?.Message;
     }
 
     return ''
