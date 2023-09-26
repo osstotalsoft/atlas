@@ -19,27 +19,11 @@ export function useQueryWithErrorHandling(query, { onError = emptyFunction, ...p
 
   return useQuery(query, {
     ...props,
-    fetchPolicy: 'no-cache',
+    //fetchPolicy: 'no-cache',
     onError: errorHandler
   })
 }
 
-
-export function useLocalQueryWithErrorHandling(query, { onError = emptyFunction, ...props } = {}) {
-  const showError = useError()
-  const errorHandler = useCallback(
-    error => {
-      onError()
-      showError(error)
-    },
-    [onError, showError]
-  )
-
-  return useQuery(query, {
-    ...props,
-    onError: errorHandler
-  })
-}
 
 export function useClientQueryWithErrorHandling() {
   const client = useApolloClient()

@@ -183,7 +183,7 @@ const parseTaskToJSON = (link, parentNode, tasks) => {
         const { decideNode, firstNeutralNode } = handleDecideNode(link.targetPort.getNode())
         tasks.push(decideNode.inputs)
         if (firstNeutralNode) {
-          if (firstNeutralNode.inputs) {
+          if (firstNeutralNode.inputs && firstNeutralNode.inputs.taskReferenceName !== 'END') {
             tasks.push(firstNeutralNode.inputs)
           }
           parentNode = firstNeutralNode
@@ -248,9 +248,7 @@ export const decisionCasesToPorts = (node, decisionCases) => {
   decisionCases.forEach(decision => {
     node.addPort(new DefaultPortModel({ in: false, name: decision }))
   })
-  if (node?.inputs?.hasDefaultCase) {
     node.addPort(new DefaultPortModel({ in: false, name: 'default' }))
-  }
 }
 
 export const getWfInputsRegex = wf => {

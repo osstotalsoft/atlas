@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import { useCallback, useEffect, useState } from 'react'
 import { defaults } from 'apollo/defaultCacheData'
-import { useLocalQueryWithErrorHandling } from './errorHandling'
+import { useQueryWithErrorHandling } from './errorHandling'
 
 const getLocalStorageQuery = key => gql(`{${key} @client}`)
 
@@ -9,7 +9,7 @@ const safeRead = (data, key) => (!data || !data[key] || /^\s*$/.test(data[key]) 
 
 const useApolloLocalStorage = key => {
   const query = getLocalStorageQuery(key)
-  const { data, client } = useLocalQueryWithErrorHandling(query)
+  const { data, client } = useQueryWithErrorHandling(query)
   const [value, setValue] = useState(safeRead(data, key))
 
   useEffect(() => {

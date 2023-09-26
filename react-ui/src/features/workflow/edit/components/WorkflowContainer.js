@@ -229,7 +229,7 @@ const WorkflowContainer = () => {
     node.options.name = inputs?.inputs?.name
     if (
       inputs?.inputs.type === nodeConfig.DECISION.type &&
-      (isPropertyDirty('inputs.decisionCases', inputsDirtyInfo) || isPropertyDirty('inputs.hasDefaultCase', inputsDirtyInfo))
+      (isPropertyDirty('inputs.decisionCases', inputsDirtyInfo))
     ) {
       const cases = keys(inputs?.inputs?.decisionCases)
       decisionCasesToPorts(node, cases)
