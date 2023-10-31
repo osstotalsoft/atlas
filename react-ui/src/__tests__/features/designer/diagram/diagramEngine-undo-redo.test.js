@@ -77,7 +77,7 @@ describe('Undo and Redo actions should work as expected.', () => {
     //DELETE
     diagram.deleteSelected()
     expect(engine.getModel().getNodes().length).toEqual(13)
-    expect(engine.getModel().getLinks().length).toEqual(12)
+    expect(engine.getModel().getLinks().length).toEqual(11)
 
     //UNDO
     diagram.undo()
@@ -87,7 +87,7 @@ describe('Undo and Redo actions should work as expected.', () => {
     //REDO
     diagram.redo()
     expect(engine.getModel().getNodes().length).toEqual(13)
-    expect(engine.getModel().getLinks().length).toEqual(12)
+    expect(engine.getModel().getLinks().length).toEqual(11)
   })
 
   //In order to easily follow the tests using this complex workflow, please open its corresponding diagram found at src\__tests__\img\workflowForTesting.JPG
