@@ -41,7 +41,7 @@ const LambdaNodeInputParameters = ({ inputParametersLens }) => {
                   <Help icon={<CustomHelpIcon />} helpConfig={lambdaHelpConfig.SCRIPT_EXPRESSION} hasTranslations={true} />
                 </Grid>
                 <Grid item>
-                  <IconButton size='tiny' variant="text" color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
+                  <IconButton size='tiny' variant='text' color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
                     <LocalFloristIcon />
                   </IconButton>
                 </Grid>
@@ -53,6 +53,7 @@ const LambdaNodeInputParameters = ({ inputParametersLens }) => {
           <Tr>
             <Td>
               <AceEditor
+                setOptions={{ useWorker: false }}
                 mode={'javascript'}
                 width='100%'
                 theme='tomorrow'

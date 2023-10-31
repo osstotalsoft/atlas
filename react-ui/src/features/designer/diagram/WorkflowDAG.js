@@ -210,7 +210,7 @@ export default class WorkflowDAG {
 
     retval.push(
       ..._.flatten(
-        Object.entries(decisionTask.decisionCases).map(([_caseValue, tasks]) => {
+        Object.entries(decisionTask.decisionCases).map(([caseValue, tasks]) => {
           return this.processTaskList(tasks, [decisionTask]);
         })
       )
@@ -244,8 +244,8 @@ export default class WorkflowDAG {
         this.addTaskResult(placeholderRef, { status: dfTaskResult.status });
       }
 
-      this.addVertex(placeholderTask, [dfTask]);
-      return [placeholderTask];
+      //this.addVertex(placeholderTask, [dfTask]);
+      return [dfTask];
     } else {
       return dfTaskResult.inputData.forkedTaskDefs.map((task) => {
         this.addVertex(task, [dfTask]);
@@ -325,7 +325,7 @@ export default class WorkflowDAG {
         lastLoopTask?.type === "DECISION"
       ) {
         Object.entries(lastLoopTask.decisionCases).forEach(
-          ([_caseValue, tasks]) => {
+          ([caseValue, tasks]) => {
             const lastTaskInCase = _.last(tasks);
             this.addVertex(endDoWhileTask, [lastTaskInCase]);
           }

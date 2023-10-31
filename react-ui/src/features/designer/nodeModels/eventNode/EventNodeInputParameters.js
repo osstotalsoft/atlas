@@ -56,6 +56,7 @@ const EventNodeInputParameters = ({ inputParametersLens, onPayloadChange }) => {
       </Paper>
       <Divider style={{ marginTop: '20px' }}></Divider>
       <AceEditor
+        setOptions={{ useWorker: false }}
         annotations={annotations}
         debounceChangePeriod={200}
         mode='json'

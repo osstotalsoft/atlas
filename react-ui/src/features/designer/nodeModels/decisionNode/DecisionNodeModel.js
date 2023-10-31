@@ -9,7 +9,7 @@ import { oneOut, anyIn } from '../validations'
 export default class DecisionNodeModel extends DefaultNodeModel {
   constructor(task) {
     const { name, type, color } = nodeConfig.DECISION
-    super({ name: task?.name ?? name, color })
+    super({ name: task?.taskReferenceName ?? name, color })
     this.type = type
 
     this.inputs = {
@@ -34,9 +34,9 @@ export default class DecisionNodeModel extends DefaultNodeModel {
       keys(task?.decisionCases).forEach(decision => {
         this.addPort(new DefaultPortModel({ out: true, name: decision }))
       })
-    if (this.inputs.hasDefaultCase) {
+    //if (this.inputs.hasDefaultCase) {
       this.addPort(new DefaultPortModel({ out: true, name: 'default' }))
-    }
+   // }
   }
 
   validate() {

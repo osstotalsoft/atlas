@@ -1,6 +1,6 @@
-import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-tomorrow'
+import AceEditor from 'react-ace'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -38,6 +38,7 @@ const DecisionLogicForm = ({ inputsLens, toggle }) => {
       )}
       {caseExpression && (
         <AceEditor
+          setOptions={{ useWorker: false }}
           mode={'javascript'}
           width='100%'
           height={'300px'}

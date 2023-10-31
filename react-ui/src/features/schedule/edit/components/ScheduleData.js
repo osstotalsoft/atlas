@@ -123,6 +123,7 @@ const ScheduleData = ({ scheduleLens, validation, loading, workflows }) => {
         <Grid item xs={12} sm={12} lg={12}>
           <Typography variant='body1'>{t('Schedule.WorkflowContext')}</Typography>
           <AceEditor
+            setOptions={{ useWorker: false }}
             mode={'json'}
             width='100%'
             height={'300px'}

@@ -181,10 +181,10 @@ const parseTaskToJSON = (link, parentNode, tasks) => {
         break
       case nodeConfig.DECISION.type: {
         const { decideNode, firstNeutralNode } = handleDecideNode(link.targetPort.getNode())
-        tasks.push(decideNode.inputs)
+        tasks.push({...decideNode.inputs, hasDefaultCase: undefined})
         if (firstNeutralNode) {
-          if (firstNeutralNode.inputs) {
-            tasks.push(firstNeutralNode.inputs)
+          if (firstNeutralNode.inputs && firstNeutralNode.inputs.taskReferenceName !== 'END') {
+            tasks.push({...firstNeutralNode.inputs, hasDefaultCase: undefined})
           }
           parentNode = firstNeutralNode
         }
@@ -197,16 +197,19 @@ const parseTaskToJSON = (link, parentNode, tasks) => {
         break
       }
       default:
-        parentNode = link.targetPort.parent
-
-        if (parentNode.inputs['asyncHandler']) {
-          tasks.push({
-            ...parentNode.inputs,
-            asyncHandler: undefined,
-            description: JSON.stringify({ description: parentNode.inputs.description, asyncHandler: parentNode.inputs['asyncHandler'] })
-          })
+        if (parentNode.type === nodeConfig.DECISION.type) {
+          parentNode = link.targetPort.parent
         } else {
-          tasks.push({ ...parentNode.inputs, asyncHandler: undefined })
+          parentNode = link.targetPort.parent
+          if (parentNode.inputs['asyncHandler']) {
+            tasks.push({
+              ...parentNode.inputs,
+              asyncHandler: undefined,
+              description: JSON.stringify({ description: parentNode.inputs.description, asyncHandler: parentNode.inputs['asyncHandler'] })
+            })
+          } else {
+            tasks.push({ ...parentNode.inputs, asyncHandler: undefined })
+          }
         }
 
         break
@@ -248,9 +251,7 @@ export const decisionCasesToPorts = (node, decisionCases) => {
   decisionCases.forEach(decision => {
     node.addPort(new DefaultPortModel({ in: false, name: decision }))
   })
-  if (node?.inputs?.hasDefaultCase) {
-    node.addPort(new DefaultPortModel({ in: false, name: 'default' }))
-  }
+  node.addPort(new DefaultPortModel({ in: false, name: 'default' }))
 }
 
 export const getWfInputsRegex = wf => {

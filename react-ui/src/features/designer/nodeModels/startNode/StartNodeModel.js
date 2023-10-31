@@ -6,7 +6,7 @@ export default class StartNodeModel extends NodeModel {
   constructor() {
     const type = nodeConfig.START.type
     super({ type })
-
+    this.inputs = { taskReferenceName: type }
     this.type = type
     this.addPort(new DefaultPortModel({ in: false, name: 'out', type }))
   }
