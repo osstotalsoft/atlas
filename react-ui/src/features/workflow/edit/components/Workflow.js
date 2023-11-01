@@ -29,7 +29,7 @@ import { defaultFileName } from 'features/workflow/common/constants'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
 import { useToast } from '@totalsoft/rocket-ui'
 
-const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty }) => {
+const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty, taskDefs }) => {
   const { t } = useTranslation()
   const showError = useError()
   const addToast = useToast()
@@ -84,7 +84,8 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
           color: nodeConfig.TASK.color,
           isSystemTask: false,
           workflow: wfl,
-          inputKeys: wfl.inputKeys
+          inputKeys: wfl.inputKeys,
+          inputTemplate: wfl.inputTemplate
         }))
         setTrayItems(trayList)
         break
@@ -235,7 +236,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         onRedo={handleRedo}
       />
       <TrayWidgetList trayItems={trayItems} activeTask={activeTask} setActiveTask={setActiveTask} />
-      <BodyWidget canvasClass={'dataflow-canvas-fullscreen'} workflow={workflow} engine={engine} setIsDirty={setIsDirty} locked={false} />
+      <BodyWidget canvasClass={'dataflow-canvas-fullscreen'} workflow={workflow} taskDefs={taskDefs} engine={engine} setIsDirty={setIsDirty} locked={false} />
       <SideMenu workflow={workflow}></SideMenu>
       {execDialog && (
         <ExecuteWorkflowModal
@@ -263,7 +264,8 @@ Workflow.propTypes = {
   isNew: PropTypes.bool.isRequired,
   diagram: PropTypes.object.isRequired,
   workflowLens: PropTypes.object.isRequired,
-  setIsDirty: PropTypes.func.isRequired
+  setIsDirty: PropTypes.func.isRequired,
+  taskDefs: PropTypes.array
 }
 
 export default Workflow

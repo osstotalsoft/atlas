@@ -6,7 +6,8 @@ const defaultConfiguration = {
   retryDelaySeconds: 1,
   responseTimeoutSeconds: 10,
   rateLimitPerFrequency: 1,
-  rateLimitFrequencyInSeconds: 1
+  rateLimitFrequencyInSeconds: 1,
+  inputTemplate: "{}"
 }
 
 export default defaultConfiguration

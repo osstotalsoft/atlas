@@ -4,16 +4,16 @@ import defaultTo from 'lodash/fp/defaultTo'
 import { isEmpty, toArray } from 'lodash'
 import StartNodeModel from './nodeModels/startNode/StartNodeModel'
 import EndNodeModel from './nodeModels/endNode/EndNodeModel'
-import { last, values } from 'ramda'
+import { last, values, keys } from 'ramda'
 import { isDefault, nodeConfig } from './constants/NodeConfig'
 
 export const clearDiagram = engine => {
   engine.model = new DiagramModel()
 }
 
-export const drawDiagram = (workflow, engine, locked) => {
+export const drawDiagram = (workflow, engine, locked, tasks) => {
   clearDiagram(engine)
-  workflow.tasks.map(x => createNode(engine, x))
+  workflow.tasks.map(x => createNode(engine, x, tasks))
   linkAllNodes(engine, workflow)
   appendStartAnd(engine, workflow)
   engine.getModel().setLocked(locked)
@@ -186,7 +186,7 @@ const calculateNestedPosition = (engine, branchTask, parentNode, k, branchSpread
   return { branchPosX, branchPosY }
 }
 //Creates new node based on the task definition
-export const createNode = (engine, task, branchX = null, branchY = null, forkDepth = 1) => {
+export const createNode = (engine, task, taskList, branchX = null, branchY = null, forkDepth = 1) => {
   switch (task.type) {
     case nodeConfig.DECISION.type: {
       const { x, y } = calculatePosition(engine, branchX, branchY)
@@ -219,7 +219,7 @@ export const createNode = (engine, task, branchX = null, branchY = null, forkDep
             caseNum,
             forkDepth
           )
-          createNode(engine, branchTask, branchPosX, branchPosY, forkDepth + 1)
+          createNode(engine, branchTask, taskList, branchPosX, branchPosY, forkDepth + 1)
         })
       })
       break
@@ -249,7 +249,7 @@ export const createNode = (engine, task, branchX = null, branchY = null, forkDep
             branchNum,
             forkDepth
           )
-          createNode(engine, branchTask, branchPosX, branchPosY, forkDepth + 1)
+          createNode(engine, branchTask, taskList, branchPosX, branchPosY, forkDepth + 1)
         })
       })
       break
@@ -258,6 +258,17 @@ export const createNode = (engine, task, branchX = null, branchY = null, forkDep
       const { x, y } = calculatePosition(engine, branchX, branchY)
       const node = nodeConfig[task.type]?.getInstance(task)
       node.setPosition(x, y)
+      var taskDef = taskList.find(a => a.name === node.inputs.name)
+      if (taskDef && taskDef.inputTemplate) {
+        node.inputs.inputTemplate = taskDef.inputTemplate
+        const templateKeys = keys(taskDef.inputTemplate)
+        const inputKeys = keys(node.inputs.inputParameters)
+        inputKeys.forEach(k => {
+          if (templateKeys.includes(k) && taskDef.inputTemplate[k] === 'object' && typeof node.inputs.inputParameters[k] === 'object') {
+            node.inputs.inputParameters = { ...node.inputs.inputParameters, [k]: JSON.stringify(node.inputs.inputParameters[k], null, '\t') }
+          }
+        })
+      }
       engine.model.addNode(node)
       break
     }

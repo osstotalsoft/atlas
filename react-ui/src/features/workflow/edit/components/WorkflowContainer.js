@@ -18,7 +18,7 @@ import { get, set } from '@totalsoft/react-state-lens'
 import { getApplicationDiagram } from 'features/designer/diagram/getApplicationDiagram'
 import { cloneSelection, parseObjectParameters, updateCacheList, validateEngineWorkflow } from 'features/workflow/common/functions'
 import { useMutation } from '@apollo/client'
-import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
+import { useClientQueryWithErrorHandling, useError, useLocalQueryWithErrorHandling } from 'hooks/errorHandling'
 import { WORKFLOW_QUERY } from '../queries/WorkflowQuery'
 import { SidebarContext } from 'providers/SidebarProvider'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
@@ -33,6 +33,7 @@ import { NotFound } from '@totalsoft/rocket-ui'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
 import { skipParametersByParsing } from 'features/workflow/common/constants'
 import { CREATE_UPDATE_WORKFLOW_MUTATION } from '../mutations/CreateOrUpdateWorkflowMutation'
+import { TASK_LIST_QUERY } from 'features/task/list/queries/TaskListQuery'
 
 const WorkflowContainer = () => {
   const { t } = useTranslation()
@@ -79,9 +80,11 @@ const WorkflowContainer = () => {
   const toggleStartTourDialog = useCallback(() => showStartTourDialog(current => !current), [])
   const clientQuery = useClientQueryWithErrorHandling()
 
-  const { loading, data, error } = useQueryWithErrorHandling(WORKFLOW_QUERY, {
+  const { loading, data, error } = useLocalQueryWithErrorHandling(WORKFLOW_QUERY, {
     variables: { name, version, skip: isNew }
   })
+
+  const { data: tasks } = useLocalQueryWithErrorHandling(TASK_LIST_QUERY, {})
 
   const errorStatus = error?.graphQLErrors[0]?.extensions?.response?.status
 
@@ -236,7 +239,7 @@ const WorkflowContainer = () => {
     }
     if (inputs?.inputs?.type === nodeConfig.EVENT.type) {
       try {
-        node.options.name = inputs?.inputs?.taskReferenceName;
+        node.options.name = inputs?.inputs?.taskReferenceName
         if (localPayload) {
           const payload = JSON.parse(localPayload)
           node.inputs.inputParameters =
@@ -335,6 +338,7 @@ const WorkflowContainer = () => {
         diagram={diagram}
         loading={loading}
         isDirty={isDirty}
+        taskDefs={tasks?.getTaskDefinitionList}
         setIsDirty={setIsDirty}
       />
       <Dialog

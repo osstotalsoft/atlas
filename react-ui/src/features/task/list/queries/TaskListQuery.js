@@ -7,6 +7,7 @@ export const TASK_LIST_QUERY = gql`
       description
       createTime
       inputKeys
+      inputTemplate
     }
   }
 `

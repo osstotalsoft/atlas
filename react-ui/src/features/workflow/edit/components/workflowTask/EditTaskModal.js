@@ -61,6 +61,7 @@ const EditTaskModal = ({ onCancel, onSave, inputsLens, dirtyInfo, onPayloadChang
           {tabIndex == 1 && (
             <InputParameters
               inputParametersLens={inputsLens.inputs.inputParameters}
+              inputTemplate={inputsLens.inputs.inputTemplate}
               nodeType={inputs?.type}
               onPayloadChange={onPayloadChange}
             />

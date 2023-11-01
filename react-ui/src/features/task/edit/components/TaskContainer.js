@@ -4,15 +4,12 @@ import { useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { SAVE_TASK_MUTATION } from '../mutations/SaveTaskMutation'
 import { useToast } from '@totalsoft/rocket-ui'
 import { TASK_QUERY } from '../queries/TaskQuery.js'
-import { TIMEOUT_POLICY_OPTIONS } from '../queries/TimeoutPolicyListQuery'
-import { RETRY_LOGIC_OPTIONS } from '../queries/RetryLogicListQuery'
 import { isDirty, isPropertyDirty } from '@totalsoft/change-tracking'
 import { useParams, useNavigate } from 'react-router'
 import { useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import Task from './Task'
 import { queryLimit as limit } from '../../../common/constants'
-import { emptyArray } from 'utils/constants'
 import defaultConfiguration from '../../common/defaultConfiguration'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
 import { buildValidator } from '../validator'
@@ -20,6 +17,7 @@ import { useDirtyFieldValidation } from '@totalsoft/pure-validations-react'
 import { omit } from 'ramda'
 import { TASK_LIST_QUERY } from '../../list/queries/TaskListQuery'
 import { TASK_NAMES_QUERY } from '../queries/TaskNamesQuery'
+import JsonLint from 'jsonlint-mod'
 
 const TaskContainer = () => {
   const showError = useError()
@@ -39,17 +37,14 @@ const TaskContainer = () => {
     variables: { name },
     skip: isNew,
     onCompleted: taskData => {
-      resetTask(taskData?.getTaskDefinition)
+      resetTask({ ...taskData?.getTaskDefinition, inputTemplate: JSON.stringify(taskData?.getTaskDefinition.inputTemplate, null, '\t') })
     }
   })
 
   const { data } = useQueryWithErrorHandling(TASK_NAMES_QUERY, { variables: { limit } })
 
-  const { data: timeoutPoliciesData } = useQueryWithErrorHandling(TIMEOUT_POLICY_OPTIONS)
-  const timeoutPolicyList = timeoutPoliciesData?.__type?.enumValues || emptyArray
-
-  const { data: retryLogicData } = useQueryWithErrorHandling(RETRY_LOGIC_OPTIONS)
-  const retryLogicList = retryLogicData?.__type?.enumValues || emptyArray
+  const timeoutPolicyList = ['RETRY', 'TIME_OUT_WF', 'ALERT_ONLY']
+  const retryLogicList = ['FIXED', 'EXPONENTIAL_BACKOFF', 'LINEAR_BACKOFF']
 
   const taskValidator = useMemo(() => buildValidator(data?.getTaskDefs, name), [data?.getTaskDefs, name])
   const [validation, validate, resetValidation] = useDirtyFieldValidation(taskValidator)
@@ -71,10 +66,16 @@ const TaskContainer = () => {
     if (isNew)
       saveTask({
         variables: {
-          input: [{ ...omit(['readOnly'], task), createTime: new Date().getTime(), ownerEmail: oidcUser?.profile.preferred_username }]
+          input: [
+            {
+              ...omit(['readOnly'], { ...task, inputTemplate: JSON.parse(task.inputTemplate) }),
+              createTime: new Date().getTime(),
+              ownerEmail: oidcUser?.profile.preferred_username
+            }
+          ]
         }
       })
-    else saveTask({ variables: { input: omit(['readOnly'], task) } })
+    else saveTask({ variables: { input: omit(['readOnly'], { ...task, inputTemplate: JSON.parse(task.inputTemplate) }) } })
   }, [isNew, oidcUser?.profile.preferred_username, saveTask, task, validate])
 
   useEffect(() => {

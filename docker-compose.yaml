@@ -7,7 +7,7 @@ services:
       - ES_VERSION=7
       - INDEXING_ENABLED=true
       - JAVA_OPTS=-Dpolyglot.engine.WarnInterpreterOnly=false
-    image: niemen/conductor-server:7.1.8
+    image: niemen/conductor-server:7.2.2
     networks:
       - internal
     ports:
@@ -34,7 +34,7 @@ services:
   conductor-ui:
     environment:
       - WF_SERVER=http://conductor-server:8080
-    image: niemen/conductor-ui:4.0.0
+    image: niemen/conductor-ui:4.0.1
     networks:
       - internal
     ports:
@@ -82,12 +82,21 @@ services:
         max-file: "3"
 
   nats:
+    image: nats:latest
+    networks:
+      - internal
+    command: "-js --http_port 8222"
+    ports:
+      - 4222:4222
+      - 8222:8222
+
+  nats-streaming:
     image: nats-streaming:latest
     networks:
       - internal
     ports:
-      - 4222:4222
-      - 8222:8222
+      - 4223:4222
+      - 8223:8222
 
   schellar:
     profiles: ["scheduler"]

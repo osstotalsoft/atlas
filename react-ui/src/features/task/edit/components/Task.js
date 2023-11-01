@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -10,10 +10,15 @@ import { useHeader } from 'providers/AreasProvider'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { Autocomplete, TextField, Card, FakeText } from '@totalsoft/rocket-ui'
 import { getErrors, isValid } from '@totalsoft/pure-validations-react'
+import JsonLint from 'jsonlint-mod'
+import AceEditor from 'react-ace'
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/theme-tomorrow'
 
 const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutPolicyList, retryLogicList }) => {
   const { t } = useTranslation()
   const [, setHeader] = useHeader(<StandardHeader />)
+  const [annotations, setAnnotations] = useState()
 
   const task = taskLens |> get
   const {
@@ -28,7 +33,8 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
     timeoutSeconds,
     responseTimeoutSeconds,
     inputKeys,
-    outputKeys
+    outputKeys,
+    inputTemplate
   } = task
 
   const createTime = t('DATE_FORMAT', { date: { value: taskLens?.createTime |> get, format: 'DD-MM-YYYY HH:mm:ss' } })
@@ -36,6 +42,21 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
   useEffect(() => {
     setHeader(<StandardHeader headerText={name} path='/tasks' saving={saving} onSave={onSave} disableSaving={!isDirty || readOnly} />)
   }, [isDirty, name, onSave, readOnly, saving, setHeader])
+
+  const onInputTemplateChange = useCallback(
+    value => {
+      set(taskLens.inputTemplate, value)
+      try {
+        JsonLint.parse(value)
+        setAnnotations(null)
+      } catch (e) {
+        const row = parseInt(e.message.match(/Parse error on line (\d+)/)[1]) - 1
+        const annotation = { row, text: e.message, type: 'error' }
+        setAnnotations([annotation])
+      }
+    },
+    [taskLens.inputTemplate]
+  )
 
   if (loading) {
     return <FakeText lines={3} />
@@ -142,6 +163,21 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
                 label={t('Task.OutputKeys')}
                 value={outputKeys || emptyString}
                 onChange={taskLens.outputKeys |> set |> onTextBoxChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} lg={12}>
+              <AceEditor
+                setOptions={{ useWorker: false }}
+                mode={'json'}
+                width='100%'
+                height={'300px'}
+                theme='tomorrow'
+                fontSize={16}
+                annotations={annotations}
+                debounceChangePeriod={200}
+                value={inputTemplate}
+                onChange={onInputTemplateChange}
+                wrapEnabled={true}
               />
             </Grid>
           </Grid>

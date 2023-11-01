@@ -12,13 +12,13 @@ const S = {
   `
 }
 
-const BodyWidget = ({ canvasClass, workflow, engine, setIsDirty, locked }) => {
+const BodyWidget = ({ canvasClass, workflow, engine, setIsDirty, locked, taskDefs }) => {
   //create diagram from workflow definition
   useEffect(() => {
     if (workflow && workflow.tasks) {
-      drawDiagram(workflow, engine, workflow?.readOnly || locked)
+      drawDiagram(workflow, engine, workflow?.readOnly || locked, taskDefs)
     }
-  }, [engine, locked, workflow])
+  }, [engine, locked, workflow, taskDefs])
 
   const handleOnDrop = useCallback(
     event => {
@@ -64,7 +64,8 @@ BodyWidget.propTypes = {
   engine: PropTypes.object.isRequired,
   workflow: PropTypes.object.isRequired,
   setIsDirty: PropTypes.func,
-  locked: PropTypes.bool.isRequired
+  locked: PropTypes.bool.isRequired,
+  taskDefs: PropTypes.array
 }
 
 export default BodyWidget
