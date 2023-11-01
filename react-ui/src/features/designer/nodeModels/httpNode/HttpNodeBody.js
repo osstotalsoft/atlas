@@ -1,6 +1,4 @@
-import AceEditor from 'react-ace'
-import 'ace-builds/src-noconflict/mode-javascript'
-import 'ace-builds/src-noconflict/theme-tomorrow'
+import Editor from '@monaco-editor/react'
 import React, { useCallback } from 'react'
 import styles from '../../styles/styles'
 import PropTypes from 'prop-types'
@@ -32,7 +30,7 @@ const HttpNodeBody = ({ httpRequestLens }) => {
             <Grid container justifyContent='space-between'>
               <Grid item>{t('WorkflowTask.Http.Body')}</Grid>
               <Grid item>
-                <IconButton size='tiny' variant="text" color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
+                <IconButton size='tiny' variant='text' color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
                   <LocalFloristIcon />
                 </IconButton>
               </Grid>
@@ -43,15 +41,23 @@ const HttpNodeBody = ({ httpRequestLens }) => {
       <Tbody>
         <Tr>
           <Td>
-            <AceEditor
-              mode={'javascript'}
+            <Editor
+              setOptions={{ useWorker: false }}
+              language='json'
               width='100%'
-              theme='tomorrow'
+              theme='vs-light'
               height='100%'
-              fontSize={16}
+              autoIndent={true}
+              options={{
+                scrollBeyondLastLine: false,
+                smoothScrolling: true,
+                selectOnLineNumbers: true,
+                minimap: {
+                  enabled: false
+                }
+              }}
               value={body}
               onChange={httpRequestLens.body |> set}
-              wrapEnabled={true}
             />
           </Td>
         </Tr>

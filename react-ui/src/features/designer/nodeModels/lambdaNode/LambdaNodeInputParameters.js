@@ -1,6 +1,4 @@
-import AceEditor from 'react-ace'
-import 'ace-builds/src-noconflict/mode-javascript'
-import 'ace-builds/src-noconflict/theme-tomorrow'
+import Editor from '@monaco-editor/react'
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Divider, Grid } from '@mui/material'
@@ -41,7 +39,7 @@ const LambdaNodeInputParameters = ({ inputParametersLens }) => {
                   <Help icon={<CustomHelpIcon />} helpConfig={lambdaHelpConfig.SCRIPT_EXPRESSION} hasTranslations={true} />
                 </Grid>
                 <Grid item>
-                  <IconButton size='tiny' variant="text" color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
+                  <IconButton size='tiny' variant='text' color='secondary' tooltip={t('General.Buttons.Beautify')} onClick={handleBeautify}>
                     <LocalFloristIcon />
                   </IconButton>
                 </Grid>
@@ -52,15 +50,22 @@ const LambdaNodeInputParameters = ({ inputParametersLens }) => {
         <Tbody>
           <Tr>
             <Td>
-              <AceEditor
-                mode={'javascript'}
+              <Editor
+                theme='vs-light'
+                language='javascript'
+                autoIndent={true}
+                options={{
+                  scrollBeyondLastLine: false,
+                  smoothScrolling: true,
+                  selectOnLineNumbers: true,
+                  minimap: {
+                    enabled: false
+                  }
+                }}
                 width='100%'
-                theme='tomorrow'
                 height='100%'
-                fontSize={16}
                 value={scriptExpression}
                 onChange={inputParametersLens.scriptExpression |> set}
-                wrapEnabled={true}
               />
             </Td>
           </Tr>

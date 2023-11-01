@@ -28,12 +28,14 @@ import PreviewJsonDialog from './modals/PreviewJsonDialog'
 import { defaultFileName } from 'features/workflow/common/constants'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
 import { useToast } from '@totalsoft/rocket-ui'
+import WorkflowJson from './WorkflowJson'
 
 const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty, taskDefs }) => {
   const { t } = useTranslation()
   const showError = useError()
   const addToast = useToast()
 
+  const [viewType, setViewType] = useState('draw')
   const { oidcUser } = useReactOidc()
   const clientQuery = useClientQueryWithErrorHandling()
 
@@ -48,6 +50,8 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
 
   const workflow = workflowLens |> get
   const { engine } = diagram
+
+  const handleChangeViewType = useCallback((event, value) => setViewType(value), [setViewType])
 
   const [runWfQuery, { called: wfCalled, loading: loadingWf, data: wfData }] = useLazyQuery(WORKFLOW_LIST_QUERY)
   const [runTskQuery, { called: tskCalled, loading: loadingTsk, data: tskData }] = useLazyQuery(TASK_LIST_QUERY)
@@ -104,6 +108,12 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
     wfCalled,
     wfData?.getWorkflowList
   ])
+
+  useEffect(() => {
+    if (workflow.tasks) {
+      setCurrentWorkflow(workflow)
+    }
+  }, [workflow])
 
   const toggleExecDialog = useCallback(() => {
     setExecDialog(current => !current)
@@ -217,6 +227,13 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const handleUndo = useCallback(() => diagram.undo(), [diagram])
   const handleRedo = useCallback(() => diagram.redo(), [diagram])
 
+  const onChangeJson = useCallback(
+    v => {
+      resetWorkflow(JSON.parse(v))
+    },
+    [resetWorkflow]
+  )
+
   if (loading) {
     return <FakeText lines={3} />
   }
@@ -234,10 +251,28 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         onDelete={handleDelete}
         onUndo={handleUndo}
         onRedo={handleRedo}
+        viewType={viewType}
+        handleViewType={handleChangeViewType}
       />
-      <TrayWidgetList trayItems={trayItems} activeTask={activeTask} setActiveTask={setActiveTask} />
-      <BodyWidget canvasClass={'dataflow-canvas-fullscreen'} workflow={workflow} taskDefs={taskDefs} engine={engine} setIsDirty={setIsDirty} locked={false} />
-      <SideMenu workflow={workflow}></SideMenu>
+      {viewType === 'draw' && (
+        <React.Fragment>
+          <TrayWidgetList trayItems={trayItems} activeTask={activeTask} setActiveTask={setActiveTask} />
+          <BodyWidget
+            canvasClass={'dataflow-canvas-fullscreen'}
+            workflow={workflow}
+            taskDefs={taskDefs}
+            engine={engine}
+            setIsDirty={setIsDirty}
+            locked={false}
+          />
+          <SideMenu workflow={workflow}></SideMenu>
+        </React.Fragment>
+      )}
+      {viewType === 'json' && currentWorkflow && (
+        <React.Fragment>
+          <WorkflowJson workflow={currentWorkflow} loading={loading} onChangeJson={onChangeJson} />
+        </React.Fragment>
+      )}
       {execDialog && (
         <ExecuteWorkflowModal
           open={execDialog}

@@ -1,45 +1,25 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Typography } from '@mui/material'
 import { TextField, IconButton } from '@totalsoft/rocket-ui'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { useTranslation } from 'react-i18next'
-import JsonLint from 'jsonlint-mod'
-import AceEditor from 'react-ace'
-import 'ace-builds/src-noconflict/mode-json'
-import 'ace-builds/src-noconflict/theme-tomorrow'
+import Editor from '@monaco-editor/react'
 
 function InputParameterItem({ valueLens, param, onRemove, isFromTemplate, typeFromTemplate }) {
   const { t } = useTranslation()
   const value = valueLens |> get
-  const [annotations, setAnnotations] = useState()
 
   const onInputTemplateChange = useCallback(
     value => {
       set(valueLens, value)
-      try {
-        JsonLint.parse(value)
-        setAnnotations(null)
-      } catch (e) {
-        const row = parseInt(e.message.match(/Parse error on line (\d+)/)[1]) - 1
-        const annotation = { row, text: e.message, type: 'error' }
-        setAnnotations([annotation])
-      }
     },
     [valueLens]
   )
 
   const isJson = () => {
-    return typeFromTemplate === "object";
-    /*
-    try {
-      JSON.parse(value)
-      if ()
-      return true
-    } catch {
-      return false
-    }*/
+    return typeFromTemplate === 'object'
   }
 
   return (
@@ -47,18 +27,22 @@ function InputParameterItem({ valueLens, param, onRemove, isFromTemplate, typeFr
       {isJson() ? (
         <Grid item xs={12}>
           <Typography>{param}</Typography>
-          <AceEditor
-            setOptions={{ useWorker: false }}
-            mode={'json'}
+          <Editor
+            theme='vs-light'
+            language='json'
+            autoIndent={true}
+            options={{
+              scrollBeyondLastLine: false,
+              smoothScrolling: true,
+              selectOnLineNumbers: true,
+              minimap: {
+                enabled: false
+              }
+            }}
             width='100%'
             height={'300px'}
-            theme='tomorrow'
-            fontSize={16}
-            annotations={annotations}
-            debounceChangePeriod={200}
             value={value}
             onChange={onInputTemplateChange}
-            wrapEnabled={true}
           />
         </Grid>
       ) : (

@@ -17,7 +17,6 @@ import { useDirtyFieldValidation } from '@totalsoft/pure-validations-react'
 import { omit } from 'ramda'
 import { TASK_LIST_QUERY } from '../../list/queries/TaskListQuery'
 import { TASK_NAMES_QUERY } from '../queries/TaskNamesQuery'
-import JsonLint from 'jsonlint-mod'
 
 const TaskContainer = () => {
   const showError = useError()

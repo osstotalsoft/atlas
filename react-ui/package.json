@@ -12,6 +12,7 @@
     "@date-io/moment": "^2.16.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.134",
     "@mui/material": "^5.13.6",
@@ -22,7 +23,6 @@
     "@totalsoft/rocket-ui": "^0.1.25",
     "@totalsoft/rules-algebra-react": "^5.0.22",
     "@totalsoft/validations": "^1.0.4",
-    "ace-builds": "1.23.1",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-link-mock": "^1.0.1",
     "apollo-upload-client": "^17.0.0",
@@ -38,7 +38,6 @@
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.1",
     "js-beautify": "^1.14.0",
-    "jsonlint-mod": "1.7.6",
     "lodash": "^4.17.21",
     "lodash.curry": "^4.1.1",
     "moment": "2.29.4",
@@ -49,7 +48,6 @@
     "paths-js": "^0.4.11",
     "ramda": "^0.29.0",
     "react": "18.2.0 ",
-    "react-ace": "10.1.0",
     "react-country-flag": "3.1.0",
     "react-diff-viewer": "^3.1.1",
     "react-dom": "18.2.0 ",
@@ -78,7 +76,8 @@
     "test:ci": "cross-env CI=true npm test -- --reporters=default --reporters=jest-junit --coverage --coverageReporters=cobertura --coverageReporters=lcov --coverageReporters=html",
     "eject": "react-scripts eject",
     "eslint:report": "eslint --fix --ext .js .",
-    "prettier": "prettier --write **/*.js"
+    "prettier": "prettier --write **/*.js",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "lint-staged": {
     "**/*.+(js|md|css|graphql|json)": "prettier --write"
@@ -121,6 +120,7 @@
     "react-app-rewired": "^2.1.11",
     "react-error-overlay": "6.0.11",
     "react-test-renderer": "^18.2.0",
+    "source-map-explorer": "2.5.3",
     "styled-components": "6.0.2"
   },
   "jest": {

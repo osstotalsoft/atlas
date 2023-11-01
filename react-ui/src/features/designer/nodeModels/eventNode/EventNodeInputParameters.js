@@ -1,11 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import AceEditor from 'react-ace'
-import 'ace-builds/src-noconflict/mode-json'
-import 'ace-builds/src-noconflict/theme-tomorrow'
-//this is required for dev
-//import 'ace-builds/webpack-resolver'
-import JsonLint from 'jsonlint-mod'
-
+import React, { useCallback, useState } from 'react'
+import Editor from '@monaco-editor/react'
 import { get } from '@totalsoft/rules-algebra-react'
 import PropTypes from 'prop-types'
 import { Divider, Paper, Grid } from '@mui/material'
@@ -21,7 +15,6 @@ const EventNodeInputParameters = ({ inputParametersLens, onPayloadChange }) => {
   const payloadLens = process.env.REACT_APP_USE_NBB_MESSAGE === 'true' ? inputParametersLens?.Payload : inputParametersLens
   const payload = (payloadLens |> get) || emptyObject
   const [localState, setLocalState] = useState(JSON.stringify(payload, null, 4))
-  const [annotations, setAnnotations] = useState()
 
   const handleChange = useCallback(
     value => {
@@ -30,17 +23,6 @@ const EventNodeInputParameters = ({ inputParametersLens, onPayloadChange }) => {
     },
     [onPayloadChange]
   )
-
-  useEffect(() => {
-    try {
-      JsonLint.parse(localState)
-      setAnnotations(null)
-    } catch (e) {
-      const row = parseInt(e.message.match(/Parse error on line (\d+)/)[1]) - 1
-      const annotation = { row, text: e.message, type: 'error' }
-      setAnnotations([annotation])
-    }
-  }, [localState])
 
   return (
     <>
@@ -55,17 +37,23 @@ const EventNodeInputParameters = ({ inputParametersLens, onPayloadChange }) => {
         </Grid>
       </Paper>
       <Divider style={{ marginTop: '20px' }}></Divider>
-      <AceEditor
-        annotations={annotations}
+      <Editor
         debounceChangePeriod={200}
-        mode='json'
+        theme='vs-light'
+        language='json'
+        autoIndent={true}
+        options={{
+          scrollBeyondLastLine: false,
+          smoothScrolling: true,
+          selectOnLineNumbers: true,
+          minimap: {
+            enabled: false
+          }
+        }}
         width='100%'
-        height='400px'
-        theme='tomorrow'
-        fontSize={16}
+        height='300px'
         value={localState}
         onChange={handleChange}
-        wrapEnabled={true}
       />
     </>
   )

@@ -147,6 +147,10 @@ const WorkflowContainer = () => {
   }, [isValid])
 
   const handleSave = useCallback(() => {
+    if (workflow?.tasks && engine.getModel().getLinks().length === 0) {
+      drawDiagram(workflow, engine, workflow?.readOnly, tasks?.getTaskDefinitionList)
+    }
+
     if (isValid()) {
       try {
         const jsonObject = parseDiagramToJSON(engine)
@@ -171,6 +175,7 @@ const WorkflowContainer = () => {
         showError(err)
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     createOrUpdateWorkflow,
     engine,
@@ -188,7 +193,9 @@ const WorkflowContainer = () => {
     workflow?.ownerEmail,
     workflow?.timeoutSeconds,
     workflow?.workflowStatusListenerEnabled,
-    workflowLens
+    workflowLens,
+    workflow?.tasks,
+    tasks?.getTaskDefinitionList
   ])
 
   const handleTaskDialogCancel = useCallback(() => {

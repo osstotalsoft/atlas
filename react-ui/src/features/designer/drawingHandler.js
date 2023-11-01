@@ -258,7 +258,7 @@ export const createNode = (engine, task, taskList, branchX = null, branchY = nul
       const { x, y } = calculatePosition(engine, branchX, branchY)
       const node = nodeConfig[task.type]?.getInstance(task)
       node.setPosition(x, y)
-      var taskDef = taskList.find(a => a.name === node.inputs.name)
+      var taskDef = taskList?.find(a => a.name === node.inputs.name)
       if (taskDef && taskDef.inputTemplate) {
         node.inputs.inputTemplate = taskDef.inputTemplate
         const templateKeys = keys(taskDef.inputTemplate)

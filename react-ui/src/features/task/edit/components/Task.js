@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -10,15 +10,11 @@ import { useHeader } from 'providers/AreasProvider'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { Autocomplete, TextField, Card, FakeText } from '@totalsoft/rocket-ui'
 import { getErrors, isValid } from '@totalsoft/pure-validations-react'
-import JsonLint from 'jsonlint-mod'
-import AceEditor from 'react-ace'
-import 'ace-builds/src-noconflict/mode-json'
-import 'ace-builds/src-noconflict/theme-tomorrow'
+import { Editor } from '@monaco-editor/react'
 
 const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutPolicyList, retryLogicList }) => {
   const { t } = useTranslation()
   const [, setHeader] = useHeader(<StandardHeader />)
-  const [annotations, setAnnotations] = useState()
 
   const task = taskLens |> get
   const {
@@ -46,14 +42,6 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
   const onInputTemplateChange = useCallback(
     value => {
       set(taskLens.inputTemplate, value)
-      try {
-        JsonLint.parse(value)
-        setAnnotations(null)
-      } catch (e) {
-        const row = parseInt(e.message.match(/Parse error on line (\d+)/)[1]) - 1
-        const annotation = { row, text: e.message, type: 'error' }
-        setAnnotations([annotation])
-      }
     },
     [taskLens.inputTemplate]
   )
@@ -166,18 +154,22 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <AceEditor
-                setOptions={{ useWorker: false }}
-                mode={'json'}
+              <Editor
+                theme='vs-light'
+                language='json'
+                autoIndent={true}
+                options={{
+                  scrollBeyondLastLine: false,
+                  smoothScrolling: true,
+                  selectOnLineNumbers: true,
+                  minimap: {
+                    enabled: false
+                  }
+                }}
                 width='100%'
                 height={'300px'}
-                theme='tomorrow'
-                fontSize={16}
-                annotations={annotations}
-                debounceChangePeriod={200}
                 value={inputTemplate}
                 onChange={onInputTemplateChange}
-                wrapEnabled={true}
               />
             </Grid>
           </Grid>

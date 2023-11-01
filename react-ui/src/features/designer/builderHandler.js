@@ -294,7 +294,7 @@ export const getTaskInputsRegex = t => {
 export const getTaskInputsWithTemplate = (input, template) => {
   if (!template) return input
 
-  var newInput = input
+  var newInput = { ...input }
   if (!newInput) newInput = {}
 
   const templateKeys = keys(template)
