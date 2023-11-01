@@ -112,8 +112,23 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   useEffect(() => {
     if (workflow.tasks) {
       setCurrentWorkflow(workflow)
+    } else {
+      if (isNew) {
+        setCurrentWorkflow({
+          name: '',
+          description: '',
+          version: 0,
+          tasks: [],
+          schemaVersion: 2,
+          restartable: true,
+          workflowStatusListenerEnabled: true,
+          ownerEmail: '',
+          timeoutPolicy: 'ALERT_ONLY',
+          timeoutSeconds: 0
+        })
+      }
     }
-  }, [workflow])
+  }, [workflow, isNew])
 
   const toggleExecDialog = useCallback(() => {
     setExecDialog(current => !current)

@@ -13,8 +13,8 @@ const GeneralSettingsModal = ({ workflowLens }) => {
   const workflow = workflowLens |> get
 
   const handleChange = useCallback(
-    propPath => event => {
-      set(workflowLens[propPath], event.target.value)
+    propPath => value => {
+      set(workflowLens[propPath], value)
     },
     [workflowLens]
   )

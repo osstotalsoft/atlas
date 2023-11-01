@@ -1,11 +1,9 @@
 import { DiagramModel } from '@projectstorm/react-diagrams-core'
-import Workflow2Graph from './workflowToGraph'
-import defaultTo from 'lodash/fp/defaultTo'
 import { isEmpty, toArray } from 'lodash'
 import StartNodeModel from './nodeModels/startNode/StartNodeModel'
 import EndNodeModel from './nodeModels/endNode/EndNodeModel'
 import { last, values, keys } from 'ramda'
-import { isDefault, nodeConfig } from './constants/NodeConfig'
+import { nodeConfig } from './constants/NodeConfig'
 import WorkflowDAG from './diagram/WorkflowDAG'
 
 export const clearDiagram = engine => {
@@ -15,7 +13,6 @@ export const clearDiagram = engine => {
 export const drawDiagram = (workflow, engine, locked, tasks) => {
   clearDiagram(engine)
   workflow.tasks.map(x => createNode(engine, x, tasks))
-  linkAllNodes(engine, workflow)
   appendStartAnd(engine, workflow)
   linkAllNodes(engine, workflow)
 
@@ -27,10 +24,7 @@ const getMatchingTaskRefNode = (engine, taskRefName) => {
 }
 
 const getGraphState = definition => {
-  const wfe2graph = new Workflow2Graph()
   const dag = new WorkflowDAG(null, definition)
-  const wfe = defaultTo({ tasks: [] })(null)
-  const { edges, vertices } = wfe2graph.convert(wfe, definition)
 
   return {
     edges: dag.graph.edges(),
@@ -39,7 +33,7 @@ const getGraphState = definition => {
 }
 
 // Links two nodes together ( out -> in )
-const linkNodes = (node1, node2, whichPort) => {
+const linkNodes = (node1, node2) => {
   if (node1.type === 'DECISION') {
     const decisionCase = Object.keys(node1.inputs.decisionCases).filter(a =>
       node1.inputs.decisionCases[a].some(a => a.taskReferenceName === node2.inputs.taskReferenceName)

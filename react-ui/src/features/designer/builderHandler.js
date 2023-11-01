@@ -181,10 +181,10 @@ const parseTaskToJSON = (link, parentNode, tasks) => {
         break
       case nodeConfig.DECISION.type: {
         const { decideNode, firstNeutralNode } = handleDecideNode(link.targetPort.getNode())
-        tasks.push({...decideNode.inputs, hasDefaultCase: undefined})
+        tasks.push({ ...decideNode.inputs, hasDefaultCase: undefined })
         if (firstNeutralNode) {
           if (firstNeutralNode.inputs && firstNeutralNode.inputs.taskReferenceName !== 'END') {
-            tasks.push({...firstNeutralNode.inputs, hasDefaultCase: undefined})
+            tasks.push({ ...firstNeutralNode.inputs, hasDefaultCase: undefined })
           }
           parentNode = firstNeutralNode
         }
@@ -205,17 +205,16 @@ const parseTaskToJSON = (link, parentNode, tasks) => {
             tasks.push({
               ...parentNode.inputs,
               asyncHandler: undefined,
-            inputTemplate: undefined,
+              inputTemplate: undefined,
               description: JSON.stringify({ description: parentNode.inputs.description, asyncHandler: parentNode.inputs['asyncHandler'] })
             })
           } else {
-          tasks.push({
-            ...parentNode.inputs,
-            asyncHandler: undefined,
-            inputTemplate: undefined
-          })
+            tasks.push({
+              ...parentNode.inputs,
+              asyncHandler: undefined,
+              inputTemplate: undefined
+            })
           }
-        }
         }
 
         break

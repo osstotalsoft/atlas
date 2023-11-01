@@ -18,7 +18,7 @@ import { get, set } from '@totalsoft/react-state-lens'
 import { getApplicationDiagram } from 'features/designer/diagram/getApplicationDiagram'
 import { cloneSelection, parseObjectParameters, updateCacheList, validateEngineWorkflow } from 'features/workflow/common/functions'
 import { useMutation } from '@apollo/client'
-import { useClientQueryWithErrorHandling, useError, useLocalQueryWithErrorHandling } from 'hooks/errorHandling'
+import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
 import { WORKFLOW_QUERY } from '../queries/WorkflowQuery'
 import { SidebarContext } from 'providers/SidebarProvider'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
@@ -80,11 +80,11 @@ const WorkflowContainer = () => {
   const toggleStartTourDialog = useCallback(() => showStartTourDialog(current => !current), [])
   const clientQuery = useClientQueryWithErrorHandling()
 
-  const { loading, data, error } = useLocalQueryWithErrorHandling(WORKFLOW_QUERY, {
+  const { loading, data, error } = useQueryWithErrorHandling(WORKFLOW_QUERY, {
     variables: { name, version, skip: isNew }
   })
 
-  const { data: tasks } = useLocalQueryWithErrorHandling(TASK_LIST_QUERY, {})
+  const { data: tasks } = useQueryWithErrorHandling(TASK_LIST_QUERY, {})
 
   const errorStatus = error?.graphQLErrors[0]?.extensions?.response?.status
 
@@ -147,7 +147,7 @@ const WorkflowContainer = () => {
   }, [isValid])
 
   const handleSave = useCallback(() => {
-    if (workflow?.tasks && engine.getModel().getLinks().length === 0) {
+    if (workflow?.tasks) {
       drawDiagram(workflow, engine, workflow?.readOnly, tasks?.getTaskDefinitionList)
     }
 
@@ -373,12 +373,11 @@ const WorkflowContainer = () => {
         title={t('Workflow.AddName')}
         disableBackdropClick
         maxWidth='sm'
-        showAc
         actions={[
-          <Button key='export' color='secondary' size='small' onClick={handleSave}>
+          <Button key='save' color='secondary' size='small' onClick={handleSave}>
             {t('General.Buttons.Save')}
           </Button>,
-          <Button key='export' color='primary' size='small' onClick={toggleNameDialog}>
+          <Button key='close' color='primary' size='small' onClick={toggleNameDialog}>
             {t('General.Buttons.Close')}
           </Button>
         ]}
