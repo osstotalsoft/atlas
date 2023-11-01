@@ -23,6 +23,8 @@ import { useLazyQuery } from '@apollo/client'
 import ExportDialog from './ExportDialog'
 import ImportDialog from './ImportDialog'
 import { IMPORT_WORKFLOW_MUTATION } from '../mutations/ImportMutation'
+import { useApolloLocalStorage } from 'hooks/apolloLocalStorage'
+import { workflowListFilter } from 'apollo/cacheKeyFunctions'
 
 const WorkflowListContainer = () => {
   const { t } = useTranslation()
@@ -64,7 +66,7 @@ const WorkflowListContainer = () => {
     [importWorkflows]
   )
 
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useApolloLocalStorage(workflowListFilter)
   const [cloneName, setCloneName] = useState()
   const [cloneVersion, setCloneVersion] = useState()
   const clientQuery = useClientQueryWithErrorHandling()

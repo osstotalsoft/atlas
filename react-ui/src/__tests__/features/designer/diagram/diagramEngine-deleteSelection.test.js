@@ -81,7 +81,7 @@ describe('Delete selection should work as expected', () => {
       .find(n => n.type == nodeConfig.DECISION.type)
     expect(removed).toBeUndefined()
     expect(engine.getModel().getNodes().length).toEqual(13)
-    expect(engine.getModel().getLinks().length).toEqual(12)
+    expect(engine.getModel().getLinks().length).toEqual(11)
   })
 
   it('Should delete the FORK node and its links from the model', () => {

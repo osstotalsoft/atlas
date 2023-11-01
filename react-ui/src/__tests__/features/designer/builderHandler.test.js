@@ -116,10 +116,11 @@ describe('builderHandler should work as expected', () => {
     const cases = keys({ case1: 'This is the first case', case2: 'This is the second case', case3: 'This is the third case' })
     decisionCasesToPorts(decisionNode, cases)
 
-    expect(decisionNode.getOutPorts().length).toEqual(3)
+    expect(decisionNode.getOutPorts().length).toEqual(4)
     expect(decisionNode.getOutPorts()[0].getOptions().label).toEqual('case1')
     expect(decisionNode.getOutPorts()[1].getOptions().label).toEqual('case2')
     expect(decisionNode.getOutPorts()[2].getOptions().label).toEqual('case3')
+    expect(decisionNode.getOutPorts()[3].getOptions().label).toEqual('default')
   })
 
   it('Should parse diagram to JSON. Even workflows containing decision in decision branches.', () => {

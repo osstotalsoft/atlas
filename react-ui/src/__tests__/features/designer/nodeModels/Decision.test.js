@@ -79,7 +79,7 @@ describe('Decision task settings should be properly set', () => {
 
     //no decision cases defined
     model.addAll(lambda, decision, event, http)
-    expect(decision.validate()[1]).toContain(errorMessages.atLeastOneCase)
+    expect(decision.validate()[1]).toContain(errorMessages.connectionError)
 
     const decision_out1 = decision.addOutPort('case1')
     const decision_out2 = decision.addOutPort('case2')
@@ -96,13 +96,15 @@ describe('Decision task settings should be properly set', () => {
     expect(decision.validate()[1]).toContain(errorMessages.notLinked)
 
     const link3 = decision_out2.link(http_in)
-
+    const decision_default = decision.getOutPorts()[0]
+    const defaultLink = decision_default.link(terminate_in)
     //linked correctly
     model.addAll(link3)
+    model.addAll(defaultLink)
+
+    //console.log(decision)
     expect(decision.validate()[0]).toBe(true)
-
     const link4 = decision_out2.link(terminate_in)
-
     //case2 is linked to twice
     model.addAll(link4)
     expect(decision.validate()[1]).toContain(errorMessages.caseMultipleLinks)

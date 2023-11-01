@@ -1,17 +1,16 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Box, Divider, Grid } from '@mui/material'
-import { TextField, IconButton, Typography } from '@totalsoft/rocket-ui'
+import { Divider, Grid } from '@mui/material'
+import { TextField, IconButton } from '@totalsoft/rocket-ui'
 import { makeStyles } from '@mui/styles'
 import { useTranslation } from 'react-i18next'
 import DecisionCasesList from './DecisionCasesList'
 import { emptyString } from 'utils/constants'
-import { set, get } from '@totalsoft/rules-algebra-react'
+import { set } from '@totalsoft/rules-algebra-react'
 import taskEditModalStyle from 'assets/jss/components/taskEditModalStyle'
 import Help from 'features/common/Help/Help'
 import CustomHelpIcon from 'features/common/Help/CustomHelpIcon'
 import { decisionHelpConfig } from 'features/common/Help/constants/SysTaskDefHelpConfig'
-import SwitchWithInternalState from 'features/common/components/SwitchWithInternalState'
 
 const useStyles = makeStyles(taskEditModalStyle)
 
@@ -19,9 +18,7 @@ const DecisionCasesForm = ({ inputsLens }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const inputs = inputsLens |> get
   const [localCase, setLocalCase] = useState()
-  const [defaultCase, setDefaultCase] = useState(inputs?.hasDefaultCase ? true : false)
 
   const handleAddCase = useCallback(() => {
     if (localCase) {
@@ -29,14 +26,6 @@ const DecisionCasesForm = ({ inputsLens }) => {
       setLocalCase(emptyString)
     }
   }, [inputsLens.decisionCases, localCase])
-
-  const handleDefaultCaseChange = useCallback(
-    value => {
-      setDefaultCase(value)
-      set(inputsLens.hasDefaultCase, value)
-    },
-    [inputsLens]
-  )
 
   const handleChange = useCallback(value => {
     setLocalCase(value)
@@ -72,18 +61,6 @@ const DecisionCasesForm = ({ inputsLens }) => {
       </Grid>
       <Grid item xs={12}>
         <Divider />
-      </Grid>
-      <Grid item container xs={12} spacing={2} style={{ minHeight: '90px' }} onKeyDown={handleKeyPressed}>
-        <Grid item xs={10} sm={10}>
-          <Box border={1} borderRadius={'4px'}>
-            <Typography variant='subtitle2' style={{ margin: '13px' }}>
-              {t('WorkflowTask.Decision.DefaultCase')}
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item container xs={2} alignItems='center'>
-          <SwitchWithInternalState checked={defaultCase} onChange={handleDefaultCaseChange} />
-        </Grid>
       </Grid>
       <Grid item container xs={12} spacing={2} className={classes.content}>
         <DecisionCasesList casesLens={inputsLens?.decisionCases} />

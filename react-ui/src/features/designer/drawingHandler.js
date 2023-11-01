@@ -6,6 +6,7 @@ import StartNodeModel from './nodeModels/startNode/StartNodeModel'
 import EndNodeModel from './nodeModels/endNode/EndNodeModel'
 import { last, values, keys } from 'ramda'
 import { isDefault, nodeConfig } from './constants/NodeConfig'
+import WorkflowDAG from './diagram/WorkflowDAG'
 
 export const clearDiagram = engine => {
   engine.model = new DiagramModel()
@@ -16,6 +17,8 @@ export const drawDiagram = (workflow, engine, locked, tasks) => {
   workflow.tasks.map(x => createNode(engine, x, tasks))
   linkAllNodes(engine, workflow)
   appendStartAnd(engine, workflow)
+  linkAllNodes(engine, workflow)
+
   engine.getModel().setLocked(locked)
 }
 
@@ -25,14 +28,35 @@ const getMatchingTaskRefNode = (engine, taskRefName) => {
 
 const getGraphState = definition => {
   const wfe2graph = new Workflow2Graph()
+  const dag = new WorkflowDAG(null, definition)
   const wfe = defaultTo({ tasks: [] })(null)
   const { edges, vertices } = wfe2graph.convert(wfe, definition)
 
-  return { edges, vertices }
+  return {
+    edges: dag.graph.edges(),
+    vertices: dag.graph.nodes()
+  }
 }
 
 // Links two nodes together ( out -> in )
 const linkNodes = (node1, node2, whichPort) => {
+  if (node1.type === 'DECISION') {
+    const decisionCase = Object.keys(node1.inputs.decisionCases).filter(a =>
+      node1.inputs.decisionCases[a].some(a => a.taskReferenceName === node2.inputs.taskReferenceName)
+    )[0]
+    if (!decisionCase) {
+      if (node1.ports['default']) {
+        const defaultPort = node1.ports['default']
+        return defaultPort.link(node2.getPort('in'))
+      }
+      return
+    }
+    const outPort = node1.ports[decisionCase]
+    return outPort.link(node2.getPort('in'))
+  }
+  const outPort = node1.getPort('out')
+  return outPort.link(node2.getPort('in'))
+  /*
   if (
     node1.type === 'FORK_JOIN' ||
     node1.type === 'JOIN' ||
@@ -76,12 +100,27 @@ const linkNodes = (node1, node2, whichPort) => {
     if (['FORK_JOIN', 'JOIN', 'END', 'FORK_JOIN_DYNAMIC', 'while', 'while_end'].includes(node2.type)) {
       return currentPort.link(node2.getPort('in'))
     }
-  }
+  }*/
 }
 
+const getTaskRefName = name => {
+  if (name === '__start') return 'START'
+  if (name === '__final') return 'END'
+
+  return name
+}
 export const linkAllNodes = (engine, definition) => {
   const { edges } = getGraphState(definition)
 
+  edges.forEach(edge => {
+    const fromNode = getMatchingTaskRefNode(engine, getTaskRefName(edge.v))
+    const toNode = getMatchingTaskRefNode(engine, getTaskRefName(edge.w))
+    const link = linkNodes(fromNode, toNode)
+    if (link) {
+      engine.model.addLink(link)
+    }
+  })
+  /*
   let fromPortIndex = []
   edges.forEach(edge => {
     if (edge.from !== 'START' && edge.to !== 'END') {
@@ -120,7 +159,7 @@ export const linkAllNodes = (engine, definition) => {
           break
       }
     }
-  })
+  })*/
 }
 
 const getMostRightNodeX = engine => {
@@ -163,7 +202,7 @@ const calculatePosition = (engine, branchX, branchY) => {
     x = branchX
   }
   if (branchY) {
-    y = branchY
+    y = branchY - 100
   }
 
   return { x, y }
@@ -299,12 +338,12 @@ export const appendStartAnd = (engine, definition) => {
   const lastNode = last(engine.model.getNodes())
 
   const { edges } = getGraphState(definition)
-  const lastNodes = edges.filter(a => a.to === 'END')
+  const lastNodes = edges.filter(a => a.to === '__end')
   let max = 0
   let lastLinks = []
   if (lastNodes.length > 0) {
     lastNodes.forEach(node => {
-      const eNode = getMatchingTaskRefNode(engine, node.from)
+      const eNode = getMatchingTaskRefNode(engine, node.v)
       if (eNode.position.x > max) {
         max = eNode.position.x
       }
@@ -316,10 +355,10 @@ export const appendStartAnd = (engine, definition) => {
   }
 
   const startNode = placeStartNode(engine, firstNode.position.x - 200, firstNode.position.y)
-  const endNode = placeEndNode(engine, max + getNodeWidth(lastNode) + 170, lastNode.position.y)
+  const endNode = placeEndNode(engine, max + getNodeWidth(lastNode) + 170, firstNode.position.y)
 
-  const firstLink = linkNodes(startNode, firstNode)
+  //const firstLink = linkNodes(startNode, firstNode)
 
-  engine.model.addAll(startNode, endNode, firstLink, ...lastLinks)
-  lastLinks.forEach(node => engine.model.addAll(linkNodes(node, endNode)))
+  engine.model.addAll(startNode, endNode) //, firstLink, ...lastLinks)
+  //lastLinks.forEach(node => engine.model.addAll(linkNodes(node, endNode)))
 }
