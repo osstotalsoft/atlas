@@ -1,6 +1,6 @@
 import { DefaultNodeModel, DefaultPortModel } from '@projectstorm/react-diagrams'
 import { nodeConfig } from 'features/designer/constants/NodeConfig'
-import { getTaskInputsRegex } from 'features/designer/builderHandler'
+import { getTaskInputsRegex, getTaskInputsWithTemplate } from 'features/designer/builderHandler'
 import { hash } from 'utils/functions'
 import { anyInOneOut } from '../validations'
 
@@ -12,7 +12,8 @@ export default class TaskNodeModel extends DefaultNodeModel {
 
     this.inputs = {
       name: task?.name ?? name,
-      inputParameters: task?.inputParameters ?? getTaskInputsRegex(task),
+      inputParameters: getTaskInputsWithTemplate(task?.inputParameters, task?.inputTemplate) ?? getTaskInputsRegex(task),
+      inputTemplate: task?.inputTemplate,
       taskReferenceName: task?.taskReferenceName ?? task?.name?.toLowerCase()?.trim() + '_ref_' + hash(),
       type: task?.type ?? type,
       description: task?.description,

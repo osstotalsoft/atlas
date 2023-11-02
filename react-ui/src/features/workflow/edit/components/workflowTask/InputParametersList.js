@@ -4,9 +4,11 @@ import { Grid } from '@mui/material'
 import InputParameterItem from './InputParameterItem'
 import { get, over } from '@totalsoft/rules-algebra-react'
 import { dissoc, keys } from 'ramda'
-function InputParametersList({ inputParametersLens }) {
+
+function InputParametersList({ inputParametersLens, inputTemplate }) {
   const inputParameters = inputParametersLens |> get
   const properties = keys(inputParameters)
+  const template = inputTemplate ? keys(inputTemplate |> get) : []
 
   const handleRemoveItem = useCallback(
     key => () => {
@@ -20,7 +22,14 @@ function InputParametersList({ inputParametersLens }) {
       {properties?.map(
         (param, index) =>
           param !== 'scriptExpression' && (
-            <InputParameterItem key={index} valueLens={inputParametersLens[param]} param={param} onRemove={handleRemoveItem(param)} />
+            <InputParameterItem
+              key={index}
+              valueLens={inputParametersLens[param]}
+              param={param}
+              isFromTemplate={template.includes(param)}
+              typeFromTemplate={inputTemplate ? (inputTemplate[param] |> get) : ''}
+              onRemove={handleRemoveItem(param)}
+            />
           )
       )}
     </Grid>
@@ -28,7 +37,8 @@ function InputParametersList({ inputParametersLens }) {
 }
 
 InputParametersList.propTypes = {
-  inputParametersLens: PropTypes.object.isRequired
+  inputParametersLens: PropTypes.object.isRequired,
+  inputTemplate: PropTypes.object
 }
 
 export default InputParametersList

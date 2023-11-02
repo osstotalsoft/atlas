@@ -1,6 +1,4 @@
-import 'ace-builds/src-noconflict/mode-javascript'
-import 'ace-builds/src-noconflict/theme-tomorrow'
-import AceEditor from 'react-ace'
+import Editor from '@monaco-editor/react'
 import { get, set } from '@totalsoft/rules-algebra-react'
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -37,16 +35,22 @@ const DecisionLogicForm = ({ inputsLens, toggle }) => {
         </Grid>
       )}
       {caseExpression && (
-        <AceEditor
-          setOptions={{ useWorker: false }}
-          mode={'javascript'}
+        <Editor
+          language='javascript'
           width='100%'
           height={'300px'}
-          theme='tomorrow'
-          fontSize={16}
+          theme='vs-light'
           value={(inputsLens?.caseExpression |> get) || emptyString}
           onChange={inputsLens.caseExpression |> set}
-          wrapEnabled={true}
+          autoIndent={true}
+          options={{
+            scrollBeyondLastLine: false,
+            smoothScrolling: true,
+            selectOnLineNumbers: true,
+            minimap: {
+              enabled: false
+            }
+          }}
         />
       )}
     </>

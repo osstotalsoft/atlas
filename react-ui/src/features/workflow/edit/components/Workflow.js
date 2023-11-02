@@ -27,13 +27,16 @@ import SideMenu from './sideMenu/SideMenu'
 import PreviewJsonDialog from './modals/PreviewJsonDialog'
 import { defaultFileName } from 'features/workflow/common/constants'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
-import { useToast } from '@totalsoft/rocket-ui'
+import { useToast, Dialog } from '@totalsoft/rocket-ui'
+import WorkflowJson from './WorkflowJson'
+import JsonViewer from 'features/common/components/JsonViewer'
 
-const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty }) => {
+const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty, taskDefs }) => {
   const { t } = useTranslation()
   const showError = useError()
   const addToast = useToast()
 
+  const [viewType, setViewType] = useState('draw')
   const { oidcUser } = useReactOidc()
   const clientQuery = useClientQueryWithErrorHandling()
 
@@ -45,9 +48,13 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const [settingsDialog, setSettingsDialog] = useState(false)
   const [previewDialog, setPreviewDialog] = useState(false)
   const [currentWorkflow, setCurrentWorkflow] = useState(null)
+  const [startHandlersDialog, showStartHandlersDialog] = useState(false)
 
+  const toggleStartHandlersDialog = useCallback(() => showStartHandlersDialog(current => !current), [])
   const workflow = workflowLens |> get
   const { engine } = diagram
+
+  const handleChangeViewType = useCallback((event, value) => setViewType(value), [setViewType])
 
   const [runWfQuery, { called: wfCalled, loading: loadingWf, data: wfData }] = useLazyQuery(WORKFLOW_LIST_QUERY)
   const [runTskQuery, { called: tskCalled, loading: loadingTsk, data: tskData }] = useLazyQuery(TASK_LIST_QUERY)
@@ -84,7 +91,8 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
           color: nodeConfig.TASK.color,
           isSystemTask: false,
           workflow: wfl,
-          inputKeys: wfl.inputKeys
+          inputKeys: wfl.inputKeys,
+          inputTemplate: wfl.inputTemplate
         }))
         setTrayItems(trayList)
         break
@@ -103,6 +111,27 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
     wfCalled,
     wfData?.getWorkflowList
   ])
+
+  useEffect(() => {
+    if (workflow.tasks) {
+      setCurrentWorkflow(workflow)
+    } else {
+      if (isNew) {
+        setCurrentWorkflow({
+          name: '',
+          description: '',
+          version: 0,
+          tasks: [],
+          schemaVersion: 2,
+          restartable: true,
+          workflowStatusListenerEnabled: true,
+          ownerEmail: '',
+          timeoutPolicy: 'ALERT_ONLY',
+          timeoutSeconds: 0
+        })
+      }
+    }
+  }, [workflow, isNew])
 
   const toggleExecDialog = useCallback(() => {
     setExecDialog(current => !current)
@@ -216,6 +245,13 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const handleUndo = useCallback(() => diagram.undo(), [diagram])
   const handleRedo = useCallback(() => diagram.redo(), [diagram])
 
+  const onChangeJson = useCallback(
+    v => {
+      resetWorkflow(JSON.parse(v))
+    },
+    [resetWorkflow]
+  )
+
   if (loading) {
     return <FakeText lines={3} />
   }
@@ -233,10 +269,29 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         onDelete={handleDelete}
         onUndo={handleUndo}
         onRedo={handleRedo}
+        viewType={viewType}
+        handleViewType={handleChangeViewType}
+        onViewStartHandler={toggleStartHandlersDialog}
       />
-      <TrayWidgetList trayItems={trayItems} activeTask={activeTask} setActiveTask={setActiveTask} />
-      <BodyWidget canvasClass={'dataflow-canvas-fullscreen'} workflow={workflow} engine={engine} setIsDirty={setIsDirty} locked={false} />
-      <SideMenu workflow={workflow}></SideMenu>
+      {viewType === 'draw' && (
+        <React.Fragment>
+          <TrayWidgetList trayItems={trayItems} activeTask={activeTask} setActiveTask={setActiveTask} />
+          <BodyWidget
+            canvasClass={'dataflow-canvas-fullscreen'}
+            workflow={workflow}
+            taskDefs={taskDefs}
+            engine={engine}
+            setIsDirty={setIsDirty}
+            locked={false}
+          />
+          <SideMenu workflow={workflow}></SideMenu>
+        </React.Fragment>
+      )}
+      {viewType === 'json' && currentWorkflow && (
+        <React.Fragment>
+          <WorkflowJson workflow={currentWorkflow} loading={loading} onChangeJson={onChangeJson} />
+        </React.Fragment>
+      )}
       {execDialog && (
         <ExecuteWorkflowModal
           open={execDialog}
@@ -252,6 +307,14 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         workflowLens={workflowLens}
       />
       <PreviewJsonDialog open={previewDialog} onClose={togglePreviewDialog} workflow={currentWorkflow || emptyObject} />
+
+      <Dialog
+        id='startHandlers'
+        open={startHandlersDialog}
+        title={t('Designer.UtilitiesBar.StartHandler')}
+        onClose={toggleStartHandlersDialog}
+        content={<JsonViewer workflow={{ StartHandlers: workflow?.startHandlers }} />}
+      />
     </>
   )
 }
@@ -263,7 +326,8 @@ Workflow.propTypes = {
   isNew: PropTypes.bool.isRequired,
   diagram: PropTypes.object.isRequired,
   workflowLens: PropTypes.object.isRequired,
-  setIsDirty: PropTypes.func.isRequired
+  setIsDirty: PropTypes.func.isRequired,
+  taskDefs: PropTypes.array
 }
 
 export default Workflow

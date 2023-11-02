@@ -9,7 +9,7 @@ import InputParametersHeader from './InputParametersHeader'
 import { Divider } from '@mui/material'
 import EventNodeInputParameters from 'features/designer/nodeModels/eventNode/EventNodeInputParameters'
 
-const InputParameters = ({ inputParametersLens, nodeType, onPayloadChange }) => {
+const InputParameters = ({ inputParametersLens, inputTemplate, nodeType, onPayloadChange }) => {
   const renderInputParameters = type => {
     switch (type) {
       case nodeConfig.HTTP.type:
@@ -36,7 +36,7 @@ const InputParameters = ({ inputParametersLens, nodeType, onPayloadChange }) => 
           <>
             <InputParametersHeader inputParametersLens={inputParametersLens} />
             <Divider style={{ marginTop: '10px', marginBottom: '10px' }} />
-            <InputParametersList inputParametersLens={inputParametersLens} />
+            <InputParametersList inputParametersLens={inputParametersLens} inputTemplate={inputTemplate} />
           </>
         )
     }
@@ -46,6 +46,7 @@ const InputParameters = ({ inputParametersLens, nodeType, onPayloadChange }) => 
 
 InputParameters.propTypes = {
   inputParametersLens: PropTypes.object.isRequired,
+  inputTemplate: PropTypes.object,
   nodeType: PropTypes.string.isRequired,
   onPayloadChange: PropTypes.func.isRequired
 }

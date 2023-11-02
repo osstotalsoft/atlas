@@ -33,6 +33,7 @@ import { NotFound } from '@totalsoft/rocket-ui'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
 import { skipParametersByParsing } from 'features/workflow/common/constants'
 import { CREATE_UPDATE_WORKFLOW_MUTATION } from '../mutations/CreateOrUpdateWorkflowMutation'
+import { TASK_LIST_QUERY } from 'features/task/list/queries/TaskListQuery'
 
 const WorkflowContainer = () => {
   const { t } = useTranslation()
@@ -73,7 +74,7 @@ const WorkflowContainer = () => {
   const [nameDialog, showNameDialog] = useState(false)
   const [tourDialog, showTourDialog] = useState(false)
   const [startTourDialog, showStartTourDialog] = useState(false)
-
+ 
   const toggleNameDialog = useCallback(() => showNameDialog(current => !current), [])
   const toggleTourDialog = useCallback(() => showTourDialog(current => !current), [])
   const toggleStartTourDialog = useCallback(() => showStartTourDialog(current => !current), [])
@@ -82,6 +83,8 @@ const WorkflowContainer = () => {
   const { loading, data, error } = useQueryWithErrorHandling(WORKFLOW_QUERY, {
     variables: { name, version, skip: isNew }
   })
+
+  const { data: tasks } = useQueryWithErrorHandling(TASK_LIST_QUERY, {})
 
   const errorStatus = error?.graphQLErrors[0]?.extensions?.response?.status
 
@@ -144,6 +147,10 @@ const WorkflowContainer = () => {
   }, [isValid])
 
   const handleSave = useCallback(() => {
+    if (workflow?.tasks) {
+      drawDiagram(workflow, engine, workflow?.readOnly, tasks?.getTaskDefinitionList)
+    }
+
     if (isValid()) {
       try {
         const jsonObject = parseDiagramToJSON(engine)
@@ -168,6 +175,7 @@ const WorkflowContainer = () => {
         showError(err)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     createOrUpdateWorkflow,
     engine,
@@ -185,7 +193,9 @@ const WorkflowContainer = () => {
     workflow?.ownerEmail,
     workflow?.timeoutSeconds,
     workflow?.workflowStatusListenerEnabled,
-    workflowLens
+    workflowLens,
+    workflow?.tasks,
+    tasks?.getTaskDefinitionList
   ])
 
   const handleTaskDialogCancel = useCallback(() => {
@@ -227,16 +237,13 @@ const WorkflowContainer = () => {
     parseObjectParameters(node.inputs, skipParametersByParsing)
 
     node.options.name = inputs?.inputs?.name
-    if (
-      inputs?.inputs.type === nodeConfig.DECISION.type &&
-      (isPropertyDirty('inputs.decisionCases', inputsDirtyInfo))
-    ) {
+    if (inputs?.inputs.type === nodeConfig.DECISION.type && isPropertyDirty('inputs.decisionCases', inputsDirtyInfo)) {
       const cases = keys(inputs?.inputs?.decisionCases)
       decisionCasesToPorts(node, cases)
     }
     if (inputs?.inputs?.type === nodeConfig.EVENT.type) {
       try {
-        node.options.name = inputs?.inputs?.taskReferenceName;
+        node.options.name = inputs?.inputs?.taskReferenceName
         if (localPayload) {
           const payload = JSON.parse(localPayload)
           node.inputs.inputParameters =
@@ -335,6 +342,7 @@ const WorkflowContainer = () => {
         diagram={diagram}
         loading={loading}
         isDirty={isDirty}
+        taskDefs={tasks?.getTaskDefinitionList}
         setIsDirty={setIsDirty}
       />
       <Dialog
@@ -362,12 +370,11 @@ const WorkflowContainer = () => {
         title={t('Workflow.AddName')}
         disableBackdropClick
         maxWidth='sm'
-        showAc
         actions={[
-          <Button key='export' color='secondary' size='small' onClick={handleSave}>
+          <Button key='save' color='secondary' size='small' onClick={handleSave}>
             {t('General.Buttons.Save')}
           </Button>,
-          <Button key='export' color='primary' size='small' onClick={toggleNameDialog}>
+          <Button key='close' color='primary' size='small' onClick={toggleNameDialog}>
             {t('General.Buttons.Close')}
           </Button>
         ]}

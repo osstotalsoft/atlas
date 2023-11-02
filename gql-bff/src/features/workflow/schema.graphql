@@ -1,5 +1,6 @@
 extend type WorkflowDef {
-  readOnly: Boolean
+  readOnly: Boolean,
+  startHandlers: [EventHandler]
 }
 
 type ExportWorkflows {

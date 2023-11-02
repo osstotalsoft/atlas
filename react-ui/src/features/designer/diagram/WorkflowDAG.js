@@ -210,7 +210,7 @@ export default class WorkflowDAG {
 
     retval.push(
       ..._.flatten(
-        Object.entries(decisionTask.decisionCases).map(([caseValue, tasks]) => {
+        Object.entries(decisionTask.decisionCases).map(([_caseValue, tasks]) => {
           return this.processTaskList(tasks, [decisionTask]);
         })
       )
@@ -233,11 +233,11 @@ export default class WorkflowDAG {
     if (!forkedTasksCount) {
       const placeholderRef = dfTask.taskReferenceName + "_DF_EMPTY_PLACEHOLDER";
 
-      const placeholderTask = {
+      /*const placeholderTask = {
         name: placeholderRef, // will be overwritten if results available
         taskReferenceName: placeholderRef, // will be overwritten if results available
         type: "DF_EMPTY_PLACEHOLDER",
-      };
+      };*/
 
       if (_.get(dfTaskResult, "status")) {
         // Edge case: Backfill placeholder status for 'no tasks spawned'.
@@ -325,7 +325,7 @@ export default class WorkflowDAG {
         lastLoopTask?.type === "DECISION"
       ) {
         Object.entries(lastLoopTask.decisionCases).forEach(
-          ([caseValue, tasks]) => {
+          ([_caseValue, tasks]) => {
             const lastTaskInCase = _.last(tasks);
             this.addVertex(endDoWhileTask, [lastTaskInCase]);
           }

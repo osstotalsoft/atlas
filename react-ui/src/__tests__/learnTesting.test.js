@@ -53,7 +53,7 @@ describe('Here I learn good testing techniques', () => {
   it('Should call this function only with numbers', () => {
     const mock = jest.fn()
     ;[(1, 2, 3)] |> map(mock)
-    expect(mock).toBeCalledWith(expect.anything())
+    expect(mock).toHaveBeenCalledWith(expect.anything())
   })
 
   it('Should filter the the list', () => {

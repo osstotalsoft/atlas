@@ -18,6 +18,7 @@ export const TASK_QUERY = gql`
       rateLimitFrequencyInSeconds
       inputKeys
       outputKeys
+      inputTemplate
     }
   }
 `

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Grid } from '@mui/material'
@@ -11,16 +11,11 @@ import { Card, FakeText, Autocomplete } from '@totalsoft/rocket-ui'
 import { Info } from '@mui/icons-material'
 import { Typography } from '@totalsoft/rocket-ui'
 import { get, set } from '@totalsoft/react-state-lens'
-import JsonLint from 'jsonlint-mod'
-import AceEditor from 'react-ace'
-import 'ace-builds/src-noconflict/mode-json'
-import 'ace-builds/src-noconflict/theme-tomorrow'
+import Editor from '@monaco-editor/react'
 
 const ScheduleData = ({ scheduleLens, validation, loading, workflows }) => {
   const { t } = useTranslation()
   const schedule = scheduleLens |> get
-
-  const [annotations, setAnnotations] = useState()
 
   const handleActiveChanged = useCallback(() => {
     set(scheduleLens.enabled, !schedule?.enabled)
@@ -44,14 +39,6 @@ const ScheduleData = ({ scheduleLens, validation, loading, workflows }) => {
   const onContextChange = useCallback(
     value => {
       set(scheduleLens.workflowContext, value)
-      try {
-        JsonLint.parse(value)
-        setAnnotations(null)
-      } catch (e) {
-        const row = parseInt(e.message.match(/Parse error on line (\d+)/)[1]) - 1
-        const annotation = { row, text: e.message, type: 'error' }
-        setAnnotations([annotation])
-      }
     },
     [scheduleLens.workflowContext]
   )
@@ -122,18 +109,22 @@ const ScheduleData = ({ scheduleLens, validation, loading, workflows }) => {
 
         <Grid item xs={12} sm={12} lg={12}>
           <Typography variant='body1'>{t('Schedule.WorkflowContext')}</Typography>
-          <AceEditor
-            setOptions={{ useWorker: false }}
-            mode={'json'}
+          <Editor
+            theme='vs-light'
+            language='json'
+            autoIndent={true}
+            options={{
+              scrollBeyondLastLine: false,
+              smoothScrolling: true,
+              selectOnLineNumbers: true,
+              minimap: {
+                enabled: false
+              }
+            }}
             width='100%'
             height={'300px'}
-            theme='tomorrow'
-            fontSize={16}
-            annotations={annotations}
-            debounceChangePeriod={200}
             value={(scheduleLens?.workflowContext |> get) || emptyString}
             onChange={onContextChange}
-            wrapEnabled={true}
           />
         </Grid>
       </Grid>

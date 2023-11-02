@@ -307,7 +307,8 @@
       "Export": "Exporta ca JSON",
       "Delete": "Sterge selectia",
       "Execute": "Executa fluxul",
-      "GeneralSettings": "Setari generale"
+      "GeneralSettings": "Setari generale",
+      "StartHandler": "Start Event Handlers"
     },
     "Tour": {
       "BadgeContent": "{{curr}} din {{tot}}",

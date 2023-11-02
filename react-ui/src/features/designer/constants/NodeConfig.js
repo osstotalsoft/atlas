@@ -87,7 +87,7 @@ const nodeConfigData = {
   },
   TASK: {
     name: 'TASK',
-    type: 'TASK',
+    type: 'SIMPLE',
     color: 'rgb(123,132,220)',
     hasParametersTab: true,
     getInstance: task => new TaskNodeModel(task)

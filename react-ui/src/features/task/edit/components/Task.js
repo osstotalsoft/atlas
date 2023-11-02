@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import { useHeader } from 'providers/AreasProvider'
 import { onTextBoxChange } from 'utils/propertyChangeAdapters'
 import { Autocomplete, TextField, Card, FakeText } from '@totalsoft/rocket-ui'
 import { getErrors, isValid } from '@totalsoft/pure-validations-react'
+import { Editor } from '@monaco-editor/react'
 
 const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutPolicyList, retryLogicList }) => {
   const { t } = useTranslation()
@@ -28,7 +29,8 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
     timeoutSeconds,
     responseTimeoutSeconds,
     inputKeys,
-    outputKeys
+    outputKeys,
+    inputTemplate
   } = task
 
   const createTime = t('DATE_FORMAT', { date: { value: taskLens?.createTime |> get, format: 'DD-MM-YYYY HH:mm:ss' } })
@@ -36,6 +38,13 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
   useEffect(() => {
     setHeader(<StandardHeader headerText={name} path='/tasks' saving={saving} onSave={onSave} disableSaving={!isDirty || readOnly} />)
   }, [isDirty, name, onSave, readOnly, saving, setHeader])
+
+  const onInputTemplateChange = useCallback(
+    value => {
+      set(taskLens.inputTemplate, value)
+    },
+    [taskLens.inputTemplate]
+  )
 
   if (loading) {
     return <FakeText lines={3} />
@@ -142,6 +151,25 @@ const Task = ({ taskLens, validation, loading, saving, onSave, isDirty, timeoutP
                 label={t('Task.OutputKeys')}
                 value={outputKeys || emptyString}
                 onChange={taskLens.outputKeys |> set |> onTextBoxChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} lg={12}>
+              <Editor
+                theme='vs-light'
+                language='json'
+                autoIndent={true}
+                options={{
+                  scrollBeyondLastLine: false,
+                  smoothScrolling: true,
+                  selectOnLineNumbers: true,
+                  minimap: {
+                    enabled: false
+                  }
+                }}
+                width='100%'
+                height={'300px'}
+                value={inputTemplate}
+                onChange={onInputTemplateChange}
               />
             </Grid>
           </Grid>
