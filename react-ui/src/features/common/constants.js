@@ -13,4 +13,4 @@ export const sortingDirection = {
   DESC: 'DESC'
 }
 
-export const fieldsToBeRemoved = ['__typename', 'historyId', 'readOnly']
+export const fieldsToBeRemoved = ['__typename', 'historyId', 'readOnly', 'startHandlers']

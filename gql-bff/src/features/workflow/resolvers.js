@@ -18,7 +18,15 @@ const workflowResolvers = {
       const { dataSources, tenant } = context;
 
       const workflow = await dataSources.workflowApi.getWorkflow(name, version);
-      if (!isMultiTenant) return workflow;
+      const conductorHandlers =
+        await dataSources.eventHandlerApi.getEventHandlerList();
+      const startHandlers = conductorHandlers.filter((a) =>
+        a.actions.some(
+          (x) =>
+            x.action === "start_workflow" && x?.start_workflow?.name === name
+        )
+      );
+      if (!isMultiTenant) return { ...workflow, startHandlers };
 
       const wfTenantId = getTenantIdFromDescription(workflow?.description);
       if (userCanSeeResource(wfTenantId, tenant?.id)) {

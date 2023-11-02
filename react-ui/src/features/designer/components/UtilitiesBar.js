@@ -11,14 +11,14 @@ import {
   Redo,
   DescriptionOutlined,
   SettingsOutlined
-} from '@mui/icons-material'
+  } from '@mui/icons-material'
 import PlayCircleIcon from '@mui/icons-material/PlayCircleOutline'
+import StartIcon from '@mui/icons-material/Start';
 import PolylineIcon from '@mui/icons-material/Polyline'
 import AbcIcon from '@mui/icons-material/Abc'
 import { Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import styles from '../styles/styles'
-
 const useStyles = makeStyles(styles)
 
 const UtilitiesBar = ({
@@ -33,7 +33,8 @@ const UtilitiesBar = ({
   onUndo,
   onRedo,
   viewType,
-  handleViewType
+  handleViewType,
+  onViewStartHandler
 }) => {
   const { t } = useTranslation()
   const classes = useStyles()
@@ -107,8 +108,12 @@ const UtilitiesBar = ({
             </IconButton>
           </>
         )}
+        <IconButton variant='text' color='secondary' tooltip={t('Designer.UtilitiesBar.StartHandler')} onClick={onViewStartHandler}>
+          <StartIcon />
+        </IconButton>
+
         <ToggleButtonGroup value={viewType} exclusive onChange={handleViewType} aria-label='view type'>
-          <ToggleButton style={{ color: '#26C6DA' }} color='secondary' value='draw' aria-label='draw'>
+          <ToggleButton color='secondary' value='draw' aria-label='draw'>
             <PolylineIcon />
           </ToggleButton>
           <ToggleButton color='secondary' value='json' aria-label='json'>
@@ -132,7 +137,8 @@ UtilitiesBar.propTypes = {
   onUndo: PropTypes.func.isRequired,
   onRedo: PropTypes.func.isRequired,
   viewType: PropTypes.string.isRequired,
-  handleViewType: PropTypes.func.isRequired
+  handleViewType: PropTypes.func.isRequired,
+  onViewStartHandler: PropTypes.func.isRequired
 }
 
 export default UtilitiesBar

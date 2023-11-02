@@ -74,7 +74,7 @@ const WorkflowContainer = () => {
   const [nameDialog, showNameDialog] = useState(false)
   const [tourDialog, showTourDialog] = useState(false)
   const [startTourDialog, showStartTourDialog] = useState(false)
-
+ 
   const toggleNameDialog = useCallback(() => showNameDialog(current => !current), [])
   const toggleTourDialog = useCallback(() => showTourDialog(current => !current), [])
   const toggleStartTourDialog = useCallback(() => showStartTourDialog(current => !current), [])
@@ -175,7 +175,7 @@ const WorkflowContainer = () => {
         showError(err)
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     createOrUpdateWorkflow,
     engine,
@@ -237,10 +237,7 @@ const WorkflowContainer = () => {
     parseObjectParameters(node.inputs, skipParametersByParsing)
 
     node.options.name = inputs?.inputs?.name
-    if (
-      inputs?.inputs.type === nodeConfig.DECISION.type &&
-      (isPropertyDirty('inputs.decisionCases', inputsDirtyInfo))
-    ) {
+    if (inputs?.inputs.type === nodeConfig.DECISION.type && isPropertyDirty('inputs.decisionCases', inputsDirtyInfo)) {
       const cases = keys(inputs?.inputs?.decisionCases)
       decisionCasesToPorts(node, cases)
     }

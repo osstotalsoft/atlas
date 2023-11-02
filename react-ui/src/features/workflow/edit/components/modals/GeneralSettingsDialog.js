@@ -12,6 +12,7 @@ const GeneralSettingsDialog = ({ open, onClose, onYes, workflowLens }) => {
     <Dialog
       id='generalSettings'
       open={open}
+      onClose={onClose}
       actions={[
         <Button key={1} color='primary' size='small' style={{ marginRight: '20px' }} onClick={onYes}>
           {t('General.Buttons.Save')}

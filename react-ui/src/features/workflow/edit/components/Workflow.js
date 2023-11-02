@@ -27,8 +27,9 @@ import SideMenu from './sideMenu/SideMenu'
 import PreviewJsonDialog from './modals/PreviewJsonDialog'
 import { defaultFileName } from 'features/workflow/common/constants'
 import workflowConfig from 'features/designer/constants/WorkflowConfig'
-import { useToast } from '@totalsoft/rocket-ui'
+import { useToast, Dialog } from '@totalsoft/rocket-ui'
 import WorkflowJson from './WorkflowJson'
+import JsonViewer from 'features/common/components/JsonViewer'
 
 const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty, taskDefs }) => {
   const { t } = useTranslation()
@@ -47,7 +48,9 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const [settingsDialog, setSettingsDialog] = useState(false)
   const [previewDialog, setPreviewDialog] = useState(false)
   const [currentWorkflow, setCurrentWorkflow] = useState(null)
+  const [startHandlersDialog, showStartHandlersDialog] = useState(false)
 
+  const toggleStartHandlersDialog = useCallback(() => showStartHandlersDialog(current => !current), [])
   const workflow = workflowLens |> get
   const { engine } = diagram
 
@@ -268,6 +271,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         onRedo={handleRedo}
         viewType={viewType}
         handleViewType={handleChangeViewType}
+        onViewStartHandler={toggleStartHandlersDialog}
       />
       {viewType === 'draw' && (
         <React.Fragment>
@@ -303,6 +307,14 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         workflowLens={workflowLens}
       />
       <PreviewJsonDialog open={previewDialog} onClose={togglePreviewDialog} workflow={currentWorkflow || emptyObject} />
+
+      <Dialog
+        id='startHandlers'
+        open={startHandlersDialog}
+        title={t('Designer.UtilitiesBar.StartHandler')}
+        onClose={toggleStartHandlersDialog}
+        content={<JsonViewer workflow={{ StartHandlers: workflow?.startHandlers }} />}
+      />
     </>
   )
 }

@@ -332,7 +332,8 @@
       "Export": "Export as JSON",
       "Delete": "Delete selection",
       "Execute": "Execute workflow",
-      "GeneralSettings": "General settings"
+      "GeneralSettings": "General settings",
+      "StartHandler": "Start Event Handlers"
     },
     "Tour": {
       "BadgeContent": "{{curr}} of {{tot}}",
