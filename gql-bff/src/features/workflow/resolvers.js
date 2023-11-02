@@ -30,7 +30,7 @@ const workflowResolvers = {
 
       const wfTenantId = getTenantIdFromDescription(workflow?.description);
       if (userCanSeeResource(wfTenantId, tenant?.id)) {
-        return workflow;
+        return { ...workflow, startHandlers };
       } else
         return new ForbiddenError(
           "You are not authorized to see this workflow."
