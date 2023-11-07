@@ -5,7 +5,7 @@ import WorkflowListFilter from './WorkflowListFilter'
 import { WORKFLOW_LIST_QUERY, WORKFLOW_EXPORT_QUERY } from '../queries/WorkflowListQuery'
 import { DELETE_WORKFLOW_MUTATION } from '../mutations/DeleteWorkflowMutation'
 import { useClientQueryWithErrorHandling, useError, useQueryWithErrorHandling } from 'hooks/errorHandling'
-import { filterList, sortBy } from 'utils/functions'
+import { filterList, sortBy, validateEmail } from 'utils/functions'
 import { fieldsToBeRemoved, sortingDirection, sortWorkflowsByField } from 'features/common/constants'
 import { defaults } from 'apollo/defaultCacheData'
 import { workflowsPager } from 'apollo/cacheKeyFunctions'
@@ -137,7 +137,7 @@ const WorkflowListContainer = () => {
               name: futureCloneName,
               version: futureCloneVersion,
               createdBy: oidcUser?.profile.name,
-              ownerEmail: oidcUser?.profile.preferred_username,
+              ownerEmail: validateEmail(oidcUser?.profile.preferred_username) ? oidcUser?.profile.preferred_username : 'example@email.com',
               timeoutSeconds: workflow?.timeoutSeconds || 0,
               updatedBy: emptyString,
               createTime: new Date().getTime()

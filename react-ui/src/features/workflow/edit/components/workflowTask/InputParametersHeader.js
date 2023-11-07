@@ -34,7 +34,7 @@ function InputParametersHeader({ inputParametersLens }) {
           <TextField
             fullWidth
             label={t('WorkflowTask.InputParameter.DefaultText')}
-            value={localParam}
+            value={localParam || emptyString}
             onChange={handleParamChange}
             debounceBy={100}
             variant='outlined'

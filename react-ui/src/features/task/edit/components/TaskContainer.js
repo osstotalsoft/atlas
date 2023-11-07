@@ -17,6 +17,7 @@ import { useDirtyFieldValidation } from '@totalsoft/pure-validations-react'
 import { omit } from 'ramda'
 import { TASK_LIST_QUERY } from '../../list/queries/TaskListQuery'
 import { TASK_NAMES_QUERY } from '../queries/TaskNamesQuery'
+import { validateEmail } from 'utils/functions'
 
 const TaskContainer = () => {
   const showError = useError()
@@ -69,7 +70,8 @@ const TaskContainer = () => {
             {
               ...omit(['readOnly'], { ...task, inputTemplate: JSON.parse(task.inputTemplate) }),
               createTime: new Date().getTime(),
-              ownerEmail: oidcUser?.profile.preferred_username
+              ownerEmail:
+              validateEmail(oidcUser?.profile.preferred_username) ? oidcUser?.profile.preferred_username : 'example@email.com'
             }
           ]
         }

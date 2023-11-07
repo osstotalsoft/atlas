@@ -34,6 +34,8 @@ import workflowConfig from 'features/designer/constants/WorkflowConfig'
 import { skipParametersByParsing } from 'features/workflow/common/constants'
 import { CREATE_UPDATE_WORKFLOW_MUTATION } from '../mutations/CreateOrUpdateWorkflowMutation'
 import { TASK_LIST_QUERY } from 'features/task/list/queries/TaskListQuery'
+import { validateEmail } from 'utils/functions'
+
 
 const WorkflowContainer = () => {
   const { t } = useTranslation()
@@ -164,7 +166,7 @@ const WorkflowContainer = () => {
           workflowStatusListenerEnabled: workflow?.workflowStatusListenerEnabled,
           createdBy: isNew ? oidcUser?.profile.name : workflow?.createdBy,
           createTime: isNew ? new Date().getTime() : workflow?.createTime,
-          ownerEmail: workflow?.ownerEmail || oidcUser?.profile.preferred_username,
+          ownerEmail: workflow?.ownerEmail || (validateEmail(oidcUser?.profile.preferred_username) ? oidcUser?.profile.preferred_username : 'example@email.com'),
           updatedBy: isNew ? emptyString : oidcUser?.profile.name,
           updateTime: isNew ? undefined : new Date().getTime()
         }

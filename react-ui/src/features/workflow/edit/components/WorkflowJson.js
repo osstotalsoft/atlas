@@ -60,8 +60,9 @@ const WorkflowJson = ({ loading, workflow, onChangeJson }) => {
     <>
       <div style={{ height: 100 }}></div>
       <Grid container>
-        <Grid item xs={12} sm={12} lg={6}>
+        <Grid item xs={12} sm={12} md={6} style={{ minHeight: '200px' }}>
           <Editor
+            
             height='100%'
             width='100%'
             theme='vs-light'
@@ -86,7 +87,7 @@ const WorkflowJson = ({ loading, workflow, onChangeJson }) => {
             onChange={onchange}
           />
         </Grid>
-        <Grid item xs={12} sm={12} lg={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <WorkflowGraph executionMode={false} dag={dag} t={t} onClick={handleOnClick} />
         </Grid>
       </Grid>

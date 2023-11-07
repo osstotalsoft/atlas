@@ -16,7 +16,7 @@ import { emptyObject } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
 import { get, set } from '@totalsoft/change-tracking-react'
 import { emptyString } from 'utils/constants'
-import { getFileContents } from 'utils/functions'
+import { getFileContents, validateEmail } from 'utils/functions'
 import { useClientQueryWithErrorHandling, useError } from 'hooks/errorHandling'
 import { parseDiagramToJSON } from 'features/designer/builderHandler'
 import { saveAs } from 'file-saver'
@@ -143,17 +143,23 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
 
   const togglePreviewDialog = useCallback(() => {
     const { name, description, timeoutSeconds, workflowStatusListenerEnabled, createdBy, version } = workflow
-    setCurrentWorkflow({
-      ...parseDiagramToJSON(engine),
-      name,
-      description,
-      timeoutSeconds,
-      workflowStatusListenerEnabled,
-      createdBy,
-      version
-    })
-    setPreviewDialog(current => !current)
-  }, [engine, workflow])
+
+    try {
+      const parsed = parseDiagramToJSON(engine)
+      setCurrentWorkflow({
+        ...parsed,
+        name,
+        description,
+        timeoutSeconds,
+        workflowStatusListenerEnabled,
+        createdBy,
+        version
+      })
+      setPreviewDialog(current => !current)
+    } catch {
+      addToast('Flow is not valid!')
+    }
+  }, [engine, workflow, addToast])
 
   const handleDelete = useCallback(() => {
     const selectedEntities = engine.getModel().getSelectedEntities()
@@ -216,7 +222,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
             ...wf,
             description: wf?.description,
             createdBy: oidcUser?.profile.name,
-            ownerEmail: oidcUser?.profile.preferred_username
+            ownerEmail: validateEmail(oidcUser?.profile.preferred_username) ? oidcUser?.profile.preferred_username : 'example@email.com'
           })
 
           warningIfTaskComponentMissing(wf)
