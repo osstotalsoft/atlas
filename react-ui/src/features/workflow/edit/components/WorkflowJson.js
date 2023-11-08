@@ -78,7 +78,7 @@ const WorkflowJson = ({ loading, workflow, onChangeJson }) => {
             value={JSON.stringify(
               workflow,
               (key, value) => {
-                if (key === '__typename' || key === 'startHandlers') return
+                if (key === '__typename' || key === 'startHandlers' || key === 'readOnly') return
                 return value
               },
               '\t'

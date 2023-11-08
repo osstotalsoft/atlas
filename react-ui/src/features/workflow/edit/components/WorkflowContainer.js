@@ -45,6 +45,7 @@ const WorkflowContainer = () => {
   const history = useNavigate()
   const { oidcUser } = useReactOidc()
 
+  const [viewType, setViewType] = useState('draw')
   const [, setHeader] = useHeader(<CustomHeader />)
   const [, setDrawerOpen] = useContext(SidebarContext)
   const [clipBoard, setClipBoard] = useContext(ClipboardContext)
@@ -76,7 +77,7 @@ const WorkflowContainer = () => {
   const [nameDialog, showNameDialog] = useState(false)
   const [tourDialog, showTourDialog] = useState(false)
   const [startTourDialog, showStartTourDialog] = useState(false)
- 
+
   const toggleNameDialog = useCallback(() => showNameDialog(current => !current), [])
   const toggleTourDialog = useCallback(() => showTourDialog(current => !current), [])
   const toggleStartTourDialog = useCallback(() => showStartTourDialog(current => !current), [])
@@ -90,6 +91,7 @@ const WorkflowContainer = () => {
 
   const errorStatus = error?.graphQLErrors[0]?.extensions?.response?.status
 
+  const handleChangeView = useCallback((event, value) => setViewType(value), [setViewType])
   useEffect(() => {
     if (data) resetWorkflow(data?.getWorkflow)
   }, [data, resetWorkflow])
@@ -97,7 +99,7 @@ const WorkflowContainer = () => {
   const updateCacheAfterAdd = async cache => {
     try {
       const { data: updatedData } = await clientQuery(WORKFLOW_QUERY, {
-        variables: { name, version, skip: false }
+        variables: { name: name ?? workflow.name, version: version ?? workflow.version, skip: false }
       })
 
       updateCacheList(cache, updatedData?.getWorkflow)
@@ -125,7 +127,6 @@ const WorkflowContainer = () => {
   const [createOrUpdateWorkflow, { loading: saving }] = useMutation(CREATE_UPDATE_WORKFLOW_MUTATION, {
     onCompleted: () => {
       addToast(t('General.SavingSucceeded'), 'success')
-      if (isNew) toggleNameDialog()
       setIsDirty(false)
       if (isNew) history(`/workflows/${name}/${version}`)
     },
@@ -148,11 +149,18 @@ const WorkflowContainer = () => {
     if (isValid()) showNameDialog(true)
   }, [isValid])
 
-  const handleSave = useCallback(() => {
-    if (workflow?.tasks) {
-      drawDiagram(workflow, engine, workflow?.readOnly, tasks?.getTaskDefinitionList)
+  const handleSaveJson = useCallback(() => {
+    try {
+      const { name, version } = workflow
+      set(nameLens, name)
+      set(versionLens, version)
+      createOrUpdateWorkflow({ variables: { input: { ...workflow, readOnly: undefined, startHandlers: undefined, historyId: undefined } } })
+    } catch (err) {
+      showError(err)
     }
+  }, [showError, createOrUpdateWorkflow, workflow])
 
+  const handleSave = useCallback(() => {
     if (isValid()) {
       try {
         const jsonObject = parseDiagramToJSON(engine)
@@ -166,7 +174,9 @@ const WorkflowContainer = () => {
           workflowStatusListenerEnabled: workflow?.workflowStatusListenerEnabled,
           createdBy: isNew ? oidcUser?.profile.name : workflow?.createdBy,
           createTime: isNew ? new Date().getTime() : workflow?.createTime,
-          ownerEmail: workflow?.ownerEmail || (validateEmail(oidcUser?.profile.preferred_username) ? oidcUser?.profile.preferred_username : 'example@email.com'),
+          ownerEmail:
+            workflow?.ownerEmail ||
+            (validateEmail(oidcUser?.profile.preferred_username) ? oidcUser?.profile.preferred_username : 'example@email.com'),
           updatedBy: isNew ? emptyString : oidcUser?.profile.name,
           updateTime: isNew ? undefined : new Date().getTime()
         }
@@ -325,13 +335,25 @@ const WorkflowContainer = () => {
       <CustomHeader
         headerText={name}
         path='/workflows'
-        onSave={isNew ? handleOpenNameDialog : handleSave}
+        onSave={viewType === 'json' ? handleSaveJson : isNew ? handleOpenNameDialog : handleSave}
         saving={saving}
         disableSaving={workflow?.readOnly}
         onGetHelp={handleStartTour}
       />
     )
-  }, [handleOpenNameDialog, handleSave, handleStartTour, isNew, name, saving, setHeader, toggleNameDialog, workflow?.readOnly])
+  }, [
+    handleOpenNameDialog,
+    handleSave,
+    handleStartTour,
+    isNew,
+    name,
+    saving,
+    setHeader,
+    toggleNameDialog,
+    workflow?.readOnly,
+    handleSaveJson,
+    viewType
+  ])
 
   if (errorStatus === 404) return <NotFound title={t('Workflow.WorkflowNotFound')}></NotFound>
   return (
@@ -346,6 +368,8 @@ const WorkflowContainer = () => {
         isDirty={isDirty}
         taskDefs={tasks?.getTaskDefinitionList}
         setIsDirty={setIsDirty}
+        viewType={viewType}
+        handleChangeView={handleChangeView}
       />
       <Dialog
         id='editTask'

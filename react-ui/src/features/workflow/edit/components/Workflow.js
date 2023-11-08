@@ -31,12 +31,11 @@ import { useToast, Dialog } from '@totalsoft/rocket-ui'
 import WorkflowJson from './WorkflowJson'
 import JsonViewer from 'features/common/components/JsonViewer'
 
-const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty, taskDefs }) => {
+const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagram, setIsDirty, taskDefs, viewType, handleChangeView }) => {
   const { t } = useTranslation()
   const showError = useError()
   const addToast = useToast()
 
-  const [viewType, setViewType] = useState('draw')
   const { oidcUser } = useReactOidc()
   const clientQuery = useClientQueryWithErrorHandling()
 
@@ -53,8 +52,6 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
   const toggleStartHandlersDialog = useCallback(() => showStartHandlersDialog(current => !current), [])
   const workflow = workflowLens |> get
   const { engine } = diagram
-
-  const handleChangeViewType = useCallback((event, value) => setViewType(value), [setViewType])
 
   const [runWfQuery, { called: wfCalled, loading: loadingWf, data: wfData }] = useLazyQuery(WORKFLOW_LIST_QUERY)
   const [runTskQuery, { called: tskCalled, loading: loadingTsk, data: tskData }] = useLazyQuery(TASK_LIST_QUERY)
@@ -276,7 +273,7 @@ const Workflow = ({ loading, isNew, resetWorkflow, isDirty, workflowLens, diagra
         onUndo={handleUndo}
         onRedo={handleRedo}
         viewType={viewType}
-        handleViewType={handleChangeViewType}
+        handleViewType={handleChangeView}
         onViewStartHandler={toggleStartHandlersDialog}
       />
       {viewType === 'draw' && (
@@ -333,7 +330,9 @@ Workflow.propTypes = {
   diagram: PropTypes.object.isRequired,
   workflowLens: PropTypes.object.isRequired,
   setIsDirty: PropTypes.func.isRequired,
-  taskDefs: PropTypes.array
+  taskDefs: PropTypes.array,
+  viewType: PropTypes.string,
+  handleChangeView: PropTypes.func
 }
 
 export default Workflow
