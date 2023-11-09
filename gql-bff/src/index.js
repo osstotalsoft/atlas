@@ -41,7 +41,7 @@ const {
 
 app.use(errorHandlingMiddleware());
 app.use(bodyParser());
-app.use(cors());
+app.use(cors({ credentials: true }));
 
 const hasAuthConf =
   process.env.IDENTITY_AUTHORITY && process.env.IDENTITY_OPENID_CONFIGURATION;
