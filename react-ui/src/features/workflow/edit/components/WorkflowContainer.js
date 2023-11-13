@@ -158,7 +158,7 @@ const WorkflowContainer = () => {
     } catch (err) {
       showError(err)
     }
-  }, [showError, createOrUpdateWorkflow, workflow])
+  }, [showError, createOrUpdateWorkflow, workflow, nameLens, versionLens])
 
   const handleSave = useCallback(() => {
     if (isValid()) {
@@ -248,7 +248,7 @@ const WorkflowContainer = () => {
     node.inputs = inputs?.inputs
     parseObjectParameters(node.inputs, skipParametersByParsing)
 
-    node.options.name = inputs?.inputs?.name
+    node.options.name = inputs?.inputs?.taskReferenceName
     if (inputs?.inputs.type === nodeConfig.DECISION.type && isPropertyDirty('inputs.decisionCases', inputsDirtyInfo)) {
       const cases = keys(inputs?.inputs?.decisionCases)
       decisionCasesToPorts(node, cases)

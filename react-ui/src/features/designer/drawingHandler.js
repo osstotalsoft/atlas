@@ -2,7 +2,7 @@ import { DiagramModel } from '@projectstorm/react-diagrams-core'
 import { isEmpty, toArray } from 'lodash'
 import StartNodeModel from './nodeModels/startNode/StartNodeModel'
 import EndNodeModel from './nodeModels/endNode/EndNodeModel'
-import { last, values, keys } from 'ramda'
+import { last, values } from 'ramda'
 import { nodeConfig } from './constants/NodeConfig'
 import WorkflowDAG from './diagram/WorkflowDAG'
 
@@ -294,13 +294,6 @@ export const createNode = (engine, task, taskList, branchX = null, branchY = nul
       var taskDef = taskList?.find(a => a.name === node.inputs.name)
       if (taskDef && taskDef.inputTemplate) {
         node.inputs.inputTemplate = taskDef.inputTemplate
-        const templateKeys = keys(taskDef.inputTemplate)
-        const inputKeys = keys(node.inputs.inputParameters)
-        inputKeys.forEach(k => {
-          if (templateKeys.includes(k) && taskDef.inputTemplate[k] === 'object' && typeof node.inputs.inputParameters[k] === 'object') {
-            node.inputs.inputParameters = { ...node.inputs.inputParameters, [k]: JSON.stringify(node.inputs.inputParameters[k], null, '\t') }
-          }
-        })
       }
       engine.model.addNode(node)
       break
