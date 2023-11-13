@@ -22,6 +22,11 @@ function InputParameterItem({ valueLens, param, onRemove, isFromTemplate, typeFr
     return typeFromTemplate === 'object'
   }
 
+  const getValue = useCallback(() => {
+    if (typeof value === 'string') return value
+    else return JSON.stringify(value, null, '\t')
+  }, [value])
+
   return (
     <Grid item container xs={12} md={6} spacing={2}>
       {isJson() ? (
@@ -41,7 +46,7 @@ function InputParameterItem({ valueLens, param, onRemove, isFromTemplate, typeFr
             }}
             width='100%'
             height={'300px'}
-            value={value}
+            value={getValue(value)}
             onChange={onInputTemplateChange}
           />
         </Grid>

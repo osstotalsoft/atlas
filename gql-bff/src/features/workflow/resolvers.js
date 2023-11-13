@@ -146,6 +146,11 @@ const workflowResolvers = {
       }
     },
   },
+  WorkflowTask: {
+    defaultCase: (parent, _args, context, _info) => {
+      return parent.defaultCase ?? []
+    }
+  },
   Mutation: {
     importWorkflows: async (_parent, { input, replacements }, context) => {
       const { dataSources, externalUser, tenant } = context;
