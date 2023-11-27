@@ -10,12 +10,14 @@ const tenantIdentification = () => async (ctx, next) => {
       return;
     }
 
-    const tenantId = getTenantIdFromJwt(ctx);
+    const tenantId = getTenantIdFromJwt(ctx) ?? getTenantIdFromHeaders(ctx);
 
     ctx.tenant = await tenantService.getTenantFromId(tenantId);
   }
   await next();
 };
+
+const getTenantIdFromHeaders = (ctx) => ctx.req.headers.tenantid;
 
 const getTenantIdFromJwt = ({ token }) => {
   let tenantId = null;
