@@ -148,12 +148,12 @@ const workflowResolvers = {
   },
   WorkflowTask: {
     defaultCase: (parent, _args, context, _info) => {
-      return parent.defaultCase ?? []
-    }
+      return parent.defaultCase ?? [];
+    },
   },
   Mutation: {
     importWorkflows: async (_parent, { input, replacements }, context) => {
-      const { dataSources, externalUser, tenant } = context;
+      const { dataSources, tenant } = context;
 
       var data = null;
       if (isMultiTenant) {
@@ -163,13 +163,23 @@ const workflowResolvers = {
       }
 
       for (const flow of data.flows) {
+        var initialWorkflow = {};
+        try {
+          initialWorkflow = await await dataSources.workflowApi.getWorkflow(
+            flow?.name,
+            flow?.version
+          );
+        } catch {
+          console.log("New workflow!");
+        }
+
         await dataSources.workflowApi.createOrUpdateWorkflow(
           JSON.stringify([
             {
               ...flow,
               description: getWorkflowDescription(
                 flow,
-                externalUser?.tenantId,
+                tenant?.id,
                 isMultiTenant
               ),
             },
@@ -181,7 +191,16 @@ const workflowResolvers = {
           flow?.version
         );
 
-        saveSnapshot(result);
+        if (
+          JSON.stringify({ ...initialWorkflow, updateTime: undefined }) ==
+          JSON.stringify({ ...result, updateTime: undefined })
+        ) {
+          console.log(
+            "Workflows has no changes and will not be added to history!"
+          );
+        } else {
+          saveSnapshot(result);
+        }
       }
 
       const conductorHandlers =
