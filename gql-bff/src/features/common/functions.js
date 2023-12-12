@@ -120,6 +120,7 @@ const updateHandlerCondition = (initialCondition, isMultiTenant, tenantId) => {
       return tempNewCondictions.join(" && ");
     } else {
       condArray.push(`\$.Headers['nbb-tenantId'] === '${tenantId}'`);
+      condArray.push(initialCondition);
       return condArray.join(" && ");
     }
   } else {
