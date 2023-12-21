@@ -11,6 +11,7 @@ const {
   getWorkflowDescription,
   updateHandlerCondition,
 } = require("../common/functions");
+const { filterEvHandlersByTenant } = require("../eventHandler/functions");
 
 const workflowResolvers = {
   Query: {
@@ -122,6 +123,22 @@ const workflowResolvers = {
         }
       }
 
+      //Add all handlers
+      if (isMultiTenant) {
+        const tenantHandlers = filterEvHandlersByTenant(
+          conductorHandlers,
+          tenant?.id
+        );
+        const newH = tenantHandlers.filter((a) =>
+          !handlers.some((h) => h.name === a.name)
+        );
+        handlers.push(...newH);
+      } else {
+        const newH = tenantHandlers.filter((a) =>
+          !handlers.some((h) => h.name === a.name)
+        );
+        handlers.push(...newH);
+      }
       return {
         data: JSON.stringify({ flows, handlers }),
         tenantCode: code?.toUpperCase(),
