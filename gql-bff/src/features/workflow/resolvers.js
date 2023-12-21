@@ -73,7 +73,7 @@ const workflowResolvers = {
                   (x) =>
                     x.action === "start_workflow" &&
                     x?.start_workflow?.name === flow.name
-                )
+                ) && !handlers.some((h) => h.name === a.name)
               )
             );
           }
@@ -93,7 +93,7 @@ const workflowResolvers = {
                   (x) =>
                     x.action === "start_workflow" &&
                     x?.start_workflow?.name === flow.name
-                )
+                ) && !handlers.some((h) => h.name === a.name)
               )
             );
           }
@@ -117,7 +117,7 @@ const workflowResolvers = {
                 (x) =>
                   x.action === "start_workflow" &&
                   x?.start_workflow?.name === name[0]
-              )
+              ) && !handlers.some((h) => h.name === a.name)
             )
           );
         }
