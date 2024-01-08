@@ -498,6 +498,8 @@
     }
   },
   "Export": {
+    "AllHandlers": "Toti Handlerii",
+    "WorkflowHandlers": "Handlerii Workflow-ului",
     "ExportButton": "Exporta workflows",
     "Download": "Download workflows",
     "Export": "Export workflows",

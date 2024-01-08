@@ -43,9 +43,19 @@ const ExportDialog = ({ open, data, onClose, tenantCode }) => {
   const handleOnExport = useCallback(() => {
     const natsPrefix = data.match(/nats_stream:([A-Za-z.]+)ch\./)
     let templateData = data
-    if (namePrefix) {
+    let dataObj = JSON.parse(data);
+    dataObj.flows.forEach(element => {
+      const newName = element.name.replace(namePrefix, '{{NamePrefix}}');
+      templateData = templateData.replaceAll(element.name, newName);
+    });
+
+    dataObj.handlers.forEach(element => {
+      const newName = element.name.replace(namePrefix, '{{NamePrefix}}');
+      templateData = templateData.replaceAll(element.name, newName);
+    });
+    /*if (namePrefix) {
       templateData = templateData.replaceAll(namePrefix, '{{NamePrefix}}')
-    }
+    }*/
     if (natsPrefix && natsPrefix[1]) {
       templateData = templateData.replaceAll(`${natsPrefix[1]}`, '{{NatsPrefix}}')
     }

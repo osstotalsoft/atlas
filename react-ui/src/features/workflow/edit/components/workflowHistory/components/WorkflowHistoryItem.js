@@ -90,10 +90,9 @@ const WorkflowHistoryItem = ({ history, workflow, isLatest, onRevert }) => {
         maxWidth='xs'
         open={revertDialog}
         showActions
+        defaultActions
         onYes={handleRevertWorkflow}
         onClose={toggleRevertDialog}
-        textDialogYes={t('Dialog.Yes')}
-        textDialogNo={t('Dialog.No')}
       />
       <CompareDefinitionDialog
         open={compareDialog}

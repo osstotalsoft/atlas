@@ -523,6 +523,8 @@
     }
   },
   "Export": {
+    "AllHandlers": "All Handlers",
+    "WorkflowHandlers": "Workflow Handlers",
     "ExportButton": "Export workflows",
     "Download": "Download workflows",
     "Export": "Export workflows",
