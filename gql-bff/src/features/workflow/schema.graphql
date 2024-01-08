@@ -11,7 +11,7 @@ type ExportWorkflows {
 extend type Query {
   getWorkflow(name: String!, version: Int!): WorkflowDef
   getWorkflowList: [WorkflowDef]
-  exportWorkflows(workflowList: [String]): ExportWorkflows
+  exportWorkflows(workflowList: [String], allHandlers: Boolean): ExportWorkflows
 }
 
 extend input WorkflowTaskInput {

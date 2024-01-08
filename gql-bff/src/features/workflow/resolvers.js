@@ -45,7 +45,7 @@ const workflowResolvers = {
       else return filterResourcesByTenant(allWorkflows, tenant?.id);
     },
 
-    exportWorkflows: async (_parent, { workflowList }, context, _info) => {
+    exportWorkflows: async (_parent, { workflowList, allHandlers }, context, _info) => {
       const { dataSources, tenant } = context;
       const { code } = tenant ?? { code: "" };
 
@@ -68,12 +68,13 @@ const workflowResolvers = {
               ...conductorHandlers.filter((a) => h.includes(a.name))
             );
             handlers.push(
-              ...conductorHandlers.filter((a) =>
-                a.actions.some(
-                  (x) =>
-                    x.action === "start_workflow" &&
-                    x?.start_workflow?.name === flow.name
-                ) && !handlers.some((h) => h.name === a.name)
+              ...conductorHandlers.filter(
+                (a) =>
+                  a.actions.some(
+                    (x) =>
+                      x.action === "start_workflow" &&
+                      x?.start_workflow?.name === flow.name
+                  ) && !handlers.some((h) => h.name === a.name)
               )
             );
           }
@@ -88,12 +89,13 @@ const workflowResolvers = {
               ...conductorHandlers.filter((a) => h.includes(a.name))
             );
             handlers.push(
-              ...conductorHandlers.filter((a) =>
-                a.actions.some(
-                  (x) =>
-                    x.action === "start_workflow" &&
-                    x?.start_workflow?.name === flow.name
-                ) && !handlers.some((h) => h.name === a.name)
+              ...conductorHandlers.filter(
+                (a) =>
+                  a.actions.some(
+                    (x) =>
+                      x.action === "start_workflow" &&
+                      x?.start_workflow?.name === flow.name
+                  ) && !handlers.some((h) => h.name === a.name)
               )
             );
           }
@@ -112,32 +114,35 @@ const workflowResolvers = {
           const h = [...str.matchAll(regex)].map((a) => a[1]);
           handlers.push(...conductorHandlers.filter((a) => h.includes(a.name)));
           handlers.push(
-            ...conductorHandlers.filter((a) =>
-              a.actions.some(
-                (x) =>
-                  x.action === "start_workflow" &&
-                  x?.start_workflow?.name === name[0]
-              ) && !handlers.some((h) => h.name === a.name)
+            ...conductorHandlers.filter(
+              (a) =>
+                a.actions.some(
+                  (x) =>
+                    x.action === "start_workflow" &&
+                    x?.start_workflow?.name === name[0]
+                ) && !handlers.some((h) => h.name === a.name)
             )
           );
         }
       }
 
       //Add all handlers
-      if (isMultiTenant) {
-        const tenantHandlers = filterEvHandlersByTenant(
-          conductorHandlers,
-          tenant?.id
-        );
-        const newH = tenantHandlers.filter((a) =>
-          !handlers.some((h) => h.name === a.name)
-        );
-        handlers.push(...newH);
-      } else {
-        const newH = tenantHandlers.filter((a) =>
-          !handlers.some((h) => h.name === a.name)
-        );
-        handlers.push(...newH);
+      if (allHandlers) {
+        if (isMultiTenant) {
+          const tenantHandlers = filterEvHandlersByTenant(
+            conductorHandlers,
+            tenant?.id
+          );
+          const newH = tenantHandlers.filter(
+            (a) => !handlers.some((h) => h.name === a.name)
+          );
+          handlers.push(...newH);
+        } else {
+          const newH = conductorHandlers.filter(
+            (a) => !handlers.some((h) => h.name === a.name)
+          );
+          handlers.push(...newH);
+        }
       }
       return {
         data: JSON.stringify({ flows, handlers }),
