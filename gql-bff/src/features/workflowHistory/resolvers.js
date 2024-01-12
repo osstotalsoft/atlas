@@ -1,5 +1,6 @@
 const { getWorkflowHistory } = require("./datasources/workflowHistoryEs");
 const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT);
+const { filterResourcesByTenant } = require("../common/functions");
 
 const workflowHistoryResolvers = {
   Query: {
@@ -59,10 +60,14 @@ const workflowHistoryResolvers = {
 
       const history = {};
       for (const flow of flows) {
-        const flowHistory = await dataSources?.executionApi?.getExecutionList({size: 1000, sort: 
-          "startTime:DESC", start: 0, freeText: `(workflowType: ${flow.name} AND version: ${flow.version})`});
+        const flowHistory = await dataSources?.executionApi?.getExecutionList({
+          size: 1000,
+          sort: "startTime:DESC",
+          start: 0,
+          freeText: `(workflowType: ${flow.name} AND version: ${flow.version})`,
+        });
 
-          history[`${flow.name}/${flow.version}`] = flowHistory.totalHits;
+        history[`${flow.name}/${flow.version}`] = flowHistory.totalHits;
       }
 
       return history;
