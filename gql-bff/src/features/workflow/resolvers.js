@@ -45,7 +45,12 @@ const workflowResolvers = {
       else return filterResourcesByTenant(allWorkflows, tenant?.id);
     },
 
-    exportWorkflows: async (_parent, { workflowList, allHandlers }, context, _info) => {
+    exportWorkflows: async (
+      _parent,
+      { workflowList, allHandlers },
+      context,
+      _info
+    ) => {
       const { dataSources, tenant } = context;
       const { code } = tenant ?? { code: "" };
 
@@ -214,8 +219,16 @@ const workflowResolvers = {
         );
 
         if (
-          JSON.stringify({ ...initialWorkflow, updateTime: undefined }) ==
-          JSON.stringify({ ...result, updateTime: undefined })
+          JSON.stringify({
+            ...initialWorkflow,
+            updateTime: undefined,
+            createTime: undefined,
+          }) ==
+          JSON.stringify({
+            ...result,
+            updateTime: undefined,
+            createTime: undefined,
+          })
         ) {
           console.log(
             "Workflows has no changes and will not be added to history!"

@@ -15,6 +15,7 @@ const CompareDefinition = ({ definition, currentDefinition }) => {
 
   return (
     <ReactDiffViewer
+    styles={{ diffContainer: { wordBreak: 'break-all' } }}
       oldValue={JSON.stringify(old, null, 2)}
       newValue={JSON.stringify(current, null, 2)}
       extraLinesSurroundingDiff={0}

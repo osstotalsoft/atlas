@@ -12,7 +12,8 @@
     "Executions": "Exécutions",
     "SystemTasks": "System_Tasks",
     "EventHandlers": "Gestionnaires d'événements",
-    "Configurations": "Configurations"
+    "Configurations": "Configurations",
+    "History": "History"
   },
   "Tooltips": {
     "Logout": "Déconnexion",

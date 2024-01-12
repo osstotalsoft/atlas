@@ -21,7 +21,8 @@
     "SystemTasks": "System_Tasks",
     "EventHandlers": "Event handlers",
     "Configurations": "Configurations",
-    "Schedule": "Schedule"
+    "Schedule": "Schedule",
+    "History": "History"
   },
   "Tooltips": {
     "Logout": "Logout",

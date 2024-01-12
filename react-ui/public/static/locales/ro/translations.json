@@ -13,7 +13,8 @@
     "Executions": "Executii",
     "SystemTasks": "System_Tasks",
     "EventHandlers": "Event handlers",
-    "Configurations": "Configurari"
+    "Configurations": "Configurari",
+    "History": "Istoric"
   },
   "Tooltips": {
     "Logout": "Iesire",

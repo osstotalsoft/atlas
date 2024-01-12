@@ -19,4 +19,5 @@ type WorkflowHistoryList {
 
 extend type Query {
   workflowHistory(workflowName: String!, version: Int!): WorkflowHistoryList
+  allWorkflowHistory: JSON
 }
