@@ -21,7 +21,9 @@
     "SystemTasks": "System_Tasks",
     "EventHandlers": "Event handlers",
     "Configurations": "Configurations",
-    "Schedule": "Schedule"
+    "Schedule": "Schedule",
+    "History": "History",
+    "ExecutionHistory": "Execution history"
   },
   "Tooltips": {
     "Logout": "Logout",
@@ -539,5 +541,9 @@
     "MissingAsyncHandlers": "Missing async handlers",
     "WorkflowName": "Workflow name",
     "TaskReferenceName": "Task reference name"
+  },
+  "History": {
+    "Flow":"Flow name/version",
+    "ExecutionCount": "Execution count"
   }
 }

@@ -16,6 +16,8 @@ import EventHandlerContainer from 'features/eventHandler/edit/components/EventHa
 import WorkflowContainer from 'features/workflow/edit/components/WorkflowContainer'
 import ScheduleListContainer from 'features/schedule/list/components/ScheduleListContainer'
 import ScheduleContainer from 'features/schedule/edit/components/ScheduleContainer'
+import HistoryContainer from 'features/workflow/history/components/HistoryContainer'
+import ExecutionHistoryContainer from 'features/workflow/history/components/ExecutionHistoryContainer'
 
 export default function AppRoutes() {
   return (
@@ -38,6 +40,9 @@ export default function AppRoutes() {
       <Route exact path='/schedule' element={<CustomRoute isPrivate={true} component={ScheduleListContainer} />} />
       <Route exact path='/schedule/:new' element={<CustomRoute isPrivate={true} component={ScheduleContainer} />} />
       <Route exact path='/schedule/:name' element={<CustomRoute isPrivate={true} component={ScheduleContainer} />} />
+
+      <Route exact path='/history' element={<CustomRoute isPrivate={true} component={HistoryContainer} />} />
+      <Route exact path='/execution-history' element={<CustomRoute isPrivate={true} component={ExecutionHistoryContainer} />} />
       <Route
         isPrivate={true}
         exact
