@@ -50,6 +50,23 @@ const workflowHistoryResolvers = {
       }
       return history;
     },
+    allExecutionHistory: async (_parent, _args, context, _info) => {
+      const { dataSources, tenant } = context;
+      const allWorkflows = await dataSources.workflowApi.getWorkflowList();
+      const flows = isMultiTenant
+        ? filterResourcesByTenant(allWorkflows, tenant?.id)
+        : allWorkflows;
+
+      const history = {};
+      for (const flow of flows) {
+        const flowHistory = await dataSources?.executionApi?.getExecutionList({size: 1000, sort: 
+          "startTime:DESC", start: 0, freeText: `(workflowType: ${flow.name} AND version: ${flow.version})`});
+
+          history[`${flow.name}/${flow.version}`] = flowHistory.totalHits;
+      }
+
+      return history;
+    },
   },
   WorkflowHistory: {
     definition: (parent, _args, _context, _info) => {

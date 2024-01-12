@@ -14,7 +14,8 @@
     "SystemTasks": "System_Tasks",
     "EventHandlers": "Event handlers",
     "Configurations": "Configurari",
-    "History": "Istoric"
+    "History": "Istoric",
+    "ExecutionHistory": "Istoric executii"
   },
   "Tooltips": {
     "Logout": "Iesire",
@@ -510,5 +511,9 @@
     "Import": "Importa workflows",
     "ImportButton": "Importa workflows",
     "Placeholder": "Valoare"
+  },
+  "History": {
+    "Flow":"Nume workflow/versiune",
+    "ExecutionCount": "Numar de executii"
   }
 }

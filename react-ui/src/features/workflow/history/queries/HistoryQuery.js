@@ -5,3 +5,9 @@ export const HISTORY_QUERY = gql`
     allWorkflowHistory 
   }
 `
+
+export const EXECUTION_HISTORY_QUERY = gql`
+  query allExecutionHistory {
+    allExecutionHistory 
+  }
+`

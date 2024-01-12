@@ -13,7 +13,8 @@
     "SystemTasks": "System_Tasks",
     "EventHandlers": "Gestionnaires d'événements",
     "Configurations": "Configurations",
-    "History": "History"
+    "History": "History",
+    "ExecutionHistory": "Execution history"
   },
   "Tooltips": {
     "Logout": "Déconnexion",
@@ -496,5 +497,9 @@
       "False": "Faux",
       "Beautify": "Formater le code"
     }
+  },
+  "History": {
+    "Flow":"Flow name/version",
+    "ExecutionCount": "Execution count"
   }
 }

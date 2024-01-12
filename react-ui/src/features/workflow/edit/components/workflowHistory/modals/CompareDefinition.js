@@ -7,7 +7,7 @@ import { Typography } from '@totalsoft/rocket-ui'
 import sortobject from 'deep-sort-object'
 import { fieldsToBeRemoved } from 'features/common/constants'
 
-const CompareDefinition = ({ definition, currentDefinition }) => {
+const CompareDefinition = ({ definition, currentDefinition , showDates}) => {
   const { t } = useTranslation()
 
   const old = sortobject({ ...omitDeep(definition, fieldsToBeRemoved) })
@@ -15,7 +15,7 @@ const CompareDefinition = ({ definition, currentDefinition }) => {
 
   return (
     <ReactDiffViewer
-    styles={{ diffContainer: { wordBreak: 'break-all' } }}
+      styles={{ diffContainer: { wordBreak: 'break-all' } }}
       oldValue={JSON.stringify(old, null, 2)}
       newValue={JSON.stringify(current, null, 2)}
       extraLinesSurroundingDiff={0}
@@ -26,12 +26,12 @@ const CompareDefinition = ({ definition, currentDefinition }) => {
       compareMethod={DiffMethod.WORDS}
       leftTitle={
         <Typography variant='h5' align='center'>
-          {t('WorkflowHistory.Dialog.Compare.OldDefinition')}
+          {t('WorkflowHistory.Dialog.Compare.OldDefinition')} {showDates && `(${new Date(definition?.updateTime).toLocaleString()})`}
         </Typography>
       }
       rightTitle={
         <Typography variant='h5' align='center'>
-          {t('WorkflowHistory.Dialog.Compare.CurrentDefinition')}
+          {t('WorkflowHistory.Dialog.Compare.CurrentDefinition')} {showDates && `(${new Date(currentDefinition?.updateTime).toLocaleString()})`}
         </Typography>
       }
     />
@@ -40,7 +40,8 @@ const CompareDefinition = ({ definition, currentDefinition }) => {
 
 CompareDefinition.propTypes = {
   definition: PropTypes.object.isRequired,
-  currentDefinition: PropTypes.object
+  currentDefinition: PropTypes.object,
+  showDates: PropTypes.bool
 }
 
 export default CompareDefinition
