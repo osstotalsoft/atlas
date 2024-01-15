@@ -251,13 +251,21 @@ const workflowResolvers = {
         };
 
         if (conductorHandlers.find((a) => a.name === handler.name)) {
-          await dataSources.eventHandlerApi.editEventHandler(
-            JSON.stringify(updatedHandler)
-          );
+          try {
+            await dataSources.eventHandlerApi.editEventHandler(
+              JSON.stringify(updatedHandler)
+            );
+          } catch (err) {
+            console.log(err);
+          }
         } else {
-          await dataSources.eventHandlerApi.createEventHandler(
-            JSON.stringify(updatedHandler)
-          );
+          try {
+            await dataSources.eventHandlerApi.createEventHandler(
+              JSON.stringify(updatedHandler)
+            );
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
       return "";

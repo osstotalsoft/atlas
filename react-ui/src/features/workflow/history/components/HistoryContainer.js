@@ -30,10 +30,10 @@ const HistoryContainer = () => {
       <Grid container>
         <Grid item xs={2} style={{ overflowY: 'scroll', maxHeight: 'calc(100vh - 150px)' }}>
           <List>
-            {Object.keys(flows).map((flow, index) => (
+            {Object.keys(flows).map((workflow, index) => (
               <ListItem key={index} disablePadding>
-                <ListItemButton id={flow} name={flow} onClick={onViewClick}>
-                  <ListItemText style={{ wordBreak: 'break-all' }} primary={flows[flow].current.name} />
+                <ListItemButton disabled={workflow === `${flow?.current?.name}_${flow?.current?.version}`} id={workflow} name={workflow} onClick={onViewClick}>
+                  <ListItemText style={{ wordBreak: 'break-all' }} primary={`${flows[workflow].current.name}/${flows[workflow].current.version}`} />
                 </ListItemButton>
               </ListItem>
             ))}

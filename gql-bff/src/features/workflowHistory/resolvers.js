@@ -61,7 +61,7 @@ const workflowHistoryResolvers = {
       const history = {};
       for (const flow of flows) {
         const flowHistory = await dataSources?.executionApi?.getExecutionList({
-          size: 1000,
+          size: 1,
           sort: "startTime:DESC",
           start: 0,
           freeText: `(workflowType: ${flow.name} AND version: ${flow.version})`,
