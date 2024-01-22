@@ -59,6 +59,19 @@ jobs:
       - name: Push images
         run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }}
 
+      - name: Log into dockerhub registry https://hub.docker.com/
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: hub.docker.com
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: tag images for dockerhub
+        run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }} niemen/atlas-ui:${{ env.RELEASE_VERSION }}
+      
+      - name: Push images to dockerhub
+        run: docker image push niemen/atlas-ui:${{ env.RELEASE_VERSION }}
+          
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
         env:
@@ -132,6 +145,19 @@ jobs:
       - name: Push images
         run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }}
 
+      - name: Log into dockerhub registry https://hub.docker.com/
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: hub.docker.com
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: tag images for dockerhub
+        run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }} niemen/atlas-gql:${{ env.RELEASE_VERSION }}
+      
+      - name: Push images to dockerhub
+        run: docker image push niemen/atlas-gql:${{ env.RELEASE_VERSION }}
+        
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
         env:
