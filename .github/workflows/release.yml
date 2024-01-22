@@ -59,10 +59,9 @@ jobs:
       - name: Push images
         run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }}
 
-      - name: Log into dockerhub registry https://hub.docker.com/
-        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          registry: hub.docker.com
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
@@ -145,10 +144,9 @@ jobs:
       - name: Push images
         run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }}
 
-      - name: Log into dockerhub registry https://hub.docker.com/
-        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          registry: hub.docker.com
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
