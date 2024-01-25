@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Build images
-        run: docker build -f ./Dockerfile -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }} .
+        run: docker build -f ./Dockerfile -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }} -t niemen/atlas-ui:${{ env.RELEASE_VERSION }} -t niemen/atlas-ui:latest .
       
       - name: Push images
         run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }}
@@ -64,9 +64,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
-      - name: tag images for dockerhub
-        run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_UI }}:${{ env.RELEASE_VERSION }} niemen/atlas-ui:${{ env.RELEASE_VERSION }}
       
       - name: Push images to dockerhub
         run: docker image push niemen/atlas-ui:${{ env.RELEASE_VERSION }}
@@ -139,7 +136,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Build images
-        run: docker build -f ./Dockerfile -t  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }} .
+        run: docker build -f ./Dockerfile -t  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }} -t niemen/atlas-gql:${{ env.RELEASE_VERSION }} -t niemen/atlas-gql:latest .
       
       - name: Push images
         run: docker image push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }}
