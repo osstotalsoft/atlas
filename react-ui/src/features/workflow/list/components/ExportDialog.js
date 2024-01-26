@@ -41,23 +41,31 @@ const ExportDialog = ({ open, data, onClose, tenantCode }) => {
   )
 
   const handleOnExport = useCallback(() => {
-    const natsPrefix = data.match(/nats_stream:([A-Za-z.]+)ch\./)
+    const natsPrefix = data.match(/nats_stream:([A-Za-z.]{0,100})ch\./)
     let templateData = data
-    let dataObj = JSON.parse(data);
+    const dataObj = JSON.parse(data)
     dataObj.flows.forEach(element => {
-      const newName = element.name.replace(namePrefix, '{{NamePrefix}}');
-      templateData = templateData.replaceAll(element.name, newName);
-    });
+      const newName = element.name.replace(namePrefix, '{{NamePrefix}}')
+      templateData = templateData.replaceAll(element.name, newName)
+
+      const subflows = [...data.matchAll(/subWorkflowParam":{"name":"([a-zA-Z0-9_-]*)"/g)]
+      subflows.forEach(subflow => {
+        const newName = subflow[1].replace(namePrefix, '{{NamePrefix}}')
+        templateData = templateData.replaceAll(subflow[1], newName)
+      })
+    })
 
     dataObj.handlers.forEach(element => {
-      const newName = element.name.replace(namePrefix, '{{NamePrefix}}');
-      templateData = templateData.replaceAll(element.name, newName);
-    });
+      const newName = element.name.replace(namePrefix, '{{NamePrefix}}')
+      templateData = templateData.replaceAll(element.name, newName)
+    })
     /*if (namePrefix) {
       templateData = templateData.replaceAll(namePrefix, '{{NamePrefix}}')
     }*/
-    if (natsPrefix && natsPrefix[1]) {
-      templateData = templateData.replaceAll(`${natsPrefix[1]}`, '{{NatsPrefix}}')
+    if (natsPrefix) {
+      if (natsPrefix[0]) {
+        templateData = templateData.replaceAll(`${natsPrefix[0]}`, 'nats_stream:{{NatsPrefix}}ch.')
+      }
     }
 
     const blob = new Blob([templateData], { type: 'text/plain' })
@@ -106,10 +114,10 @@ const ExportDialog = ({ open, data, onClose, tenantCode }) => {
               {t('Export.MissingAsyncHandlers')}
             </Typography>
             <List style={{ color: 'orange' }}>
-              <ListItem key="head">
+              <ListItem key='head'>
                 <ListItemText style={{ color: 'black' }}>{t('Export.WorkflowName')}</ListItemText>
                 <List>
-                  <ListItem key="subhead">
+                  <ListItem key='subhead'>
                     <ListItemText style={{ color: 'black', textAlign: 'right' }}>{t('Export.TaskReferenceName')}</ListItemText>
                   </ListItem>
                 </List>

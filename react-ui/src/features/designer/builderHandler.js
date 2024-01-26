@@ -63,8 +63,8 @@ const handleDecideNode = decideNode => {
           return
         } else if (currentNode.type === nodeConfig.FORK_JOIN.type) {
           const { forkNode, joinNode } = handleForkNode(currentNode)
-          branchArray.push(forkNode.inputs)
-          branchArray.push(joinNode.inputs)
+          branchArray.push({ ...forkNode.inputs, inputTemplate: undefined })
+          branchArray.push({ ...joinNode.inputs, inputTemplate: undefined })
           let outputLink = getLinksArray('out', joinNode)[0]
           currentNode = outputLink.targetPort.getNode()
 
@@ -72,7 +72,7 @@ const handleDecideNode = decideNode => {
           outputLinks = getLinksArray('out', currentNode)
         } else if (currentNode.type === nodeConfig.DECISION.type) {
           const { decideNode, firstNeutralNode } = handleDecideNode(currentNode)
-          branchArray.push(decideNode.inputs)
+          branchArray.push({ ...decideNode.inputs, inputTemplate: undefined })
           currentNode = firstNeutralNode
 
           inputLinks = getLinksArray('in', currentNode)
@@ -82,10 +82,11 @@ const handleDecideNode = decideNode => {
             branchArray.push({
               ...currentNode.inputs,
               asyncHandler: undefined,
+              inputTemplate: undefined,
               description: JSON.stringify({ description: currentNode.inputs.description, asyncHandler: currentNode.inputs['asyncHandler'] })
             })
           } else {
-            branchArray.push({ ...currentNode.inputs, asyncHandler: undefined })
+            branchArray.push({ ...currentNode.inputs, asyncHandler: undefined, inputTemplate: undefined })
           }
 
           currentNode = outputLinks[0].targetPort.getNode()

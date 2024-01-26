@@ -155,9 +155,15 @@ const WorkflowListContainer = () => {
   const onExportButton = useCallback(
     list => {
       setExportOptions(true)
-      setWorkflowList(list)
+
+      if (list.length === 0 && filters.name) {
+        const filtered = pipe(filterList(filters), sortBy(sortWorkflowsByField, sortingDirection.DESC))(data?.getWorkflowList || emptyArray)
+        setWorkflowList(filtered.map(a => `${a.name}/${a.version}`))
+      } else {
+        setWorkflowList(list)
+      }
     },
-    [setExportOptions, setWorkflowList]
+    [setExportOptions, setWorkflowList, filters, data?.getWorkflowList]
   )
 
   const onNextExportButton = useCallback(() => {
