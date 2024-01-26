@@ -67,6 +67,9 @@ jobs:
       
       - name: Push images to dockerhub
         run: docker image push niemen/atlas-ui:${{ env.RELEASE_VERSION }}
+
+      - name: Push latest tag to dockerhub
+        run: docker image push niemen/atlas-ui:latest
           
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
@@ -147,11 +150,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      - name: tag images for dockerhub
-        run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_GQL }}:${{ env.RELEASE_VERSION }} niemen/atlas-gql:${{ env.RELEASE_VERSION }}
-      
       - name: Push images to dockerhub
         run: docker image push niemen/atlas-gql:${{ env.RELEASE_VERSION }}
+
+      - name: Push latest tag to dockerhub
+        run: docker image push niemen/atlas-gql:latest
         
       - name: Package Helm chart
         if: ${{ env.LATEST_RELEASE }} == "true"
