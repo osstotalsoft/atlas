@@ -250,10 +250,18 @@ const workflowResolvers = {
           ),
         };
 
-        if (conductorHandlers.find((a) => a.name === handler.name)) {
+        const conductor_handler = conductorHandlers.find(
+          (a) => a.name === handler.name
+        );
+
+        if (conductor_handler) {
           try {
             await dataSources.eventHandlerApi.editEventHandler(
-              JSON.stringify(updatedHandler)
+              JSON.stringify(
+                conductor_handler.active
+                  ? updatedHandler
+                  : { ...updatedHandler, active: false }
+              )
             );
           } catch (err) {
             console.log(err);
