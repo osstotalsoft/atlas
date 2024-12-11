@@ -74,7 +74,7 @@ const nodeConfigData = {
   FORK_JOIN_DYNAMIC: {
     name: 'DYNAMIC_FORK',
     type: 'FORK_JOIN_DYNAMIC',
-    color: 'rgb(125,0,156)',
+    color: 'rgb(177 94 224)',
     hasParametersTab: true,
     getInstance: task => new DynamicForkNodeModel(task)
   },
@@ -120,7 +120,7 @@ const handler = {
   }
 }
 
-export const nodeConfig = new Proxy(nodeConfigData, handler);
+export const nodeConfig = new Proxy(nodeConfigData, handler)
 
 export const isDefault = type =>
   includes(type, [
