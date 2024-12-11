@@ -748,7 +748,6 @@ td.rdtYear:hover {
 }
 .node rect, .node circle, .node polygon {
   stroke: #333;
-  fill: #fff;
   stroke-width: 0.6px;
 }
 .node rect {
