@@ -47,7 +47,7 @@ const workflowResolvers = {
 
     exportWorkflows: async (
       _parent,
-      { workflowList, allHandlers },
+      { workflowList, prefix, allHandlers },
       context,
       _info
     ) => {
@@ -62,8 +62,12 @@ const workflowResolvers = {
       if (workflowList.length === 0) {
         const allWorkflows = await dataSources.workflowApi.getWorkflowList();
         if (isMultiTenant) {
+          const tenantPrefix = prefix.toUpperCase().startsWith(code.toUpperCase()) ? prefix : `${code.toUpperCase()}_${prefix.toUpperCase()}`;
           const tenantFlows = filterResourcesByTenant(allWorkflows, tenant?.id);
           for (const flow of tenantFlows) {
+            if (!flow.name.startsWith(tenantPrefix)){
+              continue;
+            }
             flows.push(flow);
 
             const regex = /\\"asyncHandler\\":\\"([a-zA-Z_]*)\\"/g;
@@ -85,6 +89,9 @@ const workflowResolvers = {
           }
         } else {
           for (const flow of allWorkflows) {
+            if (!flow.name.startsWith(prefix)) {
+              continue;
+            }
             flows.push(flow);
 
             const regex = /\\"asyncHandler\\":\\"([a-zA-Z_]*)\\"/g;
@@ -134,17 +141,18 @@ const workflowResolvers = {
       //Add all handlers
       if (allHandlers) {
         if (isMultiTenant) {
+          const tenantPrefix = prefix.toUpperCase().startsWith(code.toUpperCase()) ? prefix : `${code.toUpperCase()}_${prefix.toUpperCase()}`;
           const tenantHandlers = filterEvHandlersByTenant(
             conductorHandlers,
             tenant?.id
           );
           const newH = tenantHandlers.filter(
-            (a) => !handlers.some((h) => h.name === a.name)
+            (a) => !handlers.some((h) => h.name === a.name) && a.name.startsWith(tenantPrefix)
           );
           handlers.push(...newH);
         } else {
           const newH = conductorHandlers.filter(
-            (a) => !handlers.some((h) => h.name === a.name)
+            (a) => !handlers.some((h) => h.name === a.name) && a.name.startsWith(prefix)
           );
           handlers.push(...newH);
         }

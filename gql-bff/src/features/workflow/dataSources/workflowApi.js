@@ -12,7 +12,7 @@ class WorkflowApi extends ConductorApi {
   }
 
   async getWorkflowList() {
-    return await this.get(`/api/metadata/workflow/`);
+    return await this.get(`/api/metadata/workflow`);
   }
 }
 

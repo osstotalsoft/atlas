@@ -10,7 +10,7 @@ import { fieldsToBeRemoved, sortingDirection, sortWorkflowsByField } from 'featu
 import { defaults } from 'apollo/defaultCacheData'
 import { workflowsPager } from 'apollo/cacheKeyFunctions'
 import { useMutation } from '@apollo/client'
-import { useToast, Dialog, Button } from '@totalsoft/rocket-ui'
+import { useToast, Dialog, Button, TextField } from '@totalsoft/rocket-ui'
 import { useNavigate } from 'react-router-dom'
 import { useReactOidc } from '@axa-fr/react-oidc-context'
 import { WORKFLOW_QUERY } from 'features/workflow/edit/queries/WorkflowQuery'
@@ -37,6 +37,7 @@ const WorkflowListContainer = () => {
   const defaultPager = defaults[workflowsPager]
   const [pager, setPager] = useState(defaultPager)
   const [allHandlers, setAllHandlers] = useState(false)
+  const [namePrefix, setNamePrefix] = useState('')
   const [exportOptions, setExportOptions] = useState(false)
   const [workflowList, setWorkflowList] = useState([])
   const [exportModal, setExportModal] = useState(false)
@@ -155,7 +156,7 @@ const WorkflowListContainer = () => {
   const onExportButton = useCallback(
     list => {
       setExportOptions(true)
-
+      
       if (list.length === 0 && filters.name) {
         const filtered = pipe(filterList(filters), sortBy(sortWorkflowsByField, sortingDirection.DESC))(data?.getWorkflowList || emptyArray)
         setWorkflowList(filtered.map(a => `${a.name}/${a.version}`))
@@ -169,9 +170,9 @@ const WorkflowListContainer = () => {
   const onNextExportButton = useCallback(() => {
     setExportOptions(false)
     getWorkflowsForExport({
-      variables: { workflowList, allHandlers }
+      variables: { workflowList, allHandlers, prefix: namePrefix }
     })
-  }, [getWorkflowsForExport, workflowList, allHandlers, setExportOptions])
+  }, [getWorkflowsForExport, workflowList, allHandlers, setExportOptions, namePrefix])
 
   const onCloseExportModal = useCallback(() => setExportModal(false), [setExportModal])
   const onCloseImportModal = useCallback(() => {
@@ -199,6 +200,13 @@ const WorkflowListContainer = () => {
     [setImportData]
   )
 
+  const handleNameChange = useCallback(
+    value => {
+      setNamePrefix(value)
+    },
+    [setNamePrefix]
+  )
+
   const handleOnClose = useCallback(() => setExportOptions(false), [setExportOptions])
   const handleChange = useCallback(() => {
     setAllHandlers(prev => !prev)
@@ -207,7 +215,7 @@ const WorkflowListContainer = () => {
   return (
     <>
       {importModal && <ImportDialog data={importData} open={importModal} onClose={onCloseImportModal} onImport={handleImport} />}
-      {exportData && <ExportDialog data={exportData} open={exportModal} onClose={onCloseExportModal} tenantCode={tenantCode} />}
+      {exportData && <ExportDialog data={exportData} open={exportModal} onClose={onCloseExportModal} tenantCode={tenantCode} namePrefix={namePrefix} />}
       <>
         <Dialog
           fullWidth={true}
@@ -222,12 +230,15 @@ const WorkflowListContainer = () => {
             </Button>
           ]}
           content={
+            <>
             <SwitchWithInternalState
               labelOn={t('Export.AllHandlers')}
               labelOff={t('Export.WorkflowHandlers')}
               checked={allHandlers}
               onChange={handleChange}
             />
+            <TextField fullWidth label={t('Export.NamePrefix')} value={namePrefix ?? emptyString} onChange={handleNameChange} />
+            </>
           }
         />
       </>

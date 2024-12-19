@@ -19,8 +19,8 @@ export const WORKFLOW_LIST_QUERY = gql`
 `
 
 export const WORKFLOW_EXPORT_QUERY = gql`
-   query exportWorkflows($workflowList: [String], $allHandlers: Boolean) {
-    exportWorkflows(workflowList: $workflowList, allHandlers: $allHandlers) {
+   query exportWorkflows($workflowList: [String], $prefix: String, $allHandlers: Boolean) {
+    exportWorkflows(workflowList: $workflowList, prefix: $prefix, allHandlers: $allHandlers) {
       data
       tenantCode
     }

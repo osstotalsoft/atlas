@@ -1,10 +1,14 @@
 # build environment
-FROM node:18-slim as builder
+FROM node:20.18.1-bullseye as builder
 WORKDIR /app
 
 COPY package.json ./
 COPY yarn.lock ./
 COPY .npmrc ./
+
+RUN corepack enable
+RUN yarn install
+
 RUN yarn set version 3.5.0
 COPY .yarnrc.yml ./
 RUN yarn install
@@ -16,7 +20,7 @@ COPY . ./
 RUN yarn run build
 
 # production environment
-FROM node:18-slim
+FROM node:20.18.1-bullseye
 
 ARG imageUser=appuser
 ARG imageUserGroup=appgroup

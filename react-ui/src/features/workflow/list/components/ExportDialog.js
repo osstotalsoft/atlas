@@ -13,9 +13,8 @@ import styles from '../styles/styles'
 
 const useStyles = makeStyles(styles)
 
-const ExportDialog = ({ open, data, onClose, tenantCode }) => {
+const ExportDialog = ({ open, data, onClose, tenantCode, namePrefix }) => {
   const { t } = useTranslation()
-  const [namePrefix, setNamePrefix] = useState(tenantCode ? tenantCode + '_' : '')
   const [errors, setErrors] = useState([])
   const classes = useStyles()
 
@@ -24,13 +23,6 @@ const ExportDialog = ({ open, data, onClose, tenantCode }) => {
       JSON.parse(data).flows.filter(flow => flow.tasks.some(a => a.asyncComplete === true && !a.description?.includes('asyncHandler')))
     )
   }, [data])
-
-  const handleNameChange = useCallback(
-    value => {
-      setNamePrefix(value)
-    },
-    [setNamePrefix]
-  )
 
   const handleOnClose = useCallback(
     event => {
@@ -54,14 +46,17 @@ const ExportDialog = ({ open, data, onClose, tenantCode }) => {
         templateData = templateData.replaceAll(subflow[1], newName)
       })
     })
-
     dataObj.handlers.forEach(element => {
       const newName = element.name.replace(namePrefix, '{{NamePrefix}}')
       templateData = templateData.replaceAll(element.name, newName)
+
+      var startActions = element.actions.filter(a => a.action === "start_workflow")
+      startActions.forEach(action => {
+        const actionNewName = action.start_workflow.name.replace(namePrefix, '{{NamePrefix}}')
+        templateData = templateData.replaceAll(action.start_workflow.name, actionNewName)
+      })
+
     })
-    /*if (namePrefix) {
-      templateData = templateData.replaceAll(namePrefix, '{{NamePrefix}}')
-    }*/
     if (natsPrefix) {
       if (natsPrefix[0]) {
         templateData = templateData.replaceAll(`${natsPrefix[0]}`, 'nats_stream:{{NatsPrefix}}ch.')
@@ -105,7 +100,7 @@ const ExportDialog = ({ open, data, onClose, tenantCode }) => {
                 <Tr>
                   <Td className={classes.tableContent}>{t('Export.NamePrefix')}</Td>
                   <Td className={classes.tableContent}>
-                    <TextField fullWidth label={t('Export.Replacement')} value={namePrefix ?? emptyString} onChange={handleNameChange} />
+                    <TextField disabled fullWidth label={t('Export.Replacement')} value={namePrefix ?? emptyString} />
                   </Td>
                 </Tr>
               </Tbody>
@@ -152,7 +147,8 @@ ExportDialog.propTypes = {
   data: PropTypes.string.isRequired,
   onClose: PropTypes.func,
   open: PropTypes.bool,
-  tenantCode: PropTypes.string
+  tenantCode: PropTypes.string,
+  namePrefix: PropTypes.string
 }
 
 export default ExportDialog
