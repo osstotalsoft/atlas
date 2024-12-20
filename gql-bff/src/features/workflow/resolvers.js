@@ -47,7 +47,7 @@ const workflowResolvers = {
 
     exportWorkflows: async (
       _parent,
-      { workflowList, prefix, allHandlers },
+      { workflowList, prefix = '', allHandlers },
       context,
       _info
     ) => {
@@ -62,7 +62,7 @@ const workflowResolvers = {
       if (workflowList.length === 0) {
         const allWorkflows = await dataSources.workflowApi.getWorkflowList();
         if (isMultiTenant) {
-          const tenantPrefix = prefix.toUpperCase().startsWith(code.toUpperCase()) ? prefix : `${code.toUpperCase()}_${prefix.toUpperCase()}`;
+          const tenantPrefix = prefix?.toUpperCase().startsWith(code.toUpperCase()) ? prefix : `${code.toUpperCase()}_${prefix?.toUpperCase()}`;
           const tenantFlows = filterResourcesByTenant(allWorkflows, tenant?.id);
           for (const flow of tenantFlows) {
             if (!flow.name.startsWith(tenantPrefix)){
@@ -141,7 +141,7 @@ const workflowResolvers = {
       //Add all handlers
       if (allHandlers) {
         if (isMultiTenant) {
-          const tenantPrefix = prefix.toUpperCase().startsWith(code.toUpperCase()) ? prefix : `${code.toUpperCase()}_${prefix.toUpperCase()}`;
+          const tenantPrefix = prefix?.toUpperCase().startsWith(code.toUpperCase()) ? prefix : `${code.toUpperCase()}_${prefix?.toUpperCase()}`;
           const tenantHandlers = filterEvHandlersByTenant(
             conductorHandlers,
             tenant?.id
