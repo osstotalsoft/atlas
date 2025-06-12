@@ -40,7 +40,7 @@ const ExportDialog = ({ open, data, onClose, tenantCode, namePrefix }) => {
       const newName = element.name.replace(namePrefix, '{{NamePrefix}}')
       templateData = templateData.replaceAll(element.name, newName)
 
-      const subflows = [...data.matchAll(/subWorkflowParam":{"name":"([a-zA-Z0-9_-]*)"/g)]
+      const subflows = [...data.matchAll(/subWorkflowParam":{"name":"([a-zA-Z0-9_-]*)"/g), ...data.matchAll(/subWorkflowParam:\s*{\s*name:\s*'([a-zA-Z0-9_-]*)'/g)]
       subflows.forEach(subflow => {
         const newName = subflow[1].replace(namePrefix, '{{NamePrefix}}')
         templateData = templateData.replaceAll(subflow[1], newName)
@@ -63,6 +63,7 @@ const ExportDialog = ({ open, data, onClose, tenantCode, namePrefix }) => {
       }
     }
 
+    //templateData = templateData.replaceAll(`${namePrefix}`, '{{NamePrefix}}')
     const blob = new Blob([templateData], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
