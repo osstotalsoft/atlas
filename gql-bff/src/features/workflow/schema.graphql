@@ -9,7 +9,7 @@ type ExportWorkflows {
 }
 
 extend type Query {
-  getWorkflow(name: String!, version: Int!): WorkflowDef
+  getWorkflow(name: String!, version: Int): WorkflowDef
   getWorkflowList: [WorkflowDef]
   exportWorkflows(workflowList: [String], prefix: String, allHandlers: Boolean): ExportWorkflows
 }

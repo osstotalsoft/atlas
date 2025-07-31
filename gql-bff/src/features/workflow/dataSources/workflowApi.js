@@ -8,7 +8,7 @@ class WorkflowApi extends ConductorApi {
   }
 
   async getWorkflow(name, version) {
-    return await this.get(`/api/metadata/workflow/${name}?version=${version}`);
+    return await this.get(`/api/metadata/workflow/${name}${version ? `?version=${version}` : ''}`);
   }
 
   async getWorkflowList() {
