@@ -49,9 +49,11 @@ spec:
             - name: runtime-configs
               readOnly: true
               mountPath: /usr/src/app/runtime/configs
+            {{- if $global.runtimeConfiguration.csi.enabled }}
             - name: runtime-secrets
               readOnly: true
               mountPath: /usr/src/app/runtime/secrets
+            {{- end }}
           {{- end }}
       {{- if $global.imagePullSecrets }}
       imagePullSecrets:
@@ -63,12 +65,14 @@ spec:
           configMap:
             name: {{ $global.runtimeConfiguration.configMap }}
             defaultMode: 420
+        {{- if $global.runtimeConfiguration.csi.enabled }}
         - name: runtime-secrets
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
               secretProviderClass: {{ $global.runtimeConfiguration.csi.secretProviderClass }}
+        {{- end }}
       {{- end }}
       {{- with $current.nodeSelector }}
       nodeSelector:

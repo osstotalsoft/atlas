@@ -9,6 +9,7 @@ global:
     enabled: false
     configMap: atlas-runtime-config
     csi:
+      enabled: true
       secretProviderClass: atlas-runtime-secrets
 
   multiTenancy:
