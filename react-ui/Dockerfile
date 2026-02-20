@@ -1,5 +1,9 @@
 # build environment
-FROM node:20.18.1-bullseye as builder
+FROM node:20-alpine3.20 as builder
+
+# Update npm to get patched tar version (fixes CVE-2026-26960)
+RUN npm install -g npm@latest
+
 WORKDIR /app
 
 COPY package.json ./
@@ -20,7 +24,10 @@ COPY . ./
 RUN yarn run build
 
 # production environment
-FROM node:20.18.1-bullseye
+FROM node:current-alpine3.23
+
+# Update npm to get patched tar version (fixes CVE-2026-26960)
+RUN npm install -g npm@latest
 
 ARG imageUser=appuser
 ARG imageUserGroup=appgroup
@@ -33,7 +40,7 @@ RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
 COPY --chown=$imageUser:$imageUserGroup --from=builder /app/build ./build
 COPY --chown=$imageUser:$imageUserGroup --from=builder /app/setenv.js ./setenv.js
 
-RUN yarn global add serve@6
+RUN yarn global add serve@14
 
 USER $imageUser
 

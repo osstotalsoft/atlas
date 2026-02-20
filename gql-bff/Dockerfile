@@ -1,7 +1,10 @@
-FROM node:18.16.1-buster
+FROM node:current-alpine3.23
 
 # Create app directory
 WORKDIR /usr/src/app
+
+# Update npm to get patched tar version (fixes CVE-2026-26960)
+RUN npm install -g npm@latest
 
 ARG imageUser=appuser
 ARG imageUserGroup=appgroup
@@ -12,11 +15,11 @@ RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
     adduser --system --uid $imageUserId --ingroup $imageUserGroup $imageUser
 
 # Install app dependencies
-COPY --chown=$imageUser:$imageUserGroup package.json yarn.lock ./
+COPY --chown=$imageUser:$imageUserGroup package.json package-lock.json ./
 
-RUN yarn install
+RUN npm install --force
 # If you are building your code for production
-# RUN yarn install --only=production
+#RUN npm install --only=production
 
 # Bundle app source
 COPY --chown=$imageUser:$imageUserGroup . .
@@ -27,5 +30,5 @@ USER $imageUser
 EXPOSE 4000
 
 
-CMD ["/bin/bash", "-c", "test -f /vault/secrets/credentials.vault && echo 'INFO: Vault credentials loaded.' && \
-    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && yarn run start:production"]
+CMD ["/bin/sh", "-c", "test -f /vault/secrets/credentials.vault && echo 'INFO: Vault credentials loaded.' && \
+    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && npm run start:production"]
