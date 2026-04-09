@@ -4,7 +4,9 @@ const removeQuotes = (string) => {
 
 const introspectionRoute = (ctx) => {
   if (
-    ctx.method === "GET" ||
+    (process.env.NODE_ENV === "development" &&
+      ctx.method === "GET" &&
+      ctx.path === "/graphql") ||
     ctx.request.body.operationName === "IntrospectionQuery" ||
     (ctx.request.body.query &&
       ctx.request.body.query.includes("IntrospectionQuery"))
