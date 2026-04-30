@@ -9,6 +9,10 @@ class ExecutionApi extends ConductorApi {
     return await this.get("/api/workflow/search", args);
   }
 
+  async getTaskExecutionList(args) {
+    return await this.get("/api/tasks/search", args);
+  }
+
   async executeWorkflow(body) {
     return await this.post("/api/workflow", body, {
       headers: { "content-type": "application/json" },
