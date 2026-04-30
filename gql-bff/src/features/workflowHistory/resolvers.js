@@ -2,6 +2,31 @@ const { getWorkflowHistory } = require("./datasources/workflowHistoryEs");
 const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT);
 const { filterResourcesByTenant } = require("../common/functions");
 
+const transformStringToObject = (queryString) => {
+  // 1. Clean the string: Remove the outer curly braces {}
+  const cleanedString = queryString.slice(1, -1);
+
+  // 2. Split the string into individual key-value pairs using the comma as a delimiter
+  const pairs = cleanedString.split(",");
+
+  // 3. Use reduce to build the final object
+  const resultObject = pairs.reduce((acc, pair) => {
+    // Split each pair into a key and a value using the equals sign
+    const [key, value] = pair.split("=");
+
+    // Trim whitespace and assign to the accumulator object
+    if (key && value) {
+      // Special handling for 'null' to convert string "null" to actual null type
+      let finalValue = value === "null" ? null : value;
+
+      acc[key.trim()] = finalValue;
+    }
+    return acc;
+  }, {}); // Initialize an empty object {}
+
+  return resultObject;
+};
+
 const getInputData = (inputData) => ({
   Payload: inputData.Payload,
   sink: inputData.sink,
@@ -107,66 +132,121 @@ const workflowHistoryResolvers = {
 
       const history = {};
       await Promise.all(
-        flows.map(async (flow) => {
-          const flowHistory = await dataSources?.executionApi?.getExecutionList(
-            {
-              size: 1,
-              sort: "startTime:DESC",
-              start: 0,
-              freeText: `(workflowType: ${flow.name} AND version: ${flow.version})`,
-              query: `startTime > ${new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).getTime()}`,
-            },
-          );
+        flows
+          .map(async (flow) => {
+            const flowHistory =
+              await dataSources?.executionApi?.getExecutionList({
+                size: 1,
+                sort: "startTime:DESC",
+                start: 0,
+                freeText: `(workflowType: ${flow.name} AND version: ${flow.version})`,
+                query: `startTime > ${new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).getTime()}`,
+              });
 
-          const totalHits = flowHistory.totalHits;
-          let executableData = {};
+            const totalHits = flowHistory.totalHits;
+            let executableData = {};
 
-          history[`${flow.name}/${flow.version}`] = {
-            totalHits,
-            executableData: {},
-          };
-          if (totalHits > 0) {
-            // const instance = completed?.results?.find(
-            //   (e) =>
-            //     e.status === "COMPLETED" &&
-            //     e.workflowType === flow.name &&
-            //     e.version === flow.version,
-            // );
-            for (const instance of flowHistory.results) {
-              const execution = await dataSources?.executionApi?.getExecution(
-                instance.workflowId,
-              );
-
-              executableData = Object.fromEntries(
-                (execution?.tasks ?? [])
-                  .filter(
-                    (t) =>
-                      t.taskType === "EVENT" &&
-                      t.workflowTask?.asyncComplete === true,
-                  )
-                  .map((t) => [
-                    t.referenceTaskName,
-                    {
-                      input: getInputData(t.inputData),
-                      output: getOutputData(t.outputData, handlers),
-                    },
-                  ]),
-              );
-
-              executableData["input"] = execution.input;
-            }
-            // console.log(
-            //   "Executable Data for",
-            //   flow.name,
-            //   flow.version,
-            //   executableData,
-            // );
             history[`${flow.name}/${flow.version}`] = {
               totalHits,
-              executableData,
+              executableData: {},
             };
-          } 
-        }),
+            if (totalHits > 0) {
+              // const instance = completed?.results?.find(
+              //   (e) =>
+              //     e.status === "COMPLETED" &&
+              //     e.workflowType === flow.name &&
+              //     e.version === flow.version,
+              // );
+              for (const instance of flowHistory.results) {
+                const execution = await dataSources?.executionApi?.getExecution(
+                  instance.workflowId,
+                );
+
+                executableData = Object.fromEntries(
+                  await Promise.all(
+                    (execution?.tasks ?? [])
+                      .filter(
+                        (t) =>
+                          t.taskType === "EVENT" &&
+                          t.workflowTask?.asyncComplete === true,
+                      )
+                      .map(async (t) => {
+                        var tasks = { results: [] };
+                        if (t.outputData?.["conductor.event.name"]) {
+                          tasks =
+                            await dataSources?.executionApi?.getTaskExecutionList(
+                              {
+                                size: 10,
+                                sort: "startTime:DESC",
+                                start: 0,
+                                freeText: `NOT output:*${t.outputData?.["conductor.event.name"].split(":")[1]}*`,
+                                query: `workflowType="${flow.name}" AND  status="COMPLETED" AND taskType="EVENT" AND output = "${t.referenceTaskName}"`,
+                              },
+                            );
+                          if (tasks.results.length > 0) {
+                            console.log(
+                              "Found matching task for",
+                              JSON.stringify(tasks.results),
+                            );
+                          }
+                        }
+
+                        return [
+                          t.referenceTaskName,
+                          {
+                            input: getInputData(t.inputData),
+                            output: getOutputData(t.outputData, handlers),
+                            otherTasks:
+                              tasks.results.length > 0
+                                ? Object.fromEntries(
+                                    tasks.results.map((task) => {
+                                      const eventNameMatch =
+                                        typeof task.output === "string"
+                                          ? task.output.match(
+                                              /conductor\.event\.name=([^,}]+)/,
+                                            )
+                                          : null;
+                                      const eventName = eventNameMatch
+                                        ? eventNameMatch[1].trim()
+                                        : task.referenceTaskName;
+                                      return [
+                                        eventName,
+                                        {
+                                          input: {data: task.input},
+                                          output: {
+                                            flowId: task.workflowId,
+                                            ...getOutputData(
+                                              transformStringToObject(
+                                                task.output,
+                                              ),
+                                              handlers,
+                                            ),
+                                          },
+                                        },
+                                      ];
+                                    }),
+                                  )
+                                : undefined,
+                          },
+                        ];
+                      }),
+                  ),
+                );
+
+                executableData["input"] = execution.input;
+              }
+              // console.log(
+              //   "Executable Data for",
+              //   flow.name,
+              //   flow.version,
+              //   executableData,
+              // );
+              history[`${flow.name}/${flow.version}`] = {
+                totalHits,
+                executableData,
+              };
+            }
+          }),
       );
 
       return history;
