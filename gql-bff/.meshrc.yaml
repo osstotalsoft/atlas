@@ -13,6 +13,7 @@ additionalTypeDefs:
   - ./src/features/eventHandler/schema.graphql
   - ./src/features/schedule/schema.graphql
   - ./src/features/features/schema.graphql
+  - ./src/features/user/schema.graphql
 
 additionalResolvers:
   - ./src/startup/additionalResolvers.js

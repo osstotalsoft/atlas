@@ -8,6 +8,7 @@ const logsResolvers = require("../features/logs/resolvers");
 const executionResolvers = require("../features/execution/resolvers");
 const scheduleResolvers = require("../features/schedule/resolvers");
 const featuresResolvers = require("../features/features/resolvers");
+const userResolvers = require("../features/user/resolvers");
 
 const additionalResolvers = merge(
   workflowResolvers,
@@ -17,7 +18,8 @@ const additionalResolvers = merge(
   executionResolvers,
   taskResolvers,
   scheduleResolvers,
-  featuresResolvers
+  featuresResolvers,
+  userResolvers
 );
 
 module.exports = additionalResolvers;

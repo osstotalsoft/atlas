@@ -11,7 +11,7 @@ export function useQueryWithErrorHandling(query, { onError = emptyFunction, ...p
   const showError = useError()
   const errorHandler = useCallback(
     error => {
-      onError()
+      onError(error)
       showError(error)
     },
     [onError, showError]

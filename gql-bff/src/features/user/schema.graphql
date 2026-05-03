@@ -1,0 +1,9 @@
+type UserData {
+  id: ID
+  userName: String
+  rights: [String]
+}
+
+extend type Query {
+  userData(externalId: ID!): UserData
+}

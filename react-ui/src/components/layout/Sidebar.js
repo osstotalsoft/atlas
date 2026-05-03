@@ -10,6 +10,7 @@ import UserMenu from 'components/menu/UserMenu'
 import Menu from 'components/menu/Menu'
 import { sidebarWrapperHeight } from 'utils/constants'
 import { Drawer, SidebarRef, StyledImage, StyledLogo, StyledLogoDefault, StyledLogoMini, Typography } from './SidebarStyle'
+import { useLocation } from 'react-router-dom'
 
 // We've created this component so we can have a ref to the wrapper of the links that appears in our sidebar.
 // This was necessary so that we could initialize PerfectScrollbar on the links.
@@ -26,12 +27,13 @@ function SidebarWrapper({ children, drawerOpen }) {
 }
 
 SidebarWrapper.propTypes = {
-  children: PropTypes.array.isRequired,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.node]).isRequired,
   drawerOpen: PropTypes.bool.isRequired
 }
 
 function Sidebar({ logo, logoText, drawerOpen, changeLanguage, closeDrawer, withGradient }) {
   const { i18n, t } = useTranslation()
+  const { pathname } = useLocation()
 
   const brand = (
     <StyledLogo>
@@ -46,6 +48,36 @@ function Sidebar({ logo, logoText, drawerOpen, changeLanguage, closeDrawer, with
     </StyledLogo>
   )
 
+
+  if (pathname === '/forbidden') return (
+    <div>
+      <Hidden mdUp>
+        <Drawer
+          variant="temporary"
+          anchor="right"
+          open={drawerOpen}
+          onClose={closeDrawer}
+          ModalProps={{ keepMounted: true }}
+          drawerOpen={drawerOpen}
+        >
+          {brand}
+          <SidebarWrapper drawerOpen={drawerOpen}>
+            <UserMenu drawerOpen={drawerOpen} changeLanguage={changeLanguage} language={i18n.language} withGradient={withGradient} />
+          </SidebarWrapper>
+        </Drawer>
+      </Hidden>
+      <Hidden smDown>
+        <Drawer anchor="left" variant="permanent" open={drawerOpen} drawerOpen={drawerOpen}>
+          {brand}
+          <SidebarWrapper drawerOpen={drawerOpen}>
+            <UserMenu drawerOpen={drawerOpen} changeLanguage={changeLanguage} language={i18n.language} withGradient={withGradient} />
+          </SidebarWrapper>
+        </Drawer>
+      </Hidden>
+    </div>
+  )
+
+  
   const appVersion = <Typography variant={'caption'}>{`${t('BuildVersion')} ${env.REACT_APP_VERSION}`}</Typography>
 
   return (

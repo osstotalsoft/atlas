@@ -49,7 +49,7 @@ export default function AppRoutes() {
         path='/logs/:id([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})'
         component={ErrorLogContainer}
       />
-      <Route exact path='/forbidden' component={Forbidden} />
+      <Route exact path='/forbidden' element={<Forbidden />} />
       <Route path='/' element={<Navigate replace to='/workflows' />} />
       <Route render={() => <NotFound title='PageNotFound'></NotFound>} />
     </Routes>
