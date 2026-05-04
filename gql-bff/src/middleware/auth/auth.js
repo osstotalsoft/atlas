@@ -25,7 +25,7 @@ const jwtTokenValidation = async (ctx, next) => {
     if (token) {
       const decoded = jsonwebtoken.decode(token.replace("Bearer ", ""));
       const allowedRoles = Object.values(identityUserRoles);
-      const userRoles = decoded?.role ?? [];
+      const userRoles = Array.isArray(decoded?.role) ? decoded.role : decoded?.role ? [decoded.role] : [];
       if (!decoded || !userRoles.some((r) => allowedRoles.includes(r))) {
         ctx.status = 401;
         ctx.body = { error: "Unauthorized: insufficient role" };
