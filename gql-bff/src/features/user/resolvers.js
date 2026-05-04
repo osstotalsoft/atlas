@@ -5,7 +5,7 @@ const userResolvers = {
     userData: async (_parent, { externalId }, context, _info) => {
       const { dataSources } = context;
       const roles = context.externalUser?.role ?? [];
-      const rights = [globalAdmin, admin, user].some(r => roles.includes(r)) ? ["admin"] : [];
+      const rights = [globalAdmin, admin].some(r => roles.includes(r)) ? ["admin"] : ["user"];
 
       return { rights };
     },

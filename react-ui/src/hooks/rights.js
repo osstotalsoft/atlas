@@ -32,7 +32,7 @@ export function useUserData() {
       }
     }
   })
-  return { ...res, userData: data?.userData }
+  return { ...res, userData: data?.userData, isAdmin: data?.userData?.rights?.includes('admin') }
 }
 
 export const useRights = () => {

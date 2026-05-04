@@ -20,7 +20,7 @@ import { Checkbox, FormControlLabel } from '@mui/material'
 
 const useStyles = makeStyles(styles)
 
-const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkflow, selected, onSelect }) => {
+const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkflow, selected, onSelect, isAdmin }) => {
   const { name, version, description, createdBy, updatedBy } = workflow
   const { t } = useTranslation()
   const classes = useStyles()
@@ -90,7 +90,7 @@ const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkf
           />
         </Td>
         <Td className={classes.tableContent}>
-          <ExecuteButton title={t('Workflow.Buttons.Execute')} onClick={toggleExecDialog} />
+          {isAdmin && (<ExecuteButton title={t('Workflow.Buttons.Execute')} onClick={toggleExecDialog} />)}
         </Td>
         <Td className={classes.tableContent}>{name}</Td>
         <Td className={classes.tableContent}>{version}</Td>
@@ -107,17 +107,21 @@ const WorkflowItem = ({ workflow, onEditWorkflow, onDeleteWorkflow, onCloneWorkf
               title={t('General.Buttons.Edit')}
               onClick={handleEditWorkflow}
             />
-            <IconButton color='secondary' tooltip={t('Workflow.Buttons.Clone')} variant='text' size='tiny' onClick={showCloneDialog}>
-              <FileCopy />
-            </IconButton>
-            <IconButton
-              type='delete'
-              variant='text'
-              size='tiny'
-              title={t('General.Buttons.Delete')}
-              color='secondary'
-              onClick={showDeleteDialog}
-            />
+            {isAdmin && (
+              <>
+                <IconButton color='secondary' tooltip={t('Workflow.Buttons.Clone')} variant='text' size='tiny' onClick={showCloneDialog}>
+                  <FileCopy />
+                </IconButton>
+                <IconButton
+                  type='delete'
+                  variant='text'
+                  size='tiny'
+                  title={t('General.Buttons.Delete')}
+                  color='secondary'
+                  onClick={showDeleteDialog}
+                />
+              </>
+            )}
           </Box>
         </Td>
       </Tr>
@@ -168,7 +172,8 @@ WorkflowItem.propTypes = {
   onDeleteWorkflow: PropTypes.func.isRequired,
   onCloneWorkflow: PropTypes.func.isRequired,
   selected: PropTypes.array,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+  isAdmin: PropTypes.bool
 }
 
 export default WorkflowItem

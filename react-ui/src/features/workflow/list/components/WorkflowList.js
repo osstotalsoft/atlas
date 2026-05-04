@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import WorkflowItem from './WorkflowItem'
 import { defaults } from 'apollo/defaultCacheData'
 import { workflowsPager } from 'apollo/cacheKeyFunctions'
+import { useUserData } from 'hooks/rights'
 
 const defaultPager = defaults[workflowsPager]
 const useStyles = makeStyles(styles)
@@ -35,7 +36,7 @@ const WorkflowList = ({
   const { page, pageSize, totalCount } = pager
   const currentPageWorkflows = workflowList.slice(page * pageSize, (page + 1) * pageSize)
   const handleRowsPerPageChange = useCallback(newPageSize => setPager({ ...defaultPager, pageSize: parseInt(newPageSize, 10) }), [setPager])
-
+  const { isAdmin } = useUserData()
   const fileInputRef = useRef()
 
   useEffect(() => {
@@ -74,12 +75,12 @@ const WorkflowList = ({
     <Card
       icon={AccountTreeIcon}
       actions={[
-        <IconButton key='addButton' type="add" color='secondary' title={t('Workflow.Buttons.AddWorkflow')} onClick={onAddWorkflow} />,
-        <IconButton key='exportButton' color='secondary' title={t('Export.ExportButton')} onClick={onHandleExportButton}>
+        <IconButton disabled={!isAdmin} key='addButton' type='add' color='secondary' title={t('Workflow.Buttons.AddWorkflow')} onClick={onAddWorkflow} />,
+        <IconButton disabled={!isAdmin} key='exportButton' color='secondary' title={t('Export.ExportButton')} onClick={onHandleExportButton}>
           <ImportExportIcon />
         </IconButton>,
 
-        <IconButton key='importButton' color='secondary' title={t('Export.ImportButton')} onClick={onHandleImportButton}>
+        <IconButton disabled={!isAdmin} key='importButton' color='secondary' title={t('Export.ImportButton')} onClick={onHandleImportButton}>
           <input ref={fileInputRef} accept='.json' style={{ display: 'none' }} type='file' onChange={onImport} />
           <PublishIcon />
         </IconButton>
@@ -113,6 +114,7 @@ const WorkflowList = ({
                     onCloneWorkflow={onCloneWorkflow}
                     onSelect={onSelect}
                     selected={selected}
+                    isAdmin={isAdmin}
                   />
                 ))}
               </Tbody>

@@ -10,6 +10,7 @@ import CollapsibleMenuItem from './CollapsibleMenuItem'
 import { gql } from '@apollo/client'
 import { useQueryWithErrorHandling } from 'hooks/errorHandling'
 import ScheduleIcon from '@mui/icons-material/Schedule'
+import { useUserData } from 'hooks/rights'
 
 export const FEATURE_FLAGS = gql`
   query featureFlags {
@@ -22,6 +23,7 @@ export const FEATURE_FLAGS = gql`
 const useStyles = makeStyles(menuStyle)
 
 function Menu({ drawerOpen, withGradient }) {
+  const { userData, loading: loadingUserData, isAdmin } = useUserData()
   const classes = useStyles()
   const location = useLocation()
   const [menuItems, setMenuItems] = useState([])
@@ -31,11 +33,16 @@ function Menu({ drawerOpen, withGradient }) {
   const { loading, data } = useQueryWithErrorHandling(FEATURE_FLAGS, { variables: {} })
 
   useEffect(() => {
-    setMenuItems(menuConfig)
+    if (loadingUserData) return
+    if (isAdmin) {
+      setMenuItems(menuConfig)
+    } else {
+      setMenuItems(menuConfig.filter(menu => menu.name !== 'Configurations'))
+    }
     if (data?.features?.schedule) {
       setMenuItems([...menuConfig, { icon: <ScheduleIcon />, text: 'NavBar.Schedule', path: '/schedule', name: 'Schedule' }])
     }
-  }, [data])
+  }, [data, loadingUserData, isAdmin])
 
   if (loading) return <Fragment></Fragment>
 
