@@ -2,4 +2,3 @@ node_modules
 build
 .vscode
 .yarn/cache
-yarn.lock
