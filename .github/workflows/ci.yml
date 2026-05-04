@@ -18,10 +18,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install
-      run: npm i -- force
+      run: yarn
 
     - name: Test
-      run: npm run test:ci
+      run: yarn test:ci
 
     - name: Build images
       run: docker build -f ./Dockerfile .
