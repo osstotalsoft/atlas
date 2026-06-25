@@ -20,7 +20,8 @@ COPY --chown=$imageUser:$imageUserGroup package.json package-lock.json ./
 RUN npm install && \
     find node_modules -name "package-lock.json" -not -path "*/node_modules/node_modules/*" -delete
 
-# Bundle app source
+# Bundle app source.
+
 COPY --chown=$imageUser:$imageUserGroup . .
 
 

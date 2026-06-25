@@ -40,7 +40,7 @@ RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
 COPY --chown=$imageUser:$imageUserGroup --from=builder /app/build ./build
 COPY --chown=$imageUser:$imageUserGroup --from=builder /app/setenv.js ./setenv.js
 
-RUN yarn global add serve@14
+RUN npm install -g serve@14
 
 USER $imageUser
 
