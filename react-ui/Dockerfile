@@ -1,5 +1,5 @@
 # build environment
-FROM node:20-alpine3.20 as builder
+FROM node:26.4.0-alpine AS builder
 
 # Update npm to get patched tar version (fixes CVE-2026-26960)
 RUN npm install -g npm@latest
@@ -7,24 +7,18 @@ RUN npm install -g npm@latest
 WORKDIR /app
 
 COPY package.json ./
-COPY yarn.lock ./
 COPY .npmrc ./
 
-RUN corepack enable
-RUN yarn install
-
-RUN yarn set version 3.5.0
-COPY .yarnrc.yml ./
-RUN yarn install
+RUN npm install --force
 
 ARG REACT_APP_VERSION=0.0.0.0
 ENV REACT_APP_VERSION=${REACT_APP_VERSION}
 
 COPY . ./
-RUN yarn run build
+RUN npm run build
 
 # production environment
-FROM node:current-alpine3.23
+FROM node:26.4.0-alpine
 
 # Update npm to get patched tar version (fixes CVE-2026-26960)
 RUN npm install -g npm@latest
@@ -34,7 +28,7 @@ ARG imageUserGroup=appgroup
 ARG imageUserId=1375
 ARG imageUserGroupId=1375
 
-RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \     
+RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
     adduser --system --uid $imageUserId --ingroup $imageUserGroup $imageUser
 
 COPY --chown=$imageUser:$imageUserGroup --from=builder /app/build ./build

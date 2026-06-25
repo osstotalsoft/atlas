@@ -1,6 +1,6 @@
-FROM node:lts-alpine3.22
+FROM node:26.4.0-alpine
 
-# Create app directory
+# Create app direcqtory
 WORKDIR /usr/src/app
 
 # Update npm to get patched tar version (fixes CVE-2026-26960)
