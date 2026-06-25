@@ -3,9 +3,9 @@ const { saveLogs } = require('./loggingUtils')
 const { v4 } = require('uuid')
 
 module.exports = {
-  requestDidStart({ request, context, ..._requestContext }) {
-    const { logInfo, logDebug, logError } = initializeDbLogging(context, request.operationName)
-    context.requestId = context.requestId || v4()
+  async requestDidStart({ request, contextValue, ..._requestContext }) {
+    const { logInfo, logDebug, logError } = initializeDbLogging(contextValue, request.operationName)
+    contextValue.requestId = contextValue.requestId || v4()
     logInfo(`Request for operation name <${request.operationName}> started!`, '[REQUEST_STARTED]', true)
     return {
       parsingDidStart({ request }) {
@@ -32,9 +32,9 @@ module.exports = {
           error.message = templateError.message
         }
       },
-      willSendResponse: async ({ request, context, ..._requestContext }) => {
+      willSendResponse: async ({ request, contextValue, ..._requestContext }) => {
         logDebug(`A response for the operation <${request.operationName}> was sent!`, null, '[GraphQL_Response]', true)
-        await saveLogs(context)
+        await saveLogs(contextValue)
       }
     }
   }

@@ -1,4 +1,4 @@
-const { ForbiddenError } = require("apollo-server-koa");
+const { GraphQLError } = require("graphql");
 const {
   userCanSeeResource,
   getTenantIdFromDescription,
@@ -20,7 +20,9 @@ const scheduleResolvers = {
       if (userCanSeeResource(taskTenantId, tenantId)) {
         return task;
       } else
-        return new ForbiddenError("You are not authorized to see this task.");
+        throw new GraphQLError("You are not authorized to see this task.", {
+          extensions: { code: "FORBIDDEN" },
+        });
         */
     },
     schedule: async (_parent, { name }, context, _info) => {

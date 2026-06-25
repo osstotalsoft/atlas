@@ -1,5 +1,5 @@
 const { APOLLO_LOGGING_LEVEL } = process.env;
-const { ApolloError } = require("apollo-server-errors");
+const { GraphQLError } = require("graphql");
 const { v4 } = require("uuid");
 const { append, map } = require("ramda");
 require("colors");
@@ -144,7 +144,9 @@ const logDbError = async (context, message, code, level, error) => {
   );
   await saveLogs(context);
 
-  return new ApolloError(messageWithLogId, code, { logId });
+  return new GraphQLError(messageWithLogId, {
+    extensions: { code, logId },
+  });
 };
 
 module.exports = { saveLogs, loggingLevels, initializeDbLogging };

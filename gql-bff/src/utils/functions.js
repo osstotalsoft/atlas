@@ -2,14 +2,15 @@ const removeQuotes = (string) => {
   return string.replace(/['"]+/g, "");
 };
 
-const introspectionRoute = (ctx) => {
+const introspectionRoute = (req) => {
+  const path = (req.originalUrl || req.path || "").split("?")[0];
+  const body = req.body || {};
   if (
     (process.env.NODE_ENV === "development" &&
-      ctx.method === "GET" &&
-      ctx.path === "/graphql") ||
-    ctx.request.body.operationName === "IntrospectionQuery" ||
-    (ctx.request.body.query &&
-      ctx.request.body.query.includes("IntrospectionQuery"))
+      req.method === "GET" &&
+      path.endsWith("/graphql")) ||
+    body.operationName === "IntrospectionQuery" ||
+    (body.query && body.query.includes("IntrospectionQuery"))
   ) {
     return true;
   } else {

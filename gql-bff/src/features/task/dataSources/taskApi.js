@@ -2,7 +2,8 @@ const ConductorApi = require("../../../utils/conductorApi");
 
 class TaskApi extends ConductorApi {
   async createTaskDefs(body) {
-    return await this.post(`/api/metadata/taskdefs`, body, {
+    return await this.post(`/api/metadata/taskdefs`, {
+      body,
       headers: { "content-type": "application/json" },
     });
   }

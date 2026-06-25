@@ -2,7 +2,8 @@ const ConductorApi = require("../../../utils/conductorApi");
 
 class WorkflowApi extends ConductorApi {
   async createOrUpdateWorkflow(body) {
-    return await this.put(`api/metadata/workflow`, body, {
+    return await this.put(`api/metadata/workflow`, {
+      body,
       headers: { "content-type": "application/json" },
     });
   }

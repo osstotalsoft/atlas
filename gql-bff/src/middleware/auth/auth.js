@@ -1,4 +1,4 @@
-const jwt = require("koa-jwt");
+const { expressjwt } = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
 const jsonwebtoken = require("jsonwebtoken");
 const identityUserRoles = require("../../constants/identityUserRoles");
@@ -11,33 +11,38 @@ const client = {
   rateLimit: true,
   jwksRequestsPerMinute: 2,
   jwksUri: `${IDENTITY_AUTHORITY}${IDENTITY_OPENID_CONFIGURATION}`,
-  debug: true
+  debug: true,
 };
-const validateJwtToken = jwt({
-  secret: jwksRsa.koaJwtSecret(client),
+const validateJwt = expressjwt({
+  secret: jwksRsa.expressJwtSecret(client),
   issuer: IDENTITY_AUTHORITY,
-  algorithms: ["RS256"]
+  algorithms: ["RS256"],
 });
 
-const jwtTokenValidation = async (ctx, next) => {
-  await validateJwtToken(ctx, async () => {
-    const token = ctx.req.headers.authorization || "";
+const jwtTokenValidation = (req, res, next) => {
+  validateJwt(req, res, (err) => {
+    if (err) return next(err);
+    const token = req.headers.authorization || "";
     if (token) {
       const decoded = jsonwebtoken.decode(token.replace("Bearer ", ""));
       const allowedRoles = Object.values(identityUserRoles);
-      const userRoles = Array.isArray(decoded?.role) ? decoded.role : decoded?.role ? [decoded.role] : [];
+      const userRoles = Array.isArray(decoded?.role)
+        ? decoded.role
+        : decoded?.role
+        ? [decoded.role]
+        : [];
       if (!decoded || !userRoles.some((r) => allowedRoles.includes(r))) {
-        ctx.status = 401;
-        ctx.body = { error: "Unauthorized: insufficient role" };
-        return;
+        return res
+          .status(401)
+          .json({ error: "Unauthorized: insufficient role" });
       }
     }
-    await next();
+    next();
   });
 };
 
-const jwtTokenUserIdentification = async (ctx, next) => {
-  const token = ctx.req.headers.authorization || "";
+const jwtTokenUserIdentification = (req, _res, next) => {
+  const token = req.headers.authorization || "";
   let externalUser = {};
   if (token) {
     const decoded = jsonwebtoken.decode(token.replace("Bearer ", ""));
@@ -50,10 +55,10 @@ const jwtTokenUserIdentification = async (ctx, next) => {
     }
   }
 
-  ctx.token = token;
-  ctx.externalUser = externalUser;
+  req.token = token;
+  req.externalUser = externalUser;
 
-  await next();
+  next();
 };
 
 const validateToken = async (token) => {

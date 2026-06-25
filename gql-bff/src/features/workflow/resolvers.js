@@ -1,6 +1,6 @@
 const { saveSnapshot } = require("./dataSources/workflowEs");
 const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT);
-const { ForbiddenError } = require("apollo-server-koa");
+const { GraphQLError } = require("graphql");
 const {
   userCanSeeResource,
   getTenantIdFromDescription,
@@ -33,8 +33,9 @@ const workflowResolvers = {
       if (userCanSeeResource(wfTenantId, tenant?.id)) {
         return { ...workflow, startHandlers };
       } else
-        return new ForbiddenError(
-          "You are not authorized to see this workflow."
+        throw new GraphQLError(
+          "You are not authorized to see this workflow.",
+          { extensions: { code: "FORBIDDEN" } }
         );
     },
 

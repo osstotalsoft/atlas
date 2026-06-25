@@ -4,8 +4,8 @@ const {
 const { removeQuotes } = require("../../../utils/functions");
 
 class ScheduleApi extends NoCacheRESTDataSource {
-  constructor() {
-    super();
+  constructor(config) {
+    super(config);
     this.baseURL = removeQuotes(`${process.env.SCHEDULE_URL}`);
   }
   async getSchedule(name) {
@@ -17,13 +17,15 @@ class ScheduleApi extends NoCacheRESTDataSource {
   }
 
   async createSchedule(body) {
-    return await this.post(`/schedule`, body, {
+    return await this.post(`/schedule`, {
+      body,
       headers: { "content-type": "application/json" },
     });
   }
 
   async updateSchedule(name, body) {
-    return await this.put(`/schedule/${name}`, body, {
+    return await this.put(`/schedule/${name}`, {
+      body,
       headers: { "content-type": "application/json" },
     });
   }

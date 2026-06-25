@@ -17,13 +17,15 @@ class EventHandlerApi extends ConductorApi {
   }
 
   async createEventHandler(body) {
-    return await this.post(`/api/event`, body, {
+    return await this.post(`/api/event`, {
+      body,
       headers: { "content-type": "application/json" },
     });
   }
 
   async editEventHandler(body) {
-    return await this.put(`/api/event`, body, {
+    return await this.put(`/api/event`, {
+      body,
       headers: { "content-type": "application/json" },
     });
   }

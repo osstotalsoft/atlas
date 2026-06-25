@@ -1,4 +1,4 @@
-const { ForbiddenError } = require("apollo-server-koa");
+const { GraphQLError } = require("graphql");
 const { userCanSeeResource } = require("../common/functions");
 const {
   updateHandlerCondition,
@@ -21,8 +21,9 @@ const eventHandlerResolvers = {
       if (userCanSeeResource(evHandTenantId, tenant?.id)) {
         return response;
       } else
-        return new ForbiddenError(
-          "You are not authorized to see this event handler."
+        throw new GraphQLError(
+          "You are not authorized to see this event handler.",
+          { extensions: { code: "FORBIDDEN" } }
         );
     },
     eventHandlerList: async (_parent, _args, context, _info) => {

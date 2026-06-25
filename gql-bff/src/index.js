@@ -13,15 +13,17 @@ if (process.env.NODE_ENV) {
 const keyPerFileEnv = require("@totalsoft/key-per-file-configuration");
 keyPerFileEnv.load();
 
-const Koa = require("koa");
-const { ApolloServer } = require("apollo-server-koa");
-const cors = require("@koa/cors");
-const bodyParser = require("koa-bodyparser");
+const express = require("express");
+const cors = require("cors");
+const { ApolloServer } = require("@apollo/server");
+const { expressMiddleware } = require("@as-integrations/express4");
+const {
+  ApolloServerPluginLandingPageLocalDefault,
+} = require("@apollo/server/plugin/landingPage/default");
 
 const { v4 } = require("uuid");
 
 // MultiTenancy
-const ignore = require("koa-ignore");
 const { introspectionRoute } = require("./utils/functions");
 
 // Logging
@@ -29,7 +31,7 @@ const { initializeDbLogging } = require("./plugins/logging/loggingUtils");
 const loggingPlugin = require("./plugins/logging/loggingPlugin");
 const plugins = [loggingPlugin];
 
-const app = new Koa();
+const app = express();
 const port = process.env.PORT || 5000;
 
 const {
@@ -39,19 +41,13 @@ const {
   jwtTokenUserIdentification,
 } = require("./middleware");
 
-app.use(errorHandlingMiddleware());
-app.use(bodyParser());
-app.use(cors({ credentials: true }));
-
 const hasAuthConf =
   process.env.IDENTITY_AUTHORITY && process.env.IDENTITY_OPENID_CONFIGURATION;
-app.use(
-  ignore(
-    jwtTokenValidation,
-    jwtTokenUserIdentification,
-    tenantIdentification()
-  ).if((ctx) => introspectionRoute(ctx) || !hasAuthConf)
-);
+
+// Skip auth for introspection requests or when no auth is configured.
+const skipAuth = (req) => introspectionRoute(req) || !hasAuthConf;
+const guard = (middleware) => (req, res, next) =>
+  skipAuth(req) ? next() : middleware(req, res, next);
 
 const { elastic } = require("./elasticSearch");
 const { initElastic } = require("./elasticSearch/client");
@@ -65,30 +61,44 @@ async function main() {
 
   const meshConfig = await findAndParseConfig();
   const { schema } = await getMesh(meshConfig);
+
   const server = new ApolloServer({
     schema,
-    plugins,
-    playground: true,
-    dataSources: getDataSources,
-    context: async ({ ctx }) => {
-      const { logInfo, logDebug, logError } = initializeDbLogging(
-        { requestId: v4() },
-        ctx?.request?.body?.operationName
-      );
-      return {
-        tenant: ctx?.tenant,
-        externalUser: ctx?.externalUser,
-        baseApiUrl: process.env.BASE_API_URL.replace(/['"]+/g, ""),
-        logger: { logInfo, logDebug, logError },
-        elastic,
-      };
-    },
+    plugins: [...plugins, ApolloServerPluginLandingPageLocalDefault()],
+    introspection: true,
   });
+  await server.start();
+
+  app.use(
+    "/graphql",
+    cors({ credentials: true }),
+    express.json(),
+    guard(jwtTokenValidation),
+    guard(jwtTokenUserIdentification),
+    guard(tenantIdentification()),
+    expressMiddleware(server, {
+      context: async ({ req }) => {
+        const { logInfo, logDebug, logError } = initializeDbLogging(
+          { requestId: v4() },
+          req?.body?.operationName
+        );
+        return {
+          tenant: req?.tenant,
+          externalUser: req?.externalUser,
+          baseApiUrl: process.env.BASE_API_URL.replace(/['"]+/g, ""),
+          logger: { logInfo, logDebug, logError },
+          elastic,
+          dataSources: getDataSources({ cache: server.cache }),
+        };
+      },
+    })
+  );
+
+  // Express error handler (replaces the Koa error-handling middleware).
+  app.use(errorHandlingMiddleware());
 
   app.listen(port, () => {
     console.log(`🚀 GQL-Mesh is ready on port ${port}!`);
   });
-
-  server.applyMiddleware({ app });
 }
 main().catch((err) => console.error(err));

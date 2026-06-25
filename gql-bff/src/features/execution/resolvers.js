@@ -3,7 +3,7 @@ const {
   userCanSeeResource,
   userCanEditResource,
 } = require("../common/functions");
-const { ForbiddenError } = require("apollo-server-koa");
+const { GraphQLError } = require("graphql");
 const { omit } = require("ramda");
 
 const executionResolvers = {
@@ -20,8 +20,9 @@ const executionResolvers = {
       if (userCanSeeResource(executionTenantId, tenant?.id)) {
         return execution;
       } else
-        return new ForbiddenError(
-          "You are not authorized to see this execution."
+        throw new GraphQLError(
+          "You are not authorized to see this execution.",
+          { extensions: { code: "FORBIDDEN" } }
         );
     },
 
