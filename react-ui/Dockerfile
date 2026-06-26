@@ -36,6 +36,11 @@ COPY --chown=$imageUser:$imageUserGroup --from=builder /app/setenv.js ./setenv.j
 
 RUN npm install -g serve@14
 
+# Remove npm's own bundled undici (CVE-2026-12151). It is only used for npm
+# registry network calls, which are complete by this point; the runtime CMD
+# uses serve/node, not npm, so it is unaffected.
+RUN rm -rf /usr/local/lib/node_modules/npm/node_modules/undici
+
 USER $imageUser
 
 EXPOSE 8080

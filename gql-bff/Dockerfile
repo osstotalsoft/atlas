@@ -20,6 +20,11 @@ COPY --chown=$imageUser:$imageUserGroup package.json package-lock.json ./
 RUN npm install && \
     find node_modules -name "package-lock.json" -not -path "*/node_modules/node_modules/*" -delete
 
+# Remove npm's own bundled undici (CVE-2026-12151). It is only used for npm
+# registry network calls, which are complete by this point; `npm run` does not
+# need it, so the runtime CMD is unaffected.
+RUN rm -rf /usr/local/lib/node_modules/npm/node_modules/undici
+
 # Bundle app source.
 
 COPY --chown=$imageUser:$imageUserGroup . .
