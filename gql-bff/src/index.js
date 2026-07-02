@@ -72,7 +72,7 @@ async function main() {
   app.use(
     "/graphql",
     cors({ credentials: true }),
-    express.json(),
+    express.json({ limit: "50mb" }),
     guard(jwtTokenValidation),
     guard(jwtTokenUserIdentification),
     guard(tenantIdentification()),
