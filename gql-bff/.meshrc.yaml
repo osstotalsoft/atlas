@@ -4,6 +4,9 @@ sources:
       openapi:
         source: ${BASE_API_URL}/api-docs
         baseUrl: ${BASE_API_URL}
+        # Rename upstream operations whose operationId (getExecution, executeWorkflow)
+        # collides with our custom tenant-aware fields. See src/utils/conductorSpecFetch.js.
+        customFetch: ./src/utils/conductorSpecFetch
 additionalTypeDefs:
   - ./src/features/workflow/schema.graphql
   - ./src/features/task/schema.graphql
