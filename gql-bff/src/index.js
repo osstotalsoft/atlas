@@ -24,7 +24,7 @@ const {
 const { v4 } = require("uuid");
 
 // MultiTenancy
-const { introspectionRoute } = require("./utils/functions");
+const { isAnonymousIntrospectionAllowed } = require("./utils/functions");
 
 // Logging
 const { initializeDbLogging } = require("./plugins/logging/loggingUtils");
@@ -41,11 +41,36 @@ const {
   jwtTokenUserIdentification,
 } = require("./middleware");
 
-const hasAuthConf =
-  process.env.IDENTITY_AUTHORITY && process.env.IDENTITY_OPENID_CONFIGURATION;
+const isDevelopment = process.env.NODE_ENV === "development";
 
-// Skip auth for introspection requests or when no auth is configured.
-const skipAuth = (req) => introspectionRoute(req) || !hasAuthConf;
+const hasAuthConf = Boolean(
+  process.env.IDENTITY_AUTHORITY && process.env.IDENTITY_OPENID_CONFIGURATION
+);
+
+// Fail closed: a missing identity configuration must never silently serve the
+// whole schema anonymously. Outside development it is a fatal misconfiguration.
+if (!hasAuthConf && !isDevelopment) {
+  throw new Error(
+    "IDENTITY_AUTHORITY and IDENTITY_OPENID_CONFIGURATION are required. " +
+      "Refusing to start with authentication disabled."
+  );
+}
+if (!hasAuthConf) {
+  console.warn(
+    "⚠️  Authentication is DISABLED: no identity configuration found. " +
+      "This is only tolerated because NODE_ENV=development."
+  );
+}
+
+// Only unauthenticated schema introspection in development may skip auth.
+const skipAuth = (req) => !hasAuthConf || isAnonymousIntrospectionAllowed(req);
+
+// Comma-separated allowlist, e.g. "https://atlas.example.com". Unset means any
+// origin, which is the previous behaviour and stays safe only because CORS
+// credentials are off.
+const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
+  ? process.env.CORS_ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+  : "*";
 const guard = (middleware) => (req, res, next) =>
   skipAuth(req) ? next() : middleware(req, res, next);
 
@@ -64,14 +89,19 @@ async function main() {
 
   const server = new ApolloServer({
     schema,
-    plugins: [...plugins, ApolloServerPluginLandingPageLocalDefault()],
-    introspection: true,
+    plugins: isDevelopment
+      ? [...plugins, ApolloServerPluginLandingPageLocalDefault()]
+      : plugins,
+    introspection: isDevelopment,
   });
   await server.start();
 
   app.use(
     "/graphql",
-    cors({ credentials: true }),
+    // Credentials travel as a bearer header, so browser credential forwarding is
+    // not needed; enabling it alongside a reflected origin would let any site
+    // drive authenticated requests. Origins are allowlisted when configured.
+    cors({ origin: allowedOrigins, credentials: false }),
     express.json({ limit: "50mb" }),
     guard(jwtTokenValidation),
     guard(jwtTokenUserIdentification),

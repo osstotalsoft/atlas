@@ -19,44 +19,33 @@ const validateJwt = expressjwt({
   algorithms: ["RS256"],
 });
 
+const toRoleArray = (role) => (Array.isArray(role) ? role : role ? [role] : []);
+
 const jwtTokenValidation = (req, res, next) => {
   validateJwt(req, res, (err) => {
     if (err) return next(err);
-    const token = req.headers.authorization || "";
-    if (token) {
-      const decoded = jsonwebtoken.decode(token.replace("Bearer ", ""));
-      const allowedRoles = Object.values(identityUserRoles);
-      const userRoles = Array.isArray(decoded?.role)
-        ? decoded.role
-        : decoded?.role
-        ? [decoded.role]
-        : [];
-      if (!decoded || !userRoles.some((r) => allowedRoles.includes(r))) {
-        return res
-          .status(401)
-          .json({ error: "Unauthorized: insufficient role" });
-      }
+
+    // express-jwt exposes the *verified* payload on req.auth. Authorization must
+    // read that, never a decode of the raw header, which is unauthenticated
+    // attacker input. Missing claims fail closed.
+    const allowedRoles = Object.values(identityUserRoles);
+    const userRoles = toRoleArray(req.auth?.role);
+
+    if (!userRoles.some((role) => allowedRoles.includes(role))) {
+      return res.status(401).json({ error: "Unauthorized: insufficient role" });
     }
+
     next();
   });
 };
 
 const jwtTokenUserIdentification = (req, _res, next) => {
-  const token = req.headers.authorization || "";
-  let externalUser = {};
-  if (token) {
-    const decoded = jsonwebtoken.decode(token.replace("Bearer ", ""));
-    if (decoded) {
-      externalUser = {
-        id: decoded.sub,
-        role: decoded.role,
-        tenantId: decoded.tid,
-      };
-    }
-  }
+  const claims = req.auth;
 
-  req.token = token;
-  req.externalUser = externalUser;
+  req.token = req.headers.authorization || "";
+  req.externalUser = claims
+    ? { id: claims.sub, role: claims.role, tenantId: claims.tid }
+    : {};
 
   next();
 };

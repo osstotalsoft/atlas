@@ -42,6 +42,9 @@ gql:
     ELASTIC_SEARCH_LOGGING_LEVEL: "[ELASTIC_SEARCH_LOGGING_LEVEL]"
     ELASTIC_SEARCH_HOST: "[ELASTIC_SEARCH_HOST]"
     IDENTITY_AUTHORITY: "[IDENTITY_AUTHORITY_URL]"
+    # Required: the service refuses to start without it, since a missing value
+    # would otherwise disable authentication entirely.
+    IDENTITY_OPENID_CONFIGURATION: "/.well-known/openid-configuration/jwks"
     APOLLO_LOGGING_LEVEL: "[APOLLO_LOGGING_LEVEL]"
     ELASTIC_VERSION: 6
     ELASTIC_PREFIX: "atlas"

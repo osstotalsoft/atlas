@@ -1,6 +1,6 @@
-const jsonwebtoken = require("jsonwebtoken");
 const { tenantService } = require("@totalsoft/tenant-configuration");
 const isMultiTenant = JSON.parse(process.env.IS_MULTITENANT || "false");
+const isDevelopment = process.env.NODE_ENV === "development";
 
 const tenantIdentification = () => async (req, _res, next) => {
   try {
@@ -11,7 +11,7 @@ const tenantIdentification = () => async (req, _res, next) => {
         return;
       }
 
-      const tenantId = getTenantIdFromJwt(req) ?? getTenantIdFromHeaders(req);
+      const tenantId = getTenantId(req);
 
       req.tenant = await tenantService.getTenantFromId(tenantId);
     }
@@ -21,17 +21,19 @@ const tenantIdentification = () => async (req, _res, next) => {
   }
 };
 
-const getTenantIdFromHeaders = (req) => req.headers.tenantid;
-
-const getTenantIdFromJwt = ({ token }) => {
-  let tenantId = null;
-  if (token) {
-    const decoded = jsonwebtoken.decode(token.replace("Bearer ", ""));
-    if (decoded) {
-      tenantId = decoded.tid;
-    }
+/**
+ * The tenant comes from the verified JWT claim only. The `tenantid` header is
+ * caller-controlled, so honouring it would let any authenticated user read
+ * another tenant's data; it survives purely as a local development convenience
+ * for the anonymous case.
+ */
+const getTenantId = (req) => {
+  const tenantIdFromJwt = req.auth?.tid;
+  if (tenantIdFromJwt) {
+    return tenantIdFromJwt;
   }
-  return tenantId;
+
+  return isDevelopment ? req.headers.tenantid : null;
 };
 
 module.exports = tenantIdentification;
