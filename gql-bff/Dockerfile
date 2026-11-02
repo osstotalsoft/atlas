@@ -1,10 +1,7 @@
-FROM node:26.4.0-alpine
+FROM node:26.13.0-alpine
 
 # Create app direcqtory
 WORKDIR /usr/src/app
-
-# Update npm to get patched tar version (fixes CVE-2026-26960)
-RUN npm install -g npm@latest
 
 ARG imageUser=appuser
 ARG imageUserGroup=appgroup
@@ -17,13 +14,14 @@ RUN addgroup --system --gid $imageUserGroupId $imageUserGroup && \
 # Install app dependencies
 COPY --chown=$imageUser:$imageUserGroup package.json package-lock.json ./
 
-RUN npm install && \
+# Production dependencies only: jest and the graphql-mesh CLI (with its express,
+# graphql-upload/dicer and codegen trees) are not used at runtime.
+RUN npm ci --omit=dev && \
     find node_modules -name "package-lock.json" -not -path "*/node_modules/node_modules/*" -delete
 
-# Remove npm's own bundled undici (CVE-2026-12151). It is only used for npm
-# registry network calls, which are complete by this point; `npm run` does not
-# need it, so the runtime CMD is unaffected.
-RUN rm -rf /usr/local/lib/node_modules/npm/node_modules/undici
+# Remove npm itself (and its bundled undici, tar, glob, minimatch, ...). It is
+# only needed for the install above; the runtime CMD runs node directly.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 # Bundle app source.
 
@@ -36,4 +34,4 @@ EXPOSE 4000
 
 
 CMD ["/bin/sh", "-c", "test -f /vault/secrets/credentials.vault && echo 'INFO: Vault credentials loaded.' && \
-    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && npm run start:production"]
+    source /vault/secrets/credentials.vault || echo 'INFO: Vault file not loaded.' && NODE_ENV=production node src/index.js"]
