@@ -17,7 +17,7 @@ describe('Decision task settings should be properly set', () => {
       __target: {
         state: { ...obj },
         setState: newVal => {
-          obj = newVal
+          obj = typeof newVal === 'function' ? newVal(obj) : newVal
         }
       }
     }
@@ -40,7 +40,7 @@ describe('Decision task settings should be properly set', () => {
       __target: {
         state: { ...obj },
         setState: newVal => {
-          obj = newVal
+          obj = typeof newVal === 'function' ? newVal(obj) : newVal
         }
       }
     }

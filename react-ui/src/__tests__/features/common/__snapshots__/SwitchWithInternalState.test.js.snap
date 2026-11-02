@@ -8,7 +8,7 @@ exports[`Switch with internal state should work as expected Should render correc
     className="MuiSwitch-root MuiSwitch-sizeMedium css-julti5-MuiSwitch-root"
   >
     <span
-      className="MuiButtonBase-root MuiSwitch-switchBase MuiSwitch-colorSecondary Mui-checked PrivateSwitchBase-root MuiSwitch-switchBase MuiSwitch-colorSecondary Mui-checked Mui-checked css-priqlz-MuiButtonBase-root-MuiSwitch-switchBase"
+      className="MuiButtonBase-root MuiSwitch-switchBase MuiSwitch-colorSecondary Mui-checked PrivateSwitchBase-root MuiSwitch-switchBase MuiSwitch-colorSecondary Mui-checked Mui-checked css-1vsiu3a-MuiButtonBase-root-MuiSwitchBase-root-MuiSwitch-switchBase"
       onBlur={[Function]}
       onContextMenu={[Function]}
       onDragLeave={[Function]}
@@ -25,7 +25,7 @@ exports[`Switch with internal state should work as expected Should render correc
     >
       <input
         checked={true}
-        className="PrivateSwitchBase-input MuiSwitch-input css-1m9pwf3"
+        className="PrivateSwitchBase-input MuiSwitch-input css-1p3z7et-MuiSwitchBase-root"
         name="isOptional"
         onChange={[Function]}
         required={false}
